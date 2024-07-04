@@ -1,32 +1,18 @@
 ---
 import '../styles/global.css';
-import Navigation from "../components/Navigation.astro";
-import Footer from "../components/Footer.astro";
-import Header from '../components/Header.astro';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogPost from '../components/BlogPost.astro';
 const pageTitle = "我的博客";
+const allPosts = await Astro.glob('./posts/*.md');
 
 ---
-<html lang = "zh">
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width" />
-    <!-- <title>Astro</title> -->
-    <title>{pageTitle}</title>
 
-  </head>
-<body>
-    <Header />
-  
-    <h1>{pageTitle}</h1>
-    <h1>我的 Astro 学习博客</h1>
-    <p>在这里，我将分享我的学习 Astro 之旅。</p>
-    <ul>
-        <li><a href="/SeanBlog/posts/Blog001/">文章1Test</a></li>
-        <li><a href="/SeanBlog/posts/Blog002/">文章2Test</a></li>
-    </ul>
-    <Footer />
-    <script>
-			import "../scripts/menu.js";
-		</script>
-  </body>
-</html>
+<BaseLayout pageTitle={pageTitle}>
+  <p>在这里，我将分享我的学习 Astro 之旅。使用了BaseLayout。</p>
+  <ul>
+    <!-- <li><a href="/SeanBlog/posts/Blog001/">文章1Test</a></li>
+    <li><a href="/SeanBlog/posts/Blog002/">文章2Test</a></li> -->
+    {allPosts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
+  </ul>
+</BaseLayout>
