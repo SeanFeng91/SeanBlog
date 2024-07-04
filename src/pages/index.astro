@@ -1,21 +1,13 @@
 ---
+// import Navigation from '../components/Navigation.astro';
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+import Footer from "../components/Footer.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
 
+const pageTitle = "Pagetitle首页";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<a href="/">首页</a>
-		<a href="/SeanBlog/about/">关于</a>
-		<a href="/SeanBlog/blog/">博客</a>
-		<h1>关于我</h1>
-		<h2>……和我的新 Astro 网站！网页链接不对啊</h2>
-		
-	</body>
-</html>
+<BaseLayout pageTitle={pageTitle}>
+	<h2>My awesome blog subtitle</h2>
+</BaseLayout>
