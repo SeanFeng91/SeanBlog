@@ -9,10 +9,24 @@ const allPosts = await Astro.glob('./posts/*.md');
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <p>在这里，我将分享我的学习 Astro 之旅。使用了BaseLayout。</p>
-  <ul>
-    <!-- <li><a href="/SeanBlog/posts/Blog001/">文章1Test</a></li>
-    <li><a href="/SeanBlog/posts/Blog002/">文章2Test</a></li> -->
-    {allPosts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
-  </ul>
+
+  <div class="flex min-h-screen flex-col">
+    <header class="bg-blue-200 p-4">Header</header>
+    <div class="flex flex-1 flex-row">
+      <main class="flex-1 bg-blue-50 p-4">
+        
+        <p>在这里，我将分享我的学习 Astro 之旅。使用了BaseLayout。</p>
+        <ul>
+          <!-- <li><a href="/SeanBlog/posts/Blog001/">文章1Test</a></li>
+          <li><a href="/SeanBlog/posts/Blog002/">文章2Test</a></li> -->
+          {allPosts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
+        </ul>
+      </main>
+      <nav class="order-first w-32 bg-blue-100 p-4">Navigation</nav>
+      <aside class="w-32 bg-blue-100 p-4">Side</aside>
+    </div>
+    <footer class="bg-blue-200 p-4">Footer</footer>
+  </div>
+  
+
 </BaseLayout>
