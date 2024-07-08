@@ -3,13 +3,14 @@ import '../styles/global.css';
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlogPost from '../components/BlogPost.astro';
+import Rightsidebar from "../components/Rightsideber.astro";
 const pageTitle = "我的博客";
 const allPosts = await Astro.glob('./posts/*.md');
 
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <span slot="maindiv">
+  <span >
     <p>在这里，我将分享我的学习 Astro 之旅。使用了BaseLayout。
       <br>
       Blog List:
@@ -20,5 +21,8 @@ const allPosts = await Astro.glob('./posts/*.md');
       {allPosts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
     </ul>
   </span>
-  
+  <div id="docs-on-this-page-sidebar" class="hs-overlay [--auto-close:xl] hs-overlay-open:translate-x-0 translate-x-full transition-all duration-300 transform hidden fixed top-0 end-0 bottom-0 xl:block xl:translate-x-0 xl:top-[72px] xl:end-[max(0px,calc(50%-45rem))] z-[59] xl:z-10 w-80 pt-5 pb-10 sm:pt-7 px-4 sm:px-8 bg-white overflow-y-auto [&amp;::-webkit-scrollbar]:w-2 [&amp;::-webkit-scrollbar-thumb]:rounded-full [&amp;::-webkit-scrollbar-track]:bg-gray-100 [&amp;::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&amp;::-webkit-scrollbar-track]:bg-neutral-700 dark:[&amp;::-webkit-scrollbar-thumb]:bg-neutral-500 dark:bg-neutral-900">
+    <Rightsidebar />
+    <p>fsadfdsf</p>
+  </div>
 </BaseLayout>
