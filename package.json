@@ -12,10 +12,13 @@
   "dependencies": {
     "@astrojs/preact": "^3.5.0",
     "@astrojs/tailwind": "^5.1.0",
+    "@preline/collapse": "^2.3.0",
+    "@preline/overlay": "^2.3.0",
     "@preline/scrollspy": "^2.3.0",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.13",
     "astro": "^4.11.5",
+    "marked": "^13.0.2",
     "preact": "^10.22.1",
     "preline": "^2.3.0"
   },
