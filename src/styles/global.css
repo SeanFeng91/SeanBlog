@@ -1,4 +1,4 @@
-html {
+/* html {
     background-color: #f1f5f9;
     font-family: sans-serif;
   }
@@ -18,11 +18,11 @@ html {
   h1 {
     margin: 1rem 0;
     font-size: 2.5rem;
-  }
+  } */
 
   /* 导航样式 */
 
-  .hamburger {
+  /* .hamburger {
     padding-right: 20px;
     cursor: pointer;
   }
@@ -81,7 +81,7 @@ html {
     display: none;
   }
 
-}
+} */
 
 html.dark {
   background-color: #0d0950;

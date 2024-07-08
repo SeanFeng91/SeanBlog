@@ -12,8 +12,11 @@
   "dependencies": {
     "@astrojs/preact": "^3.5.0",
     "@astrojs/tailwind": "^5.1.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.13",
     "astro": "^4.11.5",
-    "preact": "^10.22.1"
+    "preact": "^10.22.1",
+    "preline": "^2.3.0"
   },
   "devDependencies": {
     "tailwindcss": "^3.4.4"

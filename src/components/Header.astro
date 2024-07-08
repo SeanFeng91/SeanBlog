@@ -5,12 +5,122 @@ import ThemeIcon from './ThemeIcon.astro';
 
 
 ---
+<p class="mb-2 text-xl font-light text-gray-600 md:mb-0">
+    Kpi dashboard
+  </p>
+  <div class="flex flex-row flex-wrap items-center justify-center gap-4">
+    <div>
+      <div
+        class="relative inline-block w-10 mr-2 align-middle transition duration-200 ease-in select-none"
+      >
+        <input
+          type="checkbox"
+          name="toggle"
+          id="prefix-2"
+          class="absolute block w-6 h-6 duration-200 ease-in bg-white border-4 rounded-full appearance-none cursor-pointer right-4 checked:right-0 checked:bg-blue-600"
+        /><label
+          for="prefix-2"
+          class="block h-6 overflow-hidden bg-gray-300 rounded-full cursor-pointer"
+        ></label>
+      </div><span class="font-medium text-gray-400">Dark mode</span>
+    </div><div class="w-32">
+      <button
+        class="flex items-center justify-between px-4 py-2 text-base font-medium text-gray-800 bg-white border border-gray-800 rounded-md w-28 hover:bg-gray-100"
+        ><svg
+          width="20"
+          height="20"
+          fill="currentColor"
+          viewBox="0 0 2048 1792"
+          xmlns="http://www.w3.org/2000/svg"
+          ><path
+            d="M681 1399l-50 50q-10 10-23 10t-23-10l-466-466q-10-10-10-23t10-23l466-466q10-10 23-10t23 10l50 50q10 10 10 23t-10 23l-393 393 393 393q10 10 10 23t-10 23zm591-1067l-373 1291q-4 13-15.5 19.5t-23.5 2.5l-62-17q-13-4-19.5-15.5t-2.5-24.5l373-1291q4-13 15.5-19.5t23.5-2.5l62 17q13 4 19.5 15.5t2.5 24.5zm657 651l-466 466q-10 10-23 10t-23-10l-50-50q-10-10-10-23t10-23l393-393-393-393q-10-10-10-23t10-23l50-50q10-10 23-10t23 10l466 466q10 10 10 23t-10 23z"
+          ></path></svg
+        >code</button>
+    </div><button
+      class="w-28 px-4 py-2 flex items-center text-base font-medium rounded-md text-gray-800 bg-white hover:bg-gray-200"
+      ><svg
+        width="20"
+        height="20"
+        fill="currentColor"
+        class="mr-2"
+        viewBox="0 0 1792 1792"
+        xmlns="http://www.w3.org/2000/svg"
+        ><path
+          d="M1696 384q40 0 68 28t28 68v1216q0 40-28 68t-68 28h-960q-40 0-68-28t-28-68v-288h-544q-40 0-68-28t-28-68v-672q0-40 20-88t48-76l408-408q28-28 76-48t88-20h416q40 0 68 28t28 68v328q68-40 128-40h416zm-544 213l-299 299h299v-299zm-640-384l-299 299h299v-299zm196 647l316-316v-416h-384v416q0 40-28 68t-68 28h-416v640h512v-256q0-40 20-88t48-76zm956 804v-1152h-384v416q0 40-28 68t-68 28h-416v640h896z"
+        ></path></svg
+      >Copy</button>
+  </div>
 
-<header>
-    <nav>
+
+<!-- <header> -->
+    
+
+
+    <!-- <nav>
         <Hamburger />
         <ThemeIcon />
 
         <Navigation />
-    </nav>
-</header>
+    </nav> -->
+    
+    
+    <!-- <div>
+        <nav class="bg-white dark:bg-gray-800  ">
+            <div class="px-8 mx-auto max-w-7xl">
+                <div class="flex items-center justify-between h-16">
+                    <div class=" flex items-center">
+                        <a class="flex-shrink-0" href="/">
+                            <img class="w-8 h-8" src="/icons/rocket.svg" alt="Workflow"/>
+                        </a>
+                        <div class="hidden md:block">
+                            <div class="flex items-baseline ml-10 space-x-4">
+                                <a class="text-gray-300  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium" href="/#">
+                                    Home
+                                </a>
+                                <a class="text-gray-800 dark:text-white  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium" href="/#">
+                                    Gallery
+                                </a>
+                                <a class="text-gray-300  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium" href="/#">
+                                    Content
+                                </a>
+                                <a class="text-gray-300  hover:text-gray-800 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium" href="/#">
+                                    Contact
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div class="flex items-center ml-4 md:ml-6">
+                        </div>
+                    </div>
+                    <div class="flex -mr-2 md:hidden">
+                        <button class="text-gray-800 dark:text-white hover:text-gray-300 inline-flex items-center justify-center p-2 rounded-md focus:outline-none">
+                            <svg width="20" height="20" fill="currentColor" class="w-8 h-8" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1664 1344v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45zm0-512v128q0 26-19 45t-45 19h-1408q-26 0-45-19t-19-45v-128q0-26 19-45t45-19h1408q26 0 45 19t19 45z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a class="text-gray-300 hover:text-gray-800 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="/#">
+                        Home
+                    </a>
+                    <a class="text-gray-800 dark:text-white block px-3 py-2 rounded-md text-base font-medium" href="/#">
+                        Gallery
+                    </a>
+                    <a class="text-gray-300 hover:text-gray-800 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="/#">
+                        Content
+                    </a>
+                    <a class="text-gray-300 hover:text-gray-800 dark:hover:text-white block px-3 py-2 rounded-md text-base font-medium" href="/#">
+                        Contact
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div> -->
+
+
+<!-- </header> -->
