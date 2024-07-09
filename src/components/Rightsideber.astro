@@ -53,10 +53,8 @@ headings.forEach((heading, index) => {
 <!-- <main id="content" class="flex-1">
   <div innerHTML={htmlContent}></div>
 </main> -->
-
-
-<nav class="sticky top-24 order-last hidden w-56 shrink-0 overflow-y-scroll pr-4 lg:h-[calc(100vh-96px)] xl:block">
-    <h2 class="text-sm font-medium text-secondary-900">On this page</h2>
+<div class="pl-3 mt-3 text-sm">
+  <h2 class="text-sm font-medium text-secondary-900">On this page</h2>
     <div class="mt-3 text-sm">
         <div class="js-toc">
             <ol class="toc-list ">
@@ -68,15 +66,27 @@ headings.forEach((heading, index) => {
                     <a href="#configuration" class="toc-link node-name--H2 ">Configuration</a>
                     <ol class="toc-list  is-collapsible">
                         <li class="toc-list-item">
-                            <a href="#我做了什么" class="toc-link node-name--H3 ">我做了什么</a>
+                            <a href="#我做了什么" class="toc-link pb-5 node-name--H3 ">我做了什么</a>
                         </li>
                         <li class="toc-list-item">
-                            <a href="#下一步计划" class="toc-link node-name--H3 ">下一步计划</a>
+                            <a href="#下一步计划" class="toc-link pb-5 node-name--H3 ">下一步计划</a>
                         </li>
                         <li class="toc-list-item is-active-li">
-                            <a href="#plugins" class="toc-link node-name--H3  is-active-link">Plugins</a>
+                            <a href="#plugins" class="toc-link pb-5 node-name--H3  is-active-link">Plugins</a>
                         </li>
-                        <li class="toc-list-item"><a href="#javascript" class="toc-link node-name--H3 ">JavaScript</a>
-                        </li></ol></li><li class="toc-list-item">
-                            <a href="#development" class="toc-link node-name--H2 ">Development</a></li></ol></div></div>
-</nav> 
+                        <li class="toc-list-item"><a href="#javascript" class="toc-link pb-5 node-name--H3 ">JavaScript</a>
+                        </li>
+                      </ol>
+                    </li>
+                    <li class="toc-list-item">
+                      <a href="#development" class="toc-link node-name--H2 ">Development</a>
+                    </li>
+                  </ol>
+                </div>
+              </div>
+</div>
+
+
+<!-- <nav class="sticky top-24 order-last hidden w-56 shrink-0 pr-4 lg:h-[calc(100vh-96px)] xl:block">
+    
+</nav>  -->

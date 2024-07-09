@@ -4,7 +4,7 @@ import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 import Breadcrumb from "../components/Breadcrumb.astro";
 import Leftnav from "../components/Leftnav.astro";
-import Leftsidebar from "../components/Leftsidebar.astro";
+import Leftsidebar2 from "../components/Leftsidebar2.astro";
 import Rightsideber from "../components/Rightsideber.astro";
 const { pageTitle } = Astro.props;
 ---
@@ -25,65 +25,58 @@ const { pageTitle } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
   </head>
-  <body class="min-h-screen flex flex-col w-full">
+  <body class="bg-white text-secondary-500 antialiased">
     <!-- 头部 -->
-    <div class="bg-gray-100 shadow rounded-xl mb-4">
-      <div class="flex flex-col items-center justify-between p-4 bg-white border md:flex-row rounded-xl">
+    <!-- <div class="bg-white shadow rounded-xl max-h-screen"> -->
+      <header class="backdrop-blur bg-white/60 shadow-sm absolute top-0 left-0 right-0 z-50 py-4 md:fixed md:transition-all" id="header">
         <Header />
-      </div>
+      </header>
       <!-- 主页面 -->
-      <div class="flex-col justify-center flex gap-4 items-start">
-        <div class="w-full mx-auto">
-          <main
-            class="relative h-screen overflow-hidden bg-gray-100 dark:bg-gray-800"
-          >
-            <div class="flex items-start justify-between">
-              <Leftsidebar />
-              <div class="flex flex-col w-full md:space-y-4">
-                <!-- <p>blog info</p> -->
-                               
-                <div class="mx-auto max-w-8xl px-4 lg:flex sticky top-24">
-                  <article class="mx-auto mt-4 max-w-4xl flex-1 overflow-y-auto max-h-screen lg:mt-0 lg:px-6">
-                    <p class="text-sm font-medium capitalize text-primary-500">getting-started</p>
-                    <h1 class="mt-1 text-3xl font-bold capitalize text-secondary-900">Quick Start</h1>
-                    <p class="mt-2">Get started with Sailboat UI in minutes.</p>
-                    <div class="js-toc-content prose mt-10 max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md">
-                      <p>
-                        Installation
-                        npm install -D tailwindcss
-                        Sailboat UI is a modern UI component library for Tailwind CSS, you just need to install Tailwind CSS and configure it. Learn how to install Tailwind CSS.
-
-                        Configuration
-                      </p>
-                      <slot />
-
-                    </div>
-                  </article>
-                  <slot name="Rightbar" />
-                  <!-- <Rightsideber /> -->
+      <main>
+        <section class="pt-14 lg:pt-24">
+          <div class="mx-auto max-w-7xl px-4 lg:flex">
+            <aside class="sticky top-0 z-20 -mx-4 shrink-0 overflow-y-auto border-y border-y-gray-100 bg-white px-4 lg:top-40 lg:m-0 lg:block lg:h-[calc(100vh-160px)] lg:w-56 lg:border-none lg:bg-transparent lg:px-0">
+              <Leftsidebar2 />
+            </aside>
+            <nav class="sticky top-24 order-last hidden w-56 shrink-0 overflow-y-scroll pr-4 lg:h-[calc(100vh-96px)] xl:block">
+              <slot name="Rightbar" />
+            </nav>
+            <article class="mx-auto mt-4 max-w-4xl flex-1 overflow-y-auto  
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:rounded-full
+                [&::-webkit-scrollbar-track]:bg-gray-100
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:bg-gray-300
+                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+                max-h-screen lg:mt-0 lg:px-6">
+                <h1 class="mt-1 text-3xl font-bold capitalize text-secondary-900">Tailwind CSS Badge</h1>
+                  <!-- <p class="text-sm font-medium capitalize text-primary-500">getting-started</p>
+                  <h1 class="mt-1 text-3xl font-bold capitalize text-secondary-900">Quick Start</h1>
+                  <p class="mt-2">Get started with Sailboat UI in minutes.</p> -->
                   <!-- <slot /> -->
-                </div>
-
-              </div>
-              
-            </div>
-          </main>
-        </div>
-      </div>
-    </div>
+                  <div class="js-toc-content prose mt-10 max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md">
+                    <p>
+                      Installation
+                      npm install -D tailwindcss
+                    </p>
+                    <slot />
+                  </div>
+            </article>
+          </div>
+        </section>
+        
+      </main>
+      
+    <!-- </div> -->
     <script is:inline src="https://unpkg.com/preline"></script>
-    <!-- <script src="../../node_modules/preline/dist/preline.js"></script> -->
     <script is:inline src="../../node_modules/preline/preline.js"></script>
-    <!-- <script is:inline src="./node_modules/preline/preline.js"></script> -->
-    <!-- preline的沒法正常讀取 而且又變成繁體字了 -->
+
 
     <script>
       import "../scripts/menu.js";
     </script>
-    <!-- Alpine.js -->
-    <!-- <script src="https://unpkg.com/alpinejs"></script> -->
 
-    <!-- tippyjs -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.7/tippy.min.css"
