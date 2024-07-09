@@ -1,0 +1,301 @@
+{
+    "title": "Case Studies",
+    "description": "What we do and how we do it.",
+    "slug": "case-studies",
+    "posts": [
+      {
+        "publishedAt": "2024-04-30T10:55:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/ae270e4dc161242f9fd51892cf3159708fd286e7-4090x4142.png"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "From Monolith To Decoupled Architecture. Danone’s Alpro Path To Cutting-Edge Web Solutions",
+        "excerpt": "Discover the digital evolution of Danone's Alpro with Bejamas. From monolithic to decoupled architecture, witness the transformation that revolutionized performance, UX, and SEO metrics.",
+        "id": "e2c1f376-5f74-47b4-8826-a4a3189406b5",
+        "slug": "alpro-case-study"
+      },
+      {
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/95cb8110d1403358c5d7136474c3ed48e8fd4194-1999x1999.png"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "Modernizing Camino Financial: Next.js & Storyblok with Bejamas",
+        "excerpt": "Camino Financial partnered with Bejamas to revamp their website using Next.js & Storyblok. Explore how Bejamas tackled challenges to boost performance & empower Camino's mission of financial inclusion.",
+        "id": "fc9763f4-c70d-4533-89d2-4e216bc81ec3",
+        "slug": "camino-financial-case-study",
+        "publishedAt": "2024-03-14T09:14:55.253Z"
+      },
+      {
+        "id": "c0956235-d818-4f19-83bb-b1fb097f454a",
+        "slug": "descope-case-study",
+        "publishedAt": "2023-09-19T07:02:56.313Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/8d698df47bcfb09db3f87970c3cbbc23f3f6a548-3000x3000.png"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "Simplifying self-serve onboarding: Bejamas and Descope's joint case study",
+        "excerpt": "We created a website for Descope using modern web technologies. Additionally, we recommended a CMS, built out the content models, and developed the front-end of a Wordle-type game. Let's dive into the details!"
+      },
+      {
+        "slug": "dodonut-case-study",
+        "publishedAt": "2023-02-23T15:00:39.465Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/61659e13971aea8af2314d7c94b2d8224bee49e2-3000x3000.png"
+          },
+          "width": 350,
+          "height": 350
+        },
+        "title": "Building a sustainable website for Dodonut using Astro JS",
+        "excerpt": "Discover how Bejamas used the Astro framework to create Dodonut's low carbon footprint website. Explore its unique features for sustainable web design and learn about its benefits for your own projects.",
+        "id": "c920da6e-8605-453e-9a0f-775318d4a6e5"
+      },
+      {
+        "excerpt": "Finanzchef24 needed an agency with developers that were diligent and experienced migrating from Drupal and finding ways to handle huge content structures. Here's how we delivered.",
+        "id": "d4c12eda-fab5-4711-91b5-7aed257cbc52",
+        "slug": "the-pursuit-of-more-jamstack-power-bejamas-and-finanzchef24",
+        "publishedAt": "2022-05-05T09:17:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/1a301d61acbf2cdf86ac913d27ab8d4fe469282e-2000x2000.jpg"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "Finanzchef24: Acing Content Structure and Core Web Vitals"
+      },
+      {
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/daa5f720af4b6d648c77e7a5c283d2365dc22854-2000x2000.png"
+          },
+          "width": 350,
+          "height": 350
+        },
+        "title": "Jamstack & Nature: Removing Carbon Emissions with Charm Industrial",
+        "excerpt": "For years, humans have used and abused the environment and all it has offered us, up to the point that we've put it in danger.",
+        "id": "542e33a2-2523-50de-8d22-c25bdc0fc5f4",
+        "slug": "carbon-removal-case-study",
+        "publishedAt": "2021-10-13T20:00:00.000Z"
+      },
+      {
+        "title": "Optimizing DrSmile's Website to Allow for Lightning Fast Experiments at the Edge",
+        "excerpt": "To help boost DrSmile's rapid growth, we built the optimal environment for creating fast experiments. Directly at the edge.",
+        "id": "0b435606-cef5-530e-8101-eed4e4e37ee0",
+        "slug": "ab-testing-edge-case-study",
+        "publishedAt": "2021-10-06T20:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/ed2e6b287f2e9431186d9c7f1d719fecbfad356c-2000x2000.png"
+          },
+          "width": 350,
+          "height": 350
+        }
+      },
+      {
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/6f1c24eec7ba885cdd23d02feee5920e56d9af26-2000x2000.png"
+          },
+          "width": 350,
+          "height": 350
+        },
+        "title": "Supporting rapid growth of Dr.Smile with modern tools",
+        "excerpt": "Dr. Smile wanted a website that looked good, performed well, and could provide them with a competitive advantage over competitors. So we introduced them to Gatsby, Contentful, and Netlify.",
+        "id": "76e53cec-58ec-508a-8fd7-dc4479873b69",
+        "slug": "dental-website-case-study",
+        "publishedAt": "2021-06-29T20:00:00.000Z"
+      },
+      {
+        "title": "Moving Backlinko to Headless WordPress and Next.js",
+        "excerpt": "SEO businesses feel the Jamstack vibes. When Google announced their upcoming Page Experience update, Backlinko realized that they needed to improve their website. We are happy we could help.",
+        "id": "ae3906d2-11b8-54a5-b78c-e56c14f53cf4",
+        "slug": "backlinko-case-study",
+        "publishedAt": "2021-03-29T20:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/dafc804860ef3aca8daa7dd91e5275f727b37012-2000x2000.png"
+          },
+          "width": 465,
+          "height": 465
+        }
+      },
+      {
+        "title": "Case Study: Radio Program Analysis App for Swiss Federal Agency",
+        "excerpt": "Though we are Jamstack focused web dev shop sometimes, for some of our clients, we step out of our comfort zone to work on interesting projects like Radio Program Analysis App that we built for a Swiss federal agency.",
+        "id": "ffdd6acf-a9f8-5e98-b1b9-bcad698255ac",
+        "slug": "web-app-case-study",
+        "publishedAt": "2020-11-02T20:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/0135aa9289bf5c0767d4382676baf927d310fc47-2000x2000.png"
+          },
+          "width": 270,
+          "height": 270
+        }
+      },
+      {
+        "excerpt": "Working alongside Talenthouse on their effort to spread critical health messages around the world with creative user-generated content is the most rewarding thing we did as a team so far.",
+        "id": "8495234b-d600-5ed6-a3d0-5f43dfc4a590",
+        "slug": "case-study-united-nations",
+        "publishedAt": "2020-10-05T00:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/cf64e8b6daaad9836217ba2e959815f70d8f3e0b-3000x3000.png"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "United Nations COVID-19 Response Creative Content Hub Case Study"
+      },
+      {
+        "title": "Moving to Jamstack: a Case Study of Mambu",
+        "excerpt": "Gatsby, Sanity, and Netlify for the only true SaaS cloud banking platform.",
+        "id": "5ef9ebf9-f946-5314-b034-c66f6f8f9a61",
+        "slug": "saas-banking-platform-jamstack",
+        "publishedAt": "2020-09-08T22:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/fa44394d907562790a3562cca511f1c74474eafc-2000x2000.png"
+          },
+          "width": null,
+          "height": null
+        }
+      },
+      {
+        "id": "3d5ed90b-f664-5aba-adfe-ae442d6210a3",
+        "slug": "upgrading-the-stack-newfront-case-study",
+        "publishedAt": "2020-08-10T22:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/c3cce99b4896a0eadf799024b4a8182911ed9bae-3000x3000.png"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "Upgrading the Stack: Newfront Case Study",
+        "excerpt": "What do you do when you have to decouple the marketing and product teams? Well, you upgrade your stack."
+      },
+      {
+        "slug": "case-study-avenues",
+        "publishedAt": "2020-02-05T20:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/f53b807f4c18580ee5de69a4b20981e33fc970a1-1500x1500.png"
+          },
+          "width": 270,
+          "height": 270
+        },
+        "title": "Towards A Better Education: Avenues Case Study",
+        "excerpt": "For Avenues, the performance increases that came with a static site were icing on the cake.",
+        "id": "20290a01-9d22-578c-8ee1-a68f3649999b"
+      },
+      {
+        "slug": "editor-friendly-jamstack-website-armorblox-case-study",
+        "publishedAt": "2019-11-10T23:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/04e39a7a11329a244a60dbc442052ed99ee74554-1400x1400.png"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "Editor-friendly Jamstack Website: Armorblox Case Study",
+        "excerpt": "The best projects are the ones where our clients get to experience the benefits of using Jamstacks straight away, on their website.",
+        "id": "6d067491-8beb-5590-8426-aa9540db4801"
+      },
+      {
+        "publishedAt": "2019-10-20T22:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/54839c14d2157e066804fd8607ce6588f8ac7ff3-1400x1400.png"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "A Different Case Study: Bejamas.io Under The Spotlight",
+        "excerpt": "The all-new fast-loading, easy-to-use, and fancy designed website built from scratch with Gatsby, Forestry and Vercel was a tough cookie. And we love it even more for it.",
+        "id": "cd073fdd-8310-5615-a76c-64b37ef114d2",
+        "slug": "case-study-bejamas"
+      },
+      {
+        "id": "8f8d4c26-ed9b-51e4-a62d-446b2bfddaba",
+        "slug": "case-study-emerging-dynamics",
+        "publishedAt": "2019-07-21T22:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/01a42d1965dabbf5d20152d55795502b3470732d-890x890.jpg"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "3x Performance Improvement for Emerging Dynamics New Website [Case Study]",
+        "excerpt": "When the stack you use doesn’t live up to the expectations you either salvage what you can or opt-out for a completely different option. We opted-out for new Jamstack and got 3x performance improvement for Emerging Dynamics new website."
+      },
+      {
+        "slug": "case-study-veronym",
+        "publishedAt": "2019-05-27T22:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/01a42d1965dabbf5d20152d55795502b3470732d-890x890.jpg"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "Case Study: Veronym",
+        "excerpt": "Blazing fast Jamstack website built with Gatsby, Storyblok and Netlify for a cloud-based security service Veronym.",
+        "id": "9f2485df-dd25-569f-a652-271fc41882cd"
+      },
+      {
+        "publishedAt": "2019-03-05T23:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/d6ddecfa04df6db8ac84500cf3210355954e4505-890x890.jpg"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "Case Study: Road To a Better And Faster SEOmonitor Website",
+        "excerpt": "GatsbyJS, Contentful and Netlify for a faster and more secure SEOmonitor website.",
+        "id": "4cefe21a-3f13-5c06-b255-acc2ee70cb82",
+        "slug": "seomonitor-case-study"
+      },
+      {
+        "id": "f52fd89d-feb3-5c87-9fd2-0aa79c28bb27",
+        "slug": "case-study-just-technologies",
+        "publishedAt": "2019-02-12T00:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/fe0c87d3efe059ce7067116136208603a3d97515-890x890.jpg"
+          },
+          "width": null,
+          "height": null
+        },
+        "title": "Case Study: Just Technologies",
+        "excerpt": "Utilizing GatsbyJS, Netlify, and Sanity for a better and faster web experience for Just Technologies audience."
+      },
+      {
+        "title": "Case Study: Why NYC-based Revamp Agency Switched from a WordPress Shop to Jamstack",
+        "excerpt": "Read the story how Bejamas helped Revamp Agency move from a WordPress shop to Jamstack and delight their customers with fast loading and fully customizable websites.",
+        "id": "5577735d-08be-53fb-b996-684b7cb1d26f",
+        "slug": "revamp-wordpress-to-jamstack",
+        "publishedAt": "2019-01-23T00:00:00.000Z",
+        "mainImage": {
+          "asset": {
+            "url": "https://cdn.sanity.io/images/lxs6x7jp/production/9a51c7e50b0051ccd3e96864db88ac7ef7801f02-890x890.jpg"
+          },
+          "width": null,
+          "height": null
+        }
+      }
+    ]
+  }

@@ -3,24 +3,7 @@ import Rightsideber from '../components/Rightsideber.astro';
 import BaseLayout from './BaseLayout.astro';
 const { frontmatter } = Astro.props;
 ---
-<BaseLayout pageTitle={frontmatter.title}>
-  <p><em>{frontmatter.description}</em></p>
-  <p>{frontmatter.pubDate.toString().slice(0,10)}</p>
 
-  <p>Written by: {frontmatter.author}</p>
-
-  <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
-
-  <div class="tags">
-    {frontmatter.tags.map((tag) => (
-      <p class="tag"><a href={`/SeanBlog/tags/${tag}`}>{tag}</a></p>
-    ))}
-  </div>
-  <span slot="Rightbar">
-    <Rightsideber />
-  </span>
-  <slot />
-</BaseLayout>
 <style>
   a {
     color: #00539F;
@@ -39,4 +22,39 @@ const { frontmatter } = Astro.props;
     font-size: 1.15em;
     background-color: #F8FCFD;
   }
+
+  .container {
+    padding: 3rem 0;
+    max-width: 1152px;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  /* And more... */
 </style>
+
+<BaseLayout pageTitle={frontmatter.title} overflow-y-auto>
+  <p><em>{frontmatter.description}</em></p>
+  <p>{frontmatter.pubDate.toString().slice(0,10)}</p>
+
+  <p>Written by: {frontmatter.author}</p>
+
+  <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+
+  <div class="tags">
+    {frontmatter.tags.map((tag) => (
+      <p class="tag"><a href={`/SeanBlog/tags/${tag}`}>{tag}</a></p>
+    ))}
+  </div>
+  <span slot="Rightbar">
+    <Rightsideber />
+  </span>
+  <slot />
+</BaseLayout>
+
+
