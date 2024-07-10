@@ -25,7 +25,7 @@ const { pageTitle } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
   </head>
-  <body class="bg-white text-secondary-500 antialiased">
+  <body class="bg-white text-secondary-500 antialiased overflow-y-visiable  ">
     <!-- 头部 -->
     <!-- <div class="bg-white shadow rounded-xl max-h-screen"> -->
       <header class="backdrop-blur bg-white/60 shadow-sm absolute top-0 left-0 right-0 z-50 py-4 md:fixed md:transition-all" id="header">
@@ -50,16 +50,12 @@ const { pageTitle } = Astro.props;
                 dark:[&::-webkit-scrollbar-track]:bg-neutral-700
                 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
                 max-h-screen lg:mt-0 lg:px-6">
-                <h1 class="mt-1 text-3xl font-bold capitalize text-secondary-900">Tailwind CSS Badge</h1>
+                <!-- <h1 class="mt-1 text-3xl font-bold capitalize text-secondary-900">Tailwind CSS Badge</h1> -->
                   <!-- <p class="text-sm font-medium capitalize text-primary-500">getting-started</p>
                   <h1 class="mt-1 text-3xl font-bold capitalize text-secondary-900">Quick Start</h1>
                   <p class="mt-2">Get started with Sailboat UI in minutes.</p> -->
                   <!-- <slot /> -->
                   <div class="js-toc-content prose mt-10 max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md">
-                    <p>
-                      Installation
-                      npm install -D tailwindcss
-                    </p>
                     <slot />
                   </div>
             </article>

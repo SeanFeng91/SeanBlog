@@ -10,6 +10,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/mdx": "^3.1.2",
     "@astrojs/preact": "^3.5.0",
     "@astrojs/tailwind": "^5.1.0",
     "@preline/collapse": "^2.3.0",

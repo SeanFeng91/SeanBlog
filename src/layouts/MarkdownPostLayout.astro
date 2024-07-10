@@ -39,18 +39,18 @@ const { frontmatter } = Astro.props;
 </style>
 
 <BaseLayout pageTitle={frontmatter.title} overflow-y-auto>
-  <p><em>{frontmatter.description}</em></p>
-  <p>{frontmatter.pubDate.toString().slice(0,10)}</p>
-
-  <p>Written by: {frontmatter.author}</p>
-
+  <p class="text-center text-4xl text-pretty">{frontmatter.title}</p>
+  <p class="text-center p-0"><em>{frontmatter.description}</em></p>
+  <!-- <p>{frontmatter.pubDate.toString().slice(0,10)}</p> -->
+  <p class="text-center">作者: {frontmatter.author}    第一次发表：{frontmatter.pubDate.toString().slice(0,10)}</p>
+<!-- 
   <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
 
   <div class="tags">
     {frontmatter.tags.map((tag) => (
       <p class="tag"><a href={`/SeanBlog/tags/${tag}`}>{tag}</a></p>
     ))}
-  </div>
+  </div> -->
   <span slot="Rightbar">
     <Rightsideber />
   </span>
