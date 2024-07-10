@@ -73,4 +73,26 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 实现了左侧导航栏自动读取所有博客目录，核心代码
 
 尝试使用mdx，代码块跟之前不一样了。
+
+今天最大的成功，右侧目录树完成，并且具有anchor功能。但是还没解决根据当前文档变换。
+    
+    {allPosts.map((post, index) => {
+        const headings = post.getHeadings();
+            return headings.map((heading, headingIndex) => (
+                <Headingsofblog 
+                    key={`${index}-${headingIndex}`} 
+                    url={`#${heading.slug}`} 
+                    getHeadings={heading.text} 
+                />
+        ));
+    })}
+    
+    #核心用法是getHeadings()[].text，折腾了半天，通过GPT一步步得知：
+    ---
+    console.log()辅助输出检查
+    ---
+
+    <Headingsofblog url={`#${heading.getHeadings()[0].slug}`} getHeadings={heading.getHeadings()[0].text}/>
+
+并且修正了多余的右侧导航栏滚动条
     
