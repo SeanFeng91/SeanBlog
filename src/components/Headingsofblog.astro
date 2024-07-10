@@ -1,6 +1,6 @@
 ---
-const {headings, url} =Astro.props
+const {getHeadings, url} =Astro.props
 
 ---
 
-<li><a href={url}>·.. {headings}</a></li>
+<li><a href={url}>·.. {getHeadings}</a></li>
