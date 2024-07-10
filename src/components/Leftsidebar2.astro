@@ -26,7 +26,7 @@ import Blog001 from '../pages/posts/Blog001.md';
                     <!-- {allPosts.map((heading) =><Headingsofblog url={`#${heading.getHeadings}`} headings={heading.getHeadings.depth ===1}em/>)} -->
                     <!-- <p>#{allPosts.headings}</p> -->
                 </ul>
-                <ul>
+                <!-- <ul>
                     {allPosts.map((post, index) => {
                         const headings = post.getHeadings();
                         return headings.map((heading, headingIndex) => (
@@ -37,14 +37,8 @@ import Blog001 from '../pages/posts/Blog001.md';
                           />
                         ));
                       })}
-                </ul>
-                <!-- <ul>
-                    {headings.map((heading) => (
-                      <li style={`margin-left: ${heading.depth - 1}em;`}>
-                        <a href={`#${heading.slug}`}>{heading.text}</a>
-                      </li>
-                    ))}
                 </ul> -->
+                
             </li>
 
         </ul>

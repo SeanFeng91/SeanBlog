@@ -1,89 +1,31 @@
-<!-- ---
-import { marked } from 'marked';
-import fs from 'fs/promises';
-import path from 'path';
-
-// 读取Markdown文件的路径
-const markdownFilePath = path.join(import.meta.env.SITE, 'src/content/your-markdown-file.md');
-const markdownContent = await fs.readFile(markdownFilePath, 'utf-8');
-const htmlContent = marked(markdownContent);
-
-// 使用DOMParser解析HTML内容并提取标题
-const parser = new DOMParser();
-const doc = parser.parseFromString(htmlContent, 'text/html');
-const headings = doc.querySelectorAll('h1, h2, h3');
-
-// 生成侧边栏项数据
-const sidebarItems = [];
-headings.forEach((heading, index) => {
-  const id = `heading-${index}`;
-  heading.id = id;
-  const level = parseInt(heading.tagName[1]); // 获取标题级别 (1, 2, 3)
-  sidebarItems.push({ id, text: heading.textContent, level });
-});
 ---
-<nav class="sticky top-24 order-last hidden w-56 shrink-0 overflow-y-scroll pr-4 lg:h-[calc(100vh-96px)] xl:block">
-  <h2 class="text-sm font-medium text-secondary-900">On this page</h2>
-  <div class="mt-3 text-sm">
-    <div class="js-toc">
-      <ol class="toc-list">
-        {sidebarItems.map((item, index) => {
-          const nextItem = sidebarItems[index + 1];
-          const isNested = nextItem && nextItem.level > item.level;
-          const closeNested = nextItem && nextItem.level < item.level ? '</ol></li>' : '';
-          return (
-            <>
-              {index > 0 && sidebarItems[index - 1].level > item.level ? '</ol></li>' : ''}
-              <li class={`toc-list-item node-name--H${item.level}`}>
-                <a href={`#${item.id}`} class={`toc-link node-name--H${item.level}`}>
-                  {item.text}
-                </a>
-                {isNested ? '<ol class="toc-list is-collapsible">' : ''}
-              </li>
-              {closeNested}
-            </>
-          );
-        })}
-        {sidebarItems[sidebarItems.length - 1].level > 1 ? '</ol></li>' : ''}
-      </ol>
-    </div>
-  </div>
-</nav> -->
-
-<!-- <main id="content" class="flex-1">
-  <div innerHTML={htmlContent}></div>
-</main> -->
-<div class="pl-3 mt-3 text-sm">
+const allPosts = await Astro.glob('../pages/posts/PageProblemRecord.md');
+import Headingsofblog from "../components/Headingsofblog.astro";
+---
+<div class="pl-3 mt-3 text-sm overflow-y-auto  
+[&::-webkit-scrollbar]:w-2
+[&::-webkit-scrollbar-track]:rounded-full
+[&::-webkit-scrollbar-track]:bg-gray-100
+[&::-webkit-scrollbar-thumb]:rounded-full
+[&::-webkit-scrollbar-thumb]:bg-gray-300
+dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+max-h-screen lg:mt-0 lg:px-6">
   <h2 class="text-sm font-medium text-secondary-900">On this page</h2>
     <div class="mt-3 text-sm">
-        <div class="js-toc">
-            <ol class="toc-list ">
-                <li class="toc-list-item">
-                    <a href="#installation" class="toc-link node-name--H2 ">Installation</a>
-                
-                </li>
-                <li class="toc-list-item">
-                    <a href="#configuration" class="toc-link node-name--H2 ">Configuration</a>
-                    <ol class="toc-list  is-collapsible">
-                        <li class="toc-list-item">
-                            <a href="#我做了什么" class="toc-link pb-5 node-name--H3 ">我做了什么</a>
-                        </li>
-                        <li class="toc-list-item">
-                            <a href="#下一步计划" class="toc-link pb-5 node-name--H3 ">下一步计划</a>
-                        </li>
-                        <li class="toc-list-item is-active-li">
-                            <a href="#plugins" class="toc-link pb-5 node-name--H3  is-active-link">Plugins</a>
-                        </li>
-                        <li class="toc-list-item"><a href="#javascript" class="toc-link pb-5 node-name--H3 ">JavaScript</a>
-                        </li>
-                      </ol>
-                    </li>
-                    <li class="toc-list-item">
-                      <a href="#development" class="toc-link node-name--H2 ">Development</a>
-                    </li>
-                  </ol>
-                </div>
-              </div>
+      <ul class="space-y-5 leading-normal">
+        {allPosts.map((post, index) => {
+            const headings = post.getHeadings();
+            return headings.map((heading, headingIndex) => (
+              <Headingsofblog 
+                key={`${index}-${headingIndex}`} 
+                url={`#${heading.slug}`} 
+                getHeadings={heading.text} 
+              />
+            ));
+          })}
+    </ul>
+    </div>
 </div>
 
 
