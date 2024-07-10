@@ -1,0 +1,109 @@
+---
+const headings2 = [
+  {
+    depth: 1,
+    text: "Astro 0.18 Release",
+    slug: "astro-018-release"
+  },
+  {
+    depth: 2,
+    text: "Responsive partial hydration",
+    slug: "responsive-partial-hydration"
+  }
+  // 更多标题对象
+];
+const {getHeadings} =Astro.props
+const allPosts = await Astro.glob('../pages/posts/Blog001.md');
+import Aside from '../components/Aside.astro';
+import BlogPost from '../components/BlogPost.astro';
+import Headingsofblog from "../components/Headingsofblog.astro";
+import blogtest from '../pages/posts/Blog001.md'
+const {title} = Astro.props
+// 查找 depth 为 1 的标题对象
+const headingDepth1 = headings2.find(heading => heading.depth === 1);
+console.log(allPosts);
+allPosts.forEach((post, index) => {
+  console.log(`Post ${index + 1}:`);
+  console.log(post.file);
+});
+allPosts.forEach((post, index) => {
+  console.log(`Post ${index + 1}:`);
+  const headings = post.getHeadings();
+  console.log(headings);
+});
+allPosts.forEach((post, index) => {
+  console.log(`Post ${index + 1}:`);
+  const headings = post.getHeadings();
+  if (headings.length > 0) {
+    const firstSlug = headings[0].slug;
+    console.log(`First slug: ${firstSlug}`);
+  } else {
+    console.log('No headings found.');
+  }
+});
+
+allPosts.forEach((post, index) => {
+  console.log(`Post ${index + 1}:`);
+  const headings = post.getHeadings();
+  if (headings.length > 0) {
+    headings.forEach((heading, headingIndex) => {
+      console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
+    });
+  } else {
+    console.log('No headings found.');
+  }
+});
+allPosts.forEach((post, index) => {
+  console.log(`Post ${index + 1}:`);
+  const headings = post.getHeadings();
+  if (headings.length > 0) {
+    const slugs = headings.map((heading) => heading.slug);
+    console.log('Slugs:', slugs);
+  } else {
+    console.log('No headings found.');
+  }
+});
+allPosts.forEach((post, index) => {
+  console.log(`Post ${index + 1}:`);
+  const headings = post.getHeadings();
+  if (headings.length > 0) {
+    headings.map((heading, headingIndex) => {
+      console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
+    });
+  } else {
+    console.log('No headings found.');
+  }
+});
+---
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文档示例</title>
+</head>
+<body>
+  <!-- 使用 depth 为 1 的标题 -->
+  <h1 id={headingDepth1.slug}>{headingDepth1.text}</h1>
+  <h1 id={headingDepth1.slug}>{headingDepth1.slug}</h1>
+  <h1>       
+    还是GPT厉害             
+    <!-- {allPosts.map((heading) =>
+        <Headingsofblog url={`#${heading.getHeadings()[0].slug}`} getHeadings={heading.getHeadings()[0].text}/>
+    )} -->
+  </h1>
+  <p>
+    {allPosts.map((post, index) => {
+        const headings = post.getHeadings();
+        return headings.map((heading, headingIndex) => (
+          <Headingsofblog 
+            key={`${index}-${headingIndex}`} 
+            url={`#${heading.slug}`} 
+            getHeadings={heading.text} 
+          />
+        ));
+      })}
+  </p>
+  <!-- 其他内容 -->
+</body>
+</html>
