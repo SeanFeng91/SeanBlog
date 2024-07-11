@@ -6,6 +6,7 @@ import BlogPost from '../components/BlogPost.astro';
 
 const allPosts = await Astro.glob('../pages/posts/*.md');
 const achieved = await Astro.glob('../pages/posts/Achieved.md');
+const problems = await Astro.glob('../pages/posts/ProblemsAndAims.md');
 import Headingsofblog from "../components/Headingsofblog.astro";
 
 const { frontmatter } = Astro.props;
@@ -31,30 +32,18 @@ const pageTitle = "Pagetitle首页";
 				dark:[&::-webkit-scrollbar-track]:bg-neutral-700
 				dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
 				max-h-40">
-					<div class="flex items-center space-x-2 rounded p-2 hover:bg-gray-100">
-					  <input type="checkbox" id="example9" name="checkGroup1" data-id="example9" class="h-4 w-4 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus:ring-offset-0 disabled:cursor-not-allowed disabled:text-gray-400" />
-					  <label for="example9" class="flex w-full space-x-2 text-sm"> 为主页添加各类功能，主要用于展示 </label>
-					</div>
-					<div class="flex items-center space-x-2 rounded p-2 hover:bg-gray-100">
-					  <input type="checkbox" id="example10" name="checkGroup1" data-id="example10" class="h-4 w-4 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus:ring-offset-0 disabled:cursor-not-allowed disabled:text-gray-400" />
-					  <label for="example10" class="flex w-full space-x-2 text-sm"> 实现侧边栏的自动读取并且优化样式 </label>
-					</div>
-					<div class="flex items-center space-x-2 rounded p-2 hover:bg-gray-100">
-					  <input type="checkbox" id="example11" name="checkGroup1" data-id="example11" class="h-4 w-4 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus:ring-offset-0 disabled:cursor-not-allowed disabled:text-gray-400" />
-					  <label for="example11" class="flex w-full space-x-2 text-sm"> blog优化页面div，修复fixed遗留问题 </label>
-					</div>
-					<div class="flex items-center space-x-2 rounded p-2 hover:bg-gray-100">
-						<input type="checkbox" id="example11" name="checkGroup1" data-id="example11" class="h-4 w-4 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus:ring-offset-0 disabled:cursor-not-allowed disabled:text-gray-400" />
-						<label for="example11" class="flex w-full space-x-2 text-sm"> 左导航栏hidden-breadcurmb设计 </label>
-					  </div>
-					<div class="flex items-center space-x-2 rounded p-2 hover:bg-gray-100">
-						<input type="checkbox" id="example11" name="checkGroup1" data-id="example11" class="h-4 w-4 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus:ring-offset-0 disabled:cursor-not-allowed disabled:text-gray-400" />
-						<label for="example11" class="flex w-full space-x-2 text-sm"> 改善working on事项添加方案，同样可以采用md文件模式 </label>
-					</div>
-					<div class="flex items-center space-x-2 rounded p-2 hover:bg-gray-100">
-						<input type="checkbox" id="example11" name="checkGroup1" data-id="example11" class="h-4 w-4 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus:ring-offset-0 disabled:cursor-not-allowed disabled:text-gray-400" />
-						<label for="example11" class="flex w-full space-x-2 text-sm"> 为所有的滚动条设置统一的样式 </label>
-					</div>
+
+					{problems.map((post, index) => {
+						const headings = post.getHeadings();
+						return headings.map((heading, headingIndex) => (
+						<div class="flex items-center space-x-2 rounded p-2 hover:bg-gray-100">
+							<input type="checkbox" id="{headingIndex+1}" name="{headingIndex+1}" data-id={headingIndex+1} class="h-4 w-4 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus:ring-offset-0 disabled:cursor-not-allowed disabled:text-gray-400" />
+						  	<label for="{headingIndex+1}" class="flex w-full space-x-2 text-sm">{headingIndex+1}. {heading.text}</label>
+						</div>
+						));
+					  })}
+
+
 				</div>
 			</div>
 			<div class="max-h-60 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto p-2 bg-slate-50 min-h-10">

@@ -38,11 +38,12 @@ const { frontmatter } = Astro.props;
   /* And more... */
 </style>
 
-<BaseLayout pageTitle={frontmatter.title} overflow-y-auto>
-  <p class="text-center text-4xl text-pretty">{frontmatter.title}</p>
-  <p class="text-center p-0"><em>{frontmatter.description}</em></p>
-  <!-- <p>{frontmatter.pubDate.toString().slice(0,10)}</p> -->
-  <p class="text-center">作者: {frontmatter.author}    第一次发表：{frontmatter.pubDate.toString().slice(0,10)}</p>
+<BaseLayout pageTitle={frontmatter.title}>
+  <div class="overflow-y-auto">
+    <p class="text-center text-4xl text-pretty">{frontmatter.title}</p>
+    <p class="text-center p-0"><em>{frontmatter.description}</em></p>
+    <!-- <p>{frontmatter.pubDate.toString().slice(0,10)}</p> -->
+    <p class="text-center">作者: {frontmatter.author}    第一次发表：{frontmatter.pubDate.toString().slice(0,10)}</p>
 <!-- 
   <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
 
@@ -51,10 +52,14 @@ const { frontmatter } = Astro.props;
       <p class="tag"><a href={`/SeanBlog/tags/${tag}`}>{tag}</a></p>
     ))}
   </div> -->
-  <span slot="Rightbar">
-    <Rightsideber />
-  </span>
+  </div>
+    <span slot="Rightbar">
+      <Rightsideber />
+    </span>
+    
   <slot />
+ 
+  
 </BaseLayout>
 
 

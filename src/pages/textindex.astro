@@ -74,16 +74,10 @@ allPosts.forEach((post, index) => {
     console.log('No headings found.');
   }
 });
----
 
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>文档示例</title>
-</head>
-<body>
-  <!-- 使用 depth 为 1 的标题 -->
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout>
   <h1 id={headingDepth1.slug}>{headingDepth1.text}</h1>
   <h1 id={headingDepth1.slug}>{headingDepth1.slug}</h1>
   <h1>       
@@ -104,6 +98,5 @@ allPosts.forEach((post, index) => {
         ));
       })}
   </p>
-  <!-- 其他内容 -->
-</body>
-</html>
+</BaseLayout>
+
