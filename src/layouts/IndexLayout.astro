@@ -9,7 +9,14 @@ import Rightsideber from "../components/Rightsideber.astro";
 const { pageTitle } = Astro.props;
 ---
 
-<html lang="zh-cn" class="overflow-x-hidden">
+<html lang="zh-cn" class="overflow-x-hidden overflow-y-auto  
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:rounded-full
+                [&::-webkit-scrollbar-track]:bg-gray-100
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:bg-gray-300
+                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -31,8 +38,8 @@ const { pageTitle } = Astro.props;
         <Header />
       </header>
       <!-- 主页面 -->
-      <main>
-        <section class="pt-14 lg:pt-24">
+      <main class="max-h-full ">
+        <section class="pt-14 lg:pt-24 ">
           <div class="mx-auto max-w-7xl px-4 lg:flex bg-white min-h-fit">
             <!-- <aside class="sticky top-0 z-20 -mx-4 shrink-0 overflow-y-auto border-y border-y-gray-100 bg-white px-4 lg:top-40 lg:m-0 lg:block lg:h-[calc(100vh-160px)] lg:w-56 lg:border-none lg:bg-transparent lg:px-0">
               <Leftsidebar2 />
@@ -40,14 +47,7 @@ const { pageTitle } = Astro.props;
             <nav class="sticky top-24 order-last hidden w-56 shrink-0 pr-4 lg:h-[calc(100vh-96px)] xl:block">
               <slot name="Rightbar" />
             </nav> -->
-            <article class="mx-auto mt-4 max-w-7xl flex-1 overflow-y-auto  
-                [&::-webkit-scrollbar]:w-2
-                [&::-webkit-scrollbar-track]:rounded-full
-                [&::-webkit-scrollbar-track]:bg-gray-100
-                [&::-webkit-scrollbar-thumb]:rounded-full
-                [&::-webkit-scrollbar-thumb]:bg-gray-300
-                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+            <article class="mx-auto mt-4 max-w-7xl flex-1 
                 max-h-screen min-h-full lg:mt-0 lg:px-6">
                 <!-- <h1 class="mt-1 text-3xl font-bold capitalize text-secondary-900">Tailwind CSS Badge</h1> -->
                   <!-- <p class="text-sm font-medium capitalize text-primary-500">getting-started</p>

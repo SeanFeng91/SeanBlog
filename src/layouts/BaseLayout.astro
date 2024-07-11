@@ -9,7 +9,14 @@ import Rightsideber from "../components/Rightsideber.astro";
 const { pageTitle } = Astro.props;
 ---
 
-<html lang="zh-cn">
+<html lang="zh-cn" class="overflow-y-auto  
+                [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:rounded-full
+                [&::-webkit-scrollbar-track]:bg-gray-100
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:bg-gray-300
+                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -28,27 +35,22 @@ const { pageTitle } = Astro.props;
   <body class="bg-white text-secondary-500 antialiased overflow-y-visiable  ">
     <!-- 头部 -->
     <!-- <div class="bg-white shadow rounded-xl max-h-screen"> -->
-      <header class="backdrop-blur bg-white/60 shadow-sm absolute top-0 left-0 right-0 z-50 py-4 md:fixed md:transition-all" id="header">
+      <header class="backdrop-blur bg-white/60 shadow-sm absolute top-0 left-0 right-0 z-50 py-4 sm:fixed md:transition-all" id="header">
         <Header />
       </header>
       <!-- 主页面 -->
       <main>
-        <section class="pt-14 lg:pt-24">
-          <div class="mx-auto max-w-7xl px-4 lg:flex">
-            <aside class="sticky top-0 z-20 -mx-4 shrink-0 overflow-y-auto border-y border-y-gray-100 bg-white px-4 lg:top-40 lg:m-0 lg:block lg:h-[calc(100vh-160px)] lg:w-56 lg:border-none lg:bg-transparent lg:px-0">
-              <Leftsidebar2 />
-            </aside>
-            <nav class="sticky top-24 order-last hidden w-56 shrink-0 pr-4 lg:h-[calc(100vh-96px)] xl:block">
-              <slot name="Rightbar" />
-            </nav>
-            <article class="mx-auto mt-4 max-w-4xl flex-1 overflow-y-auto  
-                [&::-webkit-scrollbar]:w-2
-                [&::-webkit-scrollbar-track]:rounded-full
-                [&::-webkit-scrollbar-track]:bg-gray-100
-                [&::-webkit-scrollbar-thumb]:rounded-full
-                [&::-webkit-scrollbar-thumb]:bg-gray-300
-                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+        <section class="pt-24 lg:pt-24 ">
+          <div class="mx-auto max-w-7xl  px-4 ">
+            <!-- grid grid-cols-1 md:grid-cols-3 gap-4 -->
+            <div class="relative md:hidden xl:w-56 xl:left-5 xl:block">
+              <aside class="fixedsidebar  left-10 xl:block top-0 z-20 -mx-4 hidden w-56 shrink-0 overflow-y-auto border-y border-y-gray-100 bg-white px-4 lg:top-40 lg:m-0  lg:h-[calc(100vh-160px)] lg:w-56 lg:border-none lg:bg-transparent lg:px-0">
+                <Leftsidebar2 />
+              </aside>
+            </div>
+            
+            <div class="">
+              <article class="mx-auto mt-4 max-w-4xl flex-1
                 max-h-screen lg:mt-0 lg:px-6">
                 <!-- <h1 class="mt-1 text-3xl font-bold capitalize text-secondary-900">Tailwind CSS Badge</h1> -->
                   <!-- <p class="text-sm font-medium capitalize text-primary-500">getting-started</p>
@@ -58,7 +60,13 @@ const { pageTitle } = Astro.props;
                   <div class="js-toc-content prose mt-10 max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md">
                     <slot />
                   </div>
-            </article>
+              </article>
+            </div>
+            <div class=" md:hidden xl:w-56 xl:block right-10">
+              <nav class="fixedsidebar top-24 min-w-56 hidden right-10 shrink-0 pr-4 lg:h-[calc(100vh-96px)] xl:block">
+                <slot name="Rightbar" />
+              </nav>
+            </div>
           </div>
         </section>
         
@@ -68,7 +76,12 @@ const { pageTitle } = Astro.props;
     <script is:inline src="https://unpkg.com/preline"></script>
     <script is:inline src="../../node_modules/preline/preline.js"></script>
 
-
+    <style>
+      .fixedsidebar {
+        position: fixed;
+        overflow-y: auto; /* 如果内容过多，添加滚动条 */
+      }
+    </style>
     <script>
       import "../scripts/menu.js";
     </script>
