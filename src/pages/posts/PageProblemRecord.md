@@ -2,7 +2,7 @@
 layout: ../../layouts/MarkdownPostLayout.astro
 title: "创建网页问题记录"
 author: Sean Feng
-description: "此页面用于记录我编辑网页过程中出现的问题和进展情况"
+description: "此博客用于记录我编辑网页过程中出现的问题和进展情况，每天会进行相应的记录，尝试将最新的一篇放置在最顶端，这样可以看到最新的进展情况"
 pubDate: 2024-07-10
 image:
     url: ''
@@ -29,7 +29,7 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 
 ### 1.1 **Header**
 
-1. header顶部有个半透明条
+1. header顶部有个半透明条，初次滚动的时候好像没有，然后点击右侧导航，会出现。
 ![alt text](./Pic-PageProblemRecord/image-1.png)
 
 ### 1.2 **Sidebar**
