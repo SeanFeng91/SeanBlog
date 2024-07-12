@@ -14,7 +14,7 @@ allPosts2.forEach((post2, index) => {
   }
   
 })
-const headings = currentPost2.getHeadings();
+const headings2 = currentPost2.getHeadings();
 console.log(headings);
 ---
 
@@ -36,7 +36,7 @@ max-h-screen lg:mt-0 lg:px-6">
             ));
           })} -->
 
-          {headings.map((heading, headingIndex) => (
+          {headings2.map((heading, headingIndex) => (
               <Headingsofblog  
                 url={`#${heading.slug}`} 
                 getHeadings={heading.text} 
