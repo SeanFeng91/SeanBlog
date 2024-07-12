@@ -1,25 +1,8 @@
 ---
-const allPosts2 = await Astro.glob('../pages/posts/*.md');
+const allPosts = await Astro.glob('../pages/posts/*.md');
 import Headingsofblog from "../components/Headingsofblog.astro";
 // 获取所有 Markdown 文件
-let currentPath = Astro.url.pathname;
-// 移除路径末尾的 'index.html'
-if (currentPath.endsWith('index.html')) {
-  currentPath = currentPath.slice(0, -'index.html'.length);
-}
-let currentPost2 = null;
-allPosts2.forEach((post2, index) => {
-  // console.log(`Post ${index + 1}:`);
-  // console.log(currentPath);
-  if (post2.url === currentPath) {
-   currentPost2 = post2;
-  //  console.log(index)
-   
-  }
-  
-})
-const headings2 = currentPost2.getHeadings();
-// console.log(headings);
+
 ---
 
 
@@ -40,16 +23,26 @@ max-h-screen lg:mt-0 lg:px-6">
             ));
           })} -->
 
-          {headings2.map((heading, headingIndex) => (
-              <Headingsofblog  
+          {allPosts.map((post, index) => {
+            if (post.url === Astro.url.pathname){
+              const headings = post.getHeadings();
+              return headings.map((heading, headingIndex) => (
+              <Headingsofblog 
                 url={`#${heading.slug}`} 
                 getHeadings={heading.text} 
               />
-          ))
-          }
+            ))
+            };
+            
+          })} 
+
+          
+          
     </ul>
     </div>
 </div>
 
 
-<script></script>
+<script>
+
+</script>

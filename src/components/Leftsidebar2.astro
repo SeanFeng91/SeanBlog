@@ -59,13 +59,13 @@ function getCurrentPagePath() {
 
     // 页面加载时检查当前 URL，设置激活状态
     window.addEventListener('DOMContentLoaded', () => {
-      console.log('DOMContentLoaded事件触发');
+      // console.log('DOMContentLoaded事件触发');
       const currentPagePath = getCurrentPagePath();
-      console.log('Current Page Path:', currentPagePath);
+      // console.log('Current Page Path:', currentPagePath);
 
       menuLinks.forEach(link => {
         const linkPath = getLinkPath(link);
-        console.log('Link Path:', linkPath);
+        // console.log('Link Path:', linkPath);
 
         if (currentPagePath === linkPath) {
           link.classList.add('active');
