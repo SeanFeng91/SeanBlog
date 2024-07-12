@@ -1,13 +1,31 @@
 ---
-const allPosts = await Astro.glob('../pages/posts/PageProblemRecord.md');
+const allPosts = await Astro.glob('../pages/posts/*.md');
 import Headingsofblog from "../components/Headingsofblog.astro";
+// 获取所有 Markdown 文件
+const currentPath = Astro.url.pathname;
+let currentPost2 = null;
+allPosts.forEach((post2, index) => {
+  // console.log(`Post ${index + 1}:`);
+  // console.log(currentPath);
+  if (post2.url === currentPath) {
+   currentPost2 = post2;
+   console.log(index)
+   
+  }
+  
+})
+const headings = currentPost2.getHeadings();
+console.log(headings);
 ---
+
+
+
 <div class="pl-3 mt-3 text-sm 
 max-h-screen lg:mt-0 lg:px-6">
   <h2 class="text-sm font-medium text-secondary-900">On this page</h2>
     <div class="mt-3 text-sm">
       <ul class="space-y-5 leading-normal">
-        {allPosts.map((post, index) => {
+        <!-- {allPosts.map((post, index) => {
             const headings = post.getHeadings();
             return headings.map((heading, headingIndex) => (
               <Headingsofblog 
@@ -16,12 +34,17 @@ max-h-screen lg:mt-0 lg:px-6">
                 getHeadings={heading.text} 
               />
             ));
-          })}
+          })} -->
+
+          {headings.map((heading, headingIndex) => (
+              <Headingsofblog  
+                url={`#${heading.slug}`} 
+                getHeadings={heading.text} 
+              />
+          ))
+          }
     </ul>
     </div>
 </div>
 
 
-<!-- <nav class="sticky top-24 order-last hidden w-56 shrink-0 pr-4 lg:h-[calc(100vh-96px)] xl:block">
-    
-</nav>  -->

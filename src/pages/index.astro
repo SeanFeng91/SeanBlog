@@ -2,15 +2,13 @@
 import "../styles/global.css";
 import IndexLayout from '../layouts/IndexLayout.astro';
 import Greeting from '../components/Greeting';
-import BlogPost from '../components/BlogPost.astro';
 
 const allPosts = await Astro.glob('../pages/posts/*.md');
 const achieved = await Astro.glob('../pages/posts/Achieved.md');
 const problems = await Astro.glob('../pages/posts/ProblemsAndAims.md');
-import Headingsofblog from "../components/Headingsofblog.astro";
 
 const { frontmatter } = Astro.props;
-const pageTitle = "Pagetitle首页";
+const pageTitle = "SeanBlog";
 
 ---
 
@@ -20,6 +18,7 @@ const pageTitle = "Pagetitle首页";
 		<h2 class="text-center">		
 			<Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari"]}/>
 		</h2>
+		<!-- Now Working on:模块 -->
 		<div class="p-4 flex-wrap mb-10 mt-10 grid grid-cols-1 lg:grid-cols-2 gap-4 auto-cols-max text-base ">
 			<div class="p-2 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto bg-slate-50 min-h-10">
 				<h3 class="mt-1 pl-4">Now Working on:</h3>
@@ -32,7 +31,6 @@ const pageTitle = "Pagetitle首页";
 				dark:[&::-webkit-scrollbar-track]:bg-neutral-700
 				dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
 				max-h-40">
-
 					{problems.map((post, index) => {
 						const headings = post.getHeadings();
 						return headings.map((heading, headingIndex) => (
@@ -46,6 +44,7 @@ const pageTitle = "Pagetitle首页";
 
 				</div>
 			</div>
+			<!-- What I have Got:模块 -->
 			<div class="max-h-60 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto p-2 bg-slate-50 min-h-10">
 				<h3 class="mt-1 pl-4 space-y-3">What I have Got:</h3>
 				<div class="overflow-auto
@@ -60,13 +59,14 @@ const pageTitle = "Pagetitle首页";
 					{achieved.map((post, index) => {
 						const headings = post.getHeadings();
 						return headings.map((heading, headingIndex) => (
-						  <p class="text-sm space-x-2">· {heading.text}</p>
+						  <p class="text-sm space-x-2">{headingIndex+1}. {heading.text}</p>
 						));
 					  })}
 				</div>
 				
 			</div>
 		</div>
+		<!-- 首页Cards功能模块 -->
 		<div class="p-4 flex-wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-cols-max auto-rows-max">
 			{allPosts.map((indexcard,index)=><div class=" min-w-sm rounded-lg p-4 min-h-60 bg-white shadow">
 				<h4 class="mt-1 mb-0 font-bold text-gray-300">Blog No.{index + 1}</h4>
@@ -87,6 +87,7 @@ const pageTitle = "Pagetitle首页";
 		Headingsofblog {
 			text-decoration: none; /* 取消下划线 */
 		}
+		
 	</style>
 	<script>
 		// 获取所有复选框

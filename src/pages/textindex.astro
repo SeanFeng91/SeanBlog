@@ -1,4 +1,6 @@
 ---
+import Rightsideber from '../components/Rightsideber.astro';
+
 const headings2 = [
   {
     depth: 1,
@@ -12,7 +14,7 @@ const headings2 = [
   }
   // 更多标题对象
 ];
-const allPosts = await Astro.glob('../pages/posts/Blog001.md');
+const allPosts = await Astro.glob('../pages/posts/*.md');
 import Headingsofblog from "../components/Headingsofblog.astro";
 // 查找 depth 为 1 的标题对象
 const headingDepth1 = headings2.find(heading => heading.depth === 1);
@@ -21,54 +23,65 @@ allPosts.forEach((post, index) => {
   console.log(`Post ${index + 1}:`);
   console.log(post.file);
 });
-allPosts.forEach((post, index) => {
-  console.log(`Post ${index + 1}:`);
-  const headings = post.getHeadings();
-  console.log(headings);
+const currentPath = Astro.url.pathname;
+{allPosts.forEach((post, index) => {
+  // console.log(`Post ${index + 1}:`);
+  console.log(currentPath);
+  if (post.url === currentPath) {
+    currentPost = post;
+  }
+})}
+
+
 });
 allPosts.forEach((post, index) => {
-  console.log(`Post ${index + 1}:`);
+  // console.log(`Post ${index + 1}:`);
   const headings = post.getHeadings();
   if (headings.length > 0) {
     const firstSlug = headings[0].slug;
-    console.log(`First slug: ${firstSlug}`);
+    // console.log(`First slug: ${firstSlug}`);
   } else {
-    console.log('No headings found.');
+    // console.log('No headings found.');
   }
 });
 
 allPosts.forEach((post, index) => {
-  console.log(`Post ${index + 1}:`);
+  // console.log(`Post ${index + 1}:`);
   const headings = post.getHeadings();
   if (headings.length > 0) {
     headings.forEach((heading, headingIndex) => {
-      console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
+      // console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
     });
   } else {
-    console.log('No headings found.');
+    // console.log('No headings found.');
   }
 });
 allPosts.forEach((post, index) => {
-  console.log(`Post ${index + 1}:`);
+  // console.log(`Post ${index + 1}:`);
   const headings = post.getHeadings();
   if (headings.length > 0) {
     const slugs = headings.map((heading) => heading.slug);
-    console.log('Slugs:', slugs);
+    // console.log('Slugs:', slugs);
   } else {
-    console.log('No headings found.');
+    // console.log('No headings found.');
   }
 });
 allPosts.forEach((post, index) => {
-  console.log(`Post ${index + 1}:`);
+  // console.log(`Post ${index + 1}:`);
   const headings = post.getHeadings();
   if (headings.length > 0) {
     headings.map((heading, headingIndex) => {
-      console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
+      // console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
     });
   } else {
-    console.log('No headings found.');
+    // console.log('No headings found.');
   }
 });
+
+// 测试更换目录树
+// 获取当前页面路径
+// const currentPath = Astro.url.pathname;
+
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
@@ -93,5 +106,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         ));
       })}
   </p>
+
+  <span slot="Rightbar">
+    <Rightsideber />
+  </span>
 </BaseLayout>
 
