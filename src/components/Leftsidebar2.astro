@@ -15,8 +15,8 @@ import Blog001 from '../pages/posts/Blog001.md';
     <nav class="text-sm capitalize">
         <ul class="space-y-5 leading-loose">
             <li>
-                <h4 class="px-1 pb-2 font-medium text-secondary-900">自动从posts读取的blog的title</h5>
-                <ul>
+                <h4 class="mt-14 mb-2 lg:mb-3 font-semibold text-slate-900 dark:text-slate-400">自动从posts读取的blog的title</h4>
+                <ul id="leftbloglist" class="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
                     {allPosts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
                 </ul>
             </li>
@@ -26,19 +26,7 @@ import Blog001 from '../pages/posts/Blog001.md';
                     <!-- {allPosts.map((heading) =><Headingsofblog url={`#${heading.getHeadings}`} headings={heading.getHeadings.depth ===1}em/>)} -->
                     <!-- <p>#{allPosts.headings}</p> -->
                 </ul>
-                <!-- <ul>
-                    {allPosts.map((post, index) => {
-                        const headings = post.getHeadings();
-                        return headings.map((heading, headingIndex) => (
-                          <Headingsofblog 
-                            key={`${index}-${headingIndex}`} 
-                            url={`#${heading.slug}`} 
-                            getHeadings={heading.text} 
-                          />
-                        ));
-                      })}
-                </ul> -->
-                
+                      
             </li>
 
         </ul>
@@ -50,4 +38,75 @@ import Blog001 from '../pages/posts/Blog001.md';
     .leftsidebar {
       position: fixed;
     }
-  </style>
+    
+</style>
+
+<script>
+// 选择ul和所有目录项
+const menu = document.getElementById('leftbloglist');
+const menuLinks = menu.querySelectorAll('.menu-link');
+
+
+// 获取当前页面的路径
+function getCurrentPagePath() {
+  return window.location.pathname;
+}
+
+// 页面加载时检查当前 URL，设置激活状态
+window.addEventListener('DOMContentLoaded', () => {
+  const currentPagePath = getCurrentPagePath();
+
+  menuLinks.forEach(link => {
+    const linkPath = link.getAttribute('href'); 
+    if (currentPagePath === linkPath) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+});
+
+// 为每个链接添加点击事件
+menuLinks.forEach((link) => {
+  link.addEventListener('click', function(event) {
+    // 防止链接的默认行为
+    event.preventDefault();
+    
+    // 模拟导航到链接的目标
+    window.location.href = this.getAttribute('href');
+  });
+});
+
+
+// // 为每个链接添加点击事件
+// menuLinks.forEach((link, index) => {
+//   link.addEventListener('click', function(event) {
+//     // 防止链接的默认行为
+//     event.preventDefault();
+    
+//     // 移除所有链接的激活状态
+//     menuLinks.forEach(i => i.classList.remove('active'));
+    
+//     // 为当前点击的链接添加激活状态
+//     this.classList.add('active');
+    
+//     // 将当前激活的链接索引存储到本地存储
+//     localStorage.setItem('activeMenuLinkIndex', index);
+    
+//     // 模拟导航到链接的目标
+//     window.location.href = this.getAttribute('href');
+//   });
+// });
+
+// // 页面加载时检查本地存储，设置激活状态
+// window.addEventListener('DOMContentLoaded', () => {
+//   const activeIndex = localStorage.getItem('activeMenuLinkIndex');
+//   if (activeIndex !== null) {
+//     const activeLink = menuLinks[activeIndex];
+//     if (activeLink) {
+//       activeLink.classList.add('active');
+//     }
+//   }
+// });
+
+</script>

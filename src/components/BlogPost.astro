@@ -2,4 +2,21 @@
 const {title, url} =Astro.props
 ---
 
-<li><a href={url}>·{title}</a></li>
+<li id="menu"><a class="menu-link block border-l pl-4 -ml-px border-transparent
+     hover:border-slate-400 dark:hover:border-slate-500 
+      hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300" href={url}>·{title}</a></li>
+
+
+
+<style>
+    .menu-link {
+  color: text-slate-200; /* 默认颜色 */
+}
+
+.menu-link.active {
+  color: rgb(92, 138, 150); /* 激活状态颜色 */
+  background-color: rgb(236, 248, 255);
+}
+</style>
+
+</script>
