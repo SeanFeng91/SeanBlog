@@ -43,44 +43,46 @@ import { Debug } from 'astro:components';
 </style>
 
 <script>
+// 确认JavaScript代码是否被加载和执行
+console.log('JavaScript代码已加载和执行');
+
 // 选择ul和所有目录项
-console.log('Hi! 我是客户端。这是在浏览器的开发控制台中记录的');
 const menu = document.getElementById('leftbloglist');
-    const menuLinks = menu.querySelectorAll('.menu-link');
+const menuLinks = menu.querySelectorAll('.menu-link');
 
-    // 获取当前页面的路径
-    function getCurrentPagePath() {
-      return window.location.pathname;
+// 获取当前页面的路径
+function getCurrentPagePath() {
+  return window.location.pathname;
+}
+
+// 页面加载时检查当前 URL，设置激活状态
+window.addEventListener('DOMContentLoaded', () => {
+  console.log('DOMContentLoaded事件触发');
+  const currentPagePath = getCurrentPagePath();
+  console.log('Current Page Path:', currentPagePath);
+
+  menuLinks.forEach(link => {
+    const linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname;
+    console.log('Link Path:', linkPath);
+
+    if (currentPagePath === linkPath || currentPagePath.endsWith(linkPath)) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
     }
+  });
+});
 
-    // 页面加载时检查当前 URL，设置激活状态
-    window.addEventListener('DOMContentLoaded', () => {
-      const currentPagePath = getCurrentPagePath();
-      console.log('Current Page Path:', currentPagePath);
-      
-      menuLinks.forEach(link => {
-        const linkPath = link.getAttribute('href');
-        console.log('Link Path:', linkPath);
+// 为每个链接添加点击事件
+menuLinks.forEach((link) => {
+  link.addEventListener('click', function(event) {
+    // 防止链接的默认行为
+    event.preventDefault();
 
-        if (currentPagePath.endsWith(linkPath)) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-    });
-
-    // 为每个链接添加点击事件
-    menuLinks.forEach((link) => {
-      link.addEventListener('click', function(event) {
-        // 防止链接的默认行为
-        event.preventDefault();
-
-        // 模拟导航到链接的目标
-        window.location.href = this.getAttribute('href');
-      });
-    });
-
+    // 模拟导航到链接的目标
+    window.location.href = this.getAttribute('href');
+  });
+});
 
 // // 为每个链接添加点击事件
 // menuLinks.forEach((link, index) => {
