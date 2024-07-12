@@ -63,6 +63,10 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 
 
 # JS系列问题
+# 20240712记录
+
+https://developer.mozilla.org/zh-CN/docs/Web/API/Window/localStorage
+github 还是不行为啥
 
 # 2040711记录
 今天主要解决一下几点
