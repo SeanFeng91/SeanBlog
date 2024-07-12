@@ -12,13 +12,8 @@ const headings2 = [
   }
   // 更多标题对象
 ];
-const {getHeadings} =Astro.props
 const allPosts = await Astro.glob('../pages/posts/Blog001.md');
-import Aside from '../components/Aside.astro';
-import BlogPost from '../components/BlogPost.astro';
 import Headingsofblog from "../components/Headingsofblog.astro";
-import blogtest from '../pages/posts/Blog001.md'
-const {title} = Astro.props
 // 查找 depth 为 1 的标题对象
 const headingDepth1 = headings2.find(heading => heading.depth === 1);
 console.log(allPosts);
