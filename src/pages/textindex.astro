@@ -23,17 +23,10 @@ allPosts.forEach((post, index) => {
   console.log(`Post ${index + 1}:`);
   console.log(post.file);
 });
-const currentPath = Astro.url.pathname;
-{allPosts.forEach((post, index) => {
-  // console.log(`Post ${index + 1}:`);
-  console.log(currentPath);
-  if (post.url === currentPath) {
-    currentPost = post;
-  }
-})}
 
 
-});
+
+
 allPosts.forEach((post, index) => {
   // console.log(`Post ${index + 1}:`);
   const headings = post.getHeadings();
