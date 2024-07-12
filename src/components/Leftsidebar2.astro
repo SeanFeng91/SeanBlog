@@ -6,6 +6,7 @@ import Headingsofblog from "../components/Headingsofblog.astro";
 import Blog001 from '../pages/posts/Blog001.md';
 // const {headings} =Astro.props;
 // const headings = await getHeadings();
+import { Debug } from 'astro:components';
 ---
 
 <div class=" leftsidebar flex items-center justify-between py-2.5 lg:hidden"><a id="toggleDocMenu" class="flex items-center gap-2 text-xs"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentcolor" class="h-6 w-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"></path></svg>Menu</a>
@@ -31,7 +32,7 @@ import Blog001 from '../pages/posts/Blog001.md';
 
         </ul>
     </nav>
-
+    
 </div>
 
 <style>
@@ -43,6 +44,7 @@ import Blog001 from '../pages/posts/Blog001.md';
 
 <script>
 // 选择ul和所有目录项
+console.log('Hi! 我是客户端。这是在浏览器的开发控制台中记录的');
 const menu = document.getElementById('leftbloglist');
     const menuLinks = menu.querySelectorAll('.menu-link');
 
@@ -55,7 +57,7 @@ const menu = document.getElementById('leftbloglist');
     window.addEventListener('DOMContentLoaded', () => {
       const currentPagePath = getCurrentPagePath();
       console.log('Current Page Path:', currentPagePath);
-
+      
       menuLinks.forEach(link => {
         const linkPath = link.getAttribute('href');
         console.log('Link Path:', linkPath);
