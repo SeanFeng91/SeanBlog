@@ -64,9 +64,10 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 
 # JS系列问题
 # 20240712记录
-
-https://developer.mozilla.org/zh-CN/docs/Web/API/Window/localStorage
-github 还是不行为啥
+解决了以下bug：
+1. 不同页面因为有无滚动条发生左右微跳的bug。在html里面overflow-y-stroll即可。这样每个页面在那个位置都会占位
+2. 左侧导航栏复刻了Tailwind导航栏的样式，包含前面的|，悬浮
+3. 左侧导航栏实现了选中时候状态的变化，并且想到通过打开的页面来判断的方法快速解决了什么时候该保留active状态的问题
 
 # 2040711记录
 今天主要解决一下几点
