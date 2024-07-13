@@ -9,6 +9,9 @@ image:
 pubDate: 2024-07-11
 tags: ["astro", "successes", "astro"]
 ---
+## 目录树的anchor位置过高，于页面顶端的bug
+## 顶部导航栏“首页”等颜色未根据页面切换而切换状态
+## blog优化页面div，修复fixed遗留问题
 ## 实现了首页导入所有blog
 ## 实现了blog点击标题转跳具体页面
 ## 实现了grid系统
@@ -68,4 +71,32 @@ tags: ["astro", "successes", "astro"]
     ) : (<li><a href={url}><span class="pl-6">{getHeadings}</span></a></li>
     )}
 
+### · 通过js实现平滑滚动和定位偏移
+
+    <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const targetId = this.getAttribute('href').substring(1); // 去掉#
+        const targetElement = document.getElementById(targetId);
+        if (!targetElement) {
+          console.error(`Element with ID ${targetId} not found`);
+          return;
+        }
+        const header = document.getElementById('fixed-header');
+        const headerHeight = 200;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerHeight;
+
+        console.log(`Scrolling to ${targetId}`);  // 调试信息
+        console.log(`Target element:`, targetElement);  // 调试信息
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      });
+    });
+    </script>
 

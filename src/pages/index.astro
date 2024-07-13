@@ -4,8 +4,8 @@ import IndexLayout from '../layouts/IndexLayout.astro';
 import Greeting from '../components/Greeting';
 
 const allPosts = await Astro.glob('../pages/posts/*.md');
-const achieved = await Astro.glob('../pages/posts/Achieved.md');
-const problems = await Astro.glob('../pages/posts/ProblemsAndAims.md');
+const achieved = await Astro.glob('../pages/posts/03Achieved.md');
+const problems = await Astro.glob('../pages/posts/02ProblemsAndAims.md');
 
 const { frontmatter } = Astro.props;
 const pageTitle = "SeanBlog";
@@ -20,7 +20,7 @@ const pageTitle = "SeanBlog";
 		</h2>
 		<!-- Now Working on:模块 -->
 		<div class="p-4 flex-wrap mb-10 mt-10 grid grid-cols-1 lg:grid-cols-2 gap-4 auto-cols-max text-base ">
-			<div class="p-2 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto bg-slate-50 min-h-10">
+			<div class="p-2 border-spacing-2 outline-dotted outline-offset-2 roun``````````````````````ded-md outline-slate-300 w-auto bg-slate-50 min-h-10">
 				<h3 class="mt-1 pl-4">Now Working on:</h3>
 				<div class="overflow-auto 
 				[&::-webkit-scrollbar]:w-2
