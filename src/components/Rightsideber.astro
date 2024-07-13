@@ -25,37 +25,16 @@ max-h-screen lg:mt-0 lg:px-6">
             if (post.url === currentPath){
               const headings = post.getHeadings();
               
-          
-            //   return headings.map((heading) => (
-            //   <Headingsofblog 
-            //     url={`#${heading.slug}`} 
-            //     getHeadings={heading.text} 
-            //   />
-            // ))
-
+        
             return headings.map((heading) => (
+                
                   <Headingsofblog 
                 url={`#${heading.slug}`} 
-                getHeadings={heading.text} />
+                getHeadings={heading.text}
+                depth={heading.depth} />
                   ))
 
-              // headings.map((ih) =>{
-              //   if (1<2){
-              //     return <Headingsofblog 
-              //   url={`#${ih.slug}`} 
-              //   getHeadings={ih.text} />
-
-              //   //   return headings.map((heading) => (
-              //   //   <Headingsofblog 
-              //   // url={`#${heading.slug}`} 
-              //   // getHeadings={heading.text} />
-              //   //   ))
-
-
-              //   }
-              // })
-
-            
+                          
             };         
           })} 
 
@@ -66,7 +45,30 @@ max-h-screen lg:mt-0 lg:px-6">
 </div>
 
 
-<script>
-// console.log(Astro.url.pathname)
 
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      const targetId = this.getAttribute('href').substring(1); // 去掉#
+      const targetElement = document.getElementById(targetId);
+      if (!targetElement) {
+        console.error(`Element with ID ${targetId} not found`);
+        return;
+      }
+      const header = document.getElementById('fixed-header');
+      const headerHeight = 200;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - headerHeight;
+
+      console.log(`Scrolling to ${targetId}`);  // 调试信息
+      console.log(`Target element:`, targetElement);  // 调试信息
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    });
+  });
 </script>

@@ -39,7 +39,7 @@ const { frontmatter } = Astro.props;
 </style>
 
 <BaseLayout pageTitle={frontmatter.title}>
-  <div class="overflow-y-auto">
+  <div class="overflow-y-auto flex-1 justify-center items-center">
     <p class="text-center text-4xl text-pretty">{frontmatter.title}</p>
     <p class="text-center p-0"><em>{frontmatter.description}</em></p>
     <!-- <p>{frontmatter.pubDate.toString().slice(0,10)}</p> -->

@@ -1,6 +1,12 @@
 ---
-const {getHeadings,url} =Astro.props
+const {getHeadings,url,depth} =Astro.props
 
 ---
 
-<li><a href={url}> {getHeadings}</a></li>
+{(depth === 1) ? (
+  <li><a href={url}><span>{getHeadings}</span></a></li>
+) : (depth ===2)?(
+  <li><a href={url}><span class="pl-2">{getHeadings}</span></a></li>
+) : (<li><a href={url}><span class="pl-6">{getHeadings}</span></a></li>
+)
+}

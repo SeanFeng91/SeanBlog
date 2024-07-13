@@ -50,5 +50,22 @@ tags: ["astro", "successes", "astro"]
             };         
           })} 
 
+### · 通过条件函数实现目录分级
+不能直接使用if函数，而要这样：
+
+    {condition ? (
+      <p>Condition is true</p>
+    ) : (
+      <p>Condition is false</p>
+    )}
+
+所以，我在HeadingsofBlog中增加了这样的判断
+
+    {(depth === 1) ? (
+      <li><a href={url}><span>{getHeadings}</span></a></li>
+    ) : (depth ===2)?(
+      <li><a href={url}><span class="pl-2">{getHeadings}</span></a></li>
+    ) : (<li><a href={url}><span class="pl-6">{getHeadings}</span></a></li>
+    )}
 
 
