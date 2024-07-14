@@ -53,13 +53,54 @@ const { frontmatter } = Astro.props;
     ))}
   </div> -->
   </div>
-    <span slot="Rightbar">
+    <!-- <main> -->
+
+    
+    <section slot="Rightbar">
       <Rightsideber />
-    </span>
+    </section>
+  <!-- </main> -->
     
   <slot />
  
   
 </BaseLayout>
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded event fired');
+
+    const tocLinks = document.querySelectorAll('#toc a'); // 根据实际情况调整选择器
+
+  //  const tocLinks = document.querySelectorAll('.toc-link');
+      const sections = document.querySelectorAll('div section');
+      console.log('Table of Contents Links:', tocLinks);
+      console.log('Sections:', sections);
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px 0px -80% 0px', // 触发的偏移量，可以根据需要调整
+        threshold: 0.1 // 触发时目标元素可见的比例，可以根据需要调整
+      };
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          console.log('IntersectionObserver entry:', entry);
+          
+          if (entry.isIntersecting) {
+            tocLinks.forEach(link => {
+              const isActive = link.getAttribute('href').substring(1) === entry.target.id;
+              console.log(`Setting highlight for ${link.getAttribute('href')} to ${isActive}`);
+              link.classList.toggle('highlight', isActive);
+            });
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(section => {
+        observer.observe(section);
+        console.log(`Observing section: ${section.id}`);
+      });
+    });
+</script>
 
