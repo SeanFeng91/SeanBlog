@@ -9,9 +9,6 @@ const { frontmatter } = Astro.props;
   a {
     color: #00539F;
   }
-  a.active {
-  color: red; /* 这里可以根据需要更改颜色 */
-}
 
   .tags {
     display: flex;
@@ -58,33 +55,24 @@ const { frontmatter } = Astro.props;
   </div> -->
   </div>
     <!-- <main> -->
-
     
     <section slot="Rightbar">
       <Rightsideber />
     </section>
   <!-- </main> -->
-    
-  <slot />
- 
-  
+      <slot />
+   
 </BaseLayout>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-  // const observerOptions = {
-  //   root: null,
-  //   rootMargin: '0px',
-  //   // threshold: 0.1,
-  //   threshold: Array.from({ length: 101 }, (_, i) => i * 0.01), // 设置多个阈值
-
-  // };
+// 实现右侧导航栏跟随文章标题联动高亮
   const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
   const rightsidebar = document.getElementById('rightsidebar');
   const rightbarLinks = rightsidebar.querySelectorAll('.rightbar-link');
   const observerOptions = {
     root: null,
-    rootMargin: '-30% 0px -50% 0px', // 提前90%的视口高度开始检测
+    rootMargin: '-20% 0px -50% 0px', // 提前90%的视口高度开始检测
     threshold: 0.1, // 10%的部分进入视口即触发
   };
   
@@ -129,20 +117,7 @@ const { frontmatter } = Astro.props;
   document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
     observer.observe(heading);
   });
-  // 初始页面加载时设置第一个标题的active状态
-  if (headings.length > 0) {
-    const firstId = headings[0].getAttribute('id');
-    const firstNavItem = getLinkPath(rightbarLinks[0]);
-    rightbarLinks.forEach(link => {
-      // link.classList.add('active');
-      // break;
-    })
-    // console.log(`rightbarLinks: ${firstNavItem}`)
-    // if (firstNavItem) {
-    //   firstNavItem.classList.add('active');
-    // }
-  }
-
+  // 初始页面加载时设置第一个标题的active状态-未实现
 
 });
 
