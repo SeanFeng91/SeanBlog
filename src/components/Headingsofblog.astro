@@ -4,9 +4,26 @@ const {getHeadings,url,depth} =Astro.props
 ---
 
 {(depth === 1) ? (
-  <li><a href={url}><span>{getHeadings}</span></a></li>
+  <li id={getHeadings}><a class="rightbar-link block border-l pl-4 -ml-px border-transparent
+     hover:border-slate-400 dark:hover:border-slate-500 
+      hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300" href={url}><span>{getHeadings}</span></a></li>
 ) : (depth ===2)?(
-  <li><a href={url}><span class="pl-2">{getHeadings}</span></a></li>
-) : (<li><a href={url}><span class="pl-6">{getHeadings}</span></a></li>
+  <li id={getHeadings}><a class="rightbar-link block border-l pl-4 -ml-px border-transparent
+     hover:border-slate-400 dark:hover:border-slate-500 
+      hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300" href={url}><span class="pl-2">{getHeadings}</span></a></li>
+) : (<li id={getHeadings}><a class="rightbar-link block border-l pl-4 -ml-px border-transparent
+     hover:border-slate-400 dark:hover:border-slate-500 
+      hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300" href={url}><span class="pl-6">{getHeadings}</span></a></li>
 )
 }
+
+<style>
+  .rightbar-link {
+color: text-slate-200; /* 默认颜色 */
+}
+
+.rightbar-link.active {
+color: rgb(92, 138, 150); /* 激活状态颜色 */
+background-color: rgb(236, 248, 255);
+}
+</style>

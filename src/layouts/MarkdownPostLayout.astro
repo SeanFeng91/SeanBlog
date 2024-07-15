@@ -1,6 +1,7 @@
 ---
 import Rightsideber from '../components/Rightsideber.astro';
 import BaseLayout from './BaseLayout.astro';
+// import '../scripts/scrollmd.js';
 const { frontmatter } = Astro.props;
 ---
 
@@ -8,6 +9,9 @@ const { frontmatter } = Astro.props;
   a {
     color: #00539F;
   }
+  a.active {
+  color: red; /* 这里可以根据需要更改颜色 */
+}
 
   .tags {
     display: flex;
@@ -68,39 +72,107 @@ const { frontmatter } = Astro.props;
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOMContentLoaded event fired');
+  // const observerOptions = {
+  //   root: null,
+  //   rootMargin: '0px',
+  //   // threshold: 0.1,
+  //   threshold: Array.from({ length: 101 }, (_, i) => i * 0.01), // 设置多个阈值
 
-    const tocLinks = document.querySelectorAll('#toc a'); // 根据实际情况调整选择器
+  // };
+  const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  const rightsidebar = document.getElementById('rightsidebar');
+  const rightbarLinks = rightsidebar.querySelectorAll('.rightbar-link');
+  const observerOptions = {
+    root: null,
+    rootMargin: '-30% 0px -50% 0px', // 提前90%的视口高度开始检测
+    threshold: 0.1, // 10%的部分进入视口即触发
+  };
+  
+  // 获取链接的路径并去掉末尾的斜杠
+  function getLinkPath(link) {
+      // let linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname;
+      let linkPath = link.getAttribute('href')
+      return linkPath;
+      // return linkPath.endsWith('/') ? linkPath.slice(0, -1) : linkPath;
+    }
+  const observerCallback = (entries) => {
+    let activeId = null;
 
-  //  const tocLinks = document.querySelectorAll('.toc-link');
-      const sections = document.querySelectorAll('div section');
-      console.log('Table of Contents Links:', tocLinks);
-      console.log('Sections:', sections);
+    entries.forEach((entry) => {
+      // 选择ul和所有目录项
 
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -80% 0px', // 触发的偏移量，可以根据需要调整
-        threshold: 0.1 // 触发时目标元素可见的比例，可以根据需要调整
-      };
-
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          console.log('IntersectionObserver entry:', entry);
+      if (entry.isIntersecting) {
+        activeId = entry.target.getAttribute('id');
+      }
+      const id = entry.target.getAttribute('id');
+      // console.log(`Scrolling id ${id}`);  // 调试信息
           
-          if (entry.isIntersecting) {
-            tocLinks.forEach(link => {
-              const isActive = link.getAttribute('href').substring(1) === entry.target.id;
-              console.log(`Setting highlight for ${link.getAttribute('href')} to ${isActive}`);
-              link.classList.toggle('highlight', isActive);
-            });
-          }
-        });
-      }, observerOptions);
+      const navItem = document.querySelector('a[href="#{id}"]');
+      // console.log(`rightbarLinks id ${rightbarLinks}`);  // 调试信息
+      if(activeId){
+          rightbarLinks.forEach(link => {
 
-      sections.forEach(section => {
-        observer.observe(section);
-        console.log(`Observing section: ${section.id}`);
+          const linkPath = getLinkPath(link);
+          if (entry.isIntersecting && linkPath ===`#${id}`) {
+            link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+        })
+      }    
+    });
+  };
+
+  const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+  // 观察所有的标题
+  document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
+    observer.observe(heading);
+  });
+  // 初始页面加载时设置第一个标题的active状态
+  if (headings.length > 0) {
+    const firstId = headings[0].getAttribute('id');
+    const firstNavItem = getLinkPath(rightbarLinks[0]);
+    rightbarLinks.forEach(link => {
+      // link.classList.add('active');
+      // break;
+    })
+    // console.log(`rightbarLinks: ${firstNavItem}`)
+    // if (firstNavItem) {
+    //   firstNavItem.classList.add('active');
+    // }
+  }
+
+
+});
+
+
+    // 尝试看能不能把rightsidebar的跳转附加到正文内-可以的
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      const targetId = this.getAttribute('href').substring(1); // 去掉#
+      const targetElement = document.getElementById(targetId);
+      if (!targetElement) {
+        console.error(`Element with ID ${targetId} not found`);
+        return;
+      }
+      const header = document.getElementById('fixed-header');
+      const headerHeight = 200;
+      const elementPosition = targetElement.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.scrollY - headerHeight;
+
+      console.log(`Scrolling to ${targetId}`);  // 调试信息
+      console.log(`Target element:`, targetElement);  // 调试信息
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
       });
     });
+  });
+
 </script>
 

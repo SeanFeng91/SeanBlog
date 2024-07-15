@@ -13,7 +13,7 @@ max-h-screen lg:mt-0 lg:px-6">
   <h2 class="text-xl font-bold text-secondary-900">目录导航</h2>
   <h2 class="text-sm font-light font-serif text-gray-400">On This Page</h2>
     <div class="mt-3 text-sm">
-      <ul class="space-y-5 leading-normal">
+      <ul id="rightsidebar" class="space-y-5 leading-normal">
           <!-- 实现了右侧导航栏读取当前md的目录问题 -->
           {allPosts.map((post, index) => {
             let currentPath = Astro.url.pathname;
@@ -74,28 +74,6 @@ max-h-screen lg:mt-0 lg:px-6">
   });
 
 
-  // const tocLinks = document.querySelectorAll('.toc-link');
-  //   const sections = document.querySelectorAll('body section');
-
-  //   const observerOptions = {
-  //     root: null,
-  //     rootMargin: '0px 0px -80% 0px', // 触发的偏移量，可以根据需要调整
-  //     threshold: 0
-  //   };
-
-  //   const observer = new IntersectionObserver(entries => {
-  //     entries.forEach(entry => {
-  //       if (entry.isIntersecting) {
-  //         tocLinks.forEach(link => {
-  //           link.classList.toggle('highlight', link.getAttribute('href').substring(1) === entry.target.id);
-  //         });
-  //       }
-  //     });
-  //   }, observerOptions);
-
-  //   sections.forEach(section => {
-  //     observer.observe(section);
-  //   });
 </script>
 
 <style>
