@@ -14,17 +14,36 @@ tags: ["问题记录"]
 # MarkDown语法支持
 简单的检索了以下三个网页，可以查询丰富的Markdown语法使用。
 mdx和md的语法不一样，需要再补充一下mdx的语法
-
-
 [markdown](https://markdown.p2hp.com/basic-syntax/index.html)
-
-[Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
-约翰·格鲁伯设计文档中概述的Markdown元素。
-
+[约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
 [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
 # 20240715记录
 基本实现了blog目录树跟随文章滚动，高亮对应页面目录标题。具体高亮的样式和检测的范围可以适当的再优化，但是发现这个功能应该不太好写，即使tailwindcss的页面也有一定bug。遇到了一个潜在的问题，中文的读取在不同方式情况下可能是ascII码，也可能是正确的中文。比如barlink[0]读到的就是ascII,但是barlink.forEach=>((link){})的link就是正确的中文。
+
+blog的页面已经具备了相对基本的功能，接下来会同步学习研究LLM和Astro。对未来希望增加的新页面功能尝试初步构思如下：
+1. **尝试为blog增加音乐组建**
+2. **增加搜索组建。我现在理解可能需要为每个标题加上链接，用于搜索，不然怎么转跳？**
+但是今天还是遇到一样的问题：
+```astro
+    # [20240715记录](#20240715记录)
+    <!-- 如果用上述方式为标题增加链接，那么对应的href里面的中文是ASCII码，在匹配的时候会有问题，因为就没这个bug -->
+```
+3. **增加暗黑模式。我理解上暗黑模式的文字颜色应该会直接变化，不需要单独设置。**
+4. 日历，这个比较有挑战性
+5. 好看的footer
+6. 留言板功能
+7. **icon [Astro Icon](https://github.com/natemoo-re/astro-icon?tab=readme-ov-file#examples)**。
+一个icon的矢量库 [iconify](https://icon-sets.iconify.design/iconamoon/)
+8. 引入图片体系。明确存储的目录等
+9. ~~学习首页引入动态CSS~~
+
+
+***
+### 提升阅读
+1. [原子化CSS](https://antfu.me/posts/reimagine-atomic-css-zh)
+2. [mdn](https://developer.mozilla.org/en-US/)
+3. [windcss](https://cn.windicss.org/guide/)
 
 # 20240714记录
 md可以通过```方式实现对应代码段的语法高亮
