@@ -9,6 +9,59 @@ image:
 pubDate: 2024-07-11
 tags: ["astro", "successes", "astro"]
 ---
+## 右侧文章目录导航跟随文章阅读位置高亮对应目录标题
+实现代码，会存在一些bug。比如现在observerOptions的rootMargin: '-20% 0px -50% 0px'，如果文章末尾有个比较短的章节，可能会无法取到。
+还发现一个可以提升的就是，当目录树过长，势必需要多一个滚动，要不改成不显示滚动条的滚动？
+```astro
+    document.addEventListener('DOMContentLoaded', () => {
+    // 实现右侧导航栏跟随文章标题联动高亮
+    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    const rightsidebar = document.getElementById('rightsidebar');
+    const rightbarLinks = rightsidebar.querySelectorAll('.rightbar-link');
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -30% 0px', // 提前90%的视口高度开始检测
+      threshold: 0.1, // 10%的部分进入视口即触发
+    };
+        // 获取链接的路径并去掉末尾的斜杠
+    function getLinkPath(link) {
+        // let linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname;
+        let linkPath = link.getAttribute('href')
+        return linkPath;
+        // return linkPath.endsWith('/') ? linkPath.slice(0, -1) : linkPath;
+      }
+    const observerCallback = (entries) => {
+      let activeId = null;
+      entries.forEach((entry) => {
+        // 选择ul和所有目录项,这里处理的比较复杂，因为rightbarLinks[0]和linkPath对中文的显示不一样，
+        // 只有循环里面的linkPath能跟`#${id}`比对.activeID可能也不是必须的。
+        if (entry.isIntersecting) {
+          activeId = entry.target.getAttribute('id');
+        }
+        const id = entry.target.getAttribute('id');
+        const navItem = document.querySelector('a[href="#{id}"]');
+        if(activeId){
+            rightbarLinks.forEach(link => {
+            const linkPath = getLinkPath(link);
+            if (entry.isIntersecting && linkPath ===`#${id}`) {
+              link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+          })
+        }    
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    // 观察所有的标题
+    document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
+      observer.observe(heading);
+    });
+    // 初始页面加载时设置第一个标题的active状态-未实现
+    });
+```
+
 ## 目录树的anchor位置过高，于页面顶端的bug
 ## 顶部导航栏“首页”等颜色未根据页面切换而切换状态
 ## blog优化页面div，修复fixed遗留问题
