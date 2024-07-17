@@ -18,6 +18,10 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
 [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
+# 20240717记录
+基本修复了导航栏blur和bg-white的bug。现在的样式是置顶且带了背景模糊的效果。
+
+
 # 20240715记录
 基本实现了blog目录树跟随文章滚动，高亮对应页面目录标题。具体高亮的样式和检测的范围可以适当的再优化，但是发现这个功能应该不太好写，即使tailwindcss的页面也有一定bug。遇到了一个潜在的问题，中文的读取在不同方式情况下可能是ascII码，也可能是正确的中文。比如barlink[0]读到的就是ascII,但是barlink.forEach=>((link){})的link就是正确的中文。
 
