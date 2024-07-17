@@ -9,6 +9,8 @@ export default {
     './node_modules/preline/preline.js',
   ],
   darkMode: 'class',
+  base: '/SeanBlog/',
+  trailingSlash: "always",
   theme: {
     extend: {
       fontFamily: {

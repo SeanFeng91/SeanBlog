@@ -7,6 +7,7 @@ import "../styles/global.css";
 import Leftsidebar2 from "../components/Leftsidebar2.astro";
 // import Rightsideber from "../components/Rightsideber.astro";
 const { pageTitle } = Astro.props;
+import BaseHead from '../components/BaseHead.astro';
 ---
 
 <html lang="zh-cn" class="overflow-y-scroll  
@@ -31,10 +32,7 @@ const { pageTitle } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
-    <link href="../../dist/pagefind/pagefind-ui.css" rel="stylesheet">
-    <script src="../../dist/pagefind/pagefind-ui.js" is:inline></script>
-    <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
-<script src="/pagefind/pagefind-ui.js" is:inline></script>
+    <BaseHead />
     
   </head>
   <body class="bg-white min-h-screen text-secondary-500 antialiased overflow-y-hidden">

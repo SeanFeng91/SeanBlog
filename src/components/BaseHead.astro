@@ -2,7 +2,7 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-
+const baseUrl = import.meta.env.BASE_URL;
 // interface Props {
 // 	title: string;
 // 	description: string;
@@ -47,5 +47,5 @@ import '../styles/global.css';
 <!-- <meta property="twitter:image" content={new URL(image, Astro.url)} /> -->
 
 
-<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
-<script src="/pagefind/pagefind-ui.js" is:inline></script>
+<link href={`${baseUrl}SeanBlog/pagefind/pagefind-ui.css`} rel="stylesheet">
+<script src={`${baseUrl}SeanBlog/pagefind/pagefind-ui.js`} is:inline></script>

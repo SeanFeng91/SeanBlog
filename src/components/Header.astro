@@ -3,14 +3,14 @@ import Navigation from '../components/Navigation.astro';
 
 import ThemeIcon from './ThemeIcon.astro';
 import { Icon } from 'astro-icon/components';
-
+const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <div class=" flex flex-wrap sm:justify-start sm:flex-nowrap w-full  text-sm py-0 dark:bg-neutral-800">
     <nav class="max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between" aria-label="Global">
       <div class="flex items-center justify-between">
-        <a class="flex-none text-3xl font-semibold dark:text-white" href="/SeanBlog/">SeanBlog</a>
-        <a href="/SeanBlog/"><Icon name="mdi:github" class="size-10"></Icon></a>
+        <a class="flex-none text-3xl font-semibold dark:text-white" href={`${baseUrl}`}>SeanBlog</a>
+        <a href={`${baseUrl}`}><Icon name="mdi:github" class="size-10"></Icon></a>
         <!-- 搜索 -->
         <input id="search" type="text" placeholder="Search...">
         <div id="results" />
@@ -23,13 +23,13 @@ import { Icon } from 'astro-icon/components';
       </div>
       <div id="navbar-with-mega-menu" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block">
         <div class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:ps-5">
-          <a class="font-bold text-gray-600  hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href="/SeanBlog/" aria-current="page">首页</a>
-          <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href="/SeanBlog/about/">关于我</a>
-          <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href="/SeanBlog/blog/">博客</a>
+          <a class="font-bold text-gray-600  hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href={`${baseUrl}`} aria-current="page">首页</a>
+          <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href={`${baseUrl}about`}>关于我</a>
+          <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href={`${baseUrl}blog`}>博客</a>
 
           <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href="#">图册</a>
-          <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href="/SeanBlog/posts/01PageProblemRecord">进展情况记录</a>
-          <!-- <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href="/SeanBlog/textindex/">测试页面</a> -->
+          <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href={`${baseUrl}posts/01PageProblemRecord`}>进展情况记录</a>
+          <!-- <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href="/textindex/">测试页面</a> -->
           <div class="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] ">
             <button id="hs-mega-menu-basic-dr" type="button" class="flex items-center w-full text-gray-600 hover:text-gray-400 font-medium dark:text-neutral-400 dark:hover:text-neutral-500 ">
               功能测试
@@ -38,7 +38,7 @@ import { Icon } from 'astro-icon/components';
   
             <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] sm:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 sm:w-48 z-10 bg-white sm:shadow-md rounded-lg p-2 dark:bg-neutral-800 sm:dark:border dark:border-neutral-700 dark:divide-neutral-700 before:absolute top-full sm:border before:-top-5 before:start-0 before:w-full before:h-5 hidden">
               <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300" 
-              href="/SeanBlog/textindex/">
+              href={`${baseUrl}textindex`}>
                 页面布局测试
               </a>
               <div class="hs-dropdown relative [--strategy:static] sm:[--strategy:absolute] [--adaptive:none] ">
@@ -60,8 +60,8 @@ import { Icon } from 'astro-icon/components';
                 </div>
               </div>
   
-              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300" href="#">
-                Grid 系统
+              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300" href={`${baseUrl}SeanBlog/searchtest`}>
+                Search Test 
               </a>
               <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300" href="#">
                 Markdown格式
