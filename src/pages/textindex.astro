@@ -33,7 +33,7 @@ allPosts.forEach((post, index) => {
     const hdepth = ih.depth;
     const hdepthofh = ih.text;
     if (hdepth < 3){
-      console.log(`headingdepth: ${hdepth} headingtext: ${hdepthofh}`);
+      // console.log(`headingdepth: ${hdepth} headingtext: ${hdepthofh}`);
     }
     
     })
@@ -92,37 +92,45 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <Headingsofblog url={`#${heading.getHeadings()[0].slug}`} getHeadings={heading.getHeadings()[0].text}/>
     )} -->
   </h1>
-  <input id="search" type="text" placeholder="Search...">
-  <div id="results" />
-
+  <div id="search" class="w-full"></div>
+  <script >
+    window.addEventListener('DOMContentLoaded', (event) => {
+      //@ts-ignore-
+        new PagefindUI({ element: "#search", showSubResults: true });
+    });
+</script>
   <span slot="Rightbar">
     <Rightsideber />
   </span>
+
+  <script is:inline>
+    document.querySelector('#search')?.addEventListener('input', async (e) => {
+      // only load the pagefind script once
+      if (e.target.dataset.loaded !== 'true') {
+        e.target.dataset.loaded = 'true'
+        // load the pagefind script
+        window.pagefind = await import("/pagefind/pagefind.js");
+      }
+  
+      // search the index using the input value
+      const search = await window.pagefind.search(e.target.value)
+      console.log(`search: ${search}`)
+      // clear the old results
+      document.querySelector('#results').innerHTML = ''
+  
+      // add the new results
+      for (const result of search.results) {
+        const data = await result.data()
+        document.querySelector('#results').innerHTML += `
+          <a href="${data.url}">
+            <h3>${data.meta.title}</h3>
+            <p>${data.excerpt}</p>
+          </a>`
+      }
+    })
+  </script>
+        <link href="../../dist/pagefind/pagefind-ui.css" rel="stylesheet">
+        <script src="../../dist/pagefind/pagefind-ui.js" is:inline></script>
 </BaseLayout>
 
-<script is:inline>
-  document.querySelector('#search')?.addEventListener('input', async (e) => {
-    // only load the pagefind script once
-    if (e.target.dataset.loaded !== 'true') {
-      e.target.dataset.loaded = 'true'
-      // load the pagefind script
-      window.pagefind = await import("/pagefind/pagefind.js");
-    }
 
-    // search the index using the input value
-    const search = await window.pagefind.search(e.target.value)
-
-    // clear the old results
-    document.querySelector('#results').innerHTML = ''
-
-    // add the new results
-    for (const result of search.results) {
-      const data = await result.data()
-      document.querySelector('#results').innerHTML += `
-        <a href="${data.url}">
-          <h3>${data.meta.title}</h3>
-          <p>${data.excerpt}</p>
-        </a>`
-    }
-  })
-</script>

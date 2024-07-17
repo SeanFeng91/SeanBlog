@@ -7,6 +7,8 @@ import "../styles/global.css";
 // import Leftsidebar2 from "../components/Leftsidebar2.astro";
 // import Rightsideber from "../components/Rightsideber.astro";
 const { pageTitle } = Astro.props;
+import BaseHead from '../components/BaseHead.astro';
+
 ---
 
 <html lang="zh-cn" class="overflow-x-hidden overflow-y-auto  
@@ -30,7 +32,14 @@ const { pageTitle } = Astro.props;
 
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    
+    <link href="../../dist/pagefind/pagefind-ui.css" rel="stylesheet">
+    <script src="../../dist/pagefind/pagefind-ui.js" is:inline></script>
+    <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+    <script src="/pagefind/pagefind-ui.js" is:inline></script>
     <title>{pageTitle}</title>
+    <BaseHead  />
+
   </head>
   <body class="bg-white text-secondary-500 antialiased overflow-y-visiable  ">
     <!-- 头部 -->
@@ -39,6 +48,7 @@ const { pageTitle } = Astro.props;
       </header>
       <!-- 主页面 -->
       <main class="max-h-full ">
+        <p>why no search</p>
         <section class="pt-14 lg:pt-24 ">
           <div class="mx-auto max-w-7xl px-4 lg:flex bg-white min-h-fit">
             <!-- <aside class="sticky top-0 z-20 -mx-4 shrink-0 overflow-y-auto border-y border-y-gray-100 bg-white px-4 lg:top-40 lg:m-0 lg:block lg:h-[calc(100vh-160px)] lg:w-56 lg:border-none lg:bg-transparent lg:px-0">
@@ -60,12 +70,22 @@ const { pageTitle } = Astro.props;
             </article>
           </div>
         </section>
-        
+        <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+        <script src="/pagefind/pagefind-ui.js" is:inline></script>
+        <div id="search" class="h-5 bg-slate-50"></div>
+        <!-- <p>why no search</p> -->
+        <script>
+          window.addEventListener('DOMContentLoaded', (event) => {
+            //@ts-ignore
+            new PagefindUI({ element: "#search", showSubResults: true });
+          });
+        </script>
       </main>
       
     <!-- </div> -->
     <script is:inline src="https://unpkg.com/preline"></script>
-    <script is:inline src="../../node_modules/preline/preline.js"></script>
+    <!-- <script is:inline src="../../node_modules/preline/preline.js"></script> -->
+
 
     <link
       rel="stylesheet"
@@ -77,5 +97,6 @@ const { pageTitle } = Astro.props;
       src="https://unpkg.com/@ryangjchandler/alpine-tooltip@1.2.0/dist/cdn.min.js"
       crossorigin="anonymous"
       referrerpolicy="no-referrer"></script>
+
   </body>
 </html>
