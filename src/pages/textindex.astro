@@ -92,26 +92,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <Headingsofblog url={`#${heading.getHeadings()[0].slug}`} getHeadings={heading.getHeadings()[0].text}/>
     )} -->
   </h1>
+ 
+ 
+  <span slot="Rightbar">
+    <Rightsideber />
+  </span>
+  <p>据说部分搜索可以用了</p>
   <div id="search" class="w-full"></div>
   <script >
     window.addEventListener('DOMContentLoaded', (event) => {
       //@ts-ignore-
         new PagefindUI({ element: "#search", showSubResults: true });
     });
-</script>
-  <span slot="Rightbar">
-    <Rightsideber />
-  </span>
+  </script>
 
-  <script is:inline>
+
+
+  <!-- <script is:inline>
     document.querySelector('#search')?.addEventListener('input', async (e) => {
       // only load the pagefind script once
       if (e.target.dataset.loaded !== 'true') {
         e.target.dataset.loaded = 'true'
         // load the pagefind script
-        window.pagefind = await import("/pagefind/pagefind.js");
+        window.pagefind = await import("/SeanBlog/pagefind/pagefind.js");
       }
-  
+      console.log("yesaaa")
       // search the index using the input value
       const search = await window.pagefind.search(e.target.value)
       console.log(`search: ${search}`)
@@ -128,9 +133,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </a>`
       }
     })
-  </script>
-        <link href="../../dist/pagefind/pagefind-ui.css" rel="stylesheet">
-        <script src="../../dist/pagefind/pagefind-ui.js" is:inline></script>
+  </script> -->
+        <!-- <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+        <script src="/SeanBlog/pagefind/pagefind-ui.js" is:inline>
+        console.log({src})
+        </script> -->
 </BaseLayout>
 
 
