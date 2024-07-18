@@ -1,6 +1,8 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
+import Searchpage from '../components/searchpage.astro';
+import "../styles/global.css";
 // import Footer from '../components/Footer.astro';
 // import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
@@ -9,7 +11,18 @@ import Header from '../components/Header.astro';
 <html lang="en">
 	<head>
 		<BaseHead />
+		<meta charset="utf-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/favicon.svg" /> -->
+    <!-- We use Inter as the default font, You can easily use Google Font CDN to import Inter fonts. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
 
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
 
 
 	</head>
@@ -17,6 +30,7 @@ import Header from '../components/Header.astro';
 		<Header />
 		<main>
 			<h1>🧑‍🚀 Hello, Astronaut!</h1>
+			<Searchpage />
 			<p>
 				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
 				template serves as a lightweight, minimally-styled starting point for anyone looking to build

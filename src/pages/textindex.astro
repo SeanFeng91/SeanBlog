@@ -1,5 +1,6 @@
 ---
 import Rightsideber from '../components/Rightsideber.astro';
+import Searchpage from '../components/searchpage.astro';
 
 const headings2 = [
   {
@@ -98,14 +99,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <Rightsideber />
   </span>
   <p>据说部分搜索可以用了</p>
-  <div id="search" class="w-full"></div>
+  <!-- <div id="search" class="w-full"></div>
   <script >
     window.addEventListener('DOMContentLoaded', (event) => {
       //@ts-ignore-
         new PagefindUI({ element: "#search", showSubResults: true });
     });
-  </script>
-
+  </script> -->
+    <Searchpage />
 
 
   <!-- <script is:inline>
