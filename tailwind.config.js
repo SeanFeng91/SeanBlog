@@ -22,6 +22,18 @@ export default {
   },
   plugins: [require("@tailwindcss/typography"),require('@tailwindcss/forms'), require('preline/plugin')],
 };
+
+
+// module.exports = {
+//   content: [
+//     // './src/**/*.{html,js}',
+//       'node_modules/preline/dist/*.js',
+//   ],
+//   plugins: [
+//     // require('@tailwindcss/forms'),
+//       require('preline/plugin'),
+//   ],
+// }
 // module.exports = {
 //   // content: ["./src/**/*.{html,js}"],
 //   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}','node_modules/preline/dist/*.js'],
