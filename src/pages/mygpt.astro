@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { h } from 'preact';
 import "../styles/global.css";
 import IndexLayout from "../layouts/IndexLayout.astro";
-import { getMoonshotApiKey } from './api.js';
+import { getMoonshotApiKey } from './api/api.js';
 
 ---
 
@@ -14,7 +14,7 @@ import { getMoonshotApiKey } from './api.js';
     <pre id="response"></pre>
 
     <script>
-        import { getMoonshotApiKey } from './api/api.js';
+        // import { getMoonshotApiKey } from './api/api.js';
         document.getElementById('fetch-button').addEventListener('click', async () => {
             const responseElement = document.getElementById('response');
             const apiKey = getMoonshotApiKey();  // 替换为你的实际API密钥
