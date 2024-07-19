@@ -32,10 +32,10 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 - header外层的div 之前还有个bg-white/60，导致搜索弹框之后半透明颜色不对，去除之后，整个页面目前都是灰色。
 - baselayout少了滚动条显示，还是有页面跳动问题。修复一下
 - 今天还查到了一个重要bug。Tailwind.config.js里面可能之前一直没有完全正常加载。export default 和 module.exports应该是不一样的，修正后文字的默认样式都有了变化。应该是正确的加载了对应的。不过还要再比对一下到底是哪个，现在引入了比较多的tailwindcss第三方。
-
-** Amazing **，居然成功的实现了页面版本gpt-kimi
+## Mygpt@kimi
+**Amazing**，居然成功的实现了页面版本gpt-kimi
 ![Alt text](image.png)
-
+![Alt text](00877EE3.png)能否在action中增加python部分，比如爬去信息，写入数据库，通过提问调用gpt?
 
 # 20240717记录
 基本修复了导航栏blur和bg-white的bug。现在的样式是置顶且带了背景模糊的效果。

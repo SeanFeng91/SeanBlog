@@ -9,6 +9,310 @@ image:
 pubDate: 2024-07-11
 tags: ["astro", "successes", "astro"]
 ---
+
+## MyGPT@Kimi-20240719
+
+重点介绍了实现了页面版本kimi问答的script部分。
+
+```html
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 页面加载时，加载历史对话记录
+        loadChatHistory();
+
+        // 为发送按钮绑定点击事件
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+
+        // 为清除历史记录按钮绑定点击事件
+        document.getElementById('clear-history-button').addEventListener('click', clearChatHistory);
+    });
+
+    // 加载并显示历史对话记录
+    function loadChatHistory() {
+        const chatBox = document.getElementById('chat-box');
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        chatBox.innerHTML = '';
+        chatHistory.forEach(entry => {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = entry.role === 'user' ? 'text-right text-blue-600 my-2' : 'text-left text-green-600 my-2';
+            messageDiv.innerHTML = marked(entry.content); // 使用 marked 解析并渲染 Markdown
+            chatBox.appendChild(messageDiv);
+        });
+        chatBox.scrollTop = chatBox.scrollHeight; // 滚动到聊天框底部
+    }
+
+    // 保存对话记录到 localStorage
+    function saveChatHistory(role, content) {
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        chatHistory.push({ role, content });
+        localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+    }
+
+    // 清除 localStorage 中的对话记录，并清空聊天框内容
+    function clearChatHistory() {
+        localStorage.removeItem('chatHistory');
+        document.getElementById('chat-box').innerHTML = '';
+    }
+
+    // 发送消息
+    async function sendMessage() {
+        const apiKey = document.getElementById('api-key-input').value;
+        const messageInput = document.getElementById('message-input');
+        const message = messageInput.value.trim();
+        const chatBox = document.getElementById('chat-box');
+
+        // 检查 API 密钥和消息内容是否为空
+        if (!apiKey) {
+            alert("Please enter your API key.");
+            return;
+        }
+
+        if (!message) {
+            alert("Please enter a message.");
+            return;
+        }
+
+        // 显示用户消息
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.className = 'text-right text-blue-600 my-2';
+        userMessageDiv.textContent = message;
+        chatBox.appendChild(userMessageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight; // 滚动到聊天框底部
+        saveChatHistory('user', message); // 保存用户消息
+        messageInput.value = ''; // 清空输入框
+
+        // 准备请求体
+        const requestBody = {
+            model: "moonshot-v1-8k",
+            messages: [
+                { role: "system", content: "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言。" },
+                { role: "user", content: message }
+            ],
+            stream: true
+        };
+
+        try {
+            // 发送请求到 Moonshot API
+            const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            // 检查响应状态
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // 处理流式响应
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let result = '';
+
+            const assistantMessageDiv = document.createElement('div');
+            assistantMessageDiv.className = 'text-left text-green-600 my-2';
+            chatBox.appendChild(assistantMessageDiv);
+
+            const processStream = async () => {
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    const chunk = decoder.decode(value, { stream: true });
+                    // 解析并提取有用内容
+                    const lines = chunk.split('\n').filter(line => line.trim().startsWith('data: '));
+                    for (const line of lines) {
+                        const jsonStr = line.replace(/^data: /, '');
+                        if (jsonStr.trim() === '[DONE]') continue;
+                        const parsedData = JSON.parse(jsonStr);
+                        const content = parsedData.choices[0].delta.content;
+                        if (content) {
+                            result += content;
+                            assistantMessageDiv.innerHTML = marked(result); // 解析并渲染Markdown
+                            chatBox.scrollTop = chatBox.scrollHeight;  // 保持滚动到底部
+                        }
+                    }
+                }
+                saveChatHistory('assistant', result); // 保存助手消息
+            };
+
+            processStream().catch(error => {
+                console.error('Error processing stream:', error);
+            });
+
+        } catch (error) {
+            chatBox.textContent = `Fetch error: ${error.message}`;
+        }
+    }
+</script>
+```
+
+### 详细解释
+
+1. **页面加载事件处理函数**
+    ```javascript
+    document.addEventListener('DOMContentLoaded', () => {
+        // 页面加载时，加载历史对话记录
+        loadChatHistory();
+
+        // 为发送按钮绑定点击事件
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+
+        // 为清除历史记录按钮绑定点击事件
+        document.getElementById('clear-history-button').addEventListener('click', clearChatHistory);
+    });
+    ```
+    - 当页面加载完成时，执行这个函数。
+    - 加载历史对话记录并显示。
+    - 为发送按钮和清除历史按钮绑定点击事件。
+
+2. **加载并显示历史对话记录**
+    ```javascript
+    function loadChatHistory() {
+        const chatBox = document.getElementById('chat-box');
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        chatBox.innerHTML = '';
+        chatHistory.forEach(entry => {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = entry.role === 'user' ? 'text-right text-blue-600 my-2' : 'text-left text-green-600 my-2';
+            messageDiv.innerHTML = marked(entry.content); // 使用 marked 解析并渲染 Markdown
+            chatBox.appendChild(messageDiv);
+        });
+        chatBox.scrollTop = chatBox.scrollHeight; // 滚动到聊天框底部
+    }
+    ```
+    - 从`localStorage`中获取历史对话记录并解析。
+    - 将每条历史记录显示在聊天框中。
+    - 使用`marked`解析Markdown内容。
+
+3. **保存对话记录到 `localStorage`**
+    ```javascript
+    function saveChatHistory(role, content) {
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        chatHistory.push({ role, content });
+        localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+    }
+    ```
+    - 将新的对话记录追加到现有的对话记录中，并保存回`localStorage`。
+
+4. **清除 `localStorage` 中的对话记录，并清空聊天框内容**
+    ```javascript
+    function clearChatHistory() {
+        localStorage.removeItem('chatHistory');
+        document.getElementById('chat-box').innerHTML = '';
+    }
+    ```
+    - 删除`localStorage`中的对话记录。
+    - 清空聊天框的内容。
+
+5. **发送消息**
+```javascript
+      async function sendMessage() {
+          const apiKey = document.getElementById('api-key-input').value;
+          const messageInput = document.getElementById('message-input');
+          const message = messageInput.value.trim();
+          const chatBox = document.getElementById('chat-box');
+
+          // 检查 API 密钥和消息内容是否为空
+          if (!apiKey) {
+              alert("Please enter your API key.");
+              return;
+          }
+
+          if (!message) {
+              alert("Please enter a message.");
+              return;
+          }
+
+          // 显示用户消息
+          const userMessageDiv = document.createElement('div');
+          userMessageDiv.className = 'text-right text-blue-600 my-2';
+          userMessageDiv.textContent = message;
+          chatBox.appendChild(userMessageDiv);
+          chatBox.scrollTop = chatBox.scrollHeight; // 滚动到聊天框底部
+          saveChatHistory('user', message); // 保存用户消息
+          messageInput.value = ''; // 清空输入框
+
+          // 准备请求体
+          const requestBody = {
+              model: "moonshot-v1-8k",
+              messages: [
+                  { role: "system", content: "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言。" },
+                  { role: "user", content: message }
+              ],
+              stream: true
+          };
+
+          try {
+              // 发送请求到 Moonshot API
+              const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${apiKey}`
+                  },
+                  body: JSON.stringify(requestBody)
+              });
+
+              // 检查响应状态
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+
+              // 处理流式响应
+              const reader = response.body.getReader();
+              const decoder = new TextDecoder('utf-8');
+              let result = '';
+
+              const assistantMessageDiv = document.createElement('div');
+              assistantMessageDiv.className = 'text-left text-green-600 my-2';
+              chatBox.appendChild(assistantMessageDiv);
+
+              const processStream = async () => {
+                  while (true) {
+                      const { done, value } = await reader.read();
+                      if (done) break;
+                      const chunk = decoder.decode(value, { stream: true });
+                      // 解析并提取有用内容
+                      const lines = chunk.split('\n').filter(line => line.trim().startsWith('data: '));
+                      for (const line of lines) {
+                          const jsonStr = line.replace(/^data: /, '');
+                          if (jsonStr.trim() === '[DONE]') continue;
+                          const parsedData = JSON.parse(jsonStr);
+                          const content = parsedData.choices[0].delta.content;
+                          if (content) {
+                              result += content;
+                              assistantMessageDiv.innerHTML = marked(result); // 解析并渲染Markdown
+                              chatBox.scrollTop = chatBox.scrollHeight;  // 保持滚动到底部
+                          }
+                      }
+                  }
+                  saveChatHistory('assistant', result); // 保存助手消息
+              };
+
+              processStream().catch(error => {
+                  console.error('Error processing stream:', error);
+              });
+
+          } catch (error) {
+              chatBox.textContent = `Fetch error: ${error.message}`;
+          }
+      }
+  </script>
+```
+
+### 关键点总结
+
+- 页面加载时，初始化并绑定事件处理函数。
+- 加载并显示历史对话记录。
+- 发送消息，并在页面上显示用户和助手的消息。
+- 处理流式响应，逐步解析和渲染Markdown内容。
+- 保存和清除对话记录到`localStorage`。
+
+
+
 ## 右侧文章目录导航跟随文章阅读位置高亮对应目录标题
 实现代码，会存在一些bug。比如现在observerOptions的rootMargin: '-20% 0px -50% 0px'，如果文章末尾有个比较短的章节，可能会无法取到。
 还发现一个可以提升的就是，当目录树过长，势必需要多一个滚动，要不改成不显示滚动条的滚动？
