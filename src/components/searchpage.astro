@@ -18,7 +18,13 @@
           </button>
         </div>
         <div class="p-4">
-            <div id="search" class=" overflow-y-scroll max-h-96" autofocus=""></div>
+            <div id="search" class=" overflow-y-auto
+            [&::-webkit-scrollbar]:w-2
+                [&::-webkit-scrollbar-track]:rounded-full
+                [&::-webkit-scrollbar-track]:bg-gray-100
+                [&::-webkit-scrollbar-thumb]:rounded-full
+                [&::-webkit-scrollbar-thumb]:bg-gray-300
+                 max-h-96" autofocus=""></div>
             <script >
               window.addEventListener('DOMContentLoaded', (event) => {
                 //@ts-ignore-
