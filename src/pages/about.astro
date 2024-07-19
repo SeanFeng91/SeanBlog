@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
-import BaseLayout from '../layouts/BaseLayout.astro';
+// import BaseLayout from '../layouts/BaseLayout.astro';
+import IndexLayout from '../layouts/IndexLayout.astro';
 
 const pageTitle = "关于我的介绍";
 const identity = {
@@ -18,7 +19,7 @@ const goal = 3;
 const skillColor = "orange";
 ---
 
-<BaseLayout pageTitle={pageTitle}>
+<IndexLayout pageTitle={pageTitle}>
   <div class="max-h-[400px] overflow-y-auto
   [&::-webkit-scrollbar]:w-2
   [&::-webkit-scrollbar-track]:rounded-full
@@ -56,4 +57,4 @@ const skillColor = "orange";
   
     
   
-</BaseLayout>
+</IndexLayout>
