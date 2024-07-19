@@ -33,6 +33,9 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 - baselayout少了滚动条显示，还是有页面跳动问题。修复一下
 - 今天还查到了一个重要bug。Tailwind.config.js里面可能之前一直没有完全正常加载。export default 和 module.exports应该是不一样的，修正后文字的默认样式都有了变化。应该是正确的加载了对应的。不过还要再比对一下到底是哪个，现在引入了比较多的tailwindcss第三方。
 
+** Amazing **，居然成功的实现了页面版本gpt-kimi
+![Alt text](image.png)
+
 
 # 20240717记录
 基本修复了导航栏blur和bg-white的bug。现在的样式是置顶且带了背景模糊的效果。
