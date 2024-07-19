@@ -107,38 +107,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
   </script> -->
     <!-- <Searchpage /> -->
-
-
-  <!-- <script is:inline>
-    document.querySelector('#search')?.addEventListener('input', async (e) => {
-      // only load the pagefind script once
-      if (e.target.dataset.loaded !== 'true') {
-        e.target.dataset.loaded = 'true'
-        // load the pagefind script
-        window.pagefind = await import("/SeanBlog/pagefind/pagefind.js");
-      }
-      console.log("yesaaa")
-      // search the index using the input value
-      const search = await window.pagefind.search(e.target.value)
-      console.log(`search: ${search}`)
-      // clear the old results
-      document.querySelector('#results').innerHTML = ''
-  
-      // add the new results
-      for (const result of search.results) {
-        const data = await result.data()
-        document.querySelector('#results').innerHTML += `
-          <a href="${data.url}">
-            <h3>${data.meta.title}</h3>
-            <p>${data.excerpt}</p>
-          </a>`
-      }
-    })
-  </script> -->
-        <!-- <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
-        <script src="/SeanBlog/pagefind/pagefind-ui.js" is:inline>
-        console.log({src})
-        </script> -->
+    
 </BaseLayout>
 
 

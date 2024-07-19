@@ -9,5 +9,6 @@ import mdx from "@astrojs/mdx";
 export default defineConfig({
   site: 'https://SeanFeng91.github.io',
   base: '/SeanBlog/',
+  // trailingSlash: "always",
   integrations: [preact(), tailwind(), mdx(),icon()]
 });
