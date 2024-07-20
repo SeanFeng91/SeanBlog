@@ -20,14 +20,7 @@ import BlogPost from '../components/BlogPost.astro';
                     {allPosts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
                 </ul>
             </li>
-            <li>
-                <ul>
-                    <!-- {allPosts.map((heading) =><Headingsofblog url={`#${heading.getHeadings}`} headings={heading.getHeadings.depth ===1}em/>)} -->
-                    <!-- <p>#{allPosts.headings}</p> -->
-                </ul>
-                      
-            </li>
-
+            
         </ul>
     </nav>
     

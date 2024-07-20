@@ -1,6 +1,5 @@
 ---
 import Rightsideber from '../components/Rightsideber.astro';
-import Searchpage from '../components/searchpage.astro';
 
 const headings2 = [
   {
@@ -16,7 +15,6 @@ const headings2 = [
   // 更多标题对象
 ];
 const allPosts = await Astro.glob('../pages/posts/*.md');
-import Headingsofblog from "../components/Headingsofblog.astro";
 // 查找 depth 为 1 的标题对象
 const headingDepth1 = headings2.find(heading => heading.depth === 1);
 
@@ -48,27 +46,6 @@ allPosts.forEach((post, index) => {
   // console.log(`Post ${index + 1}:`);
   const headings = post.getHeadings();
   if (headings.length > 0) {
-    headings.forEach((heading, headingIndex) => {
-      // console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
-    });
-  } else {
-    // console.log('No headings found.');
-  }
-});
-allPosts.forEach((post, index) => {
-  // console.log(`Post ${index + 1}:`);
-  const headings = post.getHeadings();
-  if (headings.length > 0) {
-    const slugs = headings.map((heading) => heading.slug);
-    // console.log('Slugs:', slugs);
-  } else {
-    // console.log('No headings found.');
-  }
-});
-allPosts.forEach((post, index) => {
-  // console.log(`Post ${index + 1}:`);
-  const headings = post.getHeadings();
-  if (headings.length > 0) {
     headings.map((heading, headingIndex) => {
       // console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
     });
@@ -81,33 +58,33 @@ allPosts.forEach((post, index) => {
 // 获取当前页面路径
 // const currentPath = Astro.url.pathname;
 
+import IndexLayout from '../layouts/IndexLayout.astro';
+import Leftsidebar1 from "../components/Leftsidebar1.astro";
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout>
-  <h1 id={headingDepth1.slug}>{headingDepth1.text}</h1>
+<IndexLayout>
+  <div slot="maindiv">
+    <h1 id={headingDepth1.slug}>{headingDepth1.text}</h1>
   <h1 id={headingDepth1.slug}>{headingDepth1.slug}</h1>
   <h1>       
-    还是GPT厉害             
+    还是GPT厉害      ?       
     <!-- {allPosts.map((heading) =>
         <Headingsofblog url={`#${heading.getHeadings()[0].slug}`} getHeadings={heading.getHeadings()[0].text}/>
     )} -->
   </h1>
  
- 
+  <aside class="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-45rem))] right-auto w-[19rem] pb-10 pl-8 pr-6 overflow-y-auto">
+    <Leftsidebar1 />
+  </aside>
   <span slot="Rightbar">
     <Rightsideber />
   </span>
   <p>据说部分搜索可以用了</p>
-  <!-- <div id="search" class="w-full"></div>
-  <script >
-    window.addEventListener('DOMContentLoaded', (event) => {
-      //@ts-ignore-
-        new PagefindUI({ element: "#search", showSubResults: true });
-    });
-  </script> -->
-    <!-- <Searchpage /> -->
+  </div>
+  
+
     
-</BaseLayout>
+</IndexLayout>
 
 
