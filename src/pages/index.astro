@@ -7,7 +7,7 @@ const allPosts = await Astro.glob('../pages/posts/*.md');
 const achieved = await Astro.glob('../pages/posts/03Achieved.md');
 const problems = await Astro.glob('../pages/posts/02ProblemsAndAims.md');
 
-const { frontmatter } = Astro.props;
+// const { frontmatter } = Astro.props;
 const pageTitle = "SeanBlog";
 
 ---
@@ -79,13 +79,13 @@ const pageTitle = "SeanBlog";
 				</div>)}
 			
 		</div>
-		<div id="search"></div>
+		<!-- <div id="search"></div>
 			<script>
 				window.addEventListener('DOMContentLoaded', (event) => {
 					//@ts-ignore
 					new PagefindUI({ element: "#search", showSubResults: true });
 				});
-			</script>
+			</script> -->
 	</span>
 	<style>
 		a {
@@ -127,4 +127,3 @@ const pageTitle = "SeanBlog";
 	  </script>
 </IndexLayout>
 
-<!-- {allPosts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)} -->

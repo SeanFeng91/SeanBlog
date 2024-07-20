@@ -35,7 +35,9 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 ## Mygpt@kimi
 **Amazing**，居然成功的实现了页面版本gpt-kimi
 ![Alt text](image.png)
-![Alt text](00877EE3.png)能否在action中增加python部分，比如爬去信息，写入数据库，通过提问调用gpt?
+![Alt text](00877EE3.png)能否在action中增加python部分，比如爬去信息，写入数据库，通过提问调用gpt?   
+
+- [ ] 图片存储目录的问题还要再研究一下。不能直接存在当前目录吧?
 
 # 20240717记录
 基本修复了导航栏blur和bg-white的bug。现在的样式是置顶且带了背景模糊的效果。
