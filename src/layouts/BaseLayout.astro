@@ -19,13 +19,14 @@ import BaseHead from '../components/BaseHead.astro';
                 [&::-webkit-scrollbar-thumb]:rounded-full
                 [&::-webkit-scrollbar-thumb]:bg-gray-300
                 dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+               ">
   <head>
     <title>{pageTitle}</title>
     <BaseHead />
     
   </head>
-  <body class="bg-white min-h-screen text-secondary-500 antialiased overflow-y-hidden">
+  <body class="bg-white min-h-screen text-secondary-500 antialiased overflow-y-hidden  dark:bg-neutral-800 dark:text-slate-200" >
     <!-- 头部 -->
     <!-- <div class="bg-white shadow rounded-xl max-h-screen"> -->
       <!-- <div class="backdrop-blur bg-white/60 shadow-sm absolute top-0 left-0 right-0 z-50 py-0 sm:fixed md:transition-all flex justify-center" id="header"> -->
@@ -37,7 +38,7 @@ import BaseHead from '../components/BaseHead.astro';
       <!-- </div> -->
       <!-- 主页面 -->
       <main>
-        <section class="pt-24 lg:pt-24 ">
+        <section class="pt-24 lg:pt-24">
           <div class="max-w-[90rem] mx-auto px-4 sm:px-6 md:px-8">
             <!-- grid grid-cols-1 md:grid-cols-3 gap-4 -->
             <!-- <div class="relative md:hidden xl:w-56 xl:left-5 xl:block"> -->
@@ -56,7 +57,7 @@ import BaseHead from '../components/BaseHead.astro';
                   </div>
                 </header>
                 <div class="js-toc-content prose mt-10 max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md
-                ">
+                dark:bg-neutral-800 dark:text-slate-200">
                     <slot /> 
                   </div>
                 

@@ -86,11 +86,41 @@
 @tailwind components;
 @tailwind utilities;
 
-html.dark {
-  background-color: #0d0950;
-  color: #fff;
-}
+@layer base{
+  html.dark {
+    background-color: #0d0950;
+    color: #fff;
+  }
+  
+  .dark .nav-links a {
+    color: #fff;
+  }
 
-.dark .nav-links a {
-  color: #fff;
+} 
+
+
+@layer utilities {
+  .text-customLightTextColor {
+    text-decoration-color: #333333;
+  }
+  
+  .dark .text-customDarkTextColor {
+    text-decoration-color: #f3f4f6;
+  }
+  
+  .text-customLightLinkColor {
+    text-decoration-color: #333333;
+  }
+  
+  .dark .text-customDarkLinkColor {
+    text-decoration-color: #f3f4f6;
+  }
+  
+  .text-customLightQuoteColor {
+    text-decoration-color: #333333;
+  }
+  
+  .dark .text-customDarkQuoteColor {
+    text-decoration-color: #f3f4f6;
+  }
 }

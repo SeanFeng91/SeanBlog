@@ -18,14 +18,16 @@ import BaseHead from '../components/BaseHead.astro';
                 [&::-webkit-scrollbar-thumb]:rounded-full
                 [&::-webkit-scrollbar-thumb]:bg-gray-300
                 dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+                dark:bg-neutral-800 dark:text-slate-400
+                bg-white">
   <head>
 
     <title>{pageTitle}</title>
     <BaseHead  />
 
   </head>
-  <body class="bg-white text-secondary-500 antialiased overflow-y-visiable ">
+  <body class="flex-grow bg-white text-secondary-500 antialiased overflow-y-visiable  dark:bg-neutral-800 dark:text-slate-200 min-h-screen">
     <!-- 头部 -->
     <header class="backdrop-blur shadow-sm absolute top-0 left-0 right-0 z-50 py-4 md:fixed md:transition-all" id="header">
       <Header />
@@ -34,12 +36,12 @@ import BaseHead from '../components/BaseHead.astro';
 
     
       <!-- 主页面 -->
-      <main class="max-h-full ">
+      <main class="flex-grow">
         <section class="pt-14 lg:pt-24 ">
-          <div class="mx-auto max-w-7xl px-4 lg:flex bg-white min-h-fit">
+          <div class="mx-auto max-w-7xl px-4 lg:flex">
 
             <article class="mx-auto mt-4 max-w-7xl flex-1 
-                max-h-screen min-h-full lg:mt-0 lg:px-6">
+                max-h-screen  lg:mt-0 lg:px-6">
    
                   <div class="js-toc-content prose mt-10 max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md">
                     <slot name="maindiv"/>
