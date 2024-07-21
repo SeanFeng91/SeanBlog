@@ -108,29 +108,38 @@ html.dark {
   color: aquamarine;
 }
 
-
-.dark .nav-links h1{
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4{
   color: aquamarine;
 }
 
-.dark .nav-links h2{
-  color: aquamarine;
-}
-
-.dark .nav-links h3{
-  color: aquamarine;
-}
-
+.dark .nav-links h1,
+.dark .nav-links h2,
+.dark .nav-links h3,
 .dark .nav-links h4{
   color: aquamarine;
 }
 
+/* .dark .nav-links h2{
+  color: #0d9488;
+}
+
+.dark .nav-links h3{
+  color: #0d9488;
+}
+
+.dark .nav-links h4{
+  color: #0d9488;
+} */
+
 .dark .nav-links blockquote{
-  color: aquamarine;
+  color: #2dd4bf;
 }
 
 .dark .nav-links pre{
-  color: #334155;
+  color: #3e4c5e;
 }
 
 .nav-links a:hover,
