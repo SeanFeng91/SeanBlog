@@ -34,7 +34,19 @@ import BaseHead from '../components/BaseHead.astro';
       <!-- <div class="backdrop-blur bg-white/60 shadow-sm absolute top-0 left-0 right-0 z-50 py-0 sm:fixed md:transition-all flex justify-center" id="header"> -->
       <!-- <div class="backdrop-blur shadow-sm absolute top-0 left-0 right-0 z-50 py-4 md:fixed md:transition-all"> -->
         <header class="border-b dark:border-neutral-700 backdrop-blur shadow-sm absolute top-0 left-0 right-0 z-50 py-4 md:fixed md:transition-all" id="header">
-          <Header2 />
+          <Header2 class="inline-block"/>
+          <div class="sm:hidden inline-block">
+            <button type="button" class="m-1 ms-0 py-3 px-4 inline-block items-center gap-x-2 text-sm font-semibold rounded-lg border border-spacing-1 bg-white hover:bg-gray-300 dark:bg-slate-900 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-overlay-backdrop-with-scrolling">
+              博客目录
+            </button>
+          </div>
+          <!-- 搜索放大镜 -->
+          <div class="sm:hidden inline-flex">
+            <button type="button" class="hs-collapse-toggle p-2 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10" data-hs-collapse="#navbar-collapse-with-animation" aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
+              <svg class="hs-collapse-open:hidden inline-flex flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+              <svg class="hs-collapse-open:block hidden flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
         </header>
         
       <!-- </div> -->
@@ -47,6 +59,10 @@ import BaseHead from '../components/BaseHead.astro';
               <!-- <aside class="fixedsidebar  lg:block top-0 z-20 -mx-4 hidden w-56 shrink-0 overflow-y-auto border-y border-y-gray-100 bg-white px-4 lg:top-40 lg:m-0  lg:h-[calc(100vh-160px)] lg:w-56 lg:border-none lg:bg-transparent lg:px-0"> -->
               <aside class="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-45rem))] right-auto w-[19rem] pb-10 pl-8 pr-6 overflow-y-auto">
                 <Leftsidebar1 />
+              </aside>
+              <aside class="sm:hidden">
+                <Leftsidebar2 />
+
               </aside>
             <!-- </div> -->
             
