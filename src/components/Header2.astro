@@ -6,6 +6,8 @@ import { Icon } from 'astro-icon/components';
 const baseUrl = import.meta.env.BASE_URL;
 // 将文件按目录分组
 const allFiles = await Astro.glob('../pages/**/*.md');
+import BlogPost from '../components/BlogPost.astro';
+
 
 const posts = allFiles.filter(file => file.url.includes('/posts/'));
 const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
