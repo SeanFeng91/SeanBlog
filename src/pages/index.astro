@@ -70,8 +70,8 @@ const pageTitle = "SeanBlog";
 		<div class="p-4 flex-wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-cols-max auto-rows-max dark:bg-neutral-800 dark:text-slate-400">
 			{allPosts.map((indexcard,index)=><div class=" min-w-sm rounded-lg p-4 min-h-60 bg-white shadow ">
 				<h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
-				<h2 class="mt-1 text-2xl font-bold hover:text-blue-900 ">
-					<a href={indexcard.url} class="text-emerald-600 dark:text-emerald-300">{indexcard.frontmatter.title}</a>
+				<h2 class="nav-links mt-1 text-2xl font-bold hover:text-blue-900 ">
+					<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
 				</h2>
 				<p class="text-sm italic tracking-normal">
 					{indexcard.frontmatter.description}

@@ -35,29 +35,7 @@
     background-color: #ff9776;
   }
 
-.nav-links {
-  width: 100%;
-  top: 5rem;
-  left: 48px;
-  background-color: #ff9776;
-  display: none;
-  margin: 0;
-}
 
-.nav-links a {
-  display: block;
-  text-align: center;
-  padding: 10px 0;
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: #ff9776;
-}
 
 .expanded {
   display: unset;
@@ -86,41 +64,70 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base{
-  html.dark {
-    background-color: #0d0950;
-    color: #fff;
-  }
-  
-  .dark .nav-links a {
-    color: #fff;
-  }
+html.dark {
+  background-color: #262626;
+  color: #fff;
+}
 
-} 
+/* .dark .nav-links a {
+  color: #fff;
+} */
 
 
-@layer utilities {
-  .text-customLightTextColor {
-    text-decoration-color: #333333;
-  }
-  
-  .dark .text-customDarkTextColor {
-    text-decoration-color: #f3f4f6;
-  }
-  
-  .text-customLightLinkColor {
-    text-decoration-color: #333333;
-  }
-  
-  .dark .text-customDarkLinkColor {
-    text-decoration-color: #f3f4f6;
-  }
-  
-  .text-customLightQuoteColor {
-    text-decoration-color: #333333;
-  }
-  
-  .dark .text-customDarkQuoteColor {
-    text-decoration-color: #f3f4f6;
-  }
+/* .nav-links {
+  width: 100%;
+  top: 5rem;
+  left: 48px;
+  background-color: #ff9776;
+  display: none;
+  margin: 0;
+} */
+
+.nav-links a {
+  color:cadetblue;
+  /* display: block; */
+  /* text-decoration-color: red; */
+  text-align: center;
+  padding: 10px 0;
+  /* text-decoration: none; */
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  /* background-color: #92f7c8; */
+   
+}
+/* .dark .nav-links ul{
+  color: aquamarine;
+}
+
+.dark .nav-links li{
+  color: aquamarine;
+} */
+
+.dark .nav-links strong{
+  color: aquamarine;
+}
+
+
+.dark .nav-links h1{
+  color: aquamarine;
+}
+
+.dark .nav-links h2{
+  color: aquamarine;
+}
+
+.dark .nav-links h3{
+  color: aquamarine;
+}
+
+.dark .nav-links h4{
+  color: aquamarine;
+}
+
+
+.nav-links a:hover,
+.nav-links a:focus {
+  /* background-color: #76a8ff; */
+  color: rgb(216, 79, 0); 
 }

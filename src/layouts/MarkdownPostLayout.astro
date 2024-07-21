@@ -61,8 +61,11 @@ const { frontmatter } = Astro.props;
       <Rightsideber />
     </section>
   <!-- </main> -->
-    <slot class="dark:text-slate-200"/>
+  <div class="nav-links">
+    <slot />
 
+  </div>
+    
    
 </BaseLayout>
 

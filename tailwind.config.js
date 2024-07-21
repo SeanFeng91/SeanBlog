@@ -36,12 +36,15 @@ module.exports = {
         ],
     },
     colors: {
-      customTextColor: '#333333', // 替换为您的颜色
-      customLinkColor: '#1a73e8', // 替换为您的颜色
-      customLinkHoverColor: '#0c59b6', // 替换为您的颜色
-      customQuoteColor: '#6a737d', // 替换为您的颜色
+      // customLightTextColor: '#333333', // light mode text color
+      //   customDarkTextColor: '#f3f4f6', // dark mode text color
+      //   customLightLinkColor: '#1a73e8', // light mode link color
+      //   customDarkLinkColor: '#8ab4f8', // dark mode link color
+      //   customLightQuoteColor: '#6a737d', // light mode quote color
+      //   customDarkQuoteColor: '#c1c1c1', // dark mode quote color
     },
   },
   },
+  variants: {},
   plugins: [require("@tailwindcss/typography"),require('@tailwindcss/forms'),require("tw-elements/plugin.cjs"), require('preline/plugin')],
 }

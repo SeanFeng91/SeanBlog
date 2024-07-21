@@ -24,7 +24,48 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 - dark mode下标题、链接等自动生成的样式无法自动跟随父元素变化颜色，尤其是md文件的标题，没地方改啊。
 - 怎么样去设置一个全局的dark mode背景和文字组合？还是说只要设置了颜色的地方，就要配上一个dark:，不然就会默认保持light?
 - header 设置了半透明的情况，好像也影响了dark的效果
-- 研究一下global.css。看怎么设置各个标题的默认样式
+- 研究一下global.css。看怎么设置各个标题的默认样式，现在文件里面有好多不知道对不对的样式，到时候要清理一下。
+
+通过改变global.css里面新增.nav-link样式解决了问题
+```astro
+    .nav-links a {
+        color:cadetblue;
+        /* display: block; */
+
+        text-align: center;
+        padding: 10px 0;
+        /* text-decoration: none; */
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .dark .nav-links ul{
+    color: aquamarine;
+    }
+    .dark .nav-links li{
+    color: aquamarine;
+    } 
+    .dark .nav-links strong{
+    color: aquamarine;
+    }
+    .dark .nav-links h1{
+    color: aquamarine;
+    }
+    .dark .nav-links h2{
+    color: aquamarine;
+    }
+    .dark .nav-links h3{
+    color: aquamarine;
+    }
+    .dark .nav-links h4{
+    color: aquamarine;
+    }
+    .nav-links a:hover,
+    .nav-links a:focus {
+    /* background-color: #76a8ff; */
+    color: rgb(216, 79, 0); 
+    }
+```
 
 
 # 20240720记录
