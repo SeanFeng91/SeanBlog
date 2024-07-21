@@ -13,20 +13,20 @@ const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
         <a class="flex-none md:inline-block text-xl font-semibold dark:text-white" href={`${baseUrl}`}>SeanBlog</a>
         <a href="https://github.com/SeanFeng91/SeanBlog"><Icon name="mdi:github" class="size-10 ml-5 md:inline-block"></Icon></a>
         <!-- dark mode -->
-        <div class="ml-5 md:inline-block">
+        <div class="ml-5">
             <ThemeIcon />
         </div>
        <!-- 搜索放大镜 -->
-        <div class="sm:hidden md:inline-block">
+        <div class="sm:hidden sm:inline-block">
           <button type="button" class="hs-collapse-toggle p-2 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10" data-hs-collapse="#navbar-collapse-with-animation" aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
             <svg class="hs-collapse-open:hidden flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
-            <svg class="hs-collapse-open:block md:inline-block hidden flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            <svg class="hs-collapse-open:block hidden flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div>
       </div>
     <!-- sm模式左侧导航栏-->
-        <div class="sm:hidden md:inline-block">
-            <button type="button" class="m-1 ms-0 py-3 px-4 inline-flex md:inline-block items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-white hover:bg-gray-300 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-overlay-backdrop-with-scrolling">
+        <div class="sm:hidden sm:inline-block">
+            <button type="button" class="m-1 ms-0 py-3 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-white hover:bg-gray-300 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-overlay-backdrop-with-scrolling">
               博客目录
             </button>
             
@@ -140,46 +140,4 @@ else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove
 else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
 else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
 </script>
-<script>
-// 确认JavaScript代码是否被加载和执行
-console.log('JavaScript代码已加载和执行');
 
-// 选择ul和所有目录项
-const menuPosts = document.getElementById('leftpostlist');
-const menuBlogs = document.getElementById('leftbloglist');
-const menuLinks = [...menuPosts.querySelectorAll('.menu-link'), ...menuBlogs.querySelectorAll('.menu-link')];
-
-// 获取当前页面的路径并去掉末尾的斜杠
-function getCurrentPagePath() {
-      let pathname = window.location.pathname;
-      return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
-}
-
-// 获取链接的路径并去掉末尾的斜杠
-function getLinkPath(link) {
-      let linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname;
-      return linkPath.endsWith('/') ? linkPath.slice(0, -1) : linkPath;
-}
-
-// 页面加载时检查当前 URL，设置激活状态
-window.addEventListener('DOMContentLoaded', () => {
-      const currentPagePath = getCurrentPagePath();
-
-      menuLinks.forEach(link => {
-        const linkPath = getLinkPath(link);
-        if (currentPagePath === linkPath) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-});
-
-// 为每个链接添加点击事件
-menuLinks.forEach((link) => {
-      link.addEventListener('click', function(event) {
-        event.preventDefault();
-        window.location.href = this.getAttribute('href');
-      });
-});
-</script>
