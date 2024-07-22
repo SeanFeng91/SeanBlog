@@ -39,6 +39,10 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
     border-0	border-width: 0px;
     border-2	border-width: 2px;
 ```
+个人介绍页面可以[参考这个](https://preline.co/templates/personal/index.html#)
+
+新增加了Footer,修复了header过宽的bug
+
 
 # 20240721记录
 不试不知道，一试发现一个巨大bug。整个网页的darkmode简直了。因为用了astro-tailwind-preline，主题色估计就乱了。然后dark色也乱七八糟。要找机会统一下颜色体系。还比如引入preline的theme。整个页面风格也变了。见鬼了。

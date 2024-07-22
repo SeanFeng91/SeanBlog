@@ -19,7 +19,7 @@ const pageTitle = "SeanBlog";
 
 <IndexLayout pageTitle={pageTitle}>
 	<span slot="maindiv" class="dark:bg-neutral-800">
-		<h1 class="font-bold text-8lx text-center">This is My awesome blog with Astro&Tailwind</h2>
+		<h1 class="font-bold text-8lx text-center underline decoration-sky-500 hover:decoration-dotted hover:uppercase">This is My awesome blog with Astro&Tailwind</h2>
 		<h2 class="text-center">		
 			<Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari"]}/>
 		</h2>
@@ -78,7 +78,7 @@ const pageTitle = "SeanBlog";
 				<h2 class="nav-links mt-1 text-2xl font-bold hover:text-blue-900 ">
 					<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
 				</h2>
-				<p class="text-sm italic tracking-normal">
+				<p class="text-sm italic tracking-normal text-pretty indent-8 leading-relaxed">
 					{indexcard.frontmatter.description}
 				</p>
 				</div>)}			
