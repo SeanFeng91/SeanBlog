@@ -65,22 +65,96 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <IndexLayout>
   <div slot="maindiv">
-    <h1 id={headingDepth1.slug}>{headingDepth1.text}</h1>
-  <h1 id={headingDepth1.slug}>{headingDepth1.slug}</h1>
+
   <h1>       
-    还是GPT厉害      ?       
-    <!-- {allPosts.map((heading) =>
-        <Headingsofblog url={`#${heading.getHeadings()[0].slug}`} getHeadings={heading.getHeadings()[0].text}/>
-    )} -->
+    测试新玩意       
   </h1>
- 
-  <aside class="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-45rem))] right-auto w-[19rem] pb-10 pl-8 pr-6 overflow-y-auto">
-    <Leftsidebar1 />
-  </aside>
-  <span slot="Rightbar">
-    <Rightsideber />
-  </span>
-  <p>据说部分搜索可以用了</p>
+  <div>
+    <!-- component 三个动态按钮 -->
+    <div class='flex flex-col items-center justify-center  gap-6 '>
+      <div class='button w-40 h-16 bg-blue-500 rounded-lg cursor-pointer select-none
+        active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
+        active:border-b-[0px]
+        transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
+        border-b-[1px] border-blue-400
+      '>
+        <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '>Active</span>
+      </div>
+
+      <div class='button w-40 h-16 bg-blue-500  cursor-pointer select-none
+        active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
+        active:border-b-[0px]
+        transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
+        rounded-full  border-[1px] border-blue-400
+        
+      '>
+        <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '>Love Me</span>
+      </div>
+
+      <div class='button w-16 h-16 bg-blue-500 rounded-full cursor-pointer select-none
+        active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
+        active:border-b-[0px]
+        transition-all duration-150 [box-shadow:0_8px_0_0_#1b6ff8,0_13px_0_0_#1b70f841]
+        border-[1px] border-blue-400
+      '>
+        <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '>?</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- component 滚动换色页面-->
+  <div class="mt-10 max-h-60 relative overflow-auto">
+    <div class="sticky top-0 h-60 flex flex-col items-center justify-center bg-green-400">
+        <h2 class="text-4xl">The First Title</h2>
+        <p>Scroll Down</p>
+    </div>
+    <div class="sticky top-0 h-60 flex flex-col items-center justify-center bg-indigo-600 text-white">
+        <h2 class="text-4xl">The Second Title</h2>
+        <p>Scroll Down</p>
+    </div>
+    <div class="sticky top-0 h-60 flex flex-col items-center justify-center bg-purple-600 text-white">
+        <h2 class="text-4xl">The Third Title</h2>
+        <p>Scroll Down</p>
+    </div>
+    <div class="sticky top-0 h-60 flex flex-col items-center justify-center bg-neutral-800 text-white">
+        <h2 class="text-4xl">The Fourth Title</h2>
+    </div>
+  </div>
+  <!-- component 彩色换页 -->
+    <div class="mt-10 h-2/5 w-full overflow-hidden flex flex-nowrap text-center" id="slider">
+        <div class="bg-blue-600 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
+            <h2 class="text-4xl max-w-md">Your Big Ideia</h2>
+            <p class="max-w-md">It's fast, flexible, and reliable — with zero-runtime.</p>
+        </div>
+        <div class="bg-pink-400 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
+            <h2 class="text-4xl max-w-md">Tailwind CSS works by scanning all of your HTML</h2>
+            <p class="max-w-md">It's fast, flexible, and reliable — with zero-runtime.</p>
+        </div>
+        <div class="bg-teal-500 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
+            <h2 class="text-4xl max-w-md">React, Vue, and HTML</h2>
+            <p class="max-w-md">Accessible, interactive examples for React and Vue powered by Headless UI, plus vanilla HTML if you’d rather write any necessary JS yourself.</p>
+        </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+          const slider = document.querySelector('#slider');
+          setTimeout(function moveSlide() {
+              const max = slider.scrollWidth - slider.clientWidth;
+              const left = slider.clientWidth;
+
+              if (max === slider.scrollLeft) {
+                  slider.scrollTo({left: 0, behavior: 'smooth'})
+              } else {
+                  slider.scrollBy({left, behavior: 'smooth'})
+              }
+
+              setTimeout(moveSlide, 2000)
+          }, 2000)
+
+      })
+    </script>
+
+  
   </div>
   
 
