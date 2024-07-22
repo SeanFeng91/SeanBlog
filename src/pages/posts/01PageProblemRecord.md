@@ -20,7 +20,9 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 
 # 20240722记录
 基本修改了在不同分辨率平面下header自适应问题。图标都靠右显示，nav原来使用collapse，但是会跟header样式有所冲突。改用简单的dropdown代替。对齐的问题主要是通过flex、inline-block、grow、justify-between、item-center等class进行了实现。
-- [] 在小屏幕情况下header居然不是fixed
+- [x] 在小屏幕情况下header居然不是fixed
+- [x] currentcolor这个怎么设置啊？默认现在灰色奇怪。继承的是text-color，没设置在tw模式下是gray-200。现在github颜色也对了。是通过搜索框的放大镜发现的
+- [x] 设置了header-SeanBlog最小高度h-min-10，解决了有误搜索栏时候高度跳动问题。
 
 
 # 20240721记录

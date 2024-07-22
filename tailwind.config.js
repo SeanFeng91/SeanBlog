@@ -42,6 +42,7 @@ module.exports = {
       //   customDarkLinkColor: '#8ab4f8', // dark mode link color
       //   customLightQuoteColor: '#6a737d', // light mode quote color
       //   customDarkQuoteColor: '#c1c1c1', // dark mode quote color
+        // current:'#3f3cbb'
     },
   },
   },
