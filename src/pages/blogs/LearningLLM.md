@@ -1,12 +1,14 @@
 ---
 layout: ../../layouts/MarkdownPostLayout.astro
-title: "Learning About Markdown in Astro"
+title: "Learning About LLM"
 author: Astro Learner
-pubDate: 2022-08-08
+description: "记录在使用网页端实现llm过程中的心路历程"
+
+pubDate: 2024-07-22
 image:
-    url: 'https://docs.astro.build/assets/rose.webp'
-    alt: 'The Astro logo on a dark background with a pink glow.'
-tags: ["astro", "blogging", "learning in public"]
+    url: ''
+    alt: ''
+tags: ["astro", "blogging", "LLM"]
 ---
 
 # 我的第一篇博客文章

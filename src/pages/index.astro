@@ -4,8 +4,13 @@ import IndexLayout from '../layouts/IndexLayout.astro';
 import Greeting from '../components/Greeting';
 
 const allPosts = await Astro.glob('../pages/posts/*.md');
+const allFiles = await Astro.glob('../pages/**/*.md');
+import BlogPost from '../components/BlogPost.astro';
+
 const achieved = await Astro.glob('../pages/posts/03Achieved.md');
 const problems = await Astro.glob('../pages/posts/02ProblemsAndAims.md');
+const posts = allFiles.filter(file => file.url.includes('/posts/'));
+const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
 
 // const { frontmatter } = Astro.props;
 const pageTitle = "SeanBlog";
@@ -76,16 +81,39 @@ const pageTitle = "SeanBlog";
 				<p class="text-sm italic tracking-normal">
 					{indexcard.frontmatter.description}
 				</p>
-				</div>)}
-			
+				</div>)}			
 		</div>
-		<!-- <div id="search"></div>
-			<script>
-				window.addEventListener('DOMContentLoaded', (event) => {
-					//@ts-ignore
-					new PagefindUI({ element: "#search", showSubResults: true });
-				});
-			</script> -->
+		<!-- 滑动条分割 -->
+		<div class="m-10 py-3 flex items-center text-sm text-gray-800 before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
+			Blogs about LLm blow
+		</div>
+
+		<!-- 尝试新卡片组件 -->
+		<div class="grid grid-flow-row auto-rows-max">
+			{blogs.map((indexcard,index)=><div class="bg-white border rounded-xl shadow-md sm:flex mt-6 p-4 dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+				<div class="shrink-0 relative w-full rounded-t-xl overflow-hidden  sm:rounded-s-xl sm:max-w-60 md:rounded-se-none md:max-w-xs">
+				  <img class="size-3/4 absolute items-center ml-6 rounded-lg top-0 start-0 object-cover" src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Card Image">
+				</div>
+				<div class="flex flex-wrap">
+				  <div class="p-4 flex flex-col h-auto sm:p-4">
+					<h3 class="text-lg font-bold text-gray-800 dark:text-white">
+						<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
+					</h3>
+					<p class="mt-1 text-gray-500 dark:text-neutral-400">
+						{indexcard.frontmatter.description}
+					</p>
+					<div class="mt-5 sm:mt-auto">
+					  <p class="text-xs text-gray-500 dark:text-neutral-500">
+						{indexcard.frontmatter.pubDate}
+					  </p>
+					</div>
+				  </div>
+				</div>
+			  </div>
+			  )}
+		</div>
+
+		
 	</span>
 	<style>
 		a {
