@@ -18,6 +18,11 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
 [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
+# 20240722记录
+基本修改了在不同分辨率平面下header自适应问题。图标都靠右显示，nav原来使用collapse，但是会跟header样式有所冲突。改用简单的dropdown代替。对齐的问题主要是通过flex、inline-block、grow、justify-between、item-center等class进行了实现。
+- [] 在小屏幕情况下header居然不是fixed
+
+
 # 20240721记录
 不试不知道，一试发现一个巨大bug。整个网页的darkmode简直了。因为用了astro-tailwind-preline，主题色估计就乱了。然后dark色也乱七八糟。要找机会统一下颜色体系。还比如引入preline的theme。整个页面风格也变了。见鬼了。
 - 首页的h有历史遗留bug，dark mode下蓝色背景区域不知道是什么。有个地方h>screen，也选不中
