@@ -33,20 +33,46 @@ import BaseHead from '../components/BaseHead.astro';
     <!-- <div class="bg-white shadow rounded-xl max-h-screen"> -->
       <!-- <div class="backdrop-blur bg-white/60 shadow-sm absolute top-0 left-0 right-0 z-50 py-0 sm:fixed md:transition-all flex justify-center" id="header"> -->
       <!-- <div class="backdrop-blur shadow-sm absolute top-0 left-0 right-0 z-50 py-4 md:fixed md:transition-all"> -->
-        <header class="border-b dark:border-neutral-700 backdrop-blur shadow-sm absolute top-0 left-0 right-0 z-50 py-4 md:fixed md:transition-all" id="header">
+        <header class="border-b dark:border-neutral-700 backdrop-blur shadow-sm absolute top-0 left-0 right-0 z-50 py-2 md:fixed md:transition-all" id="header">
           <Header2 class="inline-block"/>
-          <div class="sm:hidden inline-block">
-            <button type="button" class="m-1 ms-0 py-3 px-4 inline-block items-center gap-x-2 text-sm font-semibold rounded-lg border border-spacing-1 bg-white hover:bg-gray-300 dark:bg-slate-900 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-overlay-backdrop-with-scrolling">
-              博客目录
+          <div class="lg:hidden inline-block w-full border-t mt-2">
+            <button type="button" class="m-2 ml-4 ms-0 py-2 pl-2 pr-2 inline-block items-center gap-x-2 text-sm font-normal rounded-lg border border-spacing-1 text-cyan-800 bg-white hover:bg-gray-300 dark:bg-slate-900 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-overlay-backdrop-with-scrolling">
+              博客目录 List of Blogs
             </button>
           </div>
-          <!-- 搜索放大镜 -->
-          <div class="sm:hidden inline-flex">
-            <button type="button" class="hs-collapse-toggle p-2 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10" data-hs-collapse="#navbar-collapse-with-animation" aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
+          <!-- 三横杠 -->
+          <div class="md:hidden ">
+            <button type="button" class="hs-collapse-toggle p-2 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10" 
+            data-hs-collapse="#navbar-collapse-with-animation" aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
               <svg class="hs-collapse-open:hidden inline-flex flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
               <svg class="hs-collapse-open:block hidden flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </button>
           </div>
+
+          <!-- dropdown-menu -->
+          <!-- <div class="hs-dropdown hs-dropdown-example relative inline-flex">
+            <button id="hs-dropdown-example" type="button" class="hs-dropdown-toggle py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+              Actions
+              <svg class="hs-dropdown-open:rotate-180 size-4 text-gray-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+            </button>
+          
+            <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-56 hidden z-10 mt-2 min-w-60 bg-white shadow-md rounded-lg p-2" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-example">
+              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100" href="#">
+                Newsletter
+              </a>
+              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100" href="#">
+                Purchases
+              </a>
+              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100" href="#">
+                Downloads
+              </a>
+              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100" href="#">
+                Team Account
+              </a>
+            </div>
+          </div> -->
         </header>
         
       <!-- </div> -->
