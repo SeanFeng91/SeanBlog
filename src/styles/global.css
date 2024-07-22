@@ -158,7 +158,9 @@ html.dark {
   margin: 5px;
   word-wrap: break-word;
   display: inline-block;
-  
+}
+.chat-bubble p{
+  margin: 1px;
 }
 .user-bubble {
   max-width: 60%;
