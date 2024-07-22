@@ -1,6 +1,6 @@
 ---
 import Header2 from "../components/Header2.astro";
-// import Footer from "../components/Footer.astro";
+import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 
 const { pageTitle } = Astro.props;
@@ -26,35 +26,37 @@ import BaseHead from '../components/BaseHead.astro';
   </head>
   <body class="flex-grow bg-white text-secondary-500 antialiased overflow-y-visiable  dark:bg-neutral-800 dark:text-slate-200 min-h-screen">
     <!-- 头部 -->
-    <header class="border-b dark:border-neutral-700 backdrop-blur shadow-sm top-0 left-0 right-0 z-50 py-2 fixed transition-all" id="header">
+    <div class="flex justify-center border-b dark:border-neutral-700 backdrop-blur shadow-sm top-0 left-0 right-0 z-50 py-2 fixed transition-all" id="header">
       <Header2 />
-    </header>
+    </div>
 
 
     
       <!-- 主页面 -->
-      <main class="flex-grow">
-        <section class="pt-14 lg:pt-24 ">
+      <main class="flex-grow ">
+        <section class="pt-14 lg:pt-24 flex-wrapper">
           <div class="mx-auto max-w-7xl px-4 lg:flex">
 
             <article class="mx-auto mt-4 max-w-7xl flex-1 
-                max-h-screen  lg:mt-0 lg:px-6">
+                  lg:mt-0 lg:px-6">
    
-                  <div class="js-toc-content prose mt-10 max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md">
+                  <div class="flex-grow js-toc-content prose mt-10 max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md">
                     <slot name="maindiv"/>
                   </div>
             </article>
           </div>
+          
         </section>
        
         
 
         
       </main>
-      
 
       <script src="../../node_modules/preline/dist/preline.js"></script>
 
 
+      <Footer />
   </body>
+
 </html>

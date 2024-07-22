@@ -7,10 +7,10 @@ const baseUrl = import.meta.env.BASE_URL;
 
 ---
 
-<header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full  text-sm py-0">
+<header class="flex grow flex-wrap sm:item-center sm:flex-nowrap max-w-[90rem] text-sm py-0 ">
     <nav class="w-full mx-auto px-4 sm:items-center basis-full text-slate-800 dark:text-white" aria-label="Global">
       <div class="flex items-center min-h-10">
-        <a class="flex-none  text-xl font-semibold " href={`${baseUrl}`}>SeanBlog</a>
+        <a class="flex-none  text-xl font-semibold" href={`${baseUrl}`}>SeanBlog</a>
         <!-- 搜索块 -->
         <Searchpage />
 
