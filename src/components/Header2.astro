@@ -8,9 +8,9 @@ const baseUrl = import.meta.env.BASE_URL;
 ---
 
 <header class="flex flex-wrap sm:justify-start sm:flex-nowrap w-full  text-sm py-0">
-    <nav class="w-full mx-auto px-4 sm:items-center basis-full text-gray-600" aria-label="Global">
+    <nav class="w-full mx-auto px-4 sm:items-center basis-full text-slate-800 dark:text-white" aria-label="Global">
       <div class="flex items-center min-h-10">
-        <a class="flex-none  text-xl font-semibold text-slate-800 dark:text-white" href={`${baseUrl}`}>SeanBlog</a>
+        <a class="flex-none  text-xl font-semibold " href={`${baseUrl}`}>SeanBlog</a>
         <!-- 搜索块 -->
         <Searchpage />
 
@@ -35,7 +35,7 @@ const baseUrl = import.meta.env.BASE_URL;
             </button>
           </div>
         </div>
-        <!-- 文字导航部分 -->
+        
          <!-- 用dropdown代替方案 -->
         <!-- <div class="md:hidden order-last">
           <button type="button" class="hs-collapse-toggle p-2 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10" 
@@ -44,21 +44,21 @@ const baseUrl = import.meta.env.BASE_URL;
             <svg class="hs-collapse-open:block hidden flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
           </button>
         </div> -->
+        <!-- 文字导航部分 -->
         <div id="navbar-collapse-with-animation" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full 
           grow md:block">
           <div class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:ps-5">
-              <a class="font-bold text-gray-600  hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" 
+              <a class="font-bold text-gray-600  hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-300" 
               href={`${baseUrl}`} aria-current="page">首页</a>
-              <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" 
+              <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-500" 
               href={`${baseUrl}about`}>关于我</a>
-              <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" 
+              <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-500" 
               href={`${baseUrl}blog`}>博客</a>
     
-              <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" 
+              <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-500" 
               href={`${baseUrl}imagegallery`}>图册</a>
-              <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" 
+              <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-500" 
               href={`${baseUrl}posts/01PageProblemRecord`}>进展情况记录</a>
-              <!-- <a class="font-bold text-gray-600 hover:text-blue-500 dark:text-neutral-400 dark:hover:text-neutral-500" href="/textindex/">测试页面</a> -->
               <div class="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] ">
                 <button id="hs-mega-menu-basic-dr" type="button" class="flex items-center w-full text-amber-600 hover:text-gray-400 font-bold dark:text-neutral-400 dark:hover:text-neutral-500 ">
                   功能测试

@@ -73,7 +73,7 @@ const pageTitle = "SeanBlog";
 		</div>
 		<!-- 首页Cards功能模块 -->
 		<div class="p-4 flex-wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-cols-max auto-rows-max dark:bg-neutral-800 dark:text-slate-400">
-			{allPosts.map((indexcard,index)=><div class=" min-w-sm rounded-lg p-4 min-h-60 bg-white shadow ">
+			{allPosts.map((indexcard,index)=><div class=" min-w-sm border rounded-lg p-4 min-h-60 bg-white dark:bg-neutral-100 shadow-sm ">
 				<h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
 				<h2 class="nav-links mt-1 text-2xl font-bold hover:text-blue-900 ">
 					<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
@@ -90,7 +90,7 @@ const pageTitle = "SeanBlog";
 
 		<!-- 尝试新卡片组件 -->
 		<div class="grid grid-flow-row auto-rows-max">
-			{blogs.map((indexcard,index)=><div class="bg-white border rounded-xl shadow-md sm:flex mt-6 p-4 dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-700/70">
+			{blogs.map((indexcard,index)=><div class="bg-white border rounded-xl shadow-sm sm:flex mt-6 p-4 dark:bg-neutral-100 dark:border-neutral-700 dark:shadow-neutral-700/70">
 				<div class="shrink-0 relative w-full rounded-t-xl overflow-hidden  sm:rounded-s-xl sm:max-w-60 md:rounded-se-none md:max-w-xs">
 				  <img class="size-3/4 absolute items-center ml-6 rounded-lg top-0 start-0 object-cover" src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Card Image">
 				</div>

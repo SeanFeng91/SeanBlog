@@ -147,3 +147,43 @@ html.dark {
   /* background-color: #76a8ff; */
   color: rgb(216, 79, 0); 
 }
+
+
+/* gpt样式 */
+
+.chat-bubble {
+   /* 最大宽度不超过显示区域的2/3 */
+  padding: 5px;
+  border-radius: 10px;
+  margin: 5px;
+  word-wrap: break-word;
+  display: inline-block;
+  
+}
+.user-bubble {
+  max-width: 60%;
+  background-color: #f8f8f8 !important; /* 确保背景颜色优先级 */
+  text-align: right; /* 文字靠右对齐 */
+  border-width: 1px;
+}
+.assistant-bubble {
+  max-width: 90%;
+  background-color: #ffffff !important; /* 确保背景颜色优先级 */
+  text-align: left; /* 文字靠左对齐 */
+  border-width: 1px;
+}
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* 让所有聊天气泡靠右 */
+}
+.message-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+.user-wrapper {
+  justify-content: flex-end; /* 用户消息靠右对齐 */
+}
+.assistant-wrapper {
+  justify-content: flex-start; /* 助手消息靠左对齐 */
+}
