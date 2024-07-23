@@ -16,13 +16,47 @@ const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
 const pageTitle = "SeanBlog";
 
 ---
+<!-- 撒花按钮 -->
+<style>
+	@font-face {
+	font-family: "Cera Round Pro Bold";
+	src: url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.eot");
+	src: url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.eot?#iefix")format("embedded-opentype"),
+	url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.woff2")format("woff2"),
+	url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.woff")format("woff"),
+	url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.ttf")format("truetype"),
+	url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.svg#Cera Round Pro Bold")format("svg");
+	}
+	body{
+	  font-family: "Cera Round Pro Bold";
+	}
+	p {
+	  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	}
+  </style>
+
+<!-- <style>
+	a {
+	  text-decoration: none; /* 取消下划线 */
+	}
+	Headingsofblog {
+		text-decoration: none; /* 取消下划线 */
+	}
+</style> -->
 
 <IndexLayout pageTitle={pageTitle}>
-	<span slot="maindiv" class="dark:bg-neutral-800">
-		<h1 class="font-bold text-8lx text-center underline decoration-sky-500 hover:decoration-dotted hover:uppercase">This is My awesome blog with Astro&Tailwind</h2>
-		<h2 class="text-center">		
-			<Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari"]}/>
-		</h2>
+	<div slot="maindiv" class="dark:bg-neutral-800 ">
+
+			<h1 class="font-bold text-8lx text-center underline decoration-sky-500 hover:decoration-dotted hover:uppercase">This is My awesome blog with Astro&Tailwind</h2>
+			<h2 class="text-center">		
+				<Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari"]}/>
+			</h2>
+		
+		<section class="bg-teal-200 h-20  text-white backdrop:bg-rose-800 flex items-center justify-center">
+			<a class="text-3xl relative after:bg-white after:absolute after:h-1 after:w-0 
+			after:bottom-0 after:left-0 hover:text-pink-400 hover:after:w-full after:transition-all after:duration-300 cursor-pointer">我正在一点点尝试新鲜的功能和效果</a>
+		</section>
+
 		<!-- Now Working on:模块 -->
 		<div class="p-4 flex-wrap mb-10 mt-10 grid grid-cols-1 lg:grid-cols-2 gap-4 auto-cols-max text-base ">
 			<div class="p-2 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto bg-slate-50 dark:bg-neutral-500 dark:text-slate-200 min-h-10">
@@ -83,49 +117,96 @@ const pageTitle = "SeanBlog";
 				</p>
 				</div>)}			
 		</div>
-		<!-- 滑动条分割 -->
-		<!-- <div class="m-10 py-3 flex items-center text-sm text-gray-800 before:flex-1 before:border-t before:border-gray-200 before:me-6 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-white dark:before:border-neutral-600 dark:after:border-neutral-600">
-			Blogs about LLm blow
-		</div> -->
+
+		
 		<div class="h-2 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ..."></div>
 
-		<!-- 尝试新卡片组件 -->
-		<div class="grid grid-flow-row auto-rows-max">
-			{blogs.map((indexcard,index)=><div class="bg-white border rounded-xl shadow-sm sm:flex mt-6 p-4 dark:bg-neutral-100 dark:border-neutral-700 dark:shadow-neutral-700/70">
-				<div class="shrink-0 relative w-full rounded-t-xl overflow-hidden  sm:rounded-s-xl sm:max-w-60 md:rounded-se-none md:max-w-xs">
-				  <img class="size-3/4 absolute items-center ml-6 rounded-lg top-0 start-0 object-cover" src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Card Image">
-				</div>
-				<div class="flex flex-wrap">
-				  <div class="p-4 flex flex-col h-auto sm:p-4">
-					<h3 class="text-lg font-bold text-gray-800 dark:text-white">
-						<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
-					</h3>
-					<p class="mt-1 text-gray-500 dark:text-neutral-400">
-						{indexcard.frontmatter.description}
-					</p>
-					<div class="mt-5 sm:mt-auto">
-					  <p class="text-xs text-gray-500 dark:text-neutral-500">
-						{indexcard.frontmatter.pubDate}
-					  </p>
+			<!-- 尝试新卡片组件 -->
+			<!-- <div class="grid grid-flow-row auto-rows-max">
+				{allPosts.map((indexcard)=> <div class="bg-white border rounded-xl shadow-sm sm:flex mt-6 p-4 dark:bg-neutral-100 dark:border-neutral-700 dark:shadow-neutral-700/70">
+					<div class="shrink-0 relative w-full rounded-t-xl overflow-hidden sm:rounded-s-xl sm:max-w-60 md:rounded-se-none md:max-w-xs">
+					<img class="size-3/4 absolute items-center ml-6 rounded-lg top-0 start-0 object-cover" 
+					src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Card Image">
+					</div>
+					
+					<div class="flex flex-wrap">
+						<div class="p-4 flex flex-col h-auto sm:p-4">
+							<h3 class="text-lg font-bold text-gray-800 dark:text-white">
+								<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
+							</h3>
+							<p class="mt-1 text-gray-500 dark:text-neutral-400">
+								{indexcard.frontmatter.description}
+							</p>
+							<div class="mt-5 sm:mt-auto">
+							<p class="text-xs text-gray-500 dark:text-neutral-500">
+								{indexcard.frontmatter.pubDate}
+							</p>
+							</div>
+						</div>
+					</div>
+				</div> )}
+				
+			</div> -->
+			
+			<!-- component 三个可爱的按钮-->
+			<div x-data="{isLoading:false, isFestive:false, isShowDetail:false}" class="bg-gradient-to-t flex-col from-lime-50 to-sky-100 min-w-screen min-h-screen flex items-center justify-center">
+				<!-- Title -->
+				<h1 class="text-3xl mb-4 text-blue-950">Font Awesome Style <span class="text-yellow-500">Button.</span></h1>
+				<div class="p-4 bg-white rounded-md drop-shadow-2xl flex flex-col space-y-4">
+				  <div class="flex items-start space-x-4">
+					<!-- Loading Button -->
+					<div @click="isLoading = !isLoading" class="bg-yellow-500 duration-150 hover:!border-b-2 text-blue-950 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-yellow-400">
+					  <div class="py-2 px-3" x-text="isLoading ? 'Loading...' : 'Click to load'">
+					  </div>
+					  <div  :class="isLoading ? 'opacity-100 scale-100 duration-200 w-auto py-2 pr-3' : 'opacity-0 scale-0 duration-100 w-0 p-0'">
+					  <i class="fad fa-spinner-third animate-spin"></i>
+					  </div>
+					</div>
+					<!-- Icon Button -->
+					<div @click="isFestive = !isFestive" class="bg-zinc-100 duration-150 hover:!border-b-2 text-blue-950 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-zinc-300">
+					  <div class="py-2 pl-3">
+					  <i class="fad fa-party-horn text-xl"></i>
+					  </div>
+					  <div class="py-2 px-3" x-text="isFestive ? 'Happy New Year!!' : 'Click to celebrate'">
+					  
+					  </div>
+					</div>
+					<!-- Detail Button -->
+					<div @click="isShowDetail = !isShowDetail" class="bg-indigo-400 duration-150 hover:!border-b-2 text-white rounded-xl drop-shadow-lg group flex flex-col items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-indigo-500 overflow-hidden">
+					  <div class="py-2 px-3" x-text="isShowDetail ? 'Now you see detail' : 'Click for more detail'">
+					  </div>
+					  <div :class="isShowDetail ? 'opacity-100 duration-300 h-auto py-4 px-3 border-t-4 bg-indigo-100' : 'opacity-0 duration-100 border-t-0 h-[0px] p-0'" class="border-dashed border-indigo-300 w-full">
+						<p :class="isShowDetail ? 'translate-y-0 opacity-80' : '-translate-y-[20%] opacity-0'"  class="text-blue-900 text-xs duration-150 delay-100">Ok, This is something that <br> I have to put here, Even I<br> have no idea what to type.</p>
+					  </div>
 					</div>
 				  </div>
 				</div>
-			  </div>
-			  )}
-		</div>
+				<!-- Background confetti -->
+				<canvas :class="isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-[100%]'" id="my-canvas" class="absolute pointer-events-none"></canvas>
+				</div>
+	</div>
+	
 
-		
-	</span>
-	<style>
-		a {
-		  text-decoration: none; /* 取消下划线 */
-		}
-		Headingsofblog {
-			text-decoration: none; /* 取消下划线 */
-		}
-		
-	</style>
+	  
+</IndexLayout>
+
+
+<!-- Font awesome -->
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css"
+			/>
+	<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+
 	<script>
+	let confettiElement = document.getElementById('my-canvas');
+	console.log(confettiElement,'confettiElement');
+	let confettiSettings = { target: confettiElement };
+	let confetti = new ConfettiGenerator(confettiSettings);
+	confetti.render();
+	</script>
+
+<!-- 勾选未完成事项 -->
+<!-- <script>
 		// 获取所有复选框
 		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 	
@@ -153,7 +234,4 @@ const pageTitle = "SeanBlog";
 			}
 		  });
 		});
-	  </script>
-	  
-</IndexLayout>
-
+	  </script> -->

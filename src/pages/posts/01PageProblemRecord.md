@@ -49,6 +49,7 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 ### [3D CSS](https://xpd-kasun.github.io/tailwind-3dtransform-plugin/)
 ### [Material Tailwind](https://www.material-tailwind.com/docs/react/installation)
 ### [AstroLaunch UI](https://www.creative-tim.com/learning-lab/astro/quick-start/astro-launch-ui/) 
+### [TailwindCSS 中文](https://tailwind.docs.73zls.com/docs/animation#spin)
     意思是这个astro 写的？
 
 
