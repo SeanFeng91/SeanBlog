@@ -135,25 +135,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <p class="max-w-md">Accessible, interactive examples for React and Vue powered by Headless UI, plus vanilla HTML if you’d rather write any necessary JS yourself.</p>
         </div>
     </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-          const slider = document.querySelector('#slider');
-          setTimeout(function moveSlide() {
-              const max = slider.scrollWidth - slider.clientWidth;
-              const left = slider.clientWidth;
-
-              if (max === slider.scrollLeft) {
-                  slider.scrollTo({left: 0, behavior: 'smooth'})
-              } else {
-                  slider.scrollBy({left, behavior: 'smooth'})
-              }
-
-              setTimeout(moveSlide, 2000)
-          }, 2000)
-
-      })
-    </script>
-
   
   </div>
   
@@ -162,3 +143,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </IndexLayout>
 
 
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      const slider = document.querySelector('#slider');
+      setTimeout(function moveSlide() {
+          const max = slider.scrollWidth - slider.clientWidth;
+          const left = slider.clientWidth;
+
+          if (max === slider.scrollLeft) {
+              slider.scrollTo({left: 0, behavior: 'smooth'})
+          } else {
+              slider.scrollBy({left, behavior: 'smooth'})
+          }
+          setTimeout(moveSlide, 2000)
+      }, 2000)
+  })
+</script>
