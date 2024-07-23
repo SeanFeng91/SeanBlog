@@ -21,6 +21,8 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 # 20240723记录
 发现了一个莫名的困难。在astro头部使用了await 之后，后面的script代码不知道为啥就不能正常的加载了！
 
+tailwindcss一些[动画效果](https://cloud.tencent.com/developer/article/2320047)
+
 # 20240722记录
 基本修改了在不同分辨率平面下header自适应问题。图标都靠右显示，nav原来使用collapse，但是会跟header样式有所冲突。改用简单的dropdown代替。对齐的问题主要是通过flex、inline-block、grow、justify-between、item-center等class进行了实现。
 - [x] 在小屏幕情况下header居然不是fixed
