@@ -71,11 +71,11 @@ import 'animate.css';
   <h1>       
     测试新玩意       
   </h1>
-  <div class="tlt text-4xl m-10">Hello, Textillate.js!</div>
+  <div class="animate__animated animate__wobble">Hello, Animate.css!</div>
 
   <h1 class="animate__animated animate__bounce">An animated element</h1>
 
-  <h1 class="tlt" data-in-effect="rollIn">Title</h1>
+  <h1 class="tlt" data-in-effect="animate__animated rollIn">Title</h1>
   <h1 class="tlt">
     <ul class="texts">
       <li data-out-effect="fadeOut" data-out-shuffle="true">Some Title</li>
@@ -177,7 +177,7 @@ import 'animate.css';
             loop: true,
 
             // sets the minimum display time for each text before it is replaced
-            minDisplayTime: 60,
+            minDisplayTime: 2000,
 
             // sets the initial delay before starting the animation
             // (note that depending on the in effect you may need to manually apply
@@ -200,7 +200,7 @@ import 'animate.css';
               effect: 'fadeInLeftBig',
 
               // set the delay factor applied to each consecutive character
-              delayScale: 1,
+              delayScale: 1.5,
 
               // set the delay between each character
               delay: 50,
