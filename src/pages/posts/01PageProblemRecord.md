@@ -22,6 +22,14 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 发现了一个莫名的困难。在astro头部使用了await 之后，后面的script代码不知道为啥就不能正常的加载了！
 
 tailwindcss一些[动画效果](https://cloud.tencent.com/developer/article/2320047)
+打开了新大陆
+- [animated.js](https://animate.style/#migration)，动画js
+- [lettering.js](https://letteringjs.com/)，字体风格js，还没成功使用
+- [particles.js](https://vincentgarreau.com/particles.js/)，粒子效果
+- [three.js](https://threejs.org/),[three中文教程](http://www.webgl3d.cn/)，3d效果-webGL
+- [d3js](https://d3js.org/)数据可视化
+- [gsap](https://gsap.com/docs/v3/GSAP/Tween),任意动画，能力未知
+- [aos](https://michalsnik.github.io/aos/)各种滚动效果 [aos-github](https://github.com/michalsnik/aos)
 
 # 20240722记录
 基本修改了在不同分辨率平面下header自适应问题。图标都靠右显示，nav原来使用collapse，但是会跟header样式有所冲突。改用简单的dropdown代替。对齐的问题主要是通过flex、inline-block、grow、justify-between、item-center等class进行了实现。
