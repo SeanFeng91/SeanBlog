@@ -55,6 +55,8 @@
 
 import IndexLayout from '../layouts/IndexLayout.astro';
 import 'animate.css';
+// import 'animate.min.css';
+
 
 ---
 <style>
@@ -63,6 +65,11 @@ import 'animate.css';
       height: 100vh;
       background-color: #000;
   }
+
+  .animate__animated.animate__bounce {
+  --animate-duration: 2s;
+  --animate-repeat: 5;
+}
 </style>
 
 
@@ -71,21 +78,18 @@ import 'animate.css';
   <h1>       
     测试新玩意       
   </h1>
-  <div class="animate__animated animate__wobble">Hello, Animate.css!</div>
+  <div class="text-teal-600 font-serif text-5xl animate__animated animate__wobble">Hello, Animate.css!</div>
 
-  <h1 class="animate__animated animate__bounce">An animated element</h1>
+  <h1 class="animate__animated animate__lightSpeedInRight">Just-add-water CSS animations(animate__lightSpeedInRight)</h1>
 
-  <h1 class="tlt" data-in-effect="animate__animated rollIn">Title</h1>
+  <h1 class="tlt" data-in-effect="rollIn">Textillate.js combines some awesome libraries to provide an easy-to-use plugin for applying CSS3 animations to any text.</h1>
   <h1 class="tlt">
     <ul class="texts">
       <li data-out-effect="fadeOut" data-out-shuffle="true">Some Title</li>
       <li data-in-effect="fadeIn">Another Title</li>
     </ul>
   </h1>
-  <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script> -->
-    <script type="module" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script type="module" src="https://cdn.rawgit.com/jschr/textillate/master/jquery.textillate.js"></script>
+
 
   <div class="m-10">
     <!-- component 三个动态按钮 -->
@@ -166,7 +170,10 @@ import 'animate.css';
 </IndexLayout>
 
 <!-- 字体动画 -->
-
+<script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script>
+<!-- <script type="module" src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
+<script type="module" src="https://cdn.rawgit.com/jschr/textillate/master/jquery.textillate.js"></script>
     <script type="module">
         $(document).ready(function () {
           $('.tlt').textillate({
