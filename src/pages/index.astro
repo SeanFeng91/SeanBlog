@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-// import welcome from '../scripts/welcome.js';
 import IndexLayout from '../layouts/IndexLayout.astro';
 // import Greeting from '../components/Greeting';
 
@@ -17,26 +16,6 @@ import IndexLayout from '../layouts/IndexLayout.astro';
 const pageTitle = "SeanBlog";
 
 ---
-<!-- 撒花按钮 -->
-
-<style>
-	@font-face {
-	font-family: "Cera Round Pro Bold";
-	src: url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.eot");
-	src: url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.eot?#iefix")format("embedded-opentype"),
-	url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.woff2")format("woff2"),
-	url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.woff")format("woff"),
-	url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.ttf")format("truetype"),
-	url("https://db.onlinewebfonts.com/t/9d23cda2fd2a195a8467e0967debd4d3.svg#Cera Round Pro Bold")format("svg");
-	}
-	body{
-	  font-family: "Cera Round Pro Bold";
-	}
-	p {
-	  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-	}
-</style>
-
 <!-- <style>
 	a {
 	  text-decoration: none; /* 取消下划线 */
@@ -46,33 +25,50 @@ const pageTitle = "SeanBlog";
 	}
 </style> -->
 
-
-<script>
-	document.addEventListener('DOMContentLoaded', () => {
-		const slider = document.querySelector('#slider');
-		setTimeout(function moveSlide() {
-			const max = slider.scrollWidth - slider.clientWidth;
-			const left = slider.clientWidth;
-  
-			if (max === slider.scrollLeft) {
-				slider.scrollTo({left: 0, behavior: 'smooth'})
-			} else {
-				slider.scrollBy({left, behavior: 'smooth'})
-			}
-			setTimeout(moveSlide, 1000)
-		}, 1000)
-	})
-</script>
-
-
 <IndexLayout pageTitle={pageTitle}>
-	<div slot="maindiv" class="dark:bg-neutral-800 ">
-
-			<h1 class="font-bold text-8lx text-center underline decoration-sky-500 hover:decoration-dotted hover:uppercase">This is My awesome blog with Astro&Tailwind</h2>
+	<div x-data="{isLoading:false, isFestive:false, isShowDetail:false}" slot="maindiv" class="dark:bg-neutral-800 ">
+		<h1 class="font-bold text-8lx text-center underline decoration-sky-500 hover:decoration-dotted hover:uppercase">
+			This is My awesome blog with <span class="text-yellow-500">Astro&Tailwind.</span></h1>
 			<!-- <h2 class="text-center">		
 				<Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari"]}/>
 			</h2> -->
-		
+		<!-- component 庆祝的按钮-->
+		<div class=" flex-col min-w-screen flex items-center justify-center">
+			<!-- Title -->
+			<div class="p-4 rounded-md drop-shadow-2xl flex flex-col space-y-4">
+			  <div class="flex items-start space-x-4">
+				<!-- Loading Button -->
+				<!-- <div @click="isLoading = !isLoading" class="bg-yellow-500 duration-150 hover:!border-b-2 text-blue-950 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-yellow-400">
+				  <div class="py-2 px-3" x-text="isLoading ? 'Loading...' : 'Click to load'">
+				  </div>
+				  <div  :class="isLoading ? 'opacity-100 scale-100 duration-200 w-auto py-2 pr-3' : 'opacity-0 scale-0 duration-100 w-0 p-0'">
+				  <i class="fad fa-spinner-third animate-spin"></i>
+				  </div>
+				</div> -->
+				<!-- Icon Button -->
+				<div @click="isFestive = !isFestive" class="bg-zinc-100 duration-150 hover:!border-b-2 text-blue-950 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-zinc-300">
+				  <div class="py-2 pl-3">
+				  <i class="fad fa-party-horn text-xl"></i>
+				  </div>
+				  <div class="py-2 px-3" x-text="isFestive ? 'Welcome!!' : 'Click to celebrate'">
+				  </div>
+				</div>
+				<!-- Detail Button -->
+				<!-- <div @click="isShowDetail = !isShowDetail" class="bg-indigo-400 duration-150 hover:!border-b-2 text-white rounded-xl drop-shadow-lg group flex flex-col items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-indigo-500 overflow-hidden">
+				  <div class="py-2 px-3" x-text="isShowDetail ? 'Now you see detail' : 'Click for more detail'">
+				  </div>
+				  <div :class="isShowDetail ? 'opacity-100 duration-300 h-auto py-4 px-3 border-t-4 bg-indigo-100' : 'opacity-0 duration-100 border-t-0 h-[0px] p-0'" class="border-dashed border-indigo-300 w-full">
+					<p :class="isShowDetail ? 'translate-y-0 opacity-80' : '-translate-y-[20%] opacity-0'"  class="text-blue-900 text-xs duration-150 delay-100">Ok, This is something that <br> I have to put here, Even I<br> have no idea what to type.</p>
+				  </div>
+				</div> -->
+			  </div>
+			</div>
+			<!-- Background confetti -->
+		</div>
+		<canvas :class="isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-[100%]'" id="my-canvas" class="absolute pointer-events-none"></canvas>
+
+
+
 		<section class="bg-teal-200 h-20  text-white backdrop:bg-rose-800 flex items-center justify-center">
 			<a class="text-3xl relative after:bg-white after:absolute after:h-1 after:w-0 
 			after:bottom-0 after:left-0 hover:text-pink-400 hover:after:w-full after:transition-all after:duration-300 cursor-pointer">
@@ -185,42 +181,7 @@ const pageTitle = "SeanBlog";
 					<p class="max-w-md">Accessible, interactive examples for React and Vue powered by Headless UI, plus vanilla HTML if you’d rather write any necessary JS yourself.</p>
 				</div>
 			</div>
-			<!-- component 三个可爱的按钮-->
-			<div x-data="{isLoading:false, isFestive:false, isShowDetail:false}" class="bg-gradient-to-t flex-col from-lime-50 to-sky-100 min-w-screen min-h-screen flex items-center justify-center">
-				<!-- Title -->
-				<h1 class="text-3xl mb-4 text-blue-950">Font Awesome Style <span class="text-yellow-500">Button.</span></h1>
-				<div class="p-4 bg-white rounded-md drop-shadow-2xl flex flex-col space-y-4">
-				  <div class="flex items-start space-x-4">
-					<!-- Loading Button -->
-					<div @click="isLoading = !isLoading" class="bg-yellow-500 duration-150 hover:!border-b-2 text-blue-950 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-yellow-400">
-					  <div class="py-2 px-3" x-text="isLoading ? 'Loading...' : 'Click to load'">
-					  </div>
-					  <div  :class="isLoading ? 'opacity-100 scale-100 duration-200 w-auto py-2 pr-3' : 'opacity-0 scale-0 duration-100 w-0 p-0'">
-					  <i class="fad fa-spinner-third animate-spin"></i>
-					  </div>
-					</div>
-					<!-- Icon Button -->
-					<div @click="isFestive = !isFestive" class="bg-zinc-100 duration-150 hover:!border-b-2 text-blue-950 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-zinc-300">
-					  <div class="py-2 pl-3">
-					  <i class="fad fa-party-horn text-xl"></i>
-					  </div>
-					  <div class="py-2 px-3" x-text="isFestive ? 'Happy New Year!!' : 'Click to celebrate'">
-					  
-					  </div>
-					</div>
-					<!-- Detail Button -->
-					<div @click="isShowDetail = !isShowDetail" class="bg-indigo-400 duration-150 hover:!border-b-2 text-white rounded-xl drop-shadow-lg group flex flex-col items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-indigo-500 overflow-hidden">
-					  <div class="py-2 px-3" x-text="isShowDetail ? 'Now you see detail' : 'Click for more detail'">
-					  </div>
-					  <div :class="isShowDetail ? 'opacity-100 duration-300 h-auto py-4 px-3 border-t-4 bg-indigo-100' : 'opacity-0 duration-100 border-t-0 h-[0px] p-0'" class="border-dashed border-indigo-300 w-full">
-						<p :class="isShowDetail ? 'translate-y-0 opacity-80' : '-translate-y-[20%] opacity-0'"  class="text-blue-900 text-xs duration-150 delay-100">Ok, This is something that <br> I have to put here, Even I<br> have no idea what to type.</p>
-					  </div>
-					</div>
-				  </div>
-				</div>
-				<!-- Background confetti -->
-				<canvas :class="isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-[100%]'" id="my-canvas" class="absolute pointer-events-none"></canvas>
-				</div>
+			
 
 		</div>
 
@@ -241,6 +202,25 @@ let confettiSettings = { target: confettiElement };
 let confetti = new ConfettiGenerator(confettiSettings);
 confetti.render();
 </script>
+
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const slider = document.querySelector('#slider');
+		setTimeout(function moveSlide() {
+			const max = slider.scrollWidth - slider.clientWidth;
+			const left = slider.clientWidth;
+  
+			if (max === slider.scrollLeft) {
+				slider.scrollTo({left: 0, behavior: 'smooth'})
+			} else {
+				slider.scrollBy({left, behavior: 'smooth'})
+			}
+			setTimeout(moveSlide, 1000)
+		}, 1000)
+	})
+</script>
+
 <!-- 勾选未完成事项 -->
 <!-- <script>
 		// 获取所有复选框
