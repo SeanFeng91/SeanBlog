@@ -1,71 +1,62 @@
 ---
-import Rightsideber from '../components/Rightsideber.astro';
+// const headings2 = [
+//   {
+//     depth: 1,
+//     text: "Astro 0.18 Release",
+//     slug: "astro-018-release"
+//   },
+//   {
+//     depth: 2,
+//     text: "Responsive partial hydration",
+//     slug: "responsive-partial-hydration"
+//   }
+//   // 更多标题对象
+// ];
+// const allPosts = await Astro.glob('../pages/posts/*.md');
+// // 查找 depth 为 1 的标题对象
+// const headingDepth1 = headings2.find(heading => heading.depth === 1);
 
-const headings2 = [
-  {
-    depth: 1,
-    text: "Astro 0.18 Release",
-    slug: "astro-018-release"
-  },
-  {
-    depth: 2,
-    text: "Responsive partial hydration",
-    slug: "responsive-partial-hydration"
-  }
-  // 更多标题对象
-];
-const allPosts = await Astro.glob('../pages/posts/*.md');
-// 查找 depth 为 1 的标题对象
-const headingDepth1 = headings2.find(heading => heading.depth === 1);
-
-
-
-
-allPosts.forEach((post, index) => {
-  // console.log(`Post ${index + 1}:`);
-  // 输出检测了不同层级的headings
+// allPosts.forEach((post, index) => {
+//   // console.log(`Post ${index + 1}:`);
+//   // 输出检测了不同层级的headings
   
-  const headings = post.getHeadings();
-  if (headings.length > 0) {
-    const cont = 0
-    headings.forEach((ih) =>{
-    const hdepth = ih.depth;
-    const hdepthofh = ih.text;
-    if (hdepth < 3){
-      // console.log(`headingdepth: ${hdepth} headingtext: ${hdepthofh}`);
-    }
+//   const headings = post.getHeadings();
+//   if (headings.length > 0) {
+//     const cont = 0
+//     headings.forEach((ih) =>{
+//     const hdepth = ih.depth;
+//     const hdepthofh = ih.text;
+//     if (hdepth < 3){
+//       // console.log(`headingdepth: ${hdepth} headingtext: ${hdepthofh}`);
+//     }
     
-    })
+//     })
     
-  } else {
-    console.log('No headings found.');
-  }
-});
+//   } else {
+//     console.log('No headings found.');
+//   }
+// });
 
-allPosts.forEach((post, index) => {
-  // console.log(`Post ${index + 1}:`);
-  const headings = post.getHeadings();
-  if (headings.length > 0) {
-    headings.map((heading, headingIndex) => {
-      // console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
-    });
-  } else {
-    // console.log('No headings found.');
-  }
-});
+// allPosts.forEach((post, index) => {
+//   // console.log(`Post ${index + 1}:`);
+//   const headings = post.getHeadings();
+//   if (headings.length > 0) {
+//     headings.map((heading, headingIndex) => {
+//       // console.log(`Heading ${headingIndex + 1} slug: ${heading.slug}`);
+//     });
+//   } else {
+//     // console.log('No headings found.');
+//   }
+// });
 
 // 测试更换目录树
 // 获取当前页面路径
 // const currentPath = Astro.url.pathname;
 
 import IndexLayout from '../layouts/IndexLayout.astro';
-import Leftsidebar1 from "../components/Leftsidebar1.astro";
-
-import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <IndexLayout>
   <div slot="maindiv">
-
   <h1>       
     测试新玩意       
   </h1>
