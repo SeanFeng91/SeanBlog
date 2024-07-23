@@ -5,11 +5,11 @@ import IndexLayout from '../layouts/IndexLayout.astro';
 // import Greeting from '../components/Greeting';
 
 const allPosts = await Astro.glob('../pages/posts/*.md');
-// // const allFiles = await Astro.glob('../pages/**/*.md');
-// // import BlogPost from '../components/BlogPost.astro';
+// const allFiles = await Astro.glob('../pages/**/*.md');
+// import BlogPost from '../components/BlogPost.astro';
 
-// const achieved = await Astro.glob('../pages/posts/03Achieved.md');
-// const problems = await Astro.glob('../pages/posts/02ProblemsAndAims.md');
+const achieved = await Astro.glob('../pages/posts/03Achieved.md');
+const problems = await Astro.glob('../pages/posts/02ProblemsAndAims.md');
 // const posts = allFiles.filter(file => file.url.includes('/posts/'));
 // const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
 
@@ -63,7 +63,19 @@ const pageTitle = "SeanBlog";
 		}, 1000)
 	})
 </script>
+<!-- Font awesome -->
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css"
+			/>
+	<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+	<script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
 
+<script>
+	let confettiElement = document.getElementById('my-canvas');
+	console.log(confettiElement,'confettiElement');
+	let confettiSettings = { target: confettiElement };
+	let confetti = new ConfettiGenerator(confettiSettings);
+	confetti.render();
+</script>
 
 <IndexLayout pageTitle={pageTitle}>
 	<div slot="maindiv" class="dark:bg-neutral-800 ">
@@ -75,14 +87,12 @@ const pageTitle = "SeanBlog";
 		
 		<section class="bg-teal-200 h-20  text-white backdrop:bg-rose-800 flex items-center justify-center">
 			<a class="text-3xl relative after:bg-white after:absolute after:h-1 after:w-0 
-			after:bottom-0 after:left-0 hover:text-pink-400 hover:after:w-full after:transition-all after:duration-300 cursor-pointer">
-			我在头部写了这个就影响script正常加载了 WHY: const achieved = await Astro.glob('../pages/posts/03Achieved.md');
-			</a>
+			after:bottom-0 after:left-0 hover:text-pink-400 hover:after:w-full after:transition-all after:duration-300 cursor-pointer">我正在一点点尝试新鲜的功能和效果</a>
 		</section>
 
 		<!-- Now Working on:模块 -->
 		<div class="p-4 flex-wrap mb-10 mt-10 grid grid-cols-1 lg:grid-cols-2 gap-4 auto-cols-max text-base ">
-			<!-- <div class="p-2 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto bg-slate-50 dark:bg-neutral-500 dark:text-slate-200 min-h-10">
+			<div class="p-2 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto bg-slate-50 dark:bg-neutral-500 dark:text-slate-200 min-h-10">
 				<h3 class="mt-1 pl-4 dark:text-slate-200">Now Working on:</h3>
 				<div class="overflow-auto 
 				[&::-webkit-scrollbar]:w-2
@@ -105,9 +115,9 @@ const pageTitle = "SeanBlog";
 
 
 				</div>
-			</div> -->
+			</div>
 			<!-- What I have Got:模块 -->
-			<!-- <div class="max-h-60 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto p-2 bg-slate-50 min-h-10 dark:bg-neutral-500 dark:text-slate-200">
+			<div class="max-h-60 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto p-2 bg-slate-50 min-h-10 dark:bg-neutral-500 dark:text-slate-200">
 				<h3 class="mt-1 pl-4 space-y-3 dark:text-slate-200">What I have Got:</h3>
 				<div class="overflow-auto
 				[&::-webkit-scrollbar]:w-2
@@ -126,10 +136,10 @@ const pageTitle = "SeanBlog";
 					  })}
 				</div>
 				
-			</div> -->
+			</div>
 		</div>
 		<!-- 首页Cards功能模块 -->
-		<!-- <div class="p-4 flex-wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-cols-max auto-rows-max dark:bg-neutral-800 dark:text-slate-400">
+		<div class="p-4 flex-wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-cols-max auto-rows-max dark:bg-neutral-800 dark:text-slate-400">
 			{allPosts.map((indexcard,index)=><div class=" min-w-sm border rounded-lg p-4 min-h-60 bg-white dark:bg-neutral-100 shadow-sm ">
 				<h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
 				<h2 class="nav-links mt-1 text-2xl font-bold hover:text-blue-900 ">
@@ -139,37 +149,12 @@ const pageTitle = "SeanBlog";
 					{indexcard.frontmatter.description}
 				</p>
 				</div>)}			
-		</div> -->
+		</div>
 
 		
 		<div class="h-2 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ..."></div>
 
-			<!-- 尝试新卡片组件 -->
-			<!-- <div class="grid grid-flow-row auto-rows-max">
-				{allPosts.map((indexcard)=> <div class="bg-white border rounded-xl shadow-sm sm:flex mt-6 p-4 dark:bg-neutral-100 dark:border-neutral-700 dark:shadow-neutral-700/70">
-					<div class="shrink-0 relative w-full rounded-t-xl overflow-hidden sm:rounded-s-xl sm:max-w-60 md:rounded-se-none md:max-w-xs">
-					<img class="size-3/4 absolute items-center ml-6 rounded-lg top-0 start-0 object-cover" 
-					src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Card Image">
-					</div>
-					
-					<div class="flex flex-wrap">
-						<div class="p-4 flex flex-col h-auto sm:p-4">
-							<h3 class="text-lg font-bold text-gray-800 dark:text-white">
-								<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
-							</h3>
-							<p class="mt-1 text-gray-500 dark:text-neutral-400">
-								{indexcard.frontmatter.description}
-							</p>
-							<div class="mt-5 sm:mt-auto">
-							<p class="text-xs text-gray-500 dark:text-neutral-500">
-								{indexcard.frontmatter.pubDate}
-							</p>
-							</div>
-						</div>
-					</div>
-				</div> )}
-				
-			</div> -->
+			
 			<!-- component 彩色换页 -->
 			<div class="mt-10 h-2/5 w-full overflow-hidden flex flex-nowrap text-center" id="slider">
 				<div class="bg-blue-600 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
@@ -221,53 +206,10 @@ const pageTitle = "SeanBlog";
 				<!-- Background confetti -->
 				<canvas :class="isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-[100%]'" id="my-canvas" class="absolute pointer-events-none"></canvas>
 				</div>
+				<script src='../scripts/welcome.js'></script>
 
 		</div>
 
 		
 </IndexLayout>
 
-
-<!-- Font awesome -->
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css"
-/>
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
-
-<script>
-let confettiElement = document.getElementById('my-canvas');
-console.log(confettiElement,'confettiElement');
-let confettiSettings = { target: confettiElement };
-let confetti = new ConfettiGenerator(confettiSettings);
-confetti.render();
-</script>
-<!-- 勾选未完成事项 -->
-<!-- <script>
-		// 获取所有复选框
-		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-	
-		// 初始化复选框状态
-		checkboxes.forEach(checkbox => {
-		  // 明确声明checkbox的类型
-		  const inputElement = checkbox as HTMLInputElement;
-		  const id = inputElement.getAttribute('data-id');
-		  const savedCheckedState = localStorage.getItem(`checkbox-${id}-checked`);
-		  const label = document.querySelector(`label[for="${id}"]`);
-	
-		  if (savedCheckedState === 'true') {
-			inputElement.checked = true;
-			label?.classList.add('checked-label');
-		  }
-	
-		  // 添加复选框状态改变的事件监听器
-		  inputElement.addEventListener('change', function() {
-			if (inputElement.checked) {
-			  label?.classList.add('checked-label');
-			  localStorage.setItem(`checkbox-${id}-checked`, 'true');
-			} else {
-			  label?.classList.remove('checked-label');
-			  localStorage.setItem(`checkbox-${id}-checked`, 'false');
-			}
-		  });
-		});
-	  </script> -->
