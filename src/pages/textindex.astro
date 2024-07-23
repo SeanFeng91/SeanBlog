@@ -54,8 +54,16 @@
 // const currentPath = Astro.url.pathname;
 
 import IndexLayout from '../layouts/IndexLayout.astro';
----
+import 'animate.css';
 
+---
+<style>
+  #particles-js {
+      width: 100%;
+      height: 100vh;
+      background-color: #000;
+  }
+</style>
 
 
 <IndexLayout>
@@ -63,23 +71,34 @@ import IndexLayout from '../layouts/IndexLayout.astro';
   <h1>       
     测试新玩意       
   </h1>
+  <div class="tlt text-4xl m-10">Hello, Textillate.js!</div>
 
-  <astro-dev-toolbar-card class="m-10" icon="astro:logo" link="https://github.com/withastro/astro/issues/new/choose">报告问题</astro-dev-toolbar-card>
-  
+  <h1 class="animate__animated animate__bounce">An animated element</h1>
 
-  <div>
+  <h1 class="tlt" data-in-effect="rollIn">Title</h1>
+  <h1 class="tlt">
+    <ul class="texts">
+      <li data-out-effect="fadeOut" data-out-shuffle="true">Some Title</li>
+      <li data-in-effect="fadeIn">Another Title</li>
+    </ul>
+  </h1>
+  <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script> -->
+    <script type="module" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="module" src="https://cdn.rawgit.com/jschr/textillate/master/jquery.textillate.js"></script>
+
+  <div class="m-10">
     <!-- component 三个动态按钮 -->
     <div class='flex flex-col items-center justify-center  gap-6 '>
       <div class='button w-40 h-16 bg-blue-500 rounded-lg cursor-pointer select-none
         active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
         active:border-b-[0px]
         transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
-        border-b-[1px] border-blue-400
-      '>
+        border-b-[1px] border-blue-400'>
         <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '>Active</span>
       </div>
 
-      <div class='button w-40 h-16 bg-blue-500  cursor-pointer select-none
+      <!-- <div class='button w-40 h-16 bg-blue-500  cursor-pointer select-none
         active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
         active:border-b-[0px]
         transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
@@ -96,17 +115,14 @@ import IndexLayout from '../layouts/IndexLayout.astro';
         border-[1px] border-blue-400
       '>
         <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '>?</span>
-      </div>
+      </div> -->
     </div>
   </div>
 
   
 
-
-
-
   <!-- component 滚动换色页面-->
-  <div class="mt-10 max-h-60 relative overflow-auto">
+  <!-- <div class="mt-10 max-h-60 relative overflow-auto">
     <div class="sticky top-0 h-60 flex flex-col items-center justify-center bg-green-400">
         <h2 class="text-4xl">The First Title</h2>
         <p>Scroll Down</p>
@@ -122,9 +138,9 @@ import IndexLayout from '../layouts/IndexLayout.astro';
     <div class="sticky top-0 h-60 flex flex-col items-center justify-center bg-neutral-800 text-white">
         <h2 class="text-4xl">The Fourth Title</h2>
     </div>
-  </div>
+  </div> -->
   <!-- component 彩色换页 -->
-    <div class="mt-10 h-2/5 w-full overflow-hidden flex flex-nowrap text-center" id="slider">
+    <!-- <div class="mt-10 h-2/5 w-full overflow-hidden flex flex-nowrap text-center" id="slider">
         <div class="bg-blue-600 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
             <h2 class="text-4xl max-w-md">Your Big Ideia</h2>
             <p class="max-w-md">It's fast, flexible, and reliable — with zero-runtime.</p>
@@ -135,19 +151,201 @@ import IndexLayout from '../layouts/IndexLayout.astro';
         </div>
         <div class="bg-teal-500 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
             <h2 class="text-4xl max-w-md">React, Vue, and HTML</h2>
-            <p class="max-w-md">Accessible, interactive examples for React and Vue powered by Headless UI, plus vanilla HTML if you’d rather write any necessary JS yourself.</p>
+            <p class="max-w-md">Accessible, interactive examples for React and Vue powered by Headless UI, plus vanilla HTML if you'd rather write any necessary JS yourself.</p>
         </div>
-    </div>
+    </div> -->
   
-    
+    <!-- <div id="particles-js" class="h-screen w-screen"></div> -->
+<!-- 例子效果 -->
+    <div id="particles-js"></div>
+
 
 
   </div>
-  
-
     
 </IndexLayout>
 
+<!-- 字体动画 -->
+
+    <script type="module">
+        $(document).ready(function () {
+          $('.tlt').textillate({
+            // the default selector to use when detecting multiple texts to animate
+            selector: '.texts',
+
+            // enable looping
+            loop: true,
+
+            // sets the minimum display time for each text before it is replaced
+            minDisplayTime: 60,
+
+            // sets the initial delay before starting the animation
+            // (note that depending on the in effect you may need to manually apply
+            // visibility: hidden to the element before running this plugin)
+            initialDelay: 0,
+
+            // set whether or not to automatically start animating
+            autoStart: true,
+
+            // custom set of 'in' effects. This effects whether or not the
+            // character is shown/hidden before or after an animation
+            inEffects: [],
+
+            // custom set of 'out' effects
+            outEffects: [ 'hinge' ],
+
+            // in animation settings
+            in: {
+              // set the effect name
+              effect: 'fadeInLeftBig',
+
+              // set the delay factor applied to each consecutive character
+              delayScale: 1,
+
+              // set the delay between each character
+              delay: 50,
+
+              // set to true to animate all the characters at the same time
+              sync: false,
+
+              // randomize the character sequence
+              // (note that shuffle doesn't make sense with sync = true)
+              shuffle: false,
+
+              // reverse the character sequence
+              // (note that reverse doesn't make sense with sync = true)
+              reverse: false,
+
+              // callback that executes once the animation has finished
+              callback: function () {}
+            },
+
+            // out animation settings.
+            out: {
+              effect: 'fadeOut',
+              delayScale: 1.5,
+              delay: 50,
+              sync: false,
+              shuffle: false,
+              reverse: false,
+              callback: function () {}
+            },
+
+            // callback that executes once textillate has finished
+            callback: function () {},
+
+            // set the type of token to animate (available types: 'char' and 'word')
+            type: 'char'
+          });
+        });
+    </script>
+
+<!-- 粒子动画 -->
+<script is:inline src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script is:inline>
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#ffffff"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 400,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+    </script>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {

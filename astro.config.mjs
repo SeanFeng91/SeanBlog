@@ -12,6 +12,6 @@ export default defineConfig({
   site: 'https://SeanFeng91.github.io',
   base: '/SeanBlog/',
   // trailingSlash: "always",
-  integrations: [preact(), tailwind(), mdx(), icon(), react()]
+  integrations: [tailwind(), mdx(), icon(), react()]
 });
 
