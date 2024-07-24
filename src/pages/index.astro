@@ -15,7 +15,8 @@ const problems = await Astro.glob('../pages/posts/02ProblemsAndAims.md');
 // const { frontmatter } = Astro.props;
 const pageTitle = "SeanBlog";
 import 'animate.css';
-
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // You can also use <link> for styles
 
 ---
 <!-- <style>
@@ -129,7 +130,12 @@ import 'animate.css';
 		</div>
 		<!-- 首页Cards功能模块 -->
 		<div class="p-4 flex-wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-cols-max auto-rows-max dark:bg-neutral-800 dark:text-slate-400">
-			{allPosts.map((indexcard,index)=><div class=" min-w-sm border rounded-lg p-4 min-h-60 bg-white dark:bg-neutral-100 shadow-sm ">
+			{allPosts.map((indexcard,index)=>
+				<div 
+					data-aos="fade-up" data-aos-offset="200" data-aos-delay={index*600}
+					data-aos-duration="600" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
+					data-aos-anchor-placement="top-right"
+					class=" min-w-sm border rounded-lg p-4 min-h-60 bg-white dark:bg-neutral-100 shadow-sm ">
 				<h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
 				<h2 class="nav-links mt-1 text-2xl font-bold hover:text-blue-900 ">
 					<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
@@ -170,7 +176,7 @@ import 'animate.css';
 				
 			</div> -->
 			<!-- component 彩色换页 -->
-			<div class="mt-10 h-2/5 w-full overflow-hidden flex flex-nowrap text-center" id="slider">
+			<!-- <div class="mt-10 h-2/5 w-full overflow-hidden flex flex-nowrap text-center" id="slider">
 				<div class="bg-blue-600 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
 					<h2 class="text-4xl max-w-md">Your Big Ideia</h2>
 					<p class="max-w-md">It's fast, flexible, and reliable — with zero-runtime.</p>
@@ -183,13 +189,55 @@ import 'animate.css';
 					<h2 class="text-4xl max-w-md">React, Vue, and HTML</h2>
 					<p class="max-w-md">Accessible, interactive examples for React and Vue powered by Headless UI, plus vanilla HTML if you’d rather write any necessary JS yourself.</p>
 				</div>
+			</div> -->
+			<div class=" grid grid-cols-2">
+				<div
+					data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
+					data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
+					data-aos-anchor-placement="top-right"
+					class="col-start-2 items-end h-auto w-auto mt-10 p-4 bg-slate-200">
+					<h1>data-aos="fade-up"
+						data-aos-easing="linear"
+						data-aos-offset="100"
+						data-aos-delay="50"
+						data-aos-duration="2000"
+						data-aos-mirror="true"
+						data-aos-once="false"
+						data-aos-anchor-placement="top-center"</h1>
+				</div>
 			</div>
-			
-
+			<div class=" grid grid-cols-2">
+				<div
+					data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
+					data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
+					data-aos-anchor-placement="top-right"
+					class="col-start-1 col-end-1 items-end h-auto w-auto mt-10 p-4 bg-slate-200">
+					<h1>data-aos="fade-up"
+						data-aos-easing="linear"
+						data-aos-offset="100"
+						data-aos-delay="50"
+						data-aos-duration="2000"
+						data-aos-mirror="true"
+						data-aos-once="false"
+						data-aos-anchor-placement="top-center"</h1>
+				</div>
+			</div>			
+		  <script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
+		  <script is:inline> 
+			AOS.init();
+		  </script>
+		
 		</div>
 
 		
 </IndexLayout>
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+<script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script is:inline> 
+  AOS.init();
+</script>
 
 
 <!-- Font awesome -->

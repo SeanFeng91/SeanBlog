@@ -56,7 +56,9 @@
 import IndexLayout from '../layouts/IndexLayout.astro';
 import 'animate.css';
 // import 'animate.min.css';
-
+// import 'animate.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; // You can also use <link> for styles
 
 ---
 <style>
@@ -80,9 +82,9 @@ import 'animate.css';
   </h1>
   <div class="text-teal-600 font-serif text-5xl animate__animated animate__wobble">Hello, Animate.css!</div>
 
-  <h1 class="animate__animated animate__lightSpeedInRight">Just-add-water CSS animations(animate__lightSpeedInRight)</h1>
+  <h1 class="animate__animated animate__lightSpeedInRight text-wrap text-ellipsis truncate">Just-add-water CSS animations (animate__lightSpeedInRight)</h1>
 
-  <h1 class="tlt" data-in-effect="rollIn">Textillate.js combines some awesome libraries to provide an easy-to-use plugin for applying CSS3 animations to any text.</h1>
+  <h1 class="tlt text-wrap text-ellipsis" data-in-effect="rollIn">Textillate.js combines some awesome libraries to provide an easy-to-use plugin for applying CSS3 animations to any text.</h1>
   <h1 class="tlt">
     <ul class="texts">
       <li data-out-effect="fadeOut" data-out-shuffle="true">Some Title</li>
@@ -163,11 +165,84 @@ import 'animate.css';
 <!-- 例子效果 -->
     <div id="particles-js"></div>
 
+<!-- 卡片移动效果 -->
 
+        <div class="container" data-aos="fade-up">
+            <h1>Animate on Scroll</h1>
+            <p>This is an example of a div with AOS animation.</p>
+        </div>
+
+        <!-- <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+        <script>
+            // 初始化 AOS
+            AOS.init();
+        </script> -->
+        
+<div data-aos="fade-up" data-aos-anchor=".other-element"></div>
+
+    <div class=" grid grid-cols-2">
+        <div
+            data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
+            data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
+            data-aos-anchor-placement="top-right"
+            class="col-start-2 items-end h-auto w-auto mt-10 p-4 bg-slate-200">
+            <h1>data-aos="fade-up"
+                data-aos-easing="linear"
+                data-aos-offset="100"
+                data-aos-delay="50"
+                data-aos-duration="2000"
+                data-aos-mirror="true"
+                data-aos-once="false"
+                data-aos-anchor-placement="top-center"</h1>
+        </div>
+        <div
+            data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
+            data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
+            data-aos-anchor-placement="top-right"
+            class="col-start-1 col-span-2 items-end h-auto w-1/2 mt-10 p-4 bg-slate-200">
+            <h1>data-aos="fade-up"
+                data-aos-easing="linear"
+                data-aos-offset="100"
+                data-aos-delay="50"
+                data-aos-duration="2000"
+                data-aos-mirror="true"
+                data-aos-once="false"
+                data-aos-anchor-placement="top-center"</h1>
+        </div>
+        <div
+            data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
+            data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
+            data-aos-anchor-placement="top-right"
+            class="col-start-2 items-end h-auto w-auto mt-10 p-4 bg-slate-200">
+            <h1>data-aos="fade-up"
+                data-aos-easing="linear"
+                data-aos-offset="100"
+                data-aos-delay="50"
+                data-aos-duration="2000"
+                data-aos-mirror="true"
+                data-aos-once="true"
+                data-aos-anchor-placement="top-center"</h1>
+        </div>
+   
+    </div>
+        
+
+
+        <script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script is:inline> 
+        AOS.init();
+        </script>
 
   </div>
     
 </IndexLayout>
+<!-- 页面滚动 -->
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+<script type="module" src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script type="module"> 
+  AOS.init();
+</script>
 
 <!-- 字体动画 -->
 <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
