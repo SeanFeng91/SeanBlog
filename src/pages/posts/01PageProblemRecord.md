@@ -8,7 +8,10 @@ image:
     url: ''
     alt: ''
 tags: ["问题记录"]
+import: '../../styles/markdown.css'
 ---
+
+
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 >居然有AI写作功能！
 # MarkDown语法支持
@@ -23,11 +26,28 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 
 修复了不少夜间模式下颜色的bug。可以专门找一个时候整体重新设计一个。现在主要还是在功能布局和样式体验上。
 
-成功的使用了Textillate。并且撰写了使用md和小小尝试。
+成功的使用了Textillate。并且撰写了使用md和小小尝试。需要对md的标注样式进行一个规范，然后看是不是可以统一引入这样。
 
-开始优化左右导航栏的样式
+开始优化左右导航栏的样式，增加了一些icon，调整了展开模式。现在目录比较少，未来可能还是需要考虑<span class="mdhighlight">二级目录展开</span>。要系统性的再调整一次
+为了实现更丰富的标注形式，接下来的文档都将使用mdx格式。因为它可以这样：
+```astro
+    ---
+    layout: ../layouts/BaseLayout.astro
+    title: 关于我
+    ---
+    import Button from '../components/Button.astro';
+    import ReactCounter from '../components/ReactCounter.jsx';
+
+    我住在 **火星** 上，但是随时可以 <Button title="联系我" />。
+
+    这是我的计数器组件，它在 MDX 中工作：
+
+    <ReactCounter client:load />
+```
+vscode安装了MDX插件，现在已经初步实现了<span class="mdhighlight">语法高亮功能</span>。并且成功的传递了css样式。这篇blog转成mdx估计要修改不少内容
 
 - [x] blog页面的导航栏没有居中
+- [ ] 侧边栏小屏幕灰色框放平面尺寸后大不消失问题好像又来了
 
 # 20240723记录
 发现了一个莫名的困难。在astro头部使用了await 之后，后面的script代码不知道为啥就不能正常的加载了！

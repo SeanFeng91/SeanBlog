@@ -1,5 +1,5 @@
 ---
-const allFiles = await Astro.glob('../pages/**/*.md');
+const allFiles = await Astro.glob('../pages/**/*.{md,mdx}');
 import BlogPost from '../components/BlogPost.astro';
 
 // 将文件按目录分组

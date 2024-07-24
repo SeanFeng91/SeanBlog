@@ -32,7 +32,8 @@ import BaseHead from '../components/BaseHead.astro';
     <!-- <div class="bg-white shadow rounded-xl max-h-screen"> -->
       <!-- <div class="backdrop-blur bg-white/60 shadow-sm absolute top-0 left-0 right-0 z-50 py-0 sm:fixed md:transition-all flex justify-center" id="header"> -->
       <!-- <div class="backdrop-blur shadow-sm absolute top-0 left-0 right-0 z-50 py-4 md:fixed md:transition-all"> -->
-        <header class=" flex justify-center border-b dark:border-neutral-700 backdrop-blur shadow-sm top-0 left-0 right-0 z-50 py-2 fixed transition-all" id="header">
+        <div class="flex flex-wrap justify-center border-b dark:border-neutral-700 backdrop-blur shadow-sm top-0 left-0 right-0 z-50 py-2 fixed transition-all" id="header">
+
           <Header2 />
           <div class="lg:hidden md:block w-full border-t mt-2">
             <button type="button" class="mt-2 ml-6 ms-0 py-2 pl-2 pr-2 inline-block items-center gap-x-2 text-sm font-semibold rounded-lg border border-spacing-1
@@ -45,7 +46,7 @@ import BaseHead from '../components/BaseHead.astro';
             </button>
           </div>
 
-        </header>
+        </div>
         
       <!-- </div> -->
       <!-- 主页面 -->
@@ -60,7 +61,6 @@ import BaseHead from '../components/BaseHead.astro';
               </aside>
               <aside class="lg:hidden">
                 <Leftsidebar2 />
-
               </aside>
             <!-- </div> -->
             
