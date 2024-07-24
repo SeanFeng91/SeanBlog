@@ -22,26 +22,31 @@ const blogs = allPosts.filter(file => file.url.includes('/blogs/'));
         </svg>
       </button>
     </div>
-    <div class="p-4">
-      <nav class="text-sm capitalize">
-        <ul class="space-y-5 leading-loose">
-          <li>
-            <h4 class="mt-14 mb-2 lg:mb-3 font-semibold text-slate-900 dark:text-slate-400">记录类blogs</h4>
-            <ul id="leftpostlist" class="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
-              {posts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
-            </ul>
-          </li>
-          <li>
-            <h4 class="mt-14 mb-2 lg:mb-3 font-semibold text-slate-900 dark:text-slate-400">大模型相关blogs</h4>
-            <ul id="leftbloglist" class="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
-              {blogs.map((blog) =><BlogPost url={blog.url} title={blog.frontmatter.title}/>)}
-            </ul>
-          </li>
-        </ul>
-      </nav>
+    <!-- 目录主体部分 -->
+      <div class="p-4">
+        <nav class="text-sm capitalize">
+          <ul class="space-y-5 leading-loose">
+            <li>
+              <h4 class="mt-14 mb-2 lg:mb-3 font-semibold text-slate-900 dark:text-slate-400">记录类blogs1</h4>
+              <ul id="leftpostlist" class="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
+                {posts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
+              </ul>
+            </li>
+            <li>
+              <h4 class="mt-14 mb-2 lg:mb-3 font-semibold text-slate-900 dark:text-slate-400">大模型相关blogs1</h4>
+              <ul id="leftbloglist" class="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
+                {blogs.map((blog) =><BlogPost url={blog.url} title={blog.frontmatter.title}/>)}
+              </ul>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div> 
  </div>
+
+
+
+
 
  
 <style>

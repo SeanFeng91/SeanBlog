@@ -1,10 +1,18 @@
 ---
 const {title, url} =Astro.props
+// 这个是用来读取所有博客标题
 ---
 
-<li id="menu"><a class="menu-link block border-l pl-4 -ml-px border-transparent
+<li id="menu">
+  <a class="menu-link block border-l pl-4 -ml-px border-transparent
      hover:border-slate-400 dark:hover:border-slate-500 
-      hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300" href={url}>·{title}</a></li>
+      hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300" href={url}>
+      <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48">
+        <path fill="#2196f3" d="M17.1 5L14 8.1L29.9 24L14 39.9l3.1 3.1L36 24z" />
+      </svg>
+       {title}
+    </a>
+</li>
 
 
 

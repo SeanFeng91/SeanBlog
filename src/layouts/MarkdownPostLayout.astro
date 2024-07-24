@@ -48,7 +48,7 @@ const { frontmatter } = Astro.props;
 
 <BaseLayout pageTitle={frontmatter.title}>
   <div class="overflow-y-auto flex-1 justify-center items-center">
-    <p class="text-center text-4xl text-pretty">{frontmatter.title}</p>
+    <p class="text-center font-bold text-5xl text-pretty">{frontmatter.title}</p>
     <p class="text-center p-0"><em>{frontmatter.description}</em></p>
     <!-- <p>{frontmatter.pubDate.toString().slice(0,10)}</p> -->
     <p class="text-center">作者: {frontmatter.author}    第一次发表：{frontmatter.pubDate.toString().slice(0,10)}</p>
@@ -152,7 +152,7 @@ const { frontmatter } = Astro.props;
 
   
 </script>
-<!-- 尝试页面内更换字体效果 -->
+<!-- 尝试页面内更换字体效果 没有成功，重新加载那一下有问题-->
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function () {
       const effectSelector = document.getElementById('effect-selector');
@@ -203,28 +203,7 @@ const { frontmatter } = Astro.props;
 
             // in animation settings
             in: {
-              // // set the effect name
-              // effect: 'fadeIn',
-
-              // // set the delay factor applied to each consecutive character
-              // delayScale: 1,
-
-              // // set the delay between each character
-              // delay: 50,
-
-              // // set to true to animate all the characters at the same time
-              // sync: false,
-
-              // // randomize the character sequence
-              // // (note that shuffle doesn't make sense with sync = true)
-              // shuffle: true,
-
-              // // reverse the character sequence
-              // // (note that reverse doesn't make sense with sync = true)
-              // reverse: false,
-
-              // // callback that executes once the animation has finished
-              // callback: function () {}
+    
             },
 
             // out animation settings.

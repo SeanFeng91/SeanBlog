@@ -6,7 +6,7 @@ import BlogPost from '../components/BlogPost.astro';
 // 将文件按目录分组
 const posts = allFiles.filter(file => file.url.includes('/posts/'));
 const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
-
+// 这是lg模式下的导航栏
 ---
 <!-- 
 <div class=" leftsidebar flex items-center justify-between py-2.5 lg:hidden"><a id="toggleDocMenu" class="flex items-center gap-2 text-xs"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentcolor" class="h-6 w-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"></path></svg>Menu</a>
@@ -16,7 +16,7 @@ const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
   
 
   <div class="-ml-2 hidden lg:m-0 lg:block lg:pb-5 lg:pr-4" id="docMenu">
-        <nav class="text-sm capitalize">
+        <!-- <nav class="text-sm capitalize">
           <ul class="space-y-5 leading-loose">
             <li>
               <h4 class="mt-14 mb-2 lg:mb-3 font-semibold text-slate-900 dark:text-slate-400">记录类blogs</h4>
@@ -31,8 +31,55 @@ const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
               </ul>
             </li>
           </ul>
-        </nav>
-</div>
+        </nav> -->
+        <!-- 尝试改写左侧导航栏:收缩模式 -->
+        <div class="mt-10 hs-accordion-group" data-hs-accordion-always-open="">
+          <div class="hs-accordion active" id="hs-basic-always-open-heading-one">
+            <button class="font-bold text-xl hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400" aria-expanded="true" aria-controls="hs-basic-always-open-collapse-one">
+              <svg class="hs-accordion-active:hidden block size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5v14"></path>
+              </svg>
+              <svg class="hs-accordion-active:block hidden size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+              </svg>
+              <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+                <path fill="currentColor" d="M.946 0L2.23 14.4L7.992 16l5.777-1.602L15.055 0zM12.26 4.71H5.502l.161 1.809H12.1l-.485 5.422l-3.623 1.004l-3.618-1.004l-.247-2.774H5.9l.126 1.41l1.967.53l.004-.001l1.968-.531l.204-2.29H4.048l-.476-5.341h8.847l-.158 1.766z" />
+              </svg>
+              网页开发类
+            </button>
+            <div id="hs-basic-always-open-collapse-one" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby="hs-basic-always-open-heading-one">
+              <ul id="leftpostlist" class="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
+                {posts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
+              </ul>
+            </div>
+          </div>
+
+          <div class="hs-accordion active" id="hs-basic-always-open-heading-one">
+            <button class="font-bold text-xl hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400" aria-expanded="true" aria-controls="hs-basic-always-open-collapse-one">
+              <svg class="hs-accordion-active:hidden block size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="M12 5v14"></path>
+              </svg>
+              <svg class="hs-accordion-active:block hidden size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+              </svg>
+              <svg class="inline-block size-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M21 11V9h-2V7a2.006 2.006 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7a2.006 2.006 0 0 0-2 2v2H3v2h2v2H3v2h2v2a2.006 2.006 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2.006 2.006 0 0 0 2-2v-2h2v-2h-2v-2Zm-4 6H7V7h10Z" />
+                <path fill="currentColor" d="M11.361 8h-1.345l-2.01 8h1.027l.464-1.875h2.316L12.265 16h1.062Zm-1.729 5.324L10.65 8.95h.046l.983 4.374ZM14.244 8h1v8h-1z" />
+              </svg>
+              大模型类
+            </button>
+            <div id="hs-basic-always-open-collapse-one" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby="hs-basic-always-open-heading-one">
+              <ul id="leftbloglist" class="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
+                {blogs.map((blog) =><BlogPost url={blog.url} title={blog.frontmatter.title}/>)}
+              </ul>
+            </div>
+          </div>
+        </div>
+  </div>
+
+
 <!-- sm模式左侧导航栏-->
 
 
