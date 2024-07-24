@@ -34,6 +34,7 @@ tailwindcss一些[动画效果](https://cloud.tencent.com/developer/article/2320
 - [gsap](https://gsap.com/docs/v3/GSAP/Tween),任意动画，能力未知
 - [aos](https://michalsnik.github.io/aos/)各种滚动效果 [aos-github](https://github.com/michalsnik/aos)
 - [textillate.js](https://textillate.js.org/)文本动画库，不兼容animate 4.1.1版本，使用了3.7.0一切正常了
+- [Anime.js](https://github.com/juliangarnier/anime/?tab=readme-ov-file#getting-started)很多有意思的动画效果
 
 # 20240722记录
 基本修改了在不同分辨率平面下header自适应问题。图标都靠右显示，nav原来使用collapse，但是会跟header样式有所冲突。改用简单的dropdown代替。对齐的问题主要是通过flex、inline-block、grow、justify-between、item-center等class进行了实现。

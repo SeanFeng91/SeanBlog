@@ -36,7 +36,13 @@ const { frontmatter } = Astro.props;
     justify-content: space-between;
     gap: 2rem;
   }
-
+  .mdhighlight{
+    background-color: rgb(253 186 116);
+    border: 1;
+    border-radius: 0.5rem;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
   /* And more... */
 </style>
 
@@ -143,9 +149,26 @@ const { frontmatter } = Astro.props;
       });
     });
   });
+
+  
 </script>
+<!-- 尝试页面内更换字体效果 -->
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function () {
+      const effectSelector = document.getElementById('effect-selector');
+      const textElement = document.getElementById('text-element');
 
+      effectSelector.addEventListener('change', function () {
+          const selectedEffect = effectSelector.value;
+          textElement.setAttribute('data-in-effect', selectedEffect);
+          // Re-initialize Textillate.js to apply the new effect
+          $(textElement).textillate('in');
+      });
 
+      // Initialize Textillate.js
+      $(textElement).textillate();
+  });
+</script>
 
 <!-- 字体动画 -->
 <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -180,39 +203,39 @@ const { frontmatter } = Astro.props;
 
             // in animation settings
             in: {
-              // set the effect name
-              effect: 'fadeIn',
+              // // set the effect name
+              // effect: 'fadeIn',
 
-              // set the delay factor applied to each consecutive character
-              delayScale: 1,
+              // // set the delay factor applied to each consecutive character
+              // delayScale: 1,
 
-              // set the delay between each character
-              delay: 50,
+              // // set the delay between each character
+              // delay: 50,
 
-              // set to true to animate all the characters at the same time
-              sync: false,
+              // // set to true to animate all the characters at the same time
+              // sync: false,
 
-              // randomize the character sequence
-              // (note that shuffle doesn't make sense with sync = true)
-              shuffle: true,
+              // // randomize the character sequence
+              // // (note that shuffle doesn't make sense with sync = true)
+              // shuffle: true,
 
-              // reverse the character sequence
-              // (note that reverse doesn't make sense with sync = true)
-              reverse: false,
+              // // reverse the character sequence
+              // // (note that reverse doesn't make sense with sync = true)
+              // reverse: false,
 
-              // callback that executes once the animation has finished
-              callback: function () {}
+              // // callback that executes once the animation has finished
+              // callback: function () {}
             },
 
             // out animation settings.
             out: {
-              effect: 'bounceOut',
-              delayScale: 1.5,
-              delay: 50,
-              sync: false,
-              shuffle: true,
-              reverse: false,
-              callback: function () {}
+              // effect: 'bounceOut',
+              // delayScale: 1.5,
+              // delay: 50,
+              // sync: false,
+              // shuffle: true,
+              // reverse: false,
+              // callback: function () {}
             },
 
             // callback that executes once textillate has finished
