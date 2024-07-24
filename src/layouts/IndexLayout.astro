@@ -6,6 +6,7 @@ import "../styles/global.css";
 const { pageTitle } = Astro.props;
 import BaseHead from '../components/BaseHead.astro';
 // const baseUrl = import.meta.env.BASE_URL;
+// 此页面是首页及无左右侧导航栏的基础页面样式
 ---
 
 <html lang="zh-cn" class="overflow-x-hidden overflow-y-scroll  
@@ -24,7 +25,7 @@ import BaseHead from '../components/BaseHead.astro';
     <BaseHead  />
 
   </head>
-  <body class="flex-grow bg-gradient-to-t from-lime-50 to-sky-100  text-secondary-500 antialiased overflow-y-visiable  dark:bg-neutral-800 dark:text-slate-200 min-h-screen">
+  <body class="flex-grow bg-gradient-to-t from-lime-50 to-sky-100 dark:from-slate-800 dark:to-sky-800 text-secondary-500 antialiased overflow-y-visiable  dark:bg-neutral-800 dark:text-slate-200 min-h-screen">
     <!-- 头部 -->
     <div class="flex justify-center border-b dark:border-neutral-700 backdrop-blur shadow-sm top-0 left-0 right-0 z-50 py-2 fixed transition-all" id="header">
       <Header2 />

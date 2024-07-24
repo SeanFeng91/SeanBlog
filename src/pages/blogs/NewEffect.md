@@ -17,4 +17,4 @@ tags: ["astro", "blogging", "CSS"]
 
 <div class="tlt text-3xl" data-in-effect="fadeIn">This is an example of Textillate.js in Markdown</div>
 
-如何一切正常，上面会有一句fadeIn的文字
+如何一切正常，上面会有一句fadeIn的文字,成功了。
