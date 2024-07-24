@@ -84,17 +84,27 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 
   <h1 class="animate__animated animate__lightSpeedInRight text-wrap text-ellipsis truncate">Just-add-water CSS animations (animate__lightSpeedInRight)</h1>
 
-  <h1 class="tlt text-wrap text-ellipsis" data-in-effect="rollIn">Textillate.js combines some awesome libraries to provide an easy-to-use plugin for applying CSS3 animations to any text.</h1>
-  <h1 class="tlt">
+  <h1 class="tlt text-wrap text-ellipsis">Textillate.js combines some awesome libraries to provide an easy-to-use plugin for applying CSS3 animations to any text.</h1>
+  <!-- <h1 class="tlt2">
     <ul class="texts">
       <li data-out-effect="fadeOut" data-out-shuffle="true">Some Title</li>
       <li data-in-effect="fadeIn">Another Title</li>
     </ul>
-  </h1>
-
+  </h1> -->
+  <!-- <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script>
+<script type="module" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="module" src="https://cdn.rawgit.com/jschr/textillate/master/jquery.textillate.js"></script>
+  <script is:inline>
+        $(function () {
+        $('.tlt').textillate( {selector: '.texts3', in: { effect: 'fadeInDownBig' } });
+    })
+  </script> -->
+  <h1 class="tlt" data-in-effect="fadeInDownBig">Title</h1>
+    
 
   <div class="m-10">
-    <!-- component 三个动态按钮 -->
+    <!-- component 动态按钮 -->
     <div class='flex flex-col items-center justify-center  gap-6 '>
       <div class='button w-40 h-16 bg-blue-500 rounded-lg cursor-pointer select-none
         active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
@@ -104,24 +114,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
         <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '>Active</span>
       </div>
 
-      <!-- <div class='button w-40 h-16 bg-blue-500  cursor-pointer select-none
-        active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
-        active:border-b-[0px]
-        transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
-        rounded-full  border-[1px] border-blue-400
-        
-      '>
-        <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '>Love Me</span>
-      </div>
-
-      <div class='button w-16 h-16 bg-blue-500 rounded-full cursor-pointer select-none
-        active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
-        active:border-b-[0px]
-        transition-all duration-150 [box-shadow:0_8px_0_0_#1b6ff8,0_13px_0_0_#1b70f841]
-        border-[1px] border-blue-400
-      '>
-        <span class='flex flex-col justify-center items-center h-full text-white font-bold text-lg '>?</span>
-      </div> -->
+     
     </div>
   </div>
 
@@ -178,7 +171,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
             AOS.init();
         </script> -->
         
-<div data-aos="fade-up" data-aos-anchor=".other-element"></div>
+<!-- <div data-aos="fade-up" data-aos-anchor=".other-element"></div> -->
 
     <div class=" grid grid-cols-2">
         <div
@@ -251,7 +244,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 <script type="module" src="https://cdn.rawgit.com/jschr/textillate/master/jquery.textillate.js"></script>
     <script type="module">
         $(document).ready(function () {
-          $('.tlt').textillate({
+            $('.tlt').textillate({
             // the default selector to use when detecting multiple texts to animate
             selector: '.texts',
 
@@ -259,7 +252,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
             loop: true,
 
             // sets the minimum display time for each text before it is replaced
-            minDisplayTime: 2000,
+            minDisplayTime: 1000,
 
             // sets the initial delay before starting the animation
             // (note that depending on the in effect you may need to manually apply
@@ -271,7 +264,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 
             // custom set of 'in' effects. This effects whether or not the
             // character is shown/hidden before or after an animation
-            inEffects: [],
+            inEffects: ['wobble'],
 
             // custom set of 'out' effects
             outEffects: [ 'hinge' ],
@@ -279,7 +272,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
             // in animation settings
             in: {
               // set the effect name
-              effect: 'fadeInLeftBig',
+              effect: 'flip',
 
               // set the delay factor applied to each consecutive character
               delayScale: 1.5,
@@ -304,7 +297,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 
             // out animation settings.
             out: {
-              effect: 'fadeOut',
+              effect: 'wobble',
               delayScale: 1.5,
               delay: 50,
               sync: false,
@@ -320,6 +313,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
             type: 'char'
           });
         });
+        
     </script>
 
 <!-- 粒子动画 -->

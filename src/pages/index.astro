@@ -133,8 +133,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 			{allPosts.map((indexcard,index)=>
 				<div 
 					data-aos="fade-up" data-aos-offset="200" data-aos-delay={index*600}
-					data-aos-duration="600" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
-					data-aos-anchor-placement="top-right"
+					data-aos-duration="1000" 
 					class=" min-w-sm border rounded-lg p-4 min-h-60 bg-white dark:bg-neutral-100 shadow-sm ">
 				<h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
 				<h2 class="nav-links mt-1 text-2xl font-bold hover:text-blue-900 ">
@@ -190,12 +189,27 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 					<p class="max-w-md">Accessible, interactive examples for React and Vue powered by Headless UI, plus vanilla HTML if you’d rather write any necessary JS yourself.</p>
 				</div>
 			</div> -->
-			<div class=" grid grid-cols-2">
+			<!-- 浮动效果div -->
+			<div class=" grid grid-cols-1 md:grid-cols-2">
 				<div
 					data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
 					data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
 					data-aos-anchor-placement="top-right"
-					class="col-start-2 items-end h-auto w-auto mt-10 p-4 bg-slate-200">
+					class="md:col-start-2 items-end h-auto w-auto mt-10 p-4 bg-slate-200">
+					<h1>data-aos="fade-up"
+						data-aos-easing="linear"
+						data-aos-offset="100"
+						data-aos-delay="50"
+						data-aos-duration="2000"
+						data-aos-mirror="true"
+						data-aos-once="false"
+						data-aos-anchor-placement="top-center"</h1>
+				</div>
+				<div
+					data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
+					data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
+					data-aos-anchor-placement="top-right"
+					class="md:col-start-1  items-end h-auto w-full mt-10 p-4 bg-slate-200">
 					<h1>data-aos="fade-up"
 						data-aos-easing="linear"
 						data-aos-offset="100"
@@ -206,22 +220,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 						data-aos-anchor-placement="top-center"</h1>
 				</div>
 			</div>
-			<div class=" grid grid-cols-2">
-				<div
-					data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
-					data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
-					data-aos-anchor-placement="top-right"
-					class="col-start-1 col-end-1 items-end h-auto w-auto mt-10 p-4 bg-slate-200">
-					<h1>data-aos="fade-up"
-						data-aos-easing="linear"
-						data-aos-offset="100"
-						data-aos-delay="50"
-						data-aos-duration="2000"
-						data-aos-mirror="true"
-						data-aos-once="false"
-						data-aos-anchor-placement="top-center"</h1>
-				</div>
-			</div>			
+			
 		  <script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
 		  <script is:inline> 
 			AOS.init();
