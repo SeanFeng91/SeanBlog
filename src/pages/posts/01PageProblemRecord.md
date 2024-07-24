@@ -19,7 +19,13 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
 # 20240724记录
-尝试使用aos对页面的div进行动态滚动尝试。并且使用grid规划div位置
+尝试使用aos对页面的div进行动态滚动尝试。并且使用grid规划div位置。
+
+修复了不少夜间模式下颜色的bug。可以专门找一个时候整体重新设计一个。现在主要还是在功能布局和样式体验上。
+
+AOS的各种效果非常不错。现在div块使用了很多fadein。
+
+成功的使用了Textillate。并且撰写了使用md和小小尝试。
 
 # 20240723记录
 发现了一个莫名的困难。在astro头部使用了await 之后，后面的script代码不知道为啥就不能正常的加载了！
