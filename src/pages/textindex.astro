@@ -54,7 +54,7 @@
 // const currentPath = Astro.url.pathname;
 
 import IndexLayout from '../layouts/IndexLayout.astro';
-import 'animate.css';
+// import 'animate.css';
 // import 'animate.min.css';
 // import 'animate.css';
 import AOS from 'aos';
@@ -84,13 +84,13 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 
   <h1 class="animate__animated animate__lightSpeedInRight text-wrap text-ellipsis truncate">Just-add-water CSS animations (animate__lightSpeedInRight)</h1>
 
-  <h1 class="tlt text-wrap text-ellipsis">Textillate.js combines some awesome libraries to provide an easy-to-use plugin for applying CSS3 animations to any text.</h1>
-  <!-- <h1 class="tlt2">
+  <h1 class="tlt texts2 text-wrap text-ellipsis">Textillate.js combines some awesome libraries to provide an easy-to-use plugin for applying CSS3 animations to any text.</h1>
+  <h1 class="tlt2">
     <ul class="texts">
       <li data-out-effect="fadeOut" data-out-shuffle="true">Some Title</li>
       <li data-in-effect="fadeIn">Another Title</li>
     </ul>
-  </h1> -->
+  </h1>
   <!-- <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script>
 <script type="module" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -100,7 +100,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
         $('.tlt').textillate( {selector: '.texts3', in: { effect: 'fadeInDownBig' } });
     })
   </script> -->
-  <h1 class="tlt" data-in-effect="fadeInDownBig">Title</h1>
+  <h1 class="tlt texts3" data-in-effect="fadeInDownBig">Title</h1>
     
 
   <div class="m-10">
@@ -241,12 +241,13 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
 <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script>
 <!-- <script type="module" src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" integrity="sha512-YTL2qFiv2wZNnC764l1DD5zN6lYxDzJ89Ss6zj6YoYIzr6+zwjdVKM1sUR+971X3h7qWCa9cPUBXyYqhOqWWLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script type="module" src="https://cdn.rawgit.com/jschr/textillate/master/jquery.textillate.js"></script>
     <script type="module">
         $(document).ready(function () {
-            $('.tlt').textillate({
+            $('.tlt2').textillate({
             // the default selector to use when detecting multiple texts to animate
-            selector: '.texts',
+            selector: '.texts3',
 
             // enable looping
             loop: true,
@@ -272,7 +273,7 @@ import 'aos/dist/aos.css'; // You can also use <link> for styles
             // in animation settings
             in: {
               // set the effect name
-              effect: 'flip',
+              effect: 'fadeIn',
 
               // set the delay factor applied to each consecutive character
               delayScale: 1.5,
