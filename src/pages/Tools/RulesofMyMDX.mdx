@@ -1,0 +1,69 @@
+---
+layout: '../../layouts/MarkdownPostLayout.astro'
+title: '我博客的MDX撰写样式规范'
+discription: '尝试在此对我需要的文章中的文字样式进行统一规范说明，这样我就可以重复利用对应JSX和CSS组件了。'
+
+author: Sean Feng
+pubDate: 2024-07-10
+tags: ["CSS","MDX"]
+
+---
+
+
+
+尝试在此对我需要的文章中的文字样式进行统一规范说明，这样我就可以重复利用对应JSX和CSS组件了。
+
+通过编写markdown.css规范所有markdown文本的样式，并且在 MarkdownPostLayout.astro 的顶部引入该css。以此作为模板的所有md/mdx文档将统一使用该规范。
+
+# 一级目录
+<span class="mdhighlight">一级目录样式：</span>
+```astro
+    .nav-links h1 a {
+        font-size: 2rem;
+        color:rgb(0, 0, 0);
+        text-decoration-line: none;
+        text-wrap: pretty;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 700;
+        font-family: "Times New Roman";
+    }
+```
+
+
+
+
+# 一级标题
+这是一个段落。现在因为增加了标题链接导致我在设置样式的时候出现了比较多的困难。包括我怎么都设置不了h1-h6的margin,不知道哪里传递了一个值始终覆盖不掉
+## 二级标题
+这是一个段落
+### 三级标题
+这是一个段落
+#### 四级标题
+这是一个段落
+##### 五级标题
+这是一个段落
+###### 六级标题
+这是一个段落
+
+
+这是一个段落。这里是一些[链接](https://example.com)的示例。
+
+
+
+这是另一个段落。使用**粗体**和*斜体*来强调文本。
+
+
+
+这是一个引用块：
+
+> 这是一个引用。
+
+这是一个代码块：
+
+```javascript
+    function greet() {
+    console.log("Hello, World!");
+    }
+```

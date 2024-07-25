@@ -39,6 +39,10 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 ```
 最后一个效果，筛选加载之后卡片也是淡入的居然没通过直接实现AOS.init()
 
+- [ ] 接下来可以尝试为自己的mdx文档编写一套样式规范。使自己的博客更具可读性。
+- [ ] 梳理已有文档的目录格式。
+- [ ] 尝试设置anchor
+- [ ] 随着目录增加，左侧导航栏要修改的更智能一点。更利于编辑。包括Header
 
 # 20240724记录
 尝试使用aos对页面的div进行动态滚动尝试。并且使用grid规划div位置。AOS的各种效果非常不错。现在div块使用了很多fadein。
@@ -109,12 +113,12 @@ tailwindcss一些[动画效果](https://cloud.tencent.com/developer/article/2320
 新增加了Footer,修复了header过宽的bug
 
 ## 宝藏网站
-### [Tailwindcomponents](https://tailwindcomponents.com/)
-### [挑选渐变色](https://tailwindcomponents.com/gradient-generator/)
-### [3D CSS](https://xpd-kasun.github.io/tailwind-3dtransform-plugin/)
-### [Material Tailwind](https://www.material-tailwind.com/docs/react/installation)
-### [AstroLaunch UI](https://www.creative-tim.com/learning-lab/astro/quick-start/astro-launch-ui/) 
-### [TailwindCSS 中文](https://tailwind.docs.73zls.com/docs/animation#spin)
+- [Tailwindcomponents](https://tailwindcomponents.com/)
+- [挑选渐变色](https://tailwindcomponents.com/gradient-generator/)
+- [3D CSS](https://xpd-kasun.github.io/tailwind-3dtransform-plugin/)
+- [Material Tailwind](https://www.material-tailwind.com/docs/react/installation)
+- [AstroLaunch UI](https://www.creative-tim.com/learning-lab/astro/quick-start/astro-launch-ui/) 
+- [TailwindCSS 中文](https://tailwind.docs.73zls.com/docs/animation#spin)
     意思是这个astro 写的？
 
 
