@@ -66,14 +66,14 @@ const pageTitle = "Tag Index";
     letter-spacing: 0.025em;
     font-size: 1.0rem; /* 18px */
     line-height: 1.75rem; /* 28px */
-  }
-  
-  .tags {
+}
+
+.tags {
     display: flex;
     flex-wrap: wrap;
-  }
-  
-  .tag {
+}
+
+.tag {
     margin: 0.25em;
     border: solid #000000;
     border-radius: 9999px;
@@ -84,12 +84,14 @@ const pageTitle = "Tag Index";
     border-width: 2px;
     background-clip: text;
     cursor: pointer;
-  }
-  
-  .tag.selected {
+    -webkit-tap-highlight-color: transparent; /* 确保在触摸设备上没有点击高亮效果 */
+}
+
+.tag.selected {
     background-color: #000000;
     color: #ffffff;
-  }
+}
+
 </style>
 
 <script>
@@ -99,38 +101,43 @@ const pageTitle = "Tag Index";
     let selectedTags = new Set();
 
     function filterPosts() {
-      if (selectedTags.size === 0 || selectedTags.has('all')) {
-        posts.forEach(post => post.style.display = 'block');
-      } else {
-        posts.forEach(post => {
-          const postTags = post.getAttribute('data-tags').split(',');
-          const hasAllTags = Array.from(selectedTags).every(tag => postTags.includes(tag));
-          post.style.display = hasAllTags ? 'block' : 'none';
-        });
-      }
+        if (selectedTags.size === 0 || selectedTags.has('all')) {
+            posts.forEach(post => post.style.display = 'block');
+        } else {
+            posts.forEach(post => {
+                const postTags = post.getAttribute('data-tags').split(',');
+                const hasAllTags = Array.from(selectedTags).every(tag => postTags.includes(tag));
+                post.style.display = hasAllTags ? 'block' : 'none';
+            });
+        }
+    }
+
+    function handleButtonClick(event) {
+        const button = event.currentTarget;
+        const tag = button.getAttribute('data-tag');
+        if (tag === 'all') {
+            selectedTags.clear();
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+        } else {
+            if (selectedTags.has(tag)) {
+                selectedTags.delete(tag);
+                button.classList.remove('selected');
+            } else {
+                selectedTags.add(tag);
+                button.classList.add('selected');
+            }
+            document.querySelector('.tag[data-tag="all"]').classList.remove('selected');
+        }
+        filterPosts();
     }
 
     buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        const tag = button.getAttribute('data-tag');
-        if (tag === 'all') {
-          selectedTags.clear();
-          buttons.forEach(btn => btn.classList.remove('selected'));
-          button.classList.add('selected');
-        } else {
-          if (selectedTags.has(tag)) {
-            selectedTags.delete(tag);
-            button.classList.remove('selected');
-          } else {
-            selectedTags.add(tag);
-            button.classList.add('selected');
-          }
-          document.querySelector('.tag[data-tag="all"]').classList.remove('selected');
-        }
-        filterPosts();
-      });
+        button.addEventListener('click', handleButtonClick);
+        button.addEventListener('touchstart', handleButtonClick); // 添加触摸事件监听器
     });
 
     filterPosts();
-  });
+});
+
 </script>
