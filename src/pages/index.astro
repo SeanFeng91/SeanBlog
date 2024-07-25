@@ -36,7 +36,7 @@ const pageTitle = "SeanBlog";
 				<Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari"]}/>
 			</h2> -->
 		<!-- component 庆祝的按钮-->
-		<div class=" flex-col min-w-screen flex items-center justify-center">
+		<div class=" flex-col w-auto flex items-center justify-center">
 			<!-- Title -->
 			<div class="p-4 rounded-md drop-shadow-2xl flex flex-col space-y-4">
 			  <div class="flex items-start space-x-4">
@@ -53,7 +53,7 @@ const pageTitle = "SeanBlog";
 			</div>
 		</div>
 		<!-- 彩穗穗 -->
-		<canvas :class="isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-[100%]'" id="my-canvas" class="absolute pointer-events-none"></canvas>
+		<canvas :class="isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-[100%]'" id="my-canvas" class="absolute w-auto pointer-events-none"></canvas>
 
 
 
