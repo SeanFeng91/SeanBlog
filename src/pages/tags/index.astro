@@ -16,10 +16,10 @@ const pageTitle = "Tag Index";
         <p class="text-sm">（标题用了bg-clip-text，文字扣背景颜色）</p>
       </div>
       
-      <div id="tags">
-        <button class="tag" data-tag="all">All</button>
+      <div id="tags" class="flex">
+        <div class="tag bg-red-50" data-tag="all">All</div>
         {tags.map(tag => (
-          <button class="tag" data-tag={tag}>{tag}</button>
+          <div class="tag bg-red-50" data-tag={tag}>{tag}</div>
         ))}
       </div>
       
@@ -68,6 +68,8 @@ const pageTitle = "Tag Index";
     line-height: 1.75rem; /* 28px */
 }
 
+
+
 .tags {
     display: flex;
     flex-wrap: wrap;
@@ -80,9 +82,8 @@ const pageTitle = "Tag Index";
     padding-left: 20px;
     padding-right: 20px;
     font-size: 1.15em;
-    background-color: transparent;
+    /* background-color: transparent; */
     border-width: 2px;
-    background-clip: text;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent; /* 确保在触摸设备上没有点击高亮效果 */
 }
@@ -94,50 +95,62 @@ const pageTitle = "Tag Index";
 
 </style>
 
-<script>
+<script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.tag');
-    const posts = document.querySelectorAll('.post');
-    let selectedTags = new Set();
+  const tags = document.querySelectorAll('.tag');
+  const posts = document.querySelectorAll('.post');
+  let selectedTags = new Set(); // 初始化时不选择任何标签
 
-    function filterPosts() {
-        if (selectedTags.size === 0 || selectedTags.has('all')) {
-            posts.forEach(post => post.style.display = 'block');
-        } else {
-            posts.forEach(post => {
-                const postTags = post.getAttribute('data-tags').split(',');
-                const hasAllTags = Array.from(selectedTags).every(tag => postTags.includes(tag));
-                post.style.display = hasAllTags ? 'block' : 'none';
-            });
-        }
+  function filterPosts() {
+    if (selectedTags.size === 0 || selectedTags.has('all')) {
+      posts.forEach(post => post.style.display = 'block');
+    } else {
+      posts.forEach(post => {
+        const postTags = post.getAttribute('data-tags').split(',');
+        const hasAllSelectedTags = Array.from(selectedTags).every(selectedTag => postTags.includes(selectedTag));
+        post.style.display = hasAllSelectedTags ? 'block' : 'none';
+      });
     }
+  }
 
-    function handleButtonClick(event) {
-        const button = event.currentTarget;
-        const tag = button.getAttribute('data-tag');
-        if (tag === 'all') {
-            selectedTags.clear();
-            buttons.forEach(btn => btn.classList.remove('selected'));
-            button.classList.add('selected');
-        } else {
-            if (selectedTags.has(tag)) {
-                selectedTags.delete(tag);
-                button.classList.remove('selected');
-            } else {
-                selectedTags.add(tag);
-                button.classList.add('selected');
-            }
-            document.querySelector('.tag[data-tag="all"]').classList.remove('selected');
-        }
-        filterPosts();
+  function handleTagClick(event) {
+    const clickedTag = event.currentTarget;
+    const tagName = clickedTag.getAttribute('data-tag');
+
+    if (tagName === 'all') {
+      if (selectedTags.has('all')) {
+        selectedTags.delete('all');
+        clickedTag.classList.remove('selected');
+      } else {
+        selectedTags.clear();
+        selectedTags.add('all');
+        tags.forEach(tag => tag.classList.remove('selected'));
+        clickedTag.classList.add('selected');
+      }
+    } else {
+      if (selectedTags.has(tagName)) {
+        selectedTags.delete(tagName);
+        clickedTag.classList.remove('selected');
+      } else {
+        selectedTags.add(tagName);
+        clickedTag.classList.add('selected');
+        document.querySelector('.tag[data-tag="all"]').classList.remove('selected');
+        selectedTags.delete('all');
+      }
     }
-
-    buttons.forEach(button => {
-        button.addEventListener('click', handleButtonClick);
-        button.addEventListener('touchstart', handleButtonClick); // 添加触摸事件监听器
-    });
-
     filterPosts();
+  }
+
+  tags.forEach(tag => {
+    tag.addEventListener('click', handleTagClick);
+    tag.addEventListener('touchstart', handleTagClick);
+  });
+
+  // 默认显示所有博客并选中 'All' 标签
+  const allTag = document.querySelector('.tag[data-tag="all"]');
+  allTag.classList.add('selected');
+  selectedTags.add('all');
+  filterPosts();
 });
 
 </script>
