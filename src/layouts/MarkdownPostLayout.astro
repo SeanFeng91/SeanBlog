@@ -48,7 +48,7 @@ const { frontmatter } = Astro.props;
 
 <BaseLayout pageTitle={frontmatter.title}>
   <div class="overflow-y-auto flex-1 justify-center items-center">
-    <p class="text-center font-bold text-5xl m-0 mb-10 text-pretty">{frontmatter.title}</p>
+    <p class="text-center font-bold text-5xl sm:mt-10 lg:mt-0 mb-10 text-pretty">{frontmatter.title}</p>
     <p class="text-center p-0"><em>{frontmatter.description}</em></p>
     <!-- <p>{frontmatter.pubDate.toString().slice(0,10)}</p> -->
     <p class="text-center">作者: {frontmatter.author}    第一次发表：{frontmatter.pubDate.toString().slice(0,10)}</p>

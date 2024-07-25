@@ -27,6 +27,17 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 
 非常成功第添加了真正的博客首页，实现了tags的筛选功能。现在就是要在每个文章里面好好梳理tags。并且看是不是在正文页面引入tags-关键词
 
+博客查看页面顶部对齐的矛盾。现在因为小屏幕情况下多一个顶部按钮。sm:mt-10 lg:mt-0基本解决。
+标题用了bg-clip-text，文字扣背景颜色
+<span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+    Hello world!
+</span>
+```astro
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+          Hello world!
+        </span>
+```
+
 # 20240724记录
 尝试使用aos对页面的div进行动态滚动尝试。并且使用grid规划div位置。AOS的各种效果非常不错。现在div块使用了很多fadein。
 
