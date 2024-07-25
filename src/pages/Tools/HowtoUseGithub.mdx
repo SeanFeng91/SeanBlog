@@ -1,7 +1,7 @@
 ---
 layout: '../../layouts/MarkdownPostLayout.astro'
-title: '关于md类文件标题anchor的探索'
-discription: '尝试探索了解标题anchor，slug等相关信息。'
+title: 'MAC编程环境配置记录'
+description: '之前只是在mac上安装了python，最近使用了其他很多的语言，希望系统性记录一下安装的内容和部署的心得，方便以后重新更换时候查阅'
 
 author: Sean Feng
 pubDate: 2024-07-10
@@ -18,7 +18,7 @@ import '../../styles/markdown.css'
 - 下载[官网](https://www.anaconda.com)
 这次下载完里面没有VScode还挺奇怪的
 # 3. Github
-```github
+```astro
     git config -–globaluser.name'xxxxx'
     git config -–globaluser.email'xxxxx'
     ssh-keygen -t rsa -C email
@@ -27,3 +27,12 @@ import '../../styles/markdown.css'
 ```
 
 # 4. NodeJS
+- 下载[官网](https://nodejs.org/zh-cn)
+更换源：npm config set registry https://mirrors.huaweicloud.com/repository/npm/
+ 
+# 5. Astro
+npm install astro不好用，好像会装4.15.0
+npm create astro@latest 安装的是4.8.0
+
+# 6. Cursor
+- 下载[官网](https://www.cursor.com/pricing)
