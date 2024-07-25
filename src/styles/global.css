@@ -73,6 +73,12 @@ html.dark {
   color: rgb(216, 79, 0); 
 }
 
+/* 链接样式 */
+.nav-links p a {
+  color: rgb(37 99 235);
+  text-decoration: none;
+}
+
 
 /* gpt样式 */
 

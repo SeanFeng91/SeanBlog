@@ -27,6 +27,7 @@
     "astro": "^4.11.5",
     "astro-icon": "^1.1.0",
     "dotenv": "^16.4.5",
+    "gatsby-remark-autolink-headers": "^6.13.1",
     "marked": "^13.0.2",
     "openai": "^4.52.7",
     "particles.js": "^2.0.0",

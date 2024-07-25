@@ -53,7 +53,7 @@ const pageTitle = "SeanBlog";
 			</div>
 		</div>
 		<!-- 彩穗穗 -->
-		<canvas :class="flex flex-wrap isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-[100%]'" id="my-canvas" class="absolute w-auto pointer-events-none"></canvas>
+		<canvas :class=" isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-[100%]'" id="my-canvas" class="absolute w-auto pointer-events-none"></canvas>
 
 
 
@@ -121,7 +121,7 @@ const pageTitle = "SeanBlog";
 					class=" min-w-sm border dark:border-sky-800 rounded-lg p-4 min-h-60 bg-gradient-to-t from-sky-50 to-sky-0 dark:from-sky-950 dark:to-sky-900 shadow-sm ">
 				<h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
 				<h2 class="nav-links mt-1 text-2xl text-balance leading-tight font-bold hover:text-blue-900 ">
-					<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
+					<a class="no-underline" href={indexcard.url}>{indexcard.frontmatter.title}</a>
 				</h2>
 				<p class="text-sm italic tracking-normal text-pretty indent-8 leading-relaxed dark:text-slate-200">
 					{indexcard.frontmatter.description}
@@ -205,11 +205,6 @@ const pageTitle = "SeanBlog";
 				</div>
 			</div>
 			
-		  <script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
-		  <script is:inline> 
-			AOS.init();
-		  </script>
-		
 		</div>
 
 		

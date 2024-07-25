@@ -143,7 +143,12 @@ p {
 
 /* 锚点样式 */
 
-h1 a::after, h2 a::after, h3 a::after, h4 a::after, h5 a::after, h6 a::after {
+.nav-links h1 a::after,
+.nav-links h2 a::after,
+.nav-links h3 a::after,
+.nav-links h4 a::after,
+.nav-links h5 a::after,
+.nav-links h6 a::after {
   content: '#';
   position: relative;
   left: 0.5rem;

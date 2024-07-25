@@ -31,10 +31,11 @@ const pageTitle = "Tag Index";
             <div class="post" data-tags={indexcard.frontmatter.tags.join(',')}>
               <div data-aos="fade-up" data-aos-offset="200" data-aos-delay={index*600}
 					        data-aos-duration="1000" 
-                  class="min-w-sm border grid  dark:border-sky-800 rounded-lg p-4 min-h-60 bg-gradient-to-t from-sky-50 to-sky-0 dark:from-sky-950 dark:to-sky-900 shadow-sm">
+                  class="min-w-sm border grid  dark:border-sky-800 rounded-lg p-4 min-h-70  shadow-sm">
+                    {/* bg-gradient-to-t from-sky-50 to-sky-0 dark:from-sky-950 dark:to-sky-900 */}
                 <h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
                 <h2 class="nav-links mt-1 text-2xl text-balance leading-tight font-bold hover:text-blue-900">
-                  <a href={indexcard.url}>{indexcard.frontmatter.title}</a>
+                  <a class="no-underline font-bold" href={indexcard.url}>{indexcard.frontmatter.title}</a>
                 </h2>
                 <p class="line-clamp-3  text-sm italic tracking-normal  indent-8 leading-relaxed dark:text-slate-200">
                   {indexcard.frontmatter.description}
