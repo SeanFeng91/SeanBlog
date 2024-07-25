@@ -1,34 +1,136 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-// const tags = ['astro', 'blogging', 'learning in public', 'successes', 'setbacks', 'community']
-const allPosts = await Astro.glob('../posts/*.md');
+import IndexLayout from '../../layouts/IndexLayout.astro';
+const allPosts = await Astro.glob('../**/*.{md,mdx}');
 const tags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
 
 const pageTitle = "Tag Index";
+// 这是tag首页，用来blog导航
 ---
-<BaseLayout pageTitle={pageTitle}>
-    <div class="tags">
-      {tags.map((tag) => (
-        <p class="tag"><a href={`/SeanBlog/tags/${tag}`}>{tag}</a></p>
-      ))}
+<IndexLayout pageTitle={pageTitle}>
+    <div slot="maindiv" >
+      <div class="text-5xl font-extrabold ...">
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+          Hello world!
+          尝试用tags记录博客分类
+        </span>
+        <p class="text-sm">（标题用了bg-clip-text，文字扣背景颜色）</p>
+      </div>
+      
+      <div id="tags">
+        <button class="tag" data-tag="all">All</button>
+        {tags.map(tag => (
+          <button class="tag" data-tag={tag}>{tag}</button>
+        ))}
+      </div>
+      
+      <div id="posts" class="mt-10 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-y-10 gap-x-5 dark:text-cyan-50">
+        {allPosts.map((indexcard, index) =>
+          <div class="post" data-tags={indexcard.frontmatter.tags.join(',')}>
+            <div class="min-w-sm border dark:border-sky-800 rounded-lg p-4 min-h-60 bg-gradient-to-t from-sky-50 to-sky-0 dark:from-sky-950 dark:to-sky-900 shadow-sm">
+              <h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
+              <h2 class="nav-links mt-1 text-2xl text-balance leading-tight font-bold hover:text-blue-900">
+                <a href={indexcard.url}>{indexcard.frontmatter.title}</a>
+              </h2>
+              <p class="text-sm italic tracking-normal text-pretty indent-8 leading-relaxed dark:text-slate-200">
+                {indexcard.frontmatter.description}
+              </p>
+            </div>
+            <div>
+              <p class="p-0 mt-2 mb-0 ml-2 font-bold text-slate-400">文档分类：</p>
+              {indexcard.frontmatter.tags.map((blogtags) => (
+                <div class="inline-block mt-1">
+                  <p class="m-0 text-lg font-light">
+                    <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+                      <path fill="currentColor" d="M9.737.854L3.69 8l6.047 7.146l1.526-1.292L6.31 8l4.953-5.854z" />
+                    </svg>
+                    {blogtags}
+                    <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
+                      <path fill="currentColor" d="M6.263 15.146L12.31 8L6.263.854L4.737 2.146L9.69 8l-4.953 5.854z" />
+                    </svg>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
-  </BaseLayout>
-  <style>
-    a {
-      color: #00539F;
-    }
+</IndexLayout>
+
+<style>
+  .tags a {
+    color: #000000;
+    text-decoration-line: none;
+    font-family: sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.025em;
+    font-size: 1.0rem; /* 18px */
+    line-height: 1.75rem; /* 28px */
+  }
   
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-    }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
   
-    .tag {
-      margin: 0.25em;
-      border: dotted 1px #a1a1a1;
-      border-radius: .5em;
-      padding: .5em 1em;
-      font-size: 1.15em;
-      background-color: #F8FCFD;
+  .tag {
+    margin: 0.25em;
+    border: solid #000000;
+    border-radius: 9999px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 1.15em;
+    background-color: transparent;
+    border-width: 2px;
+    background-clip: text;
+    cursor: pointer;
+  }
+  
+  .tag.selected {
+    background-color: #000000;
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.tag');
+    const posts = document.querySelectorAll('.post');
+    let selectedTags = new Set();
+
+    function filterPosts() {
+      if (selectedTags.size === 0 || selectedTags.has('all')) {
+        posts.forEach(post => post.style.display = 'block');
+      } else {
+        posts.forEach(post => {
+          const postTags = post.getAttribute('data-tags').split(',');
+          const hasAllTags = Array.from(selectedTags).every(tag => postTags.includes(tag));
+          post.style.display = hasAllTags ? 'block' : 'none';
+        });
+      }
     }
-  </style>
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tag = button.getAttribute('data-tag');
+        if (tag === 'all') {
+          selectedTags.clear();
+          buttons.forEach(btn => btn.classList.remove('selected'));
+          button.classList.add('selected');
+        } else {
+          if (selectedTags.has(tag)) {
+            selectedTags.delete(tag);
+            button.classList.remove('selected');
+          } else {
+            selectedTags.add(tag);
+            button.classList.add('selected');
+          }
+          document.querySelector('.tag[data-tag="all"]').classList.remove('selected');
+        }
+        filterPosts();
+      });
+    });
+
+    filterPosts();
+  });
+</script>

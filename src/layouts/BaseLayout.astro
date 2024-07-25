@@ -35,7 +35,8 @@ import BaseHead from '../components/BaseHead.astro';
         <div class="flex flex-wrap justify-center border-b dark:border-neutral-700 backdrop-blur shadow-sm top-0 left-0 right-0 z-50 py-2 fixed transition-all" id="header">
 
           <Header2 />
-          <div class="lg:hidden md:block w-full border-t mt-2">
+          <!-- lg以上不显示 -->
+          <div class="lg:hidden block w-full border-t mt-2">
             <button type="button" class="mt-2 ml-6 ms-0 py-2 pl-2 pr-2 inline-block items-center gap-x-2 text-sm font-semibold rounded-lg border border-spacing-1
              text-slate-800 dark:text-teal-300 bg-white hover:bg-gray-300 dark:bg-slate-900 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-overlay-backdrop-with-scrolling">
               
@@ -59,20 +60,21 @@ import BaseHead from '../components/BaseHead.astro';
               <aside class="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-45rem))] right-auto w-[19rem] pb-10 pl-8 pr-6 overflow-y-auto">
                 <Leftsidebar1 />
               </aside>
-              <aside class="lg:hidden">
+              <aside class="">
                 <Leftsidebar2 />
               </aside>
             <!-- </div> -->
             
             <div class="lg:pl-[19.5rem]">
-              <div class="max-w-3xl mx-auto pt-10 xl:max-w-none xl:ml-0 xl:mr-[15.5rem] xl:pr-16">
+              <div class="max-w-3xl mx-auto pt-4 xl:max-w-none xl:ml-0 xl:mr-[15.5rem] xl:pr-16">
                 
-                <header class="relative z-20">
+                <!-- <header class="relative z-20 hidden">
                   <div class="m-4">
 
                   </div>
-                </header>
-                <div class="js-toc-content prose mt-10 max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md
+                </header> -->
+                <!-- mt-10 -->
+                <div class="js-toc-content prose  max-w-none prose-a:font-medium prose-a:decoration-primary-500 prose-a:underline-offset-2 hover:prose-a:text-primary-500 prose-pre:shadow-md
                 dark:bg-neutral-800 dark:text-slate-200">
                     <slot /> 
                   </div>

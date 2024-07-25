@@ -49,7 +49,7 @@ const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
               网页开发类
             </button>
             <div id="hs-basic-always-open-collapse-one" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby="hs-basic-always-open-heading-one">
-              <ul id="leftpostlist" class="space-y-6 lg:space-y-2 border-l border-slate-100 dark:border-slate-800">
+              <ul id="leftpostlist" class="space-y-4 border-l border-slate-100 dark:border-slate-800">
                 {posts.map((post) =><BlogPost url={post.url} title={post.frontmatter.title}/>)}
               </ul>
             </div>

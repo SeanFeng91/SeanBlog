@@ -21,6 +21,10 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
 [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
+# 20240725记录
+## blogs首页设计
+[参考样式1](https://gsap.com/showcase/?page=1):卡片、关键词、筛选。可以把tags启用起来了
+
 # 20240724记录
 尝试使用aos对页面的div进行动态滚动尝试。并且使用grid规划div位置。AOS的各种效果非常不错。现在div块使用了很多fadein。
 
