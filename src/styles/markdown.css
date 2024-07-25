@@ -55,54 +55,63 @@
 
 /* 标题样式 */
 .nav-links h1 a{
-  font-size: 3rem;
+  @media not all and (min-width: 640px) {font-size: 2rem };
+  font-size: 2.5rem;
   margin: 30rem 0;
   color: #000000;
   text-decoration-line: none;
   text-wrap: balance;
-  
+  text-indent: 0px;
+  /* border-left-width: 2px;
+  border-color: rgb(0 0 0); */
   font-weight: 900;
   /* font-family: "Times New Roman"; */
 }
 
 .nav-links h2 a {
+  @media not all and (min-width: 640px) {font-size: 1.75rem };
   font-size: 2.25rem;
   margin: 0rem 0;
   color: #000000;
   text-decoration-line: none;
-  text-wrap: pretty;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-wrap: balance;
+  text-indent: 0px;
   font-weight: 700;
   /* font-family: "Times New Roman"; */
 }
 
 .nav-links h3 a {
+  @media not all and (min-width: 640px) {font-size: 1.5rem };
   font-size: 2rem;
   margin: 0rem 0;
   color: #000000;
-  /* text-decoration-line: none;
-  text-wrap: pretty;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; */
+  text-decoration-line: none;
+  text-wrap: balance;
+  text-indent: 0px;
   font-weight: 600;
   /* font-family: "Times New Roman"; */
 }
 
 .nav-links h4 a {
+  @media not all and (min-width: 640px) {font-size: 1.5rem };
   font-size: 1.75rem;
   margin: 0rem 0;
   color: #000000;
+  text-decoration-line: none;
+  text-wrap: balance;
+  text-indent: 0px;
   font-weight: 500;
 
 }
 
 .nav-links h5 a {
+  @media not all and (min-width: 640px) {font-size: 1.25rem };
   font-size: 1.5rem;
   margin: 0rem 0;
   color: #000000;
+  text-decoration-line: none;
+  text-wrap: balance;
+  text-indent: 0px;
   font-weight: 400;
 
 }
@@ -111,6 +120,9 @@
   font-size: 1.25rem;
   margin: 0rem 0;
   color: #000000;
+  text-decoration-line: none;
+  text-wrap: balance;
+  text-indent: 0px;
   font-weight: 300;
 
 }
@@ -131,32 +143,32 @@ p {
 
 /* 锚点样式 */
 
-h1 a::before, h2 a::before, h3 a::before, h4 a::before, h5 a::before, h6 a::before {
+h1 a::after, h2 a::after, h3 a::after, h4 a::after, h5 a::after, h6 a::after {
   content: '#';
   position: relative;
-  left: -0.5rem;
+  left: 0.5rem;
   top: 50%;
   transform: 0;
-  font-size: 1.5rem; /* 固定#符号的大小 */
+  /* font-size: 2rem; 固定#符号的大小 */
   /* color: #1e90ff; */
   visibility: hidden; /* 默认隐藏 */
-  font-weight: 500;
+  font-weight: 700;
 }
 
-h1:hover a::before, h2:hover a::before, h3:hover a::before, h4:hover a::before, h5:hover a::before, h6:hover a::before {
+h1:hover a::after, h2:hover a::after, h3:hover a::after, h4:hover a::after, h5:hover a::after, h6:hover a::after {
   visibility: visible;
 }
 
 /* .nav-links a:focus */
 .nav-links a:hover {
   /* background-color: #76a8ff; */
-  color: rgb(216, 79, 0); 
+  color: rgb(37 99 235); 
 }
 
 /* 链接样式 */
 .nav-links p a {
   color: rgb(37 99 235);
-  text-decoration: none;
+  /* text-decoration: none; */
 }
 
 
