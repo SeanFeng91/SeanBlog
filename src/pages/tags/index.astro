@@ -16,10 +16,10 @@ const pageTitle = "Tag Index";
           Hello world!
           尝试用tags记录博客分类
         </span>
-        <p class="text-sm">（标题用了bg-clip-text，文字扣背景颜色）</p>
+        <!-- <p class="text-sm">（标题用了bg-clip-text，文字扣背景颜色）</p> -->
       </div>
       <div>
-        <div id="tags" class="flex flex-wrap">
+        <div id="tags" class="mt-10 flex flex-wrap">
           <div class="tag bg-red-50" data-tag="all">All</div>
           {tags.map(tag => (
             <div class="tag bg-red-50" data-tag={tag}>{tag}</div>
@@ -29,7 +29,9 @@ const pageTitle = "Tag Index";
         <div id="posts" class="mt-10 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-y-10 gap-x-5 dark:text-cyan-50">
           {allPosts.map((indexcard, index) =>
             <div class="post" data-tags={indexcard.frontmatter.tags.join(',')}>
-              <div class="min-w-sm border grid  dark:border-sky-800 rounded-lg p-4 min-h-60 bg-gradient-to-t from-sky-50 to-sky-0 dark:from-sky-950 dark:to-sky-900 shadow-sm">
+              <div data-aos="fade-up" data-aos-offset="200" data-aos-delay={index*600}
+					        data-aos-duration="1000" 
+                  class="min-w-sm border grid  dark:border-sky-800 rounded-lg p-4 min-h-60 bg-gradient-to-t from-sky-50 to-sky-0 dark:from-sky-950 dark:to-sky-900 shadow-sm">
                 <h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
                 <h2 class="nav-links mt-1 text-2xl text-balance leading-tight font-bold hover:text-blue-900">
                   <a href={indexcard.url}>{indexcard.frontmatter.title}</a>
@@ -103,6 +105,12 @@ const pageTitle = "Tag Index";
 
 </style>
 
+<!-- AOS -->
+<script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script is:inline> 
+  AOS.init();
+</script>
+
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
   const tags = document.querySelectorAll('.tag');
@@ -129,21 +137,25 @@ const pageTitle = "Tag Index";
       if (selectedTags.has('all')) {
         selectedTags.delete('all');
         clickedTag.classList.remove('selected');
+        AOS.init();
       } else {
         selectedTags.clear();
         selectedTags.add('all');
         tags.forEach(tag => tag.classList.remove('selected'));
         clickedTag.classList.add('selected');
+        AOS.init();
       }
     } else {
       if (selectedTags.has(tagName)) {
         selectedTags.delete(tagName);
         clickedTag.classList.remove('selected');
+        AOS.init();
       } else {
         selectedTags.add(tagName);
         clickedTag.classList.add('selected');
         document.querySelector('.tag[data-tag="all"]').classList.remove('selected');
         selectedTags.delete('all');
+        AOS.init();
       }
     }
     filterPosts();
