@@ -1,0 +1,32 @@
+---
+// 导入React组件
+import FadeInText from '../../components/react/FadeInText.jsx';
+import BouncyButton from '../../components/react/BouncyButton.jsx';
+import Spinner from '../../components/react/Spinner.jsx';
+---
+
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <title>Astro中的React组件</title>
+    <style>
+      /* 定义一个名为spin的关键帧动画 */
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Astro中的React组件示例</h1>
+    
+    {/* 使用FadeInText组件,文字会淡入显示 */}
+    <FadeInText client:load text="这段文字会淡入" />
+    
+    {/* 使用BouncyButton组件,创建一个有弹跳效果的按钮 */}
+    <BouncyButton client:load text="点击我!" />
+    
+    {/* 使用Spinner组件,显示一个旋转的加载动画 */}
+    <Spinner client:load />
+  </body>
+</html>

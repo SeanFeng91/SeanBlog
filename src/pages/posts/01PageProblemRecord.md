@@ -47,6 +47,155 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 第一次尝试设计一个md的css样式，目前把标题h1-h6以及正文、链接等样式进行初步设计。后续可以增加一些标注的样式。只需要重点考虑几种常用的。
 现在外部页面有很多博客标题的链接，需要在global里面好好考虑一下。包括夜间模式字体颜色。
 
+
+今天装了几个remark插件之后，产生了前所未有的warning，各种版本不兼容和冲突。npm install astro好几次没有用！
+```
+    npm warn ERESOLVE overriding peer dependency
+    npm warn While resolving: react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn Found: react@18.3.1
+    npm warn node_modules/react
+    npm warn   peer react@"^17.0.2 || ^18.0.0 || ^19.0.0-beta" from @astrojs/react@3.6.0
+    npm warn   node_modules/@astrojs/react
+    npm warn     @astrojs/react@"^3.6.0" from the root project
+    npm warn   8 more (@gatsbyjs/reach-router, gatsby, gatsby-link, ...)
+    npm warn
+    npm warn Could not resolve dependency:
+    npm warn peer react@"0.0.0-experimental-c8b778b7f-20220825" from react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn node_modules/react-server-dom-webpack
+    npm warn   react-server-dom-webpack@"0.0.0-experimental-c8b778b7f-20220825" from gatsby@5.13.7
+    npm warn   node_modules/gatsby
+    npm warn
+    npm warn Conflicting peer dependency: react@0.0.0-experimental-c8b778b7f-20220825
+    npm warn node_modules/react
+    npm warn   peer react@"0.0.0-experimental-c8b778b7f-20220825" from react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn   node_modules/react-server-dom-webpack
+    npm warn     react-server-dom-webpack@"0.0.0-experimental-c8b778b7f-20220825" from gatsby@5.13.7
+    npm warn     node_modules/gatsby
+    npm warn deprecated string-similarity@1.2.2: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+    npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+    npm warn deprecated stable@0.1.8: Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility
+    npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+    npm warn deprecated @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+    npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+    npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+    npm warn deprecated @humanwhocodes/config-array@0.5.0: Use @eslint/config-array instead
+    npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+    npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated @babel/plugin-proposal-object-rest-spread@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
+    npm warn deprecated babel-eslint@10.1.0: babel-eslint is now @babel/eslint-parser. This package will no longer receive updates.
+    npm warn deprecated @humanwhocodes/object-schema@1.2.1: Use @eslint/object-schema instead
+    ⠸^C
+    (Seancode) fengyixiao@fengyixiaodeMBP SeanBlog % npm install astro@latest
+    npm warn ERESOLVE overriding peer dependency
+    npm warn While resolving: react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn Found: react@18.3.1
+    npm warn node_modules/react
+    npm warn   peer react@"^17.0.2 || ^18.0.0 || ^19.0.0-beta" from @astrojs/react@3.6.0
+    npm warn   node_modules/@astrojs/react
+    npm warn     @astrojs/react@"^3.6.0" from the root project
+    npm warn   8 more (@gatsbyjs/reach-router, gatsby, gatsby-link, ...)
+    npm warn
+    npm warn Could not resolve dependency:
+    npm warn peer react@"0.0.0-experimental-c8b778b7f-20220825" from react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn node_modules/react-server-dom-webpack
+    npm warn   react-server-dom-webpack@"0.0.0-experimental-c8b778b7f-20220825" from gatsby@5.13.7
+    npm warn   node_modules/gatsby
+    npm warn
+    npm warn Conflicting peer dependency: react@0.0.0-experimental-c8b778b7f-20220825
+    npm warn node_modules/react
+    npm warn   peer react@"0.0.0-experimental-c8b778b7f-20220825" from react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn   node_modules/react-server-dom-webpack
+    npm warn     react-server-dom-webpack@"0.0.0-experimental-c8b778b7f-20220825" from gatsby@5.13.7
+    npm warn     node_modules/gatsby
+    npm error code ENOTEMPTY
+    npm error syscall rename
+    npm error path /Users/fengyixiao/Desktop/Sean Feng/Coding/SeanBlog/node_modules/abortcontroller-polyfill
+    npm error dest /Users/fengyixiao/Desktop/Sean Feng/Coding/SeanBlog/node_modules/.abortcontroller-polyfill-gVc6hoDn
+    npm error errno -66
+    npm error ENOTEMPTY: directory not empty, rename '/Users/fengyixiao/Desktop/Sean Feng/Coding/SeanBlog/node_modules/abortcontroller-polyfill' -> '/Users/fengyixiao/Desktop/Sean Feng/Coding/SeanBlog/node_modules/.abortcontroller-polyfill-gVc6hoDn'
+    npm error A complete log of this run can be found in: /Users/fengyixiao/.npm/_logs/2024-07-25T14_58_45_786Z-debug-0.log
+    (Seancode) fengyixiao@fengyixiaodeMBP SeanBlog % npm install astro       
+    npm warn ERESOLVE overriding peer dependency
+    npm warn While resolving: react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn Found: react@18.3.1
+    npm warn node_modules/react
+    npm warn   peer react@"^17.0.2 || ^18.0.0 || ^19.0.0-beta" from @astrojs/react@3.6.0
+    npm warn   node_modules/@astrojs/react
+    npm warn     @astrojs/react@"^3.6.0" from the root project
+    npm warn   8 more (@gatsbyjs/reach-router, gatsby, gatsby-link, ...)
+    npm warn
+    npm warn Could not resolve dependency:
+    npm warn peer react@"0.0.0-experimental-c8b778b7f-20220825" from react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn node_modules/react-server-dom-webpack
+    npm warn   react-server-dom-webpack@"0.0.0-experimental-c8b778b7f-20220825" from gatsby@5.13.7
+    npm warn   node_modules/gatsby
+    npm warn
+    npm warn Conflicting peer dependency: react@0.0.0-experimental-c8b778b7f-20220825
+    npm warn node_modules/react
+    npm warn   peer react@"0.0.0-experimental-c8b778b7f-20220825" from react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn   node_modules/react-server-dom-webpack
+    npm warn     react-server-dom-webpack@"0.0.0-experimental-c8b778b7f-20220825" from gatsby@5.13.7
+    npm warn     node_modules/gatsby
+    npm error code ENOTEMPTY
+    npm error syscall rename
+    npm error path /Users/fengyixiao/Desktop/Sean Feng/Coding/SeanBlog/node_modules/abortcontroller-polyfill
+    npm error dest /Users/fengyixiao/Desktop/Sean Feng/Coding/SeanBlog/node_modules/.abortcontroller-polyfill-gVc6hoDn
+    npm error errno -66
+    npm error ENOTEMPTY: directory not empty, rename '/Users/fengyixiao/Desktop/Sean Feng/Coding/SeanBlog/node_modules/abortcontroller-polyfill' -> '/Users/fengyixiao/Desktop/Sean Feng/Coding/SeanBlog/node_modules/.abortcontroller-polyfill-gVc6hoDn'
+    npm error A complete log of this run can be found in: /Users/fengyixiao/.npm/_logs/2024-07-25T14_59_18_878Z-debug-0.log
+    (Seancode) fengyixiao@fengyixiaodeMBP SeanBlog % npm install astro
+    npm warn ERESOLVE overriding peer dependency
+    npm warn While resolving: react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn Found: react@18.3.1
+    npm warn node_modules/react
+    npm warn   peer react@"^17.0.2 || ^18.0.0 || ^19.0.0-beta" from @astrojs/react@3.6.0
+    npm warn   node_modules/@astrojs/react
+    npm warn     @astrojs/react@"^3.6.0" from the root project
+    npm warn   8 more (@gatsbyjs/reach-router, gatsby, gatsby-link, ...)
+    npm warn
+    npm warn Could not resolve dependency:
+    npm warn peer react@"0.0.0-experimental-c8b778b7f-20220825" from react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn node_modules/react-server-dom-webpack
+    npm warn   react-server-dom-webpack@"0.0.0-experimental-c8b778b7f-20220825" from gatsby@5.13.7
+    npm warn   node_modules/gatsby
+    npm warn
+    npm warn Conflicting peer dependency: react@0.0.0-experimental-c8b778b7f-20220825
+    npm warn node_modules/react
+    npm warn   peer react@"0.0.0-experimental-c8b778b7f-20220825" from react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
+    npm warn   node_modules/react-server-dom-webpack
+    npm warn     react-server-dom-webpack@"0.0.0-experimental-c8b778b7f-20220825" from gatsby@5.13.7
+    npm warn     node_modules/gatsby
+    npm warn deprecated string-similarity@1.2.2: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+    npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+    npm warn deprecated stable@0.1.8: Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility
+    npm warn deprecated @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+    npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+    npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+    npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+    npm warn deprecated @humanwhocodes/config-array@0.5.0: Use @eslint/config-array instead
+    npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+    npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+    npm warn deprecated @babel/plugin-proposal-object-rest-spread@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
+    npm warn deprecated babel-eslint@10.1.0: babel-eslint is now @babel/eslint-parser. This package will no longer receive updates.
+    npm warn deprecated @humanwhocodes/object-schema@1.2.1: Use @eslint/object-schema instead
+```
+
 # 20240724记录
 尝试使用aos对页面的div进行动态滚动尝试。并且使用grid规划div位置。AOS的各种效果非常不错。现在div块使用了很多fadein。
 
