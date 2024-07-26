@@ -1,288 +1,221 @@
 ---
 import "../styles/global.css";
 import IndexLayout from '../layouts/IndexLayout.astro';
-// import Greeting from '../components/Greeting';
 
 const allPosts = await Astro.glob('../pages/posts/*.{md,mdx}');
-// // const allFiles = await Astro.glob('../pages/**/*.md');
-// // import BlogPost from '../components/BlogPost.astro';
 
 const achieved = await Astro.glob('../pages/posts/03Achieved.{md,mdx}');
 const problems = await Astro.glob('../pages/posts/02ProblemsAndAims.{md,mdx}');
-// const posts = allFiles.filter(file => file.url.includes('/posts/'));
-// const blogs = allFiles.filter(file => file.url.includes('/blogs/'));
 
-// const { frontmatter } = Astro.props;
 const pageTitle = "SeanBlog";
-// import 'animate.css';
-// import AOS from 'aos';
-// import 'aos/dist/aos.css'; // You can also use <link> for styles
-
 ---
-<!-- <style>
-	a {
-	  text-decoration: none; /* 取消下划线 */
-	}
-	Headingsofblog {
-		text-decoration: none; /* 取消下划线 */
-	}
-</style> -->
 
 <IndexLayout pageTitle={pageTitle}>
-	<div x-data="{isLoading:false, isFestive:false, isShowDetail:false}" slot="maindiv" class="">
-		<h1 class="font-bold text-8lx text-center underline decoration-sky-500 hover:decoration-dotted hover:uppercase">
-			This is My awesome blog with <span class="text-yellow-500">Astro&Tailwind.</span></h1>
-			<!-- <h2 class="text-center">		
-				<Greeting client:load messages={["Hej", "Hallo", "Hola", "Habari"]}/>
-			</h2> -->
-		<!-- component 庆祝的按钮-->
-		<div class=" flex-col w-auto flex flex-wrap items-center justify-center">
-			<!-- Title -->
-			<div class="p-4 rounded-md drop-shadow-2xl flex flex-col space-y-4">
-			  <div class="flex items-start space-x-4">
+	<div x-data="{isLoading:false, isFestive:false, isShowDetail:false}" slot="maindiv" class="container mx-auto px-4 py-8">
+		<h1 class="text-4xl md:text-6xl font-bold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+			My Awesome Blog with <span class="text-yellow-500">Astro & Tailwind</span>
+		</h1>
 
-				<div @click="isFestive = !isFestive" class="bg-zinc-100 duration-150 hover:!border-b-2 text-blue-950 rounded-xl drop-shadow-lg group flex items-center border-2 border-b-4 border-blue-950 cursor-pointer active:bg-zinc-300">
-				  <div class="py-2 pl-3">
-				  <i class="fad fa-party-horn text-xl"></i>
-				  </div>
-				  <div class="py-2 px-3" x-text="isFestive ? 'Welcome!!' : 'Click to celebrate'">
-				  </div>
-				</div>
-			
-			  </div>
-			</div>
+		<!-- Celebration button -->
+		<div class="flex justify-center mb-12">
+			<button 
+				@click="isFestive = !isFestive" 
+				class="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+			>
+				<span x-text="isFestive ? 'Welcome!!' : 'Click to celebrate'"></span>
+				<i class="fas fa-party-horn ml-2"></i>
+			</button>
 		</div>
-		<!-- 彩穗穗 -->
-		<canvas :class=" isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-[100%]'" id="my-canvas" class="absolute w-auto pointer-events-none"></canvas>
 
+		<!-- Confetti canvas -->
+		<canvas 
+			:class="isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-full'" 
+			id="my-canvas" 
+			class="absolute top-0 left-0 w-full h-full pointer-events-none transition-all"
+		></canvas>
 
-
-		<section class="bg-transparent h-auto  text-white backdrop:bg-rose-800 flex flex-wrap items-center justify-center">
-			<a class="tlt text-3xl text-center w-4/6 items-center justify-center relative after:bg-white after:absolute after:h-1 after:w-0 
-			after:bottom-0 after:left-0 hover:text-pink-400 hover:after:w-full after:transition-all after:duration-300 cursor-pointer">
-			is:inline解决了大问题啊。Particles、Fireworks、Matter、Anime、pace、Textillate.js打开了新天地啊
-			</a>
+		<!-- Animated text section -->
+		<section class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-8 rounded-lg shadow-xl mb-12">
+			<p class="tlt text-xl md:text-3xl text-center">
+				is:inline解决了大问题啊。Particles、Fireworks、Matter、Anime、pace、Textillate.js打开了新天地啊
+			</p>
 		</section>
 
-		<!-- Now Working on:模块 -->
-		<div class="p-4 flex-wrap mb-10 mt-10 grid grid-cols-1 lg:grid-cols-2 gap-4 auto-cols-max text-base ">
-			<div class="p-2 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto bg-slate-50 dark:bg-transparent dark:text-slate-200 min-h-10">
-				<h3 class="mt-1 pl-4 dark:text-slate-200">Now Working on:</h3>
-				<div class="overflow-auto 
-				[&::-webkit-scrollbar]:w-2
-				[&::-webkit-scrollbar-track]:rounded-full
-				[&::-webkit-scrollbar-track]:bg-gray-100 
-				[&::-webkit-scrollbar-thumb]:rounded-full
-				[&::-webkit-scrollbar-thumb]:bg-gray-300
-				dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-				dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
-				max-h-40">
+		<!-- Now Working on & What I have Got sections -->
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+			<!-- Now Working on -->
+			<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6">
+				<h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Now Working on:</h3>
+				<div class="overflow-auto max-h-60 pr-2 custom-scrollbar">
 					{problems.map((post, index) => {
 						const headings = post.getHeadings();
 						return headings.map((heading, headingIndex) => (
-						<div class="flex items-center space-x-2 rounded p-2 hover:bg-gray-100">
-							<input type="checkbox" id="{headingIndex+1}" name="{headingIndex+1}" data-id={headingIndex+1} class="h-4 w-4 rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 focus:ring-offset-0 disabled:cursor-not-allowed disabled:text-gray-400" />
-						  	<label for="{headingIndex+1}" class="flex w-full space-x-2 text-sm">{headingIndex+1}. {heading.text}</label>
-						</div>
+							<div class="flex items-center space-x-3 py-2 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+								<input type="checkbox" id={`task-${index}-${headingIndex}`} class="form-checkbox h-5 w-5 text-blue-600 rounded focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600" />
+								<label for={`task-${index}-${headingIndex}`} class="text-sm text-gray-700 dark:text-gray-300">{heading.text}</label>
+							</div>
 						));
-					  })}
-
-
+					})}
 				</div>
 			</div>
-			<!-- What I have Got:模块 -->
-			<div class="max-h-60 border-spacing-2 outline-dotted outline-offset-2 rounded-md outline-slate-300 w-auto p-2 bg-slate-50 min-h-10 dark:bg-transparent dark:text-slate-200">
-				<h3 class="mt-1 pl-4 space-y-3 dark:text-slate-200">What I have Got:</h3>
-				<div class="overflow-auto
-				[&::-webkit-scrollbar]:w-2
-				[&::-webkit-scrollbar-track]:rounded-full
-				[&::-webkit-scrollbar-track]:bg-gray-100
-				[&::-webkit-scrollbar-thumb]:rounded-full
-				[&::-webkit-scrollbar-thumb]:bg-gray-300
-				dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-				dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
-				 max-h-40 text-base">
+
+			<!-- What I have Got -->
+			<div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6">
+				<h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">What I have Got:</h3>
+				<div class="overflow-auto max-h-60 pr-2 custom-scrollbar">
 					{achieved.map((post, index) => {
 						const headings = post.getHeadings();
 						return headings.map((heading, headingIndex) => (
-						  <p class="text-sm space-x-2">{headingIndex+1}. {heading.text}</p>
+							<p class="text-sm text-gray-700 dark:text-gray-300 py-2 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+								{headingIndex+1}. {heading.text}
+							</p>
 						));
-					  })}
+					})}
 				</div>
-				
 			</div>
 		</div>
-		<!-- 首页Cards功能模块 -->
-		<div class="p-4 flex-wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-cols-max auto-rows-max dark:bg-transparent dark:text-slate-400">
-			{allPosts.map((indexcard,index)=>
+
+		<!-- Blog posts grid -->
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+			{allPosts.map((indexcard, index) => (
 				<div 
-					data-aos="fade-up" data-aos-offset="200" data-aos-delay={index*600}
+					data-aos="fade-up" 
+					data-aos-offset="200" 
+					data-aos-delay={index * 100}
 					data-aos-duration="1000" 
-					class=" min-w-sm border dark:border-sky-800 rounded-lg p-4 min-h-60 bg-gradient-to-t from-sky-50 to-sky-0 dark:from-sky-950 dark:to-sky-900 shadow-sm ">
-				<h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
-				<h2 class="nav-links mt-1 text-2xl text-balance leading-tight font-bold hover:text-blue-900 ">
-					<a class="no-underline" href={indexcard.url}>{indexcard.frontmatter.title}</a>
-				</h2>
-				<p class="text-sm italic tracking-normal text-pretty indent-8 leading-relaxed dark:text-slate-200">
-					{indexcard.frontmatter.description}
-				</p>
-				</div>)}			
+					class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+				>
+					<div class="relative h-48">
+						<img 
+							class="w-full h-full object-cover" 
+							src={indexcard.frontmatter.image?.url || "https://via.placeholder.com/400x200"} 
+							alt={indexcard.frontmatter.image?.alt || "Blog post cover"}
+						/>
+						<div class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-2 py-1 m-2 rounded">
+							{new Date(indexcard.frontmatter.pubDate).toLocaleDateString()}
+						</div>
+					</div>
+					<div class="p-6">
+						<h2 class="text-xl font-bold mb-2 text-gray-800 dark:text-white hover:text-blue-500 transition-colors duration-200">
+							<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
+						</h2>
+						<p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+							{indexcard.frontmatter.description}
+						</p>
+						<div class="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+							<p class="flex items-center">
+								<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
+								{indexcard.frontmatter.author}
+							</p>
+							<a href={indexcard.url} class="text-blue-500 hover:text-blue-700 font-medium">Read more</a>
+						</div>
+					</div>
+				</div>
+			))}
 		</div>
 
-		
-		<div class="h-2 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ..."></div>
-
-			<!-- 尝试新卡片组件 -->
-			<div class="relative mt-20 mb-20">
-				<!-- 创建一个相对定位的容器，顶部外边距为20，底部外边距为20 -->
-				<div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-blue-400 via-blue-400 to-blue-400"></div>
-				<!-- 创建一个垂直的时间线，使用蓝色渐变背景 -->
-				<div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full w-4 h-4 rounded-full bg-blue-400"></div>
-				<!-- 开始端点 -->
-				<div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4 rounded-full bg-blue-400"></div>
-				<!-- 结束端点 -->
-				<div class="space-y-8 py-10"> <!-- 减小了垂直间距 -->
-					<!-- 创建一个垂直间距为8的容器，上下内边距为10 -->
-					{allPosts.sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate)).map((indexcard, index) => (
-						<!-- 对文章进行排序（按发布日期降序），并遍历每篇文章 -->
-						<div 
-							class="relative flex items-center"
-							data-aos="fade-up"
-							data-aos-duration="800"
-							data-aos-delay={index * 150}
-							style={`margin-top: ${index === 0 ? '0' : '-80px'}`} {/* 添加负边距实现重叠效果 */}
-						>
-							<!-- 为每篇文章创建一个相对定位的容器，添加淡入动画效果 -->
-							<div class="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 shadow-lg flex items-center justify-center z-10">
-								<!-- 创建时间线上的圆点 -->
-								<div class="w-3 h-3 rounded-full bg-white dark:bg-neutral-800"></div>
-								<!-- 圆点内部的小圆 -->
-							</div>
-							<div class={`w-6/12 ${index % 2 === 0 ? 'mr-auto pr-8' : 'ml-auto pl-8'}`}>
-								<!-- 创建交替布局的容器 -->
-								<div class="bg-white dark:bg-neutral-800 border rounded-lg shadow-sm overflow-hidden dark:border-neutral-700 dark:shadow-neutral-700/70 transition-all duration-300 hover:shadow-md hover:scale-105 hover:translate-y-[-5px]">
-									<!-- 文章卡片容器，添加悬停效果 -->
-									<div class="relative h-28">
-										<!-- 图片容器 -->
-										<img 
-											class="w-full h-full object-cover" 
-											src={indexcard.frontmatter.image?.url || "https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80"} 
-											alt={indexcard.frontmatter.image?.alt || "文章封面图"}
-										/>
-										<!-- 文章封面图 -->
-										<div class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-bl-lg">
-											<!-- 发布日期标签 -->
-											{new Date(indexcard.frontmatter.pubDate).toLocaleDateString('zh-CN')}
-										</div>
+		<!-- Timeline section -->
+		<div class="relative mt-20 mb-20">
+			<div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-blue-400 via-purple-500 to-pink-500"></div>
+			<div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full w-4 h-4 rounded-full bg-blue-400"></div>
+			<div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4 rounded-full bg-pink-500"></div>
+			<div class="space-y-8">
+				{allPosts.sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate)).map((indexcard, index) => (
+					<div 
+						class="relative flex items-center"
+						data-aos="fade-up"
+						data-aos-duration="800"
+						data-aos-delay={index * 150}
+						style={`margin-top: ${index === 0 ? '0' : '-80px'}`}
+					>
+						<div class="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 shadow-lg flex items-center justify-center z-10">
+							<div class="w-3 h-3 rounded-full bg-white dark:bg-gray-800"></div>
+						</div>
+						<div class={`w-5/12 ${index % 2 === 0 ? 'mr-auto pr-8' : 'ml-auto pl-8'}`}>
+							<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+								<div class="relative h-40">
+									<img 
+										class="w-full h-full object-cover" 
+										src={indexcard.frontmatter.image?.url || "https://via.placeholder.com/400x200"} 
+										alt={indexcard.frontmatter.image?.alt || "Blog post cover"}
+									/>
+									<div class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-2 py-1 m-2 rounded">
+										{new Date(indexcard.frontmatter.pubDate).toLocaleDateString()}
 									</div>
-									
-									<div class="p-3">
-										<!-- 文章内容区域 -->
-										<h3 class="text-lg font-bold text-gray-800 dark:text-white mb-2 line-clamp-2">
-											<!-- 文章标题 -->
-											<a href={indexcard.url} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
-												{indexcard.frontmatter.title}
-											</a>
-										</h3>
-										<p class="text-sm text-gray-600 dark:text-neutral-300 mb-3 line-clamp-2">
-											<!-- 文章描述 -->
-											{indexcard.frontmatter.description}
+								</div>
+								<div class="p-4">
+									<h3 class="text-lg font-bold text-gray-800 dark:text-white mb-2 line-clamp-2">
+										<a href={indexcard.url} class="hover:text-blue-500 transition-colors duration-200">
+											{indexcard.frontmatter.title}
+										</a>
+									</h3>
+									<p class="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
+										{indexcard.frontmatter.description}
+									</p>
+									<div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400">
+										<p class="flex items-center">
+											<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
+											{indexcard.frontmatter.author}
 										</p>
-										<div class="flex justify-between items-center text-xs text-gray-500 dark:text-neutral-400">
-											<!-- 作者信息和阅读更多链接 -->
-											<p class="flex items-center">
-												<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
-												{indexcard.frontmatter.author}
-											</p>
-											<a href={indexcard.url} class="text-blue-500 hover:text-blue-700 hover:underline font-medium">阅读更多</a>
-										</div>
+										<a href={indexcard.url} class="text-blue-500 hover:text-blue-700 hover:underline font-medium">Read more</a>
 									</div>
 								</div>
 							</div>
 						</div>
-					))}
-				</div>
+					</div>
+				))}
 			</div>
-			<!-- component 彩色换页 -->
-			<!-- <div class="mt-10 h-2/5 w-full overflow-hidden flex flex-nowrap text-center" id="slider">
-				<div class="bg-blue-600 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
-					<h2 class="text-4xl max-w-md">Your Big Ideia</h2>
-					<p class="max-w-md">It's fast, flexible, and reliable — with zero-runtime.</p>
-				</div>
-				<div class="bg-pink-400 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
-					<h2 class="text-4xl max-w-md">Tailwind CSS works by scanning all of your HTML</h2>
-					<p class="max-w-md">It's fast, flexible, and reliable — with zero-runtime.</p>
-				</div>
-				<div class="bg-teal-500 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
-					<h2 class="text-4xl max-w-md">React, Vue, and HTML</h2>
-					<p class="max-w-md">Accessible, interactive examples for React and Vue powered by Headless UI, plus vanilla HTML if you’d rather write any necessary JS yourself.</p>
-				</div>
-			</div> -->
-			<!-- 浮动效果div -->
-			<div class=" grid grid-cols-1 md:grid-cols-2">
-				<div
-					data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
-					data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
-					data-aos-anchor-placement="top-right"
-					class="md:col-start-2 items-end h-auto w-auto mt-10 p-4 bg-transparent dark:bg-sky-950">
-					<h1>data-aos="fade-up"
-						data-aos-easing="linear"
-						data-aos-offset="100"
-						data-aos-delay="50"
-						data-aos-duration="2000"
-						data-aos-mirror="true"
-						data-aos-once="false"
-						data-aos-anchor-placement="top-center"</h1>
-				</div>
-				<div
-					data-aos="fade-up" data-aos-offset="50" data-aos-delay="50"
-					data-aos-duration="1500" data-aos-easing="linear" data-aos-mirror="true" data-aos-once="false"
-					data-aos-anchor-placement="top-right"
-					class="md:col-start-1  items-end h-auto w-full mt-10 p-4 bg-transparent dark:bg-sky-950">
-					<h1>data-aos="fade-up"
-						data-aos-easing="linear"
-						data-aos-offset="100"
-						data-aos-delay="50"
-						data-aos-duration="2000"
-						data-aos-mirror="true"
-						data-aos-once="false"
-						data-aos-anchor-placement="top-center"</h1>
-				</div>
-			</div>
-			
 		</div>
-
-		
+	</div>
 </IndexLayout>
-<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
-<!-- AOS -->
+<style>
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@media (prefers-color-scheme: dark) {
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #2d3748;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #4a5568;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #718096;
+  }
+}
+</style>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 <script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script is:inline> 
   AOS.init();
 </script>
 
-
-<!-- Font awesome -->
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css"
-/>
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css" />
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
 
-<!-- <script>
-let confettiElement = document.getElementById('my-canvas');
-console.log(`canvas`)
-console.log(confettiElement,'confettiElement');
-let confettiSettings = { target: confettiElement };
-let confetti = new ConfettiGenerator(confettiSettings);
-confetti.render();
-</script> -->
-<!-- 放烟花 -->
 <script type="module">
 	document.addEventListener('DOMContentLoaded', (event) => {
         let confettiElement = document.getElementById('my-canvas');
-        console.log('canvas');
-        console.log(confettiElement, 'confettiElement');
         if (confettiElement) {
             let confettiSettings = { target: confettiElement };
             let confetti = new ConfettiGenerator(confettiSettings);
@@ -293,132 +226,34 @@ confetti.render();
     });
 </script>
 
-<!-- 字体动画 -->
 <script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" integrity="sha512-YTL2qFiv2wZNnC764l1DD5zN6lYxDzJ89Ss6zj6YoYIzr6+zwjdVKM1sUR+971X3h7qWCa9cPUBXyYqhOqWWLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script type="module" src="https://cdn.rawgit.com/jschr/textillate/master/jquery.textillate.js"></script>
-    <script type="module">
-        $(document).ready(function () {
-            $('.tlt').textillate({
-            // the default selector to use when detecting multiple texts to animate
+<script type="module">
+    $(document).ready(function () {
+        $('.tlt').textillate({
             selector: '.texts',
-            // enable looping
             loop: true,
-
-            // sets the minimum display time for each text before it is replaced
-            minDisplayTime: 1000,
-
-            // sets the initial delay before starting the animation
-            // (note that depending on the in effect you may need to manually apply
-            // visibility: hidden to the element before running this plugin)
+            minDisplayTime: 2000,
             initialDelay: 0,
-
-            // set whether or not to automatically start animating
             autoStart: true,
-
-            // custom set of 'in' effects. This effects whether or not the
-            // character is shown/hidden before or after an animation
-            inEffects: [''],
-
-            // custom set of 'out' effects
-            outEffects: [ 'hinge' ],
-
-            // in animation settings
+            inEffects: ['fadeIn'],
+            outEffects: ['fadeOut'],
             in: {
-              // set the effect name
-              effect: 'fadeIn',
-
-              // set the delay factor applied to each consecutive character
-              delayScale: 1,
-
-              // set the delay between each character
-              delay: 50,
-
-              // set to true to animate all the characters at the same time
-              sync: false,
-
-              // randomize the character sequence
-              // (note that shuffle doesn't make sense with sync = true)
-              shuffle: true,
-
-              // reverse the character sequence
-              // (note that reverse doesn't make sense with sync = true)
-              reverse: false,
-
-              // callback that executes once the animation has finished
-              callback: function () {}
+                effect: 'fadeInUp',
+                delayScale: 1.5,
+                delay: 50,
+                sync: false,
+                shuffle: true
             },
-
-            // out animation settings.
             out: {
-              effect: 'bounceOut',
-              delayScale: 1.5,
-              delay: 50,
-              sync: false,
-              shuffle: true,
-              reverse: false,
-              callback: function () {}
-            },
-
-            // callback that executes once textillate has finished
-            callback: function () {},
-
-            // set the type of token to animate (available types: 'char' and 'word')
-            type: 'char'
-          });
+                effect: 'fadeOutDown',
+                delayScale: 1.5,
+                delay: 50,
+                sync: false,
+                shuffle: true
+            }
         });
-        
-    </script>
-
-
-
-<!--页面滑动  -->
-<!-- 
-<script is:inline>
-	document.addEventListener('DOMContentLoaded', () => {
-		const slider = document.querySelector('#slider');
-		setTimeout(function moveSlide() {
-			const max = slider.scrollWidth - slider.clientWidth;
-			const left = slider.clientWidth;
-  
-			if (max === slider.scrollLeft) {
-				slider.scrollTo({left: 0, behavior: 'smooth'})
-			} else {
-				slider.scrollBy({left, behavior: 'smooth'})
-			}
-			setTimeout(moveSlide, 1000)
-		}, 1000)
-	})
-</script> -->
-
-<!-- 勾选未完成事项 -->
-<!-- <script>
-		// 获取所有复选框
-		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-	
-		// 初始化复选框状态
-		checkboxes.forEach(checkbox => {
-		  // 明确声明checkbox的类型
-		  const inputElement = checkbox as HTMLInputElement;
-		  const id = inputElement.getAttribute('data-id');
-		  const savedCheckedState = localStorage.getItem(`checkbox-${id}-checked`);
-		  const label = document.querySelector(`label[for="${id}"]`);
-	
-		  if (savedCheckedState === 'true') {
-			inputElement.checked = true;
-			label?.classList.add('checked-label');
-		  }
-	
-		  // 添加复选框状态改变的事件监听器
-		  inputElement.addEventListener('change', function() {
-			if (inputElement.checked) {
-			  label?.classList.add('checked-label');
-			  localStorage.setItem(`checkbox-${id}-checked`, 'true');
-			} else {
-			  label?.classList.remove('checked-label');
-			  localStorage.setItem(`checkbox-${id}-checked`, 'false');
-			}
-		  });
-		});
-	  </script> -->
+    });
+</script>

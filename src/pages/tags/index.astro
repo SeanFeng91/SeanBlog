@@ -5,173 +5,116 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const allPosts = await Astro.glob('../**/*.{md,mdx}');
 const tags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
 
-const pageTitle = "Tag Index";
-// 这是tag首页，用来blog导航
+const pageTitle = "标签索引";
 ---
 <IndexLayout pageTitle={pageTitle}>
-    <div slot="maindiv" >
-    <!-- <div> -->
-      <div class="text-5xl font-extrabold ...">
-        <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-          Hello world!
-          尝试用tags记录博客分类
-        </span>
-        <!-- <p class="text-sm">（标题用了bg-clip-text，文字扣背景颜色）</p> -->
-      </div>
-      <div>
-        <div id="tags" class="mt-10 flex flex-wrap">
-          <div class="tag bg-red-50" data-tag="all">All</div>
-          {tags.map(tag => (
-            <div class="tag bg-red-50" data-tag={tag}>{tag}</div>
-          ))}
-        </div>
-        
-        <div id="posts" class="mt-10 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-y-10 gap-x-5 dark:text-cyan-50">
-          {allPosts.map((indexcard, index) =>
-            <div class="post" data-tags={indexcard.frontmatter.tags.join(',')}>
-              <div data-aos="fade-up" data-aos-offset="200" data-aos-delay={index*600}
-					        data-aos-duration="1000" 
-                  class="min-w-sm border grid  dark:border-sky-800 rounded-lg p-4 min-h-70  shadow-sm">
-                    {/* bg-gradient-to-t from-sky-50 to-sky-0 dark:from-sky-950 dark:to-sky-900 */}
-                <h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
-                <h2 class="nav-links mt-1 text-2xl text-balance leading-tight font-bold hover:text-blue-900">
-                  <a class="no-underline font-bold" href={indexcard.url}>{indexcard.frontmatter.title}</a>
-                </h2>
-                <p class="line-clamp-3  text-sm italic tracking-normal  indent-8 leading-relaxed dark:text-slate-200">
-                  {indexcard.frontmatter.description}
-                </p>
-                <div class="py-3 flex items-center font-bold text-sm text-gray-500 after:flex-1 after:border-t after:border-gray-200 after:ms-6 dark:text-white dark:after:border-neutral-600">
-                  【文档分类】</div>
-                <div>
-                {/* <p class="p-0 mt-2 mb-0 ml-2 font-bold text-slate-400">文档分类：</p> */}
-                {indexcard.frontmatter.tags.map((blogtags) => (
-                  <div class="inline-block mt-0">
-                    <p class="m-0 text-md font-light">
-                      <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
-                        <path fill="currentColor" d="M9.737.854L3.69 8l6.047 7.146l1.526-1.292L6.31 8l4.953-5.854z" />
-                      </svg>
-                      {blogtags}
-                      <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
-                        <path fill="currentColor" d="M6.263 15.146L12.31 8L6.263.854L4.737 2.146L9.69 8l-4.953 5.854z" />
-                      </svg>
-                    </p>
-                  </div>
+  <div slot="maindiv" class="container mx-auto px-4">
+    <h1 class="text-4xl font-bold text-center mb-8">
+      <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+        博客标签导航
+      </span>
+    </h1>
+    
+    <div id="tags" class="flex flex-wrap justify-center gap-2 mb-8">
+      <button class="tag bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-tag="all">全部</button>
+      {tags.map(tag => (
+        <button class="tag bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-tag={tag}>{tag}</button>
+      ))}
+    </div>
+    
+    <div id="posts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {allPosts.map((post, index) => (
+        <div class="post" data-tags={post.frontmatter.tags.join(',')}>
+          <div data-aos="fade-up" data-aos-offset="100" data-aos-delay={index * 100} data-aos-duration="800" 
+               class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-full flex flex-col">
+            <div class="p-6 flex-grow">
+              <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">博客 #{index + 1}</p>
+              <h2 class="text-xl font-bold mb-2 text-gray-800 dark:text-white line-clamp-1 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300">
+                <a href={post.url} class="no-underline">{post.frontmatter.title}</a>
+              </h2>
+              <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">
+                {post.frontmatter.description}
+              </p>
+            </div>
+            <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700">
+              <div class="flex flex-wrap gap-2">
+                {post.frontmatter.tags.map((tag) => (
+                  <span class="inline-block bg-gray-200 dark:bg-gray-600 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-200">
+                    {tag}
+                  </span>
                 ))}
               </div>
-              </div>
-              
             </div>
-          )}
+          </div>
         </div>
-      </div>
-      
+      ))}
     </div>
+  </div>
 </IndexLayout>
 
 <style>
-  .tags a {
-    color: #000000;
-    text-decoration-line: none;
-    font-family: sans-serif;
-    font-weight: 300;
-    letter-spacing: 0.025em;
-    font-size: 1.0rem; /* 18px */
-    line-height: 1.75rem; /* 28px */
-}
-
-
-
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.tag {
-    margin: 0.25em;
-    border: solid #000000;
-    border-radius: 9999px;
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 1.15em;
-    /* background-color: transparent; */
-    border-width: 2px;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent; /* 确保在触摸设备上没有点击高亮效果 */
-}
-
-.tag.selected {
-    background-color: #000000;
-    color: #ffffff;
-}
-
+  .tag.selected {
+    @apply bg-blue-500 text-white;
+  }
 </style>
 
-<!-- AOS -->
 <script is:inline src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script is:inline> 
-  AOS.init();
+  AOS.init({
+    once: true,
+    disable: 'phone'
+  });
 </script>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-  const tags = document.querySelectorAll('.tag');
-  const posts = document.querySelectorAll('.post');
-  let selectedTags = new Set(); // 初始化时不选择任何标签
+    const tags = document.querySelectorAll('.tag');
+    const posts = document.querySelectorAll('.post');
+    let selectedTags = new Set(['all']);
 
-  function filterPosts() {
-    if (selectedTags.size === 0 || selectedTags.has('all')) {
-      posts.forEach(post => post.style.display = 'block');
-    } else {
-      posts.forEach(post => {
-        const postTags = post.getAttribute('data-tags').split(',');
-        const hasAllSelectedTags = Array.from(selectedTags).every(selectedTag => postTags.includes(selectedTag));
-        post.style.display = hasAllSelectedTags ? 'block' : 'none';
-      });
-    }
-  }
-
-  function handleTagClick(event) {
-    const clickedTag = event.currentTarget;
-    const tagName = clickedTag.getAttribute('data-tag');
-
-    if (tagName === 'all') {
+    function filterPosts() {
       if (selectedTags.has('all')) {
-        selectedTags.delete('all');
-        clickedTag.classList.remove('selected');
-        AOS.init();
+        posts.forEach(post => post.style.display = 'block');
       } else {
+        posts.forEach(post => {
+          const postTags = post.getAttribute('data-tags').split(',');
+          const hasAllSelectedTags = Array.from(selectedTags).every(selectedTag => postTags.includes(selectedTag));
+          post.style.display = hasAllSelectedTags ? 'block' : 'none';
+        });
+      }
+      AOS.refresh();
+    }
+
+    function handleTagClick(event) {
+      const clickedTag = event.currentTarget;
+      const tagName = clickedTag.getAttribute('data-tag');
+
+      if (tagName === 'all') {
         selectedTags.clear();
         selectedTags.add('all');
-        tags.forEach(tag => tag.classList.remove('selected'));
-        clickedTag.classList.add('selected');
-        AOS.init();
-      }
-    } else {
-      if (selectedTags.has(tagName)) {
-        selectedTags.delete(tagName);
-        clickedTag.classList.remove('selected');
-        AOS.init();
+        tags.forEach(tag => tag.classList.toggle('selected', tag === clickedTag));
       } else {
-        selectedTags.add(tagName);
-        clickedTag.classList.add('selected');
-        document.querySelector('.tag[data-tag="all"]').classList.remove('selected');
         selectedTags.delete('all');
-        AOS.init();
+        clickedTag.classList.toggle('selected');
+        if (clickedTag.classList.contains('selected')) {
+          selectedTags.add(tagName);
+        } else {
+          selectedTags.delete(tagName);
+        }
+        if (selectedTags.size === 0) {
+          selectedTags.add('all');
+          document.querySelector('.tag[data-tag="all"]').classList.add('selected');
+        } else {
+          document.querySelector('.tag[data-tag="all"]').classList.remove('selected');
+        }
       }
+      filterPosts();
     }
+
+    tags.forEach(tag => {
+      tag.addEventListener('click', handleTagClick);
+    });
+
     filterPosts();
-  }
-
-  tags.forEach(tag => {
-    tag.addEventListener('click', handleTagClick);
-    tag.addEventListener('touchstart', handleTagClick);
   });
-
-  // 默认显示所有博客并选中 'All' 标签
-  const allTag = document.querySelector('.tag[data-tag="all"]');
-  allTag.classList.add('selected');
-  selectedTags.add('all');
-  filterPosts();
-});
-
 </script>
