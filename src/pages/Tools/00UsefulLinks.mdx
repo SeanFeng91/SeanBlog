@@ -2,7 +2,7 @@
 layout: ../../layouts/MarkdownPostLayout.astro
 title: "有用/常用的链接集合"
 author: Sean Feng
-description: "第一篇mdx文档"
+description: "会罗列一些常用的链接地址，可以快速找到一些有用的信息并在这里记录"
 pubDate: 2024-07-10
 
 tags: ["问题记录","MDX"]
@@ -18,179 +18,15 @@ import '../../styles/markdown.css'
   ))}
 </div>
 
+# 语言框架类
+## React
+中文教程
+[React中文教程](https://react.docschina.org/learn)
+[zh-hans.react.dev](https://zh-hans.legacy.reactjs.org/tutorial/tutorial.html)
+[react@github](https://github.com/facebook/react)
 
-
+## Build Your Own X
 [build your own X](https://build-your-own-x.vercel.app),它的[github](https://github.com/codecrafters-io/build-your-own-x?tab=readme-ov-file)
 
-
-```astro
-    ---
-    import IndexLayout from '../layouts/IndexLayout.astro';
-    import { motion } from "framer-motion";
-
-    const pageTitle = "关于Sean";
-
-    const identity = {
-      firstName: "Sean",
-      lastName: "Zhang",
-      country: "加拿大",
-      occupation: "全栈开发者 & 技术撰稿人",
-      hobbies: ["摄影", "观星", "爬山", "阅读"],
-    };
-
-    const skills = [
-      { name: "React", level: 90 },
-      { name: "Node.js", level: 85 },
-      { name: "TypeScript", level: 80 },
-      { name: "GraphQL", level: 75 },
-      { name: "Docker", level: 70 },
-    ];
-
-    const projects = [
-      {
-        title: "AI驱动的个人助手",
-        description: "使用OpenAI API开发的智能个人助手,能够帮助用户管理日程、回答问题和提供建议。",
-        tech: ["React", "Node.js", "OpenAI API"],
-      },
-      {
-        title: "区块链投票系统",
-        description: "基于以太坊的去中心化投票系统,确保投票的透明性和不可篡改性。",
-        tech: ["Solidity", "Web3.js", "React"],
-      },
-      {
-        title: "智能家居控制中心",
-        description: "集成多种智能家居设备的中央控制系统,支持语音控制和自动化场景。",
-        tech: ["React Native", "GraphQL", "IoT Protocols"],
-      },
-    ];
-
-    const experiences = [
-      {
-        company: "TechInnovate Inc.",
-        position: "高级全栈开发者",
-        period: "2020 - 至今",
-        description: "负责公司核心产品的架构设计和开发,带领5人开发团队。",
-      },
-      {
-        company: "DataViz Solutions",
-        position: "前端开发者",
-        period: "2018 - 2020",
-        description: "开发数据可视化解决方案,使用D3.js创建交互式图表和仪表板。",
-      },
-    ];
-
-    ---
-
-    <IndexLayout pageTitle={pageTitle}>
-      <div slot="maindiv" class="container mx-auto px-4 py-16">
-        <motion.section 
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          class="mb-16"
-        >
-          <h1 class="text-5xl font-bold text-gray-800 mb-4">{identity.firstName} {identity.lastName}</h1>
-          <p class="text-xl text-gray-600">{identity.occupation} | 来自{identity.country}</p>
-          <p class="text-lg text-gray-500 mt-4">热爱{identity.hobbies.join('、')}等活动</p>
-        </motion.section>
-
-        <motion.section 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          class="mb-16"
-        >
-          <h2 class="text-3xl font-semibold text-gray-800 mb-6">技能专长</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {skills.map((skill, index) => (
-              <motion.div 
-                initial={{ width: 0 }}
-                animate={{ width: "100%" }}
-                transition={{ duration: 1, delay: index * 0.1 }}
-                class="bg-white rounded-lg shadow-md p-4"
-              >
-                <h3 class="text-lg font-medium text-gray-700">{skill.name}</h3>
-                <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: `${skill.level}%` }}
-                    transition={{ duration: 1, delay: index * 0.1 + 0.5 }}
-                    class="bg-blue-600 h-2.5 rounded-full"
-                  ></motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        <motion.section 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          class="mb-16"
-        >
-          <h2 class="text-3xl font-semibold text-gray-800 mb-6">项目展示</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project, index) => (
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                class="bg-white rounded-lg shadow-md p-6"
-              >
-                <h3 class="text-xl font-medium text-gray-800 mb-2">{project.title}</h3>
-                <p class="text-gray-600 mb-4">{project.description}</p>
-                <div class="flex flex-wrap gap-2">
-                  {project.tech.map(tech => (
-                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">{tech}</span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        <motion.section 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          class="mb-16"
-        >
-          <h2 class="text-3xl font-semibold text-gray-800 mb-6">工作经历</h2>
-          <div class="space-y-6">
-            {experiences.map((exp, index) => (
-              <motion.div 
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                class="bg-white rounded-lg shadow-md p-6"
-              >
-                <h3 class="text-xl font-medium text-gray-800">{exp.position}</h3>
-                <p class="text-gray-600">{exp.company} | {exp.period}</p>
-                <p class="text-gray-700 mt-2">{exp.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          class="text-center"
-        >
-          <a
-            href="#contact"
-            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
-          >
-            联系我
-          </a>
-        </motion.div>
-      </div>
-    </IndexLayout>
-
-    <style>
-      @import 'animate.css';
-    </style>
-```
 
 
