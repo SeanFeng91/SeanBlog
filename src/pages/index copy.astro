@@ -133,76 +133,31 @@ const pageTitle = "SeanBlog";
 		<div class="h-2 rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ..."></div>
 
 			<!-- 尝试新卡片组件 -->
-			<div class="relative mt-20 mb-20">
-				<!-- 创建一个相对定位的容器，顶部外边距为20，底部外边距为20 -->
-				<div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-blue-400 via-blue-400 to-blue-400"></div>
-				<!-- 创建一个垂直的时间线，使用蓝色渐变背景 -->
-				<div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full w-4 h-4 rounded-full bg-blue-400"></div>
-				<!-- 开始端点 -->
-				<div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4 rounded-full bg-blue-400"></div>
-				<!-- 结束端点 -->
-				<div class="space-y-8 py-10"> <!-- 减小了垂直间距 -->
-					<!-- 创建一个垂直间距为8的容器，上下内边距为10 -->
-					{allPosts.sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate)).map((indexcard, index) => (
-						<!-- 对文章进行排序（按发布日期降序），并遍历每篇文章 -->
-						<div 
-							class="relative flex items-center"
-							data-aos="fade-up"
-							data-aos-duration="800"
-							data-aos-delay={index * 150}
-							style={`margin-top: ${index === 0 ? '0' : '-80px'}`} {/* 添加负边距实现重叠效果 */}
-						>
-							<!-- 为每篇文章创建一个相对定位的容器，添加淡入动画效果 -->
-							<div class="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 shadow-lg flex items-center justify-center z-10">
-								<!-- 创建时间线上的圆点 -->
-								<div class="w-3 h-3 rounded-full bg-white dark:bg-neutral-800"></div>
-								<!-- 圆点内部的小圆 -->
-							</div>
-							<div class={`w-6/12 ${index % 2 === 0 ? 'mr-auto pr-8' : 'ml-auto pl-8'}`}>
-								<!-- 创建交替布局的容器 -->
-								<div class="bg-white dark:bg-neutral-800 border rounded-lg shadow-sm overflow-hidden dark:border-neutral-700 dark:shadow-neutral-700/70 transition-all duration-300 hover:shadow-md hover:scale-105 hover:translate-y-[-5px]">
-									<!-- 文章卡片容器，添加悬停效果 -->
-									<div class="relative h-28">
-										<!-- 图片容器 -->
-										<img 
-											class="w-full h-full object-cover" 
-											src={indexcard.frontmatter.image?.url || "https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80"} 
-											alt={indexcard.frontmatter.image?.alt || "文章封面图"}
-										/>
-										<!-- 文章封面图 -->
-										<div class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-bl-lg">
-											<!-- 发布日期标签 -->
-											{new Date(indexcard.frontmatter.pubDate).toLocaleDateString('zh-CN')}
-										</div>
-									</div>
-									
-									<div class="p-3">
-										<!-- 文章内容区域 -->
-										<h3 class="text-lg font-bold text-gray-800 dark:text-white mb-2 line-clamp-2">
-											<!-- 文章标题 -->
-											<a href={indexcard.url} class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
-												{indexcard.frontmatter.title}
-											</a>
-										</h3>
-										<p class="text-sm text-gray-600 dark:text-neutral-300 mb-3 line-clamp-2">
-											<!-- 文章描述 -->
-											{indexcard.frontmatter.description}
-										</p>
-										<div class="flex justify-between items-center text-xs text-gray-500 dark:text-neutral-400">
-											<!-- 作者信息和阅读更多链接 -->
-											<p class="flex items-center">
-												<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path></svg>
-												{indexcard.frontmatter.author}
-											</p>
-											<a href={indexcard.url} class="text-blue-500 hover:text-blue-700 hover:underline font-medium">阅读更多</a>
-										</div>
-									</div>
-								</div>
+			<!-- <div class="grid grid-flow-row auto-rows-max">
+				{allPosts.map((indexcard)=> <div class="bg-white border rounded-xl shadow-sm sm:flex mt-6 p-4 dark:bg-neutral-100 dark:border-neutral-700 dark:shadow-neutral-700/70">
+					<div class="shrink-0 relative w-full rounded-t-xl overflow-hidden sm:rounded-s-xl sm:max-w-60 md:rounded-se-none md:max-w-xs">
+					<img class="size-3/4 absolute items-center ml-6 rounded-lg top-0 start-0 object-cover" 
+					src="https://images.unsplash.com/photo-1680868543815-b8666dba60f7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=560&q=80" alt="Card Image">
+					</div>
+					
+					<div class="flex flex-wrap">
+						<div class="p-4 flex flex-col h-auto sm:p-4">
+							<h3 class="text-lg font-bold text-gray-800 dark:text-white">
+								<a href={indexcard.url}>{indexcard.frontmatter.title}</a>
+							</h3>
+							<p class="mt-1 text-gray-500 dark:text-neutral-400">
+								{indexcard.frontmatter.description}
+							</p>
+							<div class="mt-5 sm:mt-auto">
+							<p class="text-xs text-gray-500 dark:text-neutral-500">
+								{indexcard.frontmatter.pubDate}
+							</p>
 							</div>
 						</div>
-					))}
-				</div>
-			</div>
+					</div>
+				</div> )}
+				
+			</div> -->
 			<!-- component 彩色换页 -->
 			<!-- <div class="mt-10 h-2/5 w-full overflow-hidden flex flex-nowrap text-center" id="slider">
 				<div class="bg-blue-600 text-white space-y-4 flex-none w-full flex flex-col items-center justify-center">
