@@ -120,3 +120,42 @@ html.dark {
 .assistant-wrapper {
   justify-content: flex-start; /* 助手消息靠左对齐 */
 }
+
+/* 通用滚动条样式 scrollbar-custom */
+.scrollbar-custom {
+  scrollbar-width: wide;
+  scrollbar-color: #d1d5db #f3f4f6; /* Firefox 支持 */
+  border-radius: 9999px;
+}
+
+.dark .scrollbar-custom {
+  scrollbar-width: wide;
+  scrollbar-color: #3b3b3b #666666; /* Firefox 支持 */
+  border-radius: 9999px;
+}
+
+/* WebKit 浏览器支持的滚动条样式 */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 30px;
+  height: 15px; /* 如果需要水平滚动条 */
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #2256be;
+  border-radius: 9999px; /* Tailwind 的 rounded-full */
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 9999px; /* Tailwind 的 rounded-full */
+}
+
+/* 暗模式滚动条样式 */
+.dark .scrollbar-custom::-webkit-scrollbar-track {
+    background: #374151;
+  }
+
+.dark .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #6b7280;
+  }
+

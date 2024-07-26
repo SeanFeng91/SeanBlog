@@ -17,9 +17,9 @@ import: '../../styles/markdown.css'
 # MarkDown语法支持
 简单的检索了以下三个网页，可以查询丰富的Markdown语法使用。
 mdx和md的语法不一样，需要再补充一下mdx的语法
-[markdown](https://markdown.p2hp.com/basic-syntax/index.html)
-[约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
-[Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
+- [markdown](https://markdown.p2hp.com/basic-syntax/index.html)
+- [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
+- [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
 # 20240725记录
 ## blogs首页设计
@@ -49,7 +49,8 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 
 
 今天装了几个remark插件之后，产生了前所未有的warning，各种版本不兼容和冲突。npm install astro好几次没有用！
-```
+
+```astro
     npm warn ERESOLVE overriding peer dependency
     npm warn While resolving: react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825
     npm warn Found: react@18.3.1
@@ -195,6 +196,8 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
     npm warn deprecated babel-eslint@10.1.0: babel-eslint is now @babel/eslint-parser. This package will no longer receive updates.
     npm warn deprecated @humanwhocodes/object-schema@1.2.1: Use @eslint/object-schema instead
 ```
+
+
 
 # 20240724记录
 尝试使用aos对页面的div进行动态滚动尝试。并且使用grid规划div位置。AOS的各种效果非常不错。现在div块使用了很多fadein。

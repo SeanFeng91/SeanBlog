@@ -14,13 +14,7 @@ import BaseHead from '../components/BaseHead.astro';
 ---
 
 <html lang="zh-cn" class="overflow-x-hidden overflow-y-scroll  
-                [&::-webkit-scrollbar]:w-2
-                [&::-webkit-scrollbar-track]:rounded-full
-                [&::-webkit-scrollbar-track]:bg-gray-100
-                [&::-webkit-scrollbar-thumb]:rounded-full
-                [&::-webkit-scrollbar-thumb]:bg-gray-300
-                dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-                dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+                scrollbar-custom dark:
                ">
   <head>
     <title>{pageTitle}</title>
@@ -60,7 +54,7 @@ import BaseHead from '../components/BaseHead.astro';
               <aside class="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-45rem))] right-auto w-[19rem] pb-10 pl-8 pr-6 overflow-y-auto">
                 <Leftsidebar1 />
               </aside>
-              <aside class="">
+              <aside class=" overflow-y-auto">
                 <Leftsidebar2 />
               </aside>
             <!-- </div> -->

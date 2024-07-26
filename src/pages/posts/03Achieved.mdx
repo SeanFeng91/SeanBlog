@@ -7,8 +7,86 @@ image:
   url: "https://docs.astro.build/default-og-image.png"
   alt: "The word astro against an illustration of planets and stars."
 pubDate: 2024-07-11
-tags: ["astro", "successes", "astro"]
+tags: ["astro", "successes", "astro","MDX"]
 ---
+## 为滑块统一配置样式@20240726
+之前参照preline有为滚动条配置样式的代码。但是还不会通过css统一进行描述，导致涉及div的很多地方有重复的以下样式代码，以实现滚动bar宽度2、圆角、
+滚筒条和滚槽颜色，暗黑模式下颜色的设定。
+```astro
+    [&::-webkit-scrollbar]:w-2
+    [&::-webkit-scrollbar-track]:rounded-full
+    [&::-webkit-scrollbar-track]:bg-gray-100
+    [&::-webkit-scrollbar-thumb]:rounded-full
+    [&::-webkit-scrollbar-thumb]:bg-gray-300
+    dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+    dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500
+```
+今天在考虑markdown文本样式的时候，正好有一段代码过于长，GPT很好的给出了滚动条CSS样式的表达方式如下：
+```astro
+    /* 为代码块设置最大高度并启用滚动条 */
+    .nav-links pre {
+    max-height: 500px; /* 设置最大高度，例如300px */
+    overflow-y: auto; /* 启用垂直滚动条 */
+    background: #d2d2d2; /* 背景颜色 */
+    padding: 1em; /* 内边距 */
+    border-radius: 5px; /* 圆角 */
+    }
+    /* 为代码块的滚动条设置样式 */
+    .nav-links pre::-webkit-scrollbar {
+    width: 8px; /* 滚动条宽度 */
+    height: 8px; /* 滚动条高度 */
+    }
+    .nav-links pre::-webkit-scrollbar-track {
+    background: #f5f5f5; /* 滚动条轨道颜色 */
+    }
+    .nav-links pre::-webkit-scrollbar-thumb {
+    background-color: #888; /* 滚动条颜色 */
+    border-radius: 10px; /* 滚动条圆角 */
+    border: 2px solid #f5f5f5; /* 滚动条边框 */
+    }
+    .nav-links pre::-webkit-scrollbar-thumb:hover {
+    background-color: #555; /* 滚动条悬停颜色 */
+    }
+```
+
+所以将原来tailwindcss样式的滚动条改变之后内容如下，但是不知道为什么没有很正确的加载效果，感觉被覆盖了：
+```astro
+    /* 通用滚动条样式 */
+    .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f3f4f6; /* Firefox 支持 */
+    }
+
+    /* WebKit 浏览器支持的滚动条样式 */
+    .scrollbar-custom::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; /* 如果需要水平滚动条 */
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 9999px; /* Tailwind 的 rounded-full */
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 9999px; /* Tailwind 的 rounded-full */
+    }
+
+    /* 暗模式滚动条样式 */
+    @media (prefers-color-scheme: dark) {
+    .scrollbar-custom::-webkit-scrollbar-track {
+        background: #374151;
+    }
+
+    .scrollbar-custom::-webkit-scrollbar-thumb {
+        background-color: #6b7280;
+    }
+    }
+
+```
+
+
 
 ## MyGPT@Kimi-20240719
 

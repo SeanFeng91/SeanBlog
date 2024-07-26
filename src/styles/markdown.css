@@ -177,7 +177,31 @@ h1:hover a::after, h2:hover a::after, h3:hover a::after, h4:hover a::after, h5:h
 }
 
 
+/* 为代码块设置最大高度并启用滚动条 */
+.nav-links pre {
+  max-height: 500px; /* 设置最大高度，例如300px */
+  overflow-y: auto; /* 启用垂直滚动条 */
+  background: #d2d2d2; /* 背景颜色 */
+  padding: 1em; /* 内边距 */
+  border-radius: 5px; /* 圆角 */
+}
+/* 为代码块的滚动条设置样式 */
+.nav-links pre::-webkit-scrollbar {
+  width: 8px; /* 滚动条宽度 */
+  height: 8px; /* 滚动条高度 */
+}
+.nav-links pre::-webkit-scrollbar-track {
+  background: #f5f5f5; /* 滚动条轨道颜色 */
+}
 
+.nav-links pre::-webkit-scrollbar-thumb {
+  background-color: #888; /* 滚动条颜色 */
+  border-radius: 10px; /* 滚动条圆角 */
+  border: 2px solid #f5f5f5; /* 滚动条边框 */
+}
+.nav-links pre::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* 滚动条悬停颜色 */
+}
 
 
 /* 暗模式样式 */
