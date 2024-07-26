@@ -28,6 +28,11 @@ export default defineConfig({
   base: '/SeanBlog/',
   // trailingSlash: "always",
   integrations: [tailwind(), mdx(), icon(), react()],
+  vite: {
+    ssr: {
+      external: ['jquery'],
+    },
+  },
   markdown: {
     rehypePlugins: [
       rehypeSlug,
@@ -35,4 +40,3 @@ export default defineConfig({
     ],
   },
 });
-
