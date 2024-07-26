@@ -7,10 +7,10 @@ import dotenv from 'dotenv';
 import react from "@astrojs/react";
 // 标题中文转英文
 import slugify from 'slugify';
-import customSlug from './src/scripts/customslug';
+// import customSlug from './src/scripts/customslug';
 
 // 添加md文章标题
-import remarkToc from 'remark-toc';
+// import remarkToc from 'remark-toc';
 // 添加标题锚点
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -19,9 +19,9 @@ dotenv.config();
 // https://astro.build/config
 
 // 标题转拼音
-const customSlugify = text => {
-  return slugify(text, { lower: true, remove: /[*+~.()'"!:@]/g });
-};
+// const customSlugify = text => {
+//   return slugify(text, { lower: true, remove: /[*+~.()'"!:@]/g });
+// };
 
 export default defineConfig({
   site: 'https://SeanFeng91.github.io',
@@ -29,12 +29,8 @@ export default defineConfig({
   // trailingSlash: "always",
   integrations: [tailwind(), mdx(), icon(), react()],
   markdown: {
-    remarkPlugins: [
-      [remarkToc, { heading: '目录' }],
-      customSlug,
-    ],
     rehypePlugins: [
-      [rehypeSlug, { properties: { id: customSlugify } }],
+      rehypeSlug,
       [rehypeAutolinkHeadings, { behavior: 'wrap' }],
     ],
   },

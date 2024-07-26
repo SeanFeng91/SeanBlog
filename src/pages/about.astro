@@ -1,60 +1,144 @@
 ---
-import '../styles/global.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
-// import IndexLayout from '../layouts/IndexLayout.astro';
+import { useEffect } from 'react';
+import AOS from 'aos';
+// import 'aos/dist/aos.css';
 
 const pageTitle = "关于我的介绍";
 const identity = {
-  firstName: "莎拉",
+  firstName: "Sean",
   country: "加拿大",
   occupation: "技术撰稿人",
-  hobbies: ["摄影", "观鸟", "棒球"],
+  hobbies: ["摄影", "观星", "爬山"],
 };
 
 const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Writing Docs"];
 
-const happy = true;
-const finished = false;
-const goal = 3;
-const skillColor = "orange";
 ---
 
 <BaseLayout pageTitle={pageTitle}>
-  <div  class="max-h-[400px] overflow-y-auto
-  [&::-webkit-scrollbar]:w-2
-  [&::-webkit-scrollbar-track]:rounded-full
-  [&::-webkit-scrollbar-track]:bg-gray-100
-  [&::-webkit-scrollbar-thumb]:rounded-full
-  [&::-webkit-scrollbar-thumb]:bg-gray-300
-  dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-  dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 bg-white">
-  
-    <h2 class="text-3xl font-bold underline">请看我的新 Astro 网站！</h2>
-    <p>我正在学习 Astro 的入门教程。这是我网站上的第二个页面，也是我自己建立的第一页面！</p>
-    <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
-    <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
-    <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
-    <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
-    <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
-    <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
-    <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
-    <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
-    <p>随着我完成更多教程，该站点将更新，所以请继续查看我的旅程将如何进行吧！</p>
+  <div class="container mx-auto px-4 py-16">
+    <div data-aos="fade-down" data-aos-duration="1000" class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl p-8 mb-12">
+      <h1 class="text-4xl font-bold text-white mb-6 tlt" data-in-effect="fadeInDown">
+        {identity.firstName}的个人简介
+      </h1>
+      <p class="text-xl text-gray-300 mb-4 animate__animated animate__fadeIn animate__delay-1s">
+        我是一名来自{identity.country}的{identity.occupation}。
+      </p>
+      <p class="text-lg text-gray-400 animate__animated animate__fadeIn animate__delay-2s">
+        我热爱{identity.hobbies.join('、')}等活动。
+      </p>
+    </div>
 
-    <p>以下是关于我的几个事实：</p>
-    <ul>
-      <li>我的名字是{identity.firstName}.</li>
-      <li>我住在{identity.country}。我的职业是{identity.occupation}。</li>
-      {identity.hobbies.length >= 2 &&
-        <li>我的两个习惯：{identity.hobbies[0]}和{identity.hobbies[1]}</li>
-      }
-    </ul>
-    <p>我的技能：</p>
-    <ul>
-      {skills.map((skill) => <li class="skill">{skill}</li>)}
-    </ul>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div data-aos="flip-left" data-aos-duration="1000" class="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition duration-300">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 tlt" data-in-effect="rollIn">技能专长</h2>
+        <ul class="space-y-2">
+          {skills.map((skill, index) => (
+            <li class="flex items-center animate__animated animate__fadeInLeft" style={`animation-delay: ${index * 0.2}s`}>
+              <span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+              <span class="text-gray-700">{skill}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div data-aos="flip-right" data-aos-duration="1000" class="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition duration-300">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4 tlt" data-in-effect="rollIn">个人目标</h2>
+        <p class="text-gray-700 animate__animated animate__fadeIn animate__delay-1s">
+          我正在不断学习和成长,努力成为一名优秀的技术撰稿人和开发者。
+        </p>
+      </div>
+    </div>
+
+    <div data-aos="zoom-in" data-aos-duration="1000" class="mt-12 text-center">
+      <a
+        href="#contact"
+        class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105 animate__animated animate__pulse animate__infinite"
+      >
+        联系我
+      </a>
+    </div>
   </div>
-  
-    
-  
 </BaseLayout>
+
+<script>
+  import AOS from 'aos';
+  import 'aos/dist/aos.css';
+  import 'animate.css';
+  import $ from 'jquery';
+
+
+  // 初始化 AOS
+  AOS.init();
+
+  // 初始化 Textillate
+  $('.tlt').textillate();
+
+  // 添加滚动触发动画
+  $(window).scroll(function() {
+    AOS.refresh();
+  });
+</script>
+
+<style>
+  @import 'animate.css';
+</style>
+
+<!-- 字体动画 -->
+<script type="module" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/lettering.js/0.7.0/jquery.lettering.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" integrity="sha512-YTL2qFiv2wZNnC764l1DD5zN6lYxDzJ89Ss6zj6YoYIzr6+zwjdVKM1sUR+971X3h7qWCa9cPUBXyYqhOqWWLQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script type="module" src="https://cdn.rawgit.com/jschr/textillate/master/jquery.textillate.js"></script>
+
+    <script type="module">
+        $(document).ready(function () {
+            $('.tlt').textillate({
+            // the default selector to use when detecting multiple texts to animate
+            selector: '.texts',
+            // enable looping
+            loop: true,
+
+            // sets the minimum display time for each text before it is replaced
+            minDisplayTime: 1000,
+
+            // sets the initial delay before starting the animation
+            // (note that depending on the in effect you may need to manually apply
+            // visibility: hidden to the element before running this plugin)
+            initialDelay: 0,
+
+            // set whether or not to automatically start animating
+            autoStart: true,
+
+            // custom set of 'in' effects. This effects whether or not the
+            // character is shown/hidden before or after an animation
+            inEffects: [''],
+
+            // custom set of 'out' effects
+            outEffects: [ 'hinge' ],
+
+            // in animation settings
+            in: {
+    
+            },
+
+            // out animation settings.
+            out: {
+              // effect: 'bounceOut',
+              // delayScale: 1.5,
+              // delay: 50,
+              // sync: false,
+              // shuffle: true,
+              // reverse: false,
+              // callback: function () {}
+            },
+
+            // callback that executes once textillate has finished
+            callback: function () {},
+
+            // set the type of token to animate (available types: 'char' and 'word')
+            type: 'char'
+          });
+        });
+        
+    </script>

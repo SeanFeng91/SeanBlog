@@ -17,13 +17,13 @@ const pageTitle = "SeanBlog";
 
 	@media (min-width: 1024px) {
 	  :root {
-		--mt: -80px;
+		--mt: -60px;
 	  }
 	}
 	
 	@media (max-width: 1023px) {
 	  :root {
-		--mt: 20;
+		--mt: 40px; 
 	  }
 	}
 </style>
@@ -138,15 +138,14 @@ const pageTitle = "SeanBlog";
 			<div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-400 via-purple-500 to-pink-500 transform md:-translate-x-1/2"></div>
 			<div class="absolute top-0 left-2 md:left-1/2 w-5 h-5 rounded-full bg-blue-400 transform md:-translate-x-1/2 -translate-y-1/2"></div>
 			<div class="absolute bottom-0 left-2 md:left-1/2 w-5 h-5 rounded-full bg-pink-500 transform md:-translate-x-1/2 translate-y-1/2"></div>
-			<div class="space-y-8">
+			<div class="space-y-12 md:space-y-8">
 				{allPosts.sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate)).map((indexcard, index) => (
 					<div 
-						class="relative flex items-center md:justify-between mb-10"
+						class="relative flex items-center md:justify-between"
 						data-aos="fade-up"
 						data-aos-duration="800"
 						data-aos-delay={index * 150}
-						style={`margin-top: ${index === 0 ? '0' : 'var(--mt)'}`}
-						style={`margin-bottom: 10`}
+						style={`margin-top: ${index === 0 ? '0' : 'var(--mt)'};`}
 					>
 						<div class="absolute left-2 md:left-1/2 w-5 h-5 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 shadow-lg flex 
 						items-center justify-center z-10 transform md:-translate-x-1/2">
