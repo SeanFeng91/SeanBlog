@@ -7,6 +7,7 @@ pubDate: 2024-07-10
 tags: ["CSS","MDX"]
 ---
 import '../../styles/markdown.css'
+import React from 'react';
 
 {frontmatter.tags}
 
@@ -14,58 +15,114 @@ import '../../styles/markdown.css'
 
 通过编写markdown.css规范所有markdown文本的样式，并且在 MarkdownPostLayout.astro 的顶部引入该css。以此作为模板的所有md/mdx文档将统一使用该规范。
 
-# 一级目录
-<span class="mdhighlight">一级目录样式：</span>
-```astro
-    .nav-links h1 a {
-        font-size: 2rem;
-        color:rgb(0, 0, 0);
-        text-decoration-line: none;
-        text-wrap: pretty;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-weight: 700;
-        font-family: "Times New Roman";
-    }
-```
+# MDX 文档写作规范
 
+MDX 是一种强大的文档格式，它结合了 Markdown 的简洁性和 JSX 的灵活性。本文将介绍我们的 MDX 文档写作规范，并展示一些常用的功能和样式，包括一些高级的 CSS 和 JSX 功能。
 
+## 基本格式
 
+### 标题
+
+使用 `#` 符号来创建标题，从一级标题 `#` 到六级标题 `######`。例如：
 
 # 一级标题
-这是一个段落。现在因为增加了标题链接导致我在设置样式的时候出现了比较多的困难。包括我怎么都设置不了h1-h6的margin,不知道哪里传递了一个值始终覆盖不掉
-
-段落和段落间距要控制一下
-
 ## 二级标题
-这是一个段落
 ### 三级标题
-这是一个段落
 #### 四级标题
-这是一个段落
 ##### 五级标题
-这是一个段落
 ###### 六级标题
-这是一个段落
 
+### 段落和换行
+
+段落之间使用空行分隔。如果需要在段落内换行，可以在行末添加两个空格。
+
+这是第一个段落。
+
+这是第二个段落。
+
+### 强调
+
+使用 `*` 或 `_` 来表示斜体，使用 `**` 或 `__` 来表示粗体。例如：
+
+*斜体文本* 或 _斜体文本_
+
+**粗体文本** 或 __粗体文本__
+
+***粗斜体文本*** 或 ___粗斜体文本___
+
+## 高级样式
+
+### 文字高亮
+
+我们可以直接在MDX文件中定义一个简单的高亮组件：
+```
+    export const Highlight = ({children, color}) => (
+    <span style={{
+        backgroundColor: color,
+        borderRadius: '2px',
+        color: '#fff',
+        padding: '0.2rem',
+    }}>{children}</span>
+    );
+```
+
+{/* <Highlight color="#25c2a0">这是绿色高亮文本</Highlight>
+
+<Highlight color="#1877F2">这是蓝色高亮文本</Highlight> */}
+
+### 动态效果
+
+我们可以在MDX文件中直接定义一个简单的淡入效果组件：
+```
+    export const FadeIn = ({children}) => (
+    <div style={{
+        animation: 'fadeIn 1s ease-in',
+    }}>
+        {children}
+    </div>
+    );
+
+<style>{`
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+`}</style>
+
+<FadeIn>
+  这段文字会淡入显示
+</FadeIn>
+```
+
+### 交互式组件
+
+我们可以在MDX文件中直接定义一个简单的计数器组件：
+```
+export const Counter = () => {
+  const [count, setCount] = React.useState(0);
+  return (
+    <div>
+      <p>你点击了 {count} 次</p>
+      <button onClick={() => setCount(count + 1)}>
+        点击我
+      </button>
+    </div>
+  );
+};
+
+<Counter />
+```
+
+## 代码展示
+
+### 行内代码
+
+使用反引号 `` ` `` 来标记行内代码：
+
+这是一个 `inline code` 示例。
+
+### 代码块
+
+使用三个反引号 ``` 来创建代码块，可以指定语言以获得语法高亮：
 
 这是一个段落。这里是一些[链接](https://example.com)的示例。
-
-
-
-这是另一个段落。使用**粗体**和*斜体*来强调文本。
-
-
-
-这是一个引用块：
-
-> 这是一个引用。
-
-这是一个代码块：
-
-```javascript
-    function greet() {
-    console.log("Hello, World!");
-    }
-```
