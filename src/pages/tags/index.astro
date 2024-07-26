@@ -3,57 +3,84 @@ import IndexLayout from '../../layouts/IndexLayout.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const allPosts = await Astro.glob('../**/*.{md,mdx}');
-const tags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
+const postsByFolder = allPosts.reduce((acc, post) => {
+  const folderPath = post.file.split('/').slice(-2, -1)[0];
+  if (!acc[folderPath]) {
+    acc[folderPath] = [];
+  }
+  acc[folderPath].push(post);
+  return acc;
+}, {});
 
-const pageTitle = "标签索引";
+const folderNames = {
+  'blogs': '大模型学习博客文章',
+  'posts': '个人网页项目博客文章',
+  'Tools': '工具类博客文章',
+
+  // 添加更多文件夹映射...
+};
+
+const tags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
+const folders = Object.keys(postsByFolder);
+const allFilters = ['all', ...folders, ...tags];
+
+const pageTitle = "文章分类与标签索引";
 ---
 <IndexLayout pageTitle={pageTitle}>
   <div slot="maindiv" class="container max-w-fit px-2">
     <h1 class="text-4xl font-bold text-center mb-8">
       <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-        这里是我所有的博客，请根据标签进行筛选
+        文章分类与标签筛选
       </span>
     </h1>
     
-    <div id="tags" class="flex flex-wrap justify-center gap-2 mb-8">
-      <button class="tag bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-tag="all">全部</button>
+    <div id="filters" class="flex flex-wrap justify-center gap-2 mb-8">
+      <button class="filter bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-filter="all">全部</button>
+      {folders.map(folder => (
+        <button class="filter bg-blue-200 hover:bg-blue-300 text-blue-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-filter={folder}>{folderNames[folder] || folder}</button>
+      ))}
       {tags.map(tag => (
-        <button class="tag bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-tag={tag}>{tag}</button>
+        <button class="filter bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-full transition duration-300" data-filter={tag}>{tag}</button>
       ))}
     </div>
     
-    <div id="posts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {allPosts.map((post, index) => (
-        <div class="post" data-tags={post.frontmatter.tags.join(',')}>
-          <div data-aos="fade-up" data-aos-offset="100" data-aos-delay={index * 100} data-aos-duration="800" 
-               class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-full flex flex-col">
-            <div class="p-6 flex-grow">
-              <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">博客 #{index + 1}</p>
-              <h2 class="text-xl font-bold mb-2 text-gray-800 dark:text-white line-clamp-1 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300">
-                <a href={post.url} class="no-underline">{post.frontmatter.title}</a>
-              </h2>
-              <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">
-                {post.frontmatter.description}
-              </p>
-            </div>
-            <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700">
-              <div class="flex flex-wrap gap-2">
-                {post.frontmatter.tags.map((tag) => (
-                  <span class="inline-block bg-gray-200 dark:bg-gray-600 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-200">
-                    {tag}
-                  </span>
-                ))}
+    {Object.entries(postsByFolder).map(([folder, posts]) => (
+      <div class="mb-12">
+        <h2 class="text-2xl font-bold mb-4">{folderNames[folder] || folder}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post, index) => (
+            <div class="post" data-folder={folder} data-tags={post.frontmatter.tags.join(',')}>
+              <div data-aos="fade-up" data-aos-offset="100" data-aos-delay={index * 100} data-aos-duration="800" 
+                   class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden h-full flex flex-col">
+                <div class="px-6 py-2 flex-grow">
+                  <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{folderNames[folder] || folder} #{index + 1}</p>
+                  <h2 class="text-xl mt-4 font-bold mb-2 text-gray-800 dark:text-white line-clamp-1 hover:text-blue-600 dark:hover:text-blue-400 transition duration-300">
+                    <a href={post.url} class="no-underline">{post.frontmatter.title}</a>
+                  </h2>
+                  <p class="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">
+                    {post.frontmatter.description}
+                  </p>
+                </div>
+                <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700">
+                  <div class="flex flex-wrap gap-2">
+                    {post.frontmatter.tags.map((tag) => (
+                      <span class="inline-block bg-gray-200 dark:bg-gray-600 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-200">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
   </div>
 </IndexLayout>
 
 <style>
-  .tag.selected {
+  .filter.selected {
     @apply bg-blue-500 text-white;
   }
 </style>
@@ -68,51 +95,62 @@ const pageTitle = "标签索引";
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
-    const tags = document.querySelectorAll('.tag');
+    const filters = document.querySelectorAll('.filter');
     const posts = document.querySelectorAll('.post');
-    let selectedTags = new Set(['all']);
+    let selectedFolders = new Set();
+    let selectedTags = new Set();
 
     function filterPosts() {
-      if (selectedTags.has('all')) {
-        posts.forEach(post => post.style.display = 'block');
-      } else {
-        posts.forEach(post => {
-          const postTags = post.getAttribute('data-tags').split(',');
-          const hasAllSelectedTags = Array.from(selectedTags).every(selectedTag => postTags.includes(selectedTag));
-          post.style.display = hasAllSelectedTags ? 'block' : 'none';
-        });
-      }
+      posts.forEach(post => {
+        const postFolder = post.getAttribute('data-folder');
+        const postTags = post.getAttribute('data-tags').split(',');
+        
+        const folderMatch = selectedFolders.size === 0 || selectedFolders.has(postFolder);
+        const tagMatch = selectedTags.size === 0 || postTags.some(tag => selectedTags.has(tag));
+        
+        post.style.display = folderMatch && tagMatch ? 'block' : 'none';
+      });
       AOS.refresh();
     }
 
-    function handleTagClick(event) {
-      const clickedTag = event.currentTarget;
-      const tagName = clickedTag.getAttribute('data-tag');
+    function handleFilterClick(event) {
+      const clickedFilter = event.currentTarget;
+      const filterName = clickedFilter.getAttribute('data-filter');
+      const isFolder = clickedFilter.classList.contains('bg-blue-200');
 
-      if (tagName === 'all') {
+      if (filterName === 'all') {
+        selectedFolders.clear();
         selectedTags.clear();
-        selectedTags.add('all');
-        tags.forEach(tag => tag.classList.toggle('selected', tag === clickedTag));
+        filters.forEach(filter => filter.classList.remove('selected'));
+        clickedFilter.classList.add('selected');
       } else {
-        selectedTags.delete('all');
-        clickedTag.classList.toggle('selected');
-        if (clickedTag.classList.contains('selected')) {
-          selectedTags.add(tagName);
+        document.querySelector('.filter[data-filter="all"]').classList.remove('selected');
+        clickedFilter.classList.toggle('selected');
+
+        if (isFolder) {
+          if (clickedFilter.classList.contains('selected')) {
+            selectedFolders.add(filterName);
+          } else {
+            selectedFolders.delete(filterName);
+          }
         } else {
-          selectedTags.delete(tagName);
+          if (clickedFilter.classList.contains('selected')) {
+            selectedTags.add(filterName);
+          } else {
+            selectedTags.delete(filterName);
+          }
         }
-        if (selectedTags.size === 0) {
-          selectedTags.add('all');
-          document.querySelector('.tag[data-tag="all"]').classList.add('selected');
-        } else {
-          document.querySelector('.tag[data-tag="all"]').classList.remove('selected');
+
+        if (selectedFolders.size === 0 && selectedTags.size === 0) {
+          document.querySelector('.filter[data-filter="all"]').classList.add('selected');
         }
       }
+      
       filterPosts();
     }
 
-    tags.forEach(tag => {
-      tag.addEventListener('click', handleTagClick);
+    filters.forEach(filter => {
+      filter.addEventListener('click', handleFilterClick);
     });
 
     filterPosts();
