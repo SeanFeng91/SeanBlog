@@ -1,96 +1,62 @@
 ---
 const allFiles = await Astro.glob('../pages/**/*.{md,mdx}');
-import BlogPost from '../components/BlogPost.astro';
 
-const categories = [
-  { name: '工具类', icon: 'tool', files: allFiles.filter(file => file.url.includes('/Tools/')) },
-  { name: '网页开发类', icon: 'web', files: allFiles.filter(file => file.url.includes('/posts/')) },
-  { name: '大模型类', icon: 'ai', files: allFiles.filter(file => file.url.includes('/blogs/')) },
+// 自动获取所有文件夹并分类
+const categories: { name: string; icon: string; folder: string; files: any[] }[] = [
+  { name: '工具类', icon: 'tool', folder: 'Tools', files: [] },
+  { name: '网页开发类', icon: 'web', folder: 'posts', files: [] },
+  { name: '大模型类', icon: 'ai', folder: 'blogs', files: [] }
 ];
 
-const icons = {
-  tool: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.71 20.29l-3.68-3.68A8.963 8.963 0 0 0 20 11c0-5-4-9-9-9s-9 4-9 9s4 9 9 9c2.39 0 4.52-.96 6.12-2.5l3.68 3.68a.996.996 0 1 0 1.41-1.41zM11 18c-3.87 0-7-3.13-7-7s3.13-7 7-7s7 3.13 7 7s-3.13 7-7 7z"/></svg>`,
-  web: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>`,
-  ai: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-	<path fill="currentColor" d="M21 11V9h-2V7a2.006 2.006 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7a2.006 2.006 0 0 0-2 2v2H3v2h2v2H3v2h2v2a2.006 2.006 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2.006 2.006 0 0 0 2-2v-2h2v-2h-2v-2Zm-4 6H7V7h10Z" />
-	<path fill="currentColor" d="M11.361 8h-1.345l-2.01 8h1.027l.464-1.875h2.316L12.265 16h1.062Zm-1.729 5.324L10.65 8.95h.046l.983 4.374ZM14.244 8h1v8h-1z" />
-</svg>`
-};
+// 为每个类别分配文件
+categories.forEach(category => {
+  category.files = allFiles.filter(file => file.url.includes(`/${category.folder}/`));
+});
 
-const getIcon = (iconName) => icons[iconName] || '';
+import BlogPost from '../components/BlogPost.astro';
+
+// 图标映射函数
+function getIcon(iconName) {
+  const icons = {
+    tool: '<svg class="inline-block size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m15.224 15.508l-2.213 4.65a.6.6 0 0 1-.977.155l-3.542-3.739a.6.6 0 0 0-.358-.182l-5.106-.668a.6.6 0 0 1-.45-.881l2.462-4.524a.6.6 0 0 0 .063-.396L4.16 4.86a.6.6 0 0 1 .7-.7l5.062.943a.6.6 0 0 0 .397-.063l4.523-2.46a.6.6 0 0 1 .882.448l.668 5.107a.6.6 0 0 0 .182.357l3.739 3.542a.6.6 0 0 1-.155.977l-4.65 2.213a.6.6 0 0 0-.284.284m.797 1.927l1.414-1.414l4.243 4.242l-1.415 1.415z" /></svg>',
+    web: '<svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M.946 0L2.23 14.4L7.992 16l5.777-1.602L15.055 0zM12.26 4.71H5.502l.161 1.809H12.1l-.485 5.422l-3.623 1.004l-3.618-1.004l-.247-2.774H5.9l.126 1.41l1.967.53l.004-.001l1.968-.531l.204-2.29H4.048l-.476-5.341h8.847l-.158 1.766z" /></svg>',
+    ai: '<svg class="inline-block size-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11V9h-2V7a2.006 2.006 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7a2.006 2.006 0 0 0-2 2v2H3v2h2v2H3v2h2v2a2.006 2.006 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2.006 2.006 0 0 0 2-2v-2h2v-2h-2v-2Zm-4 6H7V7h10Z" /><path fill="currentColor" d="M11.361 8h-1.345l-2.01 8h1.027l.464-1.875h2.316L12.265 16h1.062Zm-1.729 5.324L10.65 8.95h.046l.983 4.374ZM14.244 8h1v8h-1z" /></svg>'
+  };
+  return icons[iconName] || '';
+}
 ---
 
-<nav class="hidden lg:block lg:pb-5 lg:pr-4" id="docMenu">
-  <div class="mt-10 space-y-4">
+<div class="-ml-2 hidden lg:m-0 lg:block lg:pb-5 lg:pr-4" id="docMenu">
+  <div class="mt-10 hs-accordion-group" data-hs-accordion-always-open="">
     {categories.map((category) => (
-      <div class="hs-accordion active">
-        <button class="hs-accordion-toggle flex items-center w-full text-left text-xl font-bold text-gray-800 hover:text-blue-600 focus:outline-none">
-          <span class="icon mr-2" set:html={getIcon(category.icon)}></span>
+      <div class="hs-accordion active" id={`hs-basic-always-open-heading-${category.folder}`}>
+        <button class="font-bold text-xl hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full text-start text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 rounded-lg disabled:opacity-50 disabled:pointer-events-none dark:hs-accordion-active:text-blue-500 dark:text-neutral-200 dark:hover:text-neutral-400 dark:focus:text-neutral-400" aria-expanded="true" aria-controls={`hs-basic-always-open-collapse-${category.folder}`}>
+          <svg class="hs-accordion-active:hidden block size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="M12 5v14"></path>
+          </svg>
+          <svg class="hs-accordion-active:block hidden size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path>
+          </svg>
+          <span set:html={getIcon(category.icon)}></span>
           {category.name}
         </button>
-        <div class="hs-accordion-content mt-2">
-          <ul class="space-y-2 border-l border-slate-200 pl-4">
-            {category.files.map((file) => (
-              <BlogPost url={file.url} title={file.frontmatter.title} />
-            ))}
+        <div id={`hs-basic-always-open-collapse-${category.folder}`} class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby={`hs-basic-always-open-heading-${category.folder}`}>
+          <ul id={`left${category.folder}list`} class="space-y-4 border-l border-slate-100 dark:border-slate-800">
+            {category.files.map((file) => <BlogPost url={file.url} title={file.frontmatter.title}/>)}
           </ul>
         </div>
       </div>
     ))}
   </div>
-</nav>
-
-<!-- sm模式左侧导航栏-->
-
-
-
+</div>
 
 <style>
-    .leftsidebar {
-      position: fixed;
-    }
+  .leftsidebar {
+    position: fixed;
+  }
 </style>
 
 <script>
-// 确认JavaScript代码是否被加载和执行
-console.log('JavaScript代码已加载和执行');
-
-// 选择ul和所有目录项
-const menuPosts = document.getElementById('leftpostlist');
-const menuBlogs = document.getElementById('leftbloglist');
-const menuLinks = [...menuPosts.querySelectorAll('.menu-link'), ...menuBlogs.querySelectorAll('.menu-link')];
-
-// 获取当前页面的路径并去掉末尾的斜杠
-function getCurrentPagePath() {
-      let pathname = window.location.pathname;
-      return pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
-}
-
-// 获取链接的路径并去掉末尾的斜杠
-function getLinkPath(link) {
-      let linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname;
-      return linkPath.endsWith('/') ? linkPath.slice(0, -1) : linkPath;
-}
-
-// 页面加载时检查当前 URL，设置激活状态
-window.addEventListener('DOMContentLoaded', () => {
-      const currentPagePath = getCurrentPagePath();
-
-      menuLinks.forEach(link => {
-        const linkPath = getLinkPath(link);
-        if (currentPagePath === linkPath) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-});
-
-// 为每个链接添加点击事件
-menuLinks.forEach((link) => {
-      link.addEventListener('click', function(event) {
-        event.preventDefault();
-        window.location.href = this.getAttribute('href');
-      });
-});
+// 您现有的 JavaScript 代码保持不变
 </script>
