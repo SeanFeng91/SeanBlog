@@ -8,10 +8,10 @@ const tags = [...new Set(allPosts.map((post) => post.frontmatter.tags).flat())];
 const pageTitle = "标签索引";
 ---
 <IndexLayout pageTitle={pageTitle}>
-  <div slot="maindiv" class="container mx-auto px-4">
+  <div slot="maindiv" class="container max-w-fit px-2">
     <h1 class="text-4xl font-bold text-center mb-8">
       <span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-        博客标签导航
+        这里是我所有的博客，请根据标签进行筛选
       </span>
     </h1>
     
