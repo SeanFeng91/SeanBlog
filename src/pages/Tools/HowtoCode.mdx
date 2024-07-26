@@ -1,0 +1,212 @@
+---
+layout: '../../layouts/MarkdownPostLayout.astro'
+title: '新生产环境配置记录'
+description: '之前只是在mac上安装了python，最近使用了其他很多的语言，希望系统性记录一下安装的内容和部署的心得，方便以后重新更换时候查阅'
+
+author: Sean Feng
+pubDate: 2024-07-10
+tags: ["CSS","MDX","Github"]
+
+---
+import '../../styles/markdown.css'
+
+<div className="flex justify-center flex-wrap gap-2 mb-4">
+  {frontmatter.tags.map((tag) => (
+    <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+      #{tag}
+    </span>
+  ))}
+</div>
+
+
+
+终于发兴在mac上配置了一下环境
+# 1. Vscode
+- 下载[官网](https://code.visualstudio.com)
+- 涉及插件：python、MDX、Tailwind Kit、Astro等
+# 2. anacoda
+- 下载[官网](https://www.anaconda.com)
+
+Conda 创建和管理虚拟环境是一个非常有效的方法，特别是在数据科学和机器学习项目中。以下是创建、激活、停用和删除 Conda 虚拟环境的基本方法和代码示例。
+
+## 安装 Conda
+
+如果还没有安装 Conda，可以从 [Anaconda](https://www.anaconda.com/products/distribution) 或 [Miniconda](https://docs.conda.io/en/latest/miniconda.html) 下载和安装。Miniconda 是一个轻量级的 Conda 版本，只包含 Conda 和 Python。
+
+## 虚拟环境的基本方法
+### 创建虚拟环境
+
+使用 Conda 创建虚拟环境的基本命令如下：
+
+```bash
+conda create --name myenv
+```
+
+其中，`myenv` 是你虚拟环境的名称。你可以选择指定 Python 版本：
+
+```bash
+conda create --name myenv python=3.8
+```
+
+还可以在创建环境时安装一些包：
+
+```bash
+conda create --name myenv python=3.8 numpy pandas
+```
+
+### 激活虚拟环境
+
+创建虚拟环境后，可以使用以下命令激活它：
+
+```bash
+conda activate myenv
+```
+
+### 停用虚拟环境
+
+要停用当前激活的虚拟环境，可以使用以下命令：
+
+```bash
+conda deactivate
+```
+
+### 删除虚拟环境
+
+如果你不再需要某个虚拟环境，可以使用以下命令将其删除：
+
+```bash
+conda remove --name myenv --all
+```
+
+### 列出所有虚拟环境
+
+要查看你当前创建的所有虚拟环境，可以使用以下命令：
+
+```bash
+conda env list
+# 或者
+conda info --envs
+```
+
+### 安装包
+
+在激活的虚拟环境中安装包，可以使用 `conda install` 或 `pip install`：
+
+```bash
+conda install numpy
+或
+pip install numpy
+```
+
+### 导出和导入环境
+
+导出环境的配置文件（`environment.yml`）：
+
+```bash
+conda env export > environment.yml
+```
+
+使用配置文件创建环境：
+
+```bash
+conda env create -f environment.yml
+```
+
+
+
+
+
+# 3. Github
+```astro
+    git config -–globaluser.name'xxxxx'
+    git config -–globaluser.email'xxxxx'
+    ssh-keygen -t rsa -C email
+    cd ~/.ssh
+    Vim id_rsa.pub
+```
+
+# 4. NodeJS
+- 下载[官网](https://nodejs.org/zh-cn)
+更换源：npm config set registry https://mirrors.huaweicloud.com/repository/npm/
+ 
+# 5. Astro
+npm install astro不好用，好像会装4.15.0
+npm create astro@latest 安装的是4.8.0
+
+# 6. Cursor
+- 下载[官网](https://www.cursor.com/)
+
+### Cursor 使用指南
+
+Cursor 是一款功能强大的 AI 驱动代码编辑器，旨在提升编码效率并简化开发过程。以下是详细的使用指南，涵盖其主要功能和操作步骤：
+
+### 安装与设置
+
+1. **下载与安装**：
+   - 你可以从 [Cursor 官方网站](https://www.trycursor.com/) 下载适用于 Windows、Mac 和 Linux 的版本。安装过程与大多数软件类似，按提示进行即可。
+
+2. **启动 Cursor**：
+   - 安装完成后，启动 Cursor 并进行初始设置，包括选择主题、配置快捷键等。Cursor 默认兼容 VSCode 的扩展和配置，方便从 VSCode 迁移。
+
+### 主要功能
+
+#### AI 驱动的代码辅助
+
+1. **智能代码补全**：
+   - 在代码编写过程中，Cursor 会根据上下文提供智能补全建议。你可以按 `Ctrl+Space` 触发补全提示。
+
+2. **内联代码编辑**：
+   - 选择一段代码后，点击“编辑”按钮或使用快捷键（例如 `Ctrl+M`），在弹出的对话框中描述你希望进行的更改。AI 会根据描述生成建议，并显示为代码 diff，你可以选择接受或拒绝。
+
+3. **代码生成**：
+   - 将光标放在希望生成新代码的位置，使用生成快捷键（例如 `Ctrl+G`），在弹出的对话框中描述你需要的代码。AI 会生成代码并插入到光标位置。
+
+#### 调试与错误修复
+
+1. **自动调试**：
+   - 当遇到错误时，停止终端进程并悬停在错误信息上，点击“自动调试”按钮。AI 会分析问题并提供修复建议。
+
+2. **修复 Linter 错误**：
+   - 在代码中发现 Linter 错误时，AI 会自动提供修复建议。点击建议即可应用修复。
+
+#### 自定义与集成
+
+1. **VSCode 兼容性**：
+   - Cursor 兼容所有 VSCode 插件。你可以在设置中一键导入所有 VSCode 插件，保持现有的工作环境。
+
+2. **自定义文档**：
+   - 在聊天中使用 `@docs` 引用文档，并点击“添加新文档”按钮，输入文档的 URL。Cursor 会索引并引用这些文档，提高建议的相关性。
+
+3. **AI 规则**：
+   - 在侧边栏的“更多”标签下，输入 AI 应遵循的规则和上下文。这些规则会在每次调用 AI 时生效，确保代码质量和风格一致。
+
+### 进阶功能
+
+1. **代码库索引**：
+   - 通过计算代码库的嵌入来提高 AI 对项目的理解。在侧边栏的“更多”标签下，点击“计算索引”按钮，让 AI 能够引用相关代码片段。
+
+2. **自定义 API 密钥**：
+   - 在用户偏好设置中，添加 OpenAI 或 Azure API 密钥，以启用更多 AI 模型和隐私模式。
+
+3. **多命令并行执行**：
+   - 你可以在 Cursor 中同时运行多个命令，极大提高工作效率。
+
+### 使用技巧
+
+1. **快捷键**：
+   - 熟练使用 Cursor 的快捷键可以显著提升工作效率。例如：
+     - `Ctrl+M`（或 `Command+R` 在 Mac 上）：触发内联编辑
+     - `Ctrl+G`：生成新代码
+     - `Ctrl+Shift+P`：打开命令面板
+
+2. **AI 聊天**：
+   - 在侧边栏打开聊天面板，选择 AI 模型（如 GPT-4），使用自然语言提问或请求代码建议。使用 `@` 符号引用特定文件、函数或文档，提供更详细的上下文。
+
+3. **内联编辑和生成**：
+   - 高亮代码进行编辑或在需要生成新代码的位置放置光标，使用相应的快捷键指示 AI 操作。
+
+4. **自动调试**：
+   - 利用 Cursor 的自动调试功能，快速定位并修复代码错误。
+
+
+更多详细信息和最新更新可以访问 [Cursor 官方网站](https://www.trycursor.com/)。

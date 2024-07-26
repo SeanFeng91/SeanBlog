@@ -9,7 +9,13 @@ tags: ["CSS","MDX"]
 import '../../styles/markdown.css'
 import React from 'react';
 
-{frontmatter.tags}
+<div className="flex justify-center flex-wrap gap-2 mb-4">
+  {frontmatter.tags.map((tag) => (
+    <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+      #{tag}
+    </span>
+  ))}
+</div>
 
 尝试在此对我需要的文章中的文字样式进行统一规范说明，这样我就可以重复利用对应JSX和CSS组件了。
 
