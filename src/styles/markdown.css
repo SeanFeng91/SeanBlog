@@ -204,73 +204,33 @@ h1:hover a::after, h2:hover a::after, h3:hover a::after, h4:hover a::after, h5:h
 }
 
 
-/* 暗模式样式 */
-/* @media (prefers-color-scheme: dark) {
-  body {
-    background-color: #121212;
-    color: #e0e0e0;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    color: #e0e0e0;
-  }
-
-  p {
-    color: #e0e0e0;
-  }
-
-  a {
-    color: #bb86fc;
-  }
-
-  a:hover {
-    color: #bb86fc;
-  }
-
-  pre {
-    background: #333;
-    color: #e0e0e0;
-  }
-
-  code {
-    background: #333;
-    color: #e0e0e0;
-  }
-
-  blockquote {
-    border-left: 4px solid #555;
-    color: #aaa;
-  }
-
-  th, td {
-    border: 1px solid #555;
-  }
-
-  th {
-    background: #333;
-  }
-} */
-
-
-/* 文章目录样式 */
-/* .toc {
-  margin-bottom: 1em;
-  padding-left: 0;
+/* tabs样式 */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ccc;
 }
 
-.toc ul {
-  list-style-type: none;
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
 }
 
-.toc li {
-  margin-bottom: 0.5em;
+.tab.active {
+  border-bottom: 2px solid #0070f3;
+  font-weight: bold;
 }
 
-.toc a {
-  text-decoration: none;
-  color: inherit;
+.tab-content {
+  padding: 20px 0;
 }
 
-.toc a:hover {
-  text-decoration: underline;
-} */
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}

@@ -1,0 +1,119 @@
+---
+// 导入React组件
+import FadeInText from '../../components/react/FadeInText.jsx';
+import BouncyButton from '../../components/react/BouncyButton.jsx';
+import Spinner from '../../components/react/Spinner.jsx';
+import { Tabs, TabPane } from '../../components/react/Tabs.jsx';
+---
+
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <title>Astro中的React组件</title>
+    <style>
+      /* 定义一个名为spin的关键帧动画 */
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    <a href="https://greensock.com/scrolltrigger">
+      <img class="greensock-icon" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/scroll-trigger-logo-light.svg" width="200" height="64" />
+   </a> 
+  </head>
+  <body>
+    <header>
+      <a href="https://greensock.com/scrolltrigger">
+        <img class="greensock-icon" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/scroll-trigger-logo-light.svg" width="200" height="64" />
+     </a> 
+   </header>
+    <h1>Astro中的React组件示例</h1>
+    
+    {/* 使用FadeInText组件,文字会淡入显示 */}
+    <FadeInText client:load text="这段文字会淡入" />
+    
+    {/* 使用BouncyButton组件,创建一个有弹跳效果的按钮 */}
+    <BouncyButton client:load text="点击我!" />
+    
+  
+
+
+
+
+  </body>
+</html>
+
+<style>
+  body {
+	height: 400vh;
+  background: black;
+  color: white;
+}
+
+.header-section {
+  margin: 100px auto 0;
+}
+
+svg {
+  max-width: 600px;
+  overflow: visible;
+  margin-top: 60vh;
+}
+
+.ball {
+  fill: white;
+  visibility: hidden;
+}
+
+.line {
+  fill: none;
+  stroke: white;
+  stroke-width: 2px;
+}
+text {
+  fill: white;
+  font-size: 15px;
+  font-family: "Signika Negative", sans-serif; 
+  visibility: hidden;
+}
+
+</style>
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+<script is:inline>
+console.clear();
+
+gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin, MotionPathPlugin);
+gsap.defaults({ease: "none"});
+
+
+
+const pulses = gsap.timeline({
+  defaults: {
+    duration: 0.05, 
+    autoAlpha: 1, 
+    scale: 2, 
+    transformOrigin: 'center', 
+    ease: "elastic(2.5, 1)"
+  }})
+.to(".ball02, .text01", {}, 0.2) 
+.to(".ball03, .text02", {}, 0.33)
+.to(".ball04, .text03", {}, 0.46)
+
+const main = gsap.timeline({defaults: {duration: 1},
+  scrollTrigger: {
+    trigger: "#svg",
+    scrub: true,
+    start: "top center",
+    end: "bottom center"
+  }})
+.to(".ball01", {duration: 0.01, autoAlpha: 1})
+.from(".theLine", {drawSVG: 0}, 0)
+.to(".ball01", {motionPath: {
+  path: ".theLine", 
+  align:".theLine",
+  alignOrigin: [0.5, 0.5],
+}}, 0)
+.add(pulses, 0);
+
+</script>

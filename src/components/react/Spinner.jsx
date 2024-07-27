@@ -14,3 +14,15 @@ export default function Spinner() {
     />
   );
 }
+
+export const Counter = () => {
+  const [count, setCount] = React.useState(0);
+  return (
+    <div>
+      <p>你点击了 {count} 次</p>
+      <button onClick={() => setCount(count + 1)}>
+        点击我
+      </button>
+    </div>
+  );
+};
