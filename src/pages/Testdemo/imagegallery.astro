@@ -1,12 +1,6 @@
 ---
 import "../../styles/global.css";
 import IndexLayout from '../../layouts/IndexLayout.astro';
-import Greeting from '../../components/Greeting';
-
-const allPosts = await Astro.glob('../pages/posts/*.md');
-const achieved = await Astro.glob('../pages/posts/03Achieved.md');
-const problems = await Astro.glob('../pages/posts/02ProblemsAndAims.md');
-
 const { frontmatter } = Astro.props;
 const pageTitle = "SeanBlog";
 
