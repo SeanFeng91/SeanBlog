@@ -2,19 +2,20 @@
 layout: ../../layouts/MarkdownPostLayout.astro
 title: "我博客的MDX撰写样式规范"
 author: Sean Feng
-description: "尝试在此对我需要的文章中的文字样式进行统一规范说明，这样我就可以重复利用对应JSX和CSS组件了"
+description: "详细介绍MDX文档的撰写规范，包括基本格式、高级样式和自定义组件的使用"
 pubDate: 2024-07-10
-tags: ["CSS","MDX"]
+tags: ["CSS", "MDX", "文档规范"]
 ---
+
+{/* 导入必要的样式和组件 */}
 import '../../styles/markdown.css'
 import React, { useState } from 'react';
 import { Counter } from '../../components/react/Spinner';
-import { Collapsible } from '../../components/react/Collapsible';
+import { Collapsible, Alert, CodeBlock } from '../../components/react/Collapsible';
 import { Tabs } from '../../components/react/Tabs';
 
-
-
-
+{/* import { MDXInlineCode } from '../../components/react/MDXFragmentCode'; */}
+{/* 定义自定义组件 */}
 export const Highlight = ({children, color}) => (
   <span
     style={{
@@ -28,15 +29,15 @@ export const Highlight = ({children, color}) => (
   </span>
 );
 
-
 export const FadeIn = ({children}) => (
     <div style={{
         animation: 'fadeIn 1s ease-in',
     }}>
         {children}
     </div>
-    );
+);
 
+{/* 定义自定义样式 */}
 <style>
 {`
   @keyframes fadeIn {
@@ -44,10 +45,9 @@ export const FadeIn = ({children}) => (
     100% { opacity: 1; }
   }
 `}
-
 </style>
 
-
+{/* 显示文章标签 */}
 <div className="flex justify-center flex-wrap gap-2 mb-4">
   {frontmatter.tags.map((tag) => (
     <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
@@ -62,13 +62,13 @@ export const FadeIn = ({children}) => (
 
 # MDX 文档写作规范
 
-MDX 是一种强大的文档格式，它结合了 Markdown 的简洁性和 JSX 的灵活性。本文将介绍我们的 MDX 文档写作规范，并展示一些常用的功能和样式，包括一些高级的 CSS 和 JSX 功能。
+本文档旨在提供一个全面的 MDX 文档写作规范指南。MDX 结合了 Markdown 的简洁性和 JSX 的灵活性，使得创建富有交互性的文档成为可能。以下我们将详细介绍基本格式、高级样式以及自定义组件的使用方法。
 
 ## 基本格式
 
 ### 标题
 
-使用 `#` 符号来创建标题，从一级标题 `#` 到六级标题 `######`。例如：
+MDX 支持六级标题，使用 `#` 符号来创建：
 
 # 一级标题
 ## 二级标题
@@ -83,11 +83,12 @@ MDX 是一种强大的文档格式，它结合了 Markdown 的简洁性和 JSX �
 
 这是第一个段落。
 
-这是第二个段落。
+这是第二个段落。  
+这是强制换行的效果。
 
 ### 强调
 
-使用 `*` 或 `_` 来表示斜体，使用 `**` 或 `__` 来表示粗体。例如：
+使用 `*` 或 `_` 来表示斜体，使用 `**` 或 `__` 来表示粗体：
 
 *斜体文本* 或 _斜体文本_
 
@@ -95,14 +96,37 @@ MDX 是一种强大的文档格式，它结合了 Markdown 的简洁性和 JSX �
 
 ***粗斜体文本*** 或 ___粗斜体文本___
 
+### 列表
+
+无序列表使用 `-`、`*` 或 `+` 作为列表标记：
+
+- 第一项
+- 第二项
+- 第三项
+
+有序列表则使用数字加点：
+
+1. 第一项
+2. 第二项
+3. 第三项
+
+### 链接
+
+使用方括号包裹链接文本，后跟圆括号中的 URL：
+
+这是一个[链接](https://example.com)的示例。
+
+### 图片
+
+图片的语法类似链接，但在前面加一个感叹号：
+
+![图片描述](https://example.com/image.jpg)
+
 ## 高级样式
-
-
 
 ### 文字高亮
 
-我们可以直接在MDX文件中定义一个简单的高亮组件：
-
+使用自定义的 Highlight 组件来实现文字高亮：
 
 <Highlight color="#25c2a0">这是绿色高亮文本</Highlight>
 
@@ -110,38 +134,45 @@ MDX 是一种强大的文档格式，它结合了 Markdown 的简洁性和 JSX �
 
 ### 动态效果
 
-我们可以在MDX文件中直接定义一个简单的淡入效果组件：
+使用自定义的 FadeIn 组件来实现淡入效果：
 
 <FadeIn>
   这段文字会淡入显示
 </FadeIn>
 
-
 ### 交互式组件
 
-我们可以在MDX文件中直接定义一个简单的计数器组件：
-```
-export const Counter = () => {
-  const [count, setCount] = React.useState(0);
-  return (
-    <div>
-      <p>你点击了 {count} 次</p>
-      <button onClick={() => setCount(count + 1)}>
-        点击我
-      </button>
-    </div>
-  );
-};
-```
+MDX 允许我们直接在文档中使用 React 组件。以下是一个简单的计数器组件示例：
+
 <Counter client:load/>
 
+### 提示框
+
+使用 Alert 组件来创建不同类型的提示框：
+
+<Alert type="info" title="提示">
+  这是一个信息提示框。
+</Alert>
+
+<Alert type="warning" title="警告">
+  这是一个警告提示框。
+</Alert>
+
+### 可折叠内容
+
+使用 Collapsible 组件来创建可折叠的内容块：
+
 <Collapsible client:load title="点击展开更多内容">
-  这是被折叠的内容。可以包含任何Markdown或JSX元素。
+  这是被折叠的内容。可以包含任何 Markdown 或 JSX 元素。
 </Collapsible>
+
+### 标签页
+
+使用 Tabs 组件来创建标签页：
 
 export const tabItems = [
   {
-    label: "基本用法（妥协方案）",
+    label: "基本用法",
     content: `
       <p>这里是关于基本用法的内容。您可以包含任何Markdown或JSX元素。目前直接使用tabs组件会报错，所以暂时使用这个妥协方案。</p>
       <ul>
@@ -161,16 +192,14 @@ export const tabItems = [
       <p>使用本组件时需要注意以下几点:</p>
       <ol>
         <li>确保正确导入组件</li>
-        <li>使用client:load指令以启用客户端交互</li>
-        <li>每个Tab都需要一个唯一的label属性</li>
+        <li>使用 client:load 指令以启用客户端交互</li>
+        <li>每个 Tab 都需要一个唯一的 label 属性</li>
       </ol>
     `
   }
 ];
 
 <Tabs client:load items={tabItems} />
-
-
 
 ## 代码展示
 
@@ -180,9 +209,14 @@ export const tabItems = [
 
 这是一个 `inline code` 示例。
 
+{/* 
+这是一个普通的段落,其中包含了一些<MDXInlineCode>行内代码</MDXInlineCode>。
+
+你可以使用<MDXInlineCode>npm install</MDXInlineCode>命令来安装依赖。
+
+在JavaScript中,<MDXInlineCode>const</MDXInlineCode>用于声明常量。 */}
+
+
 ### 代码块
 
 使用三个反引号 ``` 来创建代码块，可以指定语言以获得语法高亮：
-
-这是一个段落。这里是一些[链接](https://example.com)的示例。
-
