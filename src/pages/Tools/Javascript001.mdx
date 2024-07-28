@@ -1,0 +1,215 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "Javascript学习"
+author: Sean Feng
+description: "这篇MDX文档详细介绍了JavaScript的入门知识，涵盖基本概念、常用语法、基础示例、注意事项、参考资料以及进阶学习内容。文中包括变量、数据类型、运算符、
+条件语句、循环和函数等基础知识，提供了详细的代码示例和注释，帮助读者快速掌握JavaScript的基本使用。进阶部分还介绍了异步编程、模块化和面向对象编程等高级主题。"
+pubDate: 2024-07-10
+tags: ["JavaScript", "入门教程", "MDX", "基本语法", "进阶学习"]
+---
+import React from 'react';
+import { InteractiveCode } from '../../components/react/InteractiveCode.jsx';
+
+
+# JavaScript 入门学习教程
+
+## 基本概念介绍
+
+JavaScript 是一种轻量级的、解释型的编程语言，主要用于 web 开发。它最初是为浏览器编写的，但现在也可以在服务器端使用（如 Node.js）。JavaScript 是一种多范式语言，支持面向对象、命令式和函数式编程。
+
+### 关键特性
+
+- **跨平台**：可以在不同操作系统和浏览器中运行。
+- **动态类型**：变量的类型在运行时确定，不需要在声明时指定类型。
+- **事件驱动**：通过事件处理实现动态交互，适合处理用户输入和浏览器事件。
+
+## 常用语法
+
+### 变量
+
+JavaScript 使用 `let`、`const` 和 `var` 声明变量。`let` 和 `const` 是 ES6 引入的新语法，推荐使用。
+
+```javascript
+let name = 'John'; // 使用 let 声明变量，可以改变值
+const age = 30; // 使用 const 声明常量，不可以改变值
+```
+
+### 数据类型
+
+JavaScript 支持多种数据类型，包括数字、字符串、布尔值、undefined 和 null。
+
+```javascript
+let number = 10; // 数字
+let string = 'Hello'; // 字符串
+let isActive = true; // 布尔值
+let undefinedVar; // 未定义
+let nullVar = null; // 空值
+```
+
+### 运算符
+
+JavaScript 提供了多种运算符用于算术运算、比较和逻辑运算。
+
+```javascript
+let sum = 10 + 20; // 加法运算
+let product = 10 * 20; // 乘法运算
+let isEqual = 10 == '10'; // 相等（进行类型转换）
+let isIdentical = 10 === 10; // 全等（不进行类型转换）
+```
+
+### 条件语句
+
+条件语句用于根据条件的真假来执行不同的代码块。
+
+```javascript
+if (isActive) {
+  console.log('Active');
+} else {
+  console.log('Inactive');
+}
+```
+
+### 循环
+
+循环用于重复执行代码块，直到指定条件不再满足为止。
+
+```javascript
+for (let i = 0; i < 5; i++) {
+  console.log(i); // 输出 0 到 4
+}
+```
+
+### 函数
+
+函数是可重复使用的代码块，用于执行特定任务。JavaScript 中有多种定义函数的方法，包括传统函数和箭头函数。
+
+```javascript
+function greet(name) {
+  return `Hello, ${name}`; // 使用模板字符串
+}
+
+const greetArrow = (name) => `Hello, ${name}`; // 箭头函数
+```
+
+## 基本示例
+
+### Hello World
+
+最简单的 JavaScript 程序，输出 "Hello, World!" 到控制台。
+
+```javascript
+console.log('Hello, World!');
+```
+
+### 计算两个数的和
+
+定义一个函数来计算两个数的和，并在控制台输出结果。
+
+```javascript
+function sum(a, b) {
+  return a + b;
+}
+
+console.log(sum(5, 10)); // 输出 15
+```
+
+### DOM 操作
+
+JavaScript 可以用于操作网页的 DOM（文档对象模型），例如修改网页内容。
+
+```html
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>JavaScript 操作 DOM</h2>
+
+<button type="button" onclick="document.getElementById('demo').innerHTML = 'Hello JavaScript!'">
+  点击我
+</button>
+
+<p id="demo"></p>
+
+<script>
+  // 当按钮被点击时，修改段落内容
+</script>
+
+</body>
+</html>
+```
+
+## 注意事项
+
+1. **区分 `let` 和 `const`**：`let` 用于声明可变变量，`const` 用于声明不可变常量。
+2. **避免全局变量**：全局变量容易导致命名冲突，建议使用局部变量。
+3. **使用严格模式**：在文件或函数开头加入 `'use strict';` 可以避免一些潜在的错误。
+
+## 参考资料
+
+- [MDN JavaScript Guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide)
+- [JavaScript Info](https://javascript.info/)
+- [W3Schools JavaScript Tutorial](https://www.w3schools.com/js/)
+
+## 进阶学习
+
+### 异步编程
+
+JavaScript 通过回调函数、Promises 和 async/await 实现异步编程。
+
+```javascript
+// 使用 Promise
+let promise = new Promise((resolve, reject) => {
+  // 异步操作
+  setTimeout(() => resolve("Done!"), 1000);
+});
+
+promise.then(result => console.log(result)); // 输出 "Done!" after 1 second
+
+// 使用 async/await
+async function fetchData() {
+  try {
+    let response = await fetch('https://api.example.com/data');
+    let data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+```
+
+### 模块化
+
+ES6 引入了模块化机制，可以使用 `import` 和 `export` 关键字。
+
+```javascript
+// 在 module.js 中导出模块
+export const name = 'John';
+export function greet() {
+  return 'Hello';
+}
+
+// 在另一个文件中导入模块
+import { name, greet } from './module.js';
+
+console.log(name); // 输出 'John'
+console.log(greet()); // 输出 'Hello'
+```
+
+### 面向对象编程
+
+JavaScript 支持基于原型的面向对象编程，可以使用 ES6 的 class 语法定义类。
+
+```javascript
+class Person {
+  constructor(name) {
+    this.name = name;
+  }
+
+  greet() {
+    return `Hello, ${this.name}`;
+  }
+}
+
+let john = new Person('John');
+console.log(john.greet()); // 输出 'Hello, John'
+```
