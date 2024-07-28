@@ -136,13 +136,13 @@ html.dark {
 
 /* WebKit 浏览器支持的滚动条样式 */
 .scrollbar-custom::-webkit-scrollbar {
-  width: 30px;
-  height: 15px; /* 如果需要水平滚动条 */
+  width: 10px;
+  height: 5px; /* 如果需要水平滚动条 */
 }
 
 .scrollbar-custom::-webkit-scrollbar-track {
-  background: #2256be;
-  border-radius: 9999px; /* Tailwind 的 rounded-full */
+  background: #585858;
+  border-radius: 0px; /* Tailwind 的 rounded-full */
 }
 
 .scrollbar-custom::-webkit-scrollbar-thumb {
