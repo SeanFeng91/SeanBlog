@@ -7,7 +7,7 @@ pubDate: 2024-07-10
 image:
     url: ''
     alt: ''
-tags: ["问题记录"]
+tags: ["问题记录","日志","过程记录"]
 import: '../../styles/markdown.css'
 ---
 
@@ -20,6 +20,12 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 - [markdown](https://markdown.p2hp.com/basic-syntax/index.html)
 - [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
 - [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
+
+# 20240728记录
+通过safari发现，其实关于滚动条的统一设置是部分生效的。chrome、edge、safari表现一致是需要不同的样式描述。
+
+# 20240727记录
+借助
 
 # 20240726记录
 给mdx增加了代码块样式。但是用写到global.css没有成功发挥作用。好像chrome不太一样
