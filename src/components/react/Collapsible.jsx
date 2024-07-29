@@ -1,6 +1,7 @@
+// 现在把大量初始的react组件都放在这里。
 import React, { useState } from 'react';
 
-
+// MDX的折叠组件
 export const Collapsible = ({ children, title }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -15,7 +16,7 @@ export const Collapsible = ({ children, title }) => {
     </div>
   );
 };
-
+// 提示组件
 export const Alert = ({ type = 'info', title, children }) => {
   const bgColors = {
     info: 'bg-blue-100 border-blue-500 text-blue-700',
@@ -32,7 +33,7 @@ export const Alert = ({ type = 'info', title, children }) => {
   );
 };
 
-
+// 代码块
 export const CodeBlock = ({ language, children }) => {
   const [copied, setCopied] = useState(false);
 
@@ -75,3 +76,26 @@ export const InlineCode = ({ children }) => {
     </code>
   );
 };
+
+
+{/* 定义自定义组件 行内高亮*/}
+export const Highlight = ({children, color}) => (
+  <span
+    style={{
+      backgroundColor: color,
+      borderRadius: '2px',
+      color: '#fff',
+      padding: '0.2rem',
+    }}
+  >
+    {children}
+  </span>
+);
+
+export const FadeIn = ({children}) => (
+    <div style={{
+        animation: 'fadeIn 1s ease-in',
+    }}>
+        {children}
+    </div>
+);

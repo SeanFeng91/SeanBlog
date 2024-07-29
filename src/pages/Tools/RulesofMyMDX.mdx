@@ -12,31 +12,10 @@ tags: ["CSS", "MDX", "文档规范","JSX","交互组件","格式"]
 import '../../styles/markdown.css'
 import React, { useState } from 'react';
 import { Counter } from '../../components/react/Spinner';
-import { Collapsible, Alert, CodeBlock } from '../../components/react/Collapsible';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
 import { Tabs } from '../../components/react/Tabs';
 
 {/* import { MDXInlineCode } from '../../components/react/MDXFragmentCode'; */}
-{/* 定义自定义组件 */}
-export const Highlight = ({children, color}) => (
-  <span
-    style={{
-      backgroundColor: color,
-      borderRadius: '2px',
-      color: '#fff',
-      padding: '0.2rem',
-    }}
-  >
-    {children}
-  </span>
-);
-
-export const FadeIn = ({children}) => (
-    <div style={{
-        animation: 'fadeIn 1s ease-in',
-    }}>
-        {children}
-    </div>
-);
 
 {/* 定义自定义样式 */}
 <style>

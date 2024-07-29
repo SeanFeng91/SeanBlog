@@ -760,42 +760,42 @@ HTML:
 
 ### 选择元素的方法
 
-#### `document.getElementById`
+**`document.getElementById`**
 选择具有指定 `id` 的元素。
 
 ```javascript
 let element = document.getElementById('myElement');
 ```
 
-#### `document.querySelector`
+**`document.querySelector`**
 选择匹配指定 CSS 选择器的第一个元素。
 
 ```javascript
 let element = document.querySelector('.myClass');
 ```
 
-#### `document.querySelectorAll`
+**`document.querySelectorAll`**
 选择匹配指定 CSS 选择器的所有元素，返回一个静态 NodeList。
 
 ```javascript
 let elements = document.querySelectorAll('.myClass');
 ```
 
-#### `document.getElementsByClassName`
+**`document.getElementsByClassName`**
 选择具有指定类名的所有元素，返回一个动态 HTMLCollection。
 
 ```javascript
 let elements = document.getElementsByClassName('myClass');
 ```
 
-#### `document.getElementsByTagName`
+**`document.getElementsByTagName`**
 选择具有指定标签名的所有元素，返回一个动态 HTMLCollection。
 
 ```javascript
 let elements = document.getElementsByTagName('div');
 ```
 
-#### `document.getElementsByName`
+**`document.getElementsByName`**
 选择具有指定 `name` 属性的所有元素，返回一个动态 NodeList。
 
 ```javascript
@@ -804,35 +804,35 @@ let elements = document.getElementsByName('myName');
 
 ### 元素属性和内容操作
 
-#### `element.innerHTML`
+**`element.innerHTML`**
 获取或设置元素的 HTML 内容。
 
 ```javascript
 element.innerHTML = '<p>新内容</p>';
 ```
 
-#### `element.textContent`
+**`element.textContent`**
 获取或设置元素的文本内容。
 
 ```javascript
 element.textContent = '新文本内容';
 ```
 
-#### `element.setAttribute`
+**`element.setAttribute`**
 设置元素的属性值。
 
 ```javascript
 element.setAttribute('class', 'newClass');
 ```
 
-#### `element.getAttribute`
+**`element.getAttribute`**
 获取元素的属性值。
 
 ```javascript
 let classValue = element.getAttribute('class');
 ```
 
-#### `element.removeAttribute`
+**`element.removeAttribute`**
 移除元素的属性。
 
 ```javascript
@@ -841,7 +841,7 @@ element.removeAttribute('class');
 
 ### 元素样式操作
 
-#### `element.style`
+**`element.style`**
 直接设置元素的样式。
 
 ```javascript
@@ -849,7 +849,7 @@ element.style.color = 'red';
 element.style.fontSize = '20px';
 ```
 
-#### `element.classList`
+**`element.classList`**
 添加、移除或切换元素的类。
 
 ```javascript
@@ -860,28 +860,28 @@ element.classList.toggle('active');
 
 ### 创建和插入元素
 
-#### `document.createElement`
+**`document.createElement`**
 创建新的元素。
 
 ```javascript
 let newElement = document.createElement('div');
 ```
 
-#### `element.appendChild`
+**`element.appendChild`**
 在元素末尾插入子元素。
 
 ```javascript
 parentElement.appendChild(newElement);
 ```
 
-#### `element.insertBefore`
+**`element.insertBefore`**
 在指定子元素前插入新元素。
 
 ```javascript
 parentElement.insertBefore(newElement, referenceElement);
 ```
 
-#### `element.removeChild`
+**`element.removeChild`**
 移除子元素。
 
 ```javascript
@@ -890,7 +890,7 @@ parentElement.removeChild(childElement);
 
 ### 事件处理
 
-#### `addEventListener`
+**`addEventListener`**
 添加事件监听器。
 
 ```javascript
@@ -899,7 +899,7 @@ element.addEventListener('click', () => {
 });
 ```
 
-#### `removeEventListener`
+**`removeEventListener`**
 移除事件监听器。
 
 ```javascript
@@ -912,7 +912,7 @@ element.removeEventListener('click', handleClick);
 
 ### 事件对象
 
-#### `event.target`
+**`event.target`**
 获取事件的目标元素。
 
 ```javascript
@@ -921,7 +921,7 @@ element.addEventListener('click', (event) => {
 });
 ```
 
-#### `event.preventDefault`
+**`event.preventDefault`**
 阻止默认行为。
 
 ```javascript
@@ -930,7 +930,7 @@ element.addEventListener('submit', (event) => {
 });
 ```
 
-#### `event.stopPropagation`
+**`event.stopPropagation`**
 阻止事件冒泡。
 
 ```javascript

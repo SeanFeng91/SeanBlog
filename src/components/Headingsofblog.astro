@@ -3,19 +3,34 @@ const {getHeadings,url,depth} =Astro.props
 
 ---
 
-{(depth === 1) ? (
-  <li id={getHeadings}><a class="rightbar-link block border-l pl-4 -ml-px mt-4 border-transparent
-     hover:border-slate-400 dark:hover:border-slate-500 
-      hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300" href={url}><span class="font-bold text-slate-800">{getHeadings}</span></a></li>
-) : (depth ===2)?(
-  <li id={getHeadings}><a class="rightbar-link block border-l pl-4 -ml-px border-transparent
-     hover:border-slate-400 dark:hover:border-slate-500 
-      hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300" href={url}><span class="pl-4 font-medium  text-slate-700">> {getHeadings}</span></a></li>
-) : (<li id={getHeadings}><a class="rightbar-link block border-l pl-4 -ml-px border-transparent
-     hover:border-slate-400 dark:hover:border-slate-500 
-      hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300" href={url}><span class="pl-8  text-slate-500">- {getHeadings}</span></a></li>
-)
-}
+{(() => {
+  const styles = {
+    1: "font-bold text-slate-800",
+    2: "pl-4 font-medium text-slate-700",
+    3: "pl-8 text-slate-500",
+    4: "pl-12 text-slate-400"
+  };
+  const prefixes = {
+    1: "",
+    2: "> ",
+    3: "- ",
+    4: "• "
+  };
+  const style = styles[depth] || styles[4];
+  const prefix = prefixes[depth] || prefixes[4];
+  
+  return (
+    <li id={getHeadings}>
+      <a class={`rightbar-link block border-l pl-4 -ml-px ${depth === 1 ? 'mt-4' : ''} border-transparent
+         hover:border-slate-400 dark:hover:border-slate-500 
+         hover:text-blue-400 dark:text-slate-400 dark:hover:text-slate-300`} 
+         href={url}>
+          {/* 这里很简单的，就是根据depth来判断，然后返回不同的样式 */}
+        <span class={style}>{prefix}{getHeadings}</span>
+      </a>
+    </li>
+  );
+})()}
 
 <style>
   .rightbar-link {
