@@ -1,134 +1,88 @@
 ---
 import IndexLayout from '../layouts/IndexLayout.astro';
+import { Image } from 'astro:assets';
+import Timeline from '../components/react/Timeline.jsx';
+import SkillsSection from '../components/react/SkillsSection.jsx';
+import ProjectGallery from '../components/react/ProjectGallery.jsx';
 ---
 <style>
-body {
-	height: 400vh;
-  background: black;
-  color: white;
-}
-
-.header-section {
-  margin: 100px auto 0;
-}
-
-svg {
-  max-width: 600px;
-  overflow: visible;
-  margin-top: 60vh;
-}
-
-.ball {
-  fill: white;
-  visibility: hidden;
-}
-
-.line {
-  fill: none;
-  stroke: white;
-  stroke-width: 2px;
-}
-text {
-  fill: white;
-  font-size: 15px;
-  font-family: "Signika Negative", sans-serif; 
-  visibility: hidden;
-}
-
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+  .transition {
+    transition: all 0.3s ease;
+  }
 </style>
-<IndexLayout title="关于我 - 前端工程师">
-  
-  <div slot="maindiv">
-    <h1 class="header-section">Scroll to see a timeline animation</h1>
+<IndexLayout title="关于我 | About Me">
+  <div slot="maindiv" class="max-w-4xl mx-auto px-4 py-12 font-sans">
+    <header class="text-center mb-16">
+      <img src="https://via.placeholder.com/150" alt="张三" class="w-32 h-32 rounded-full mx-auto mb-6" />
+      <h1 class="text-3xl font-bold mb-2">张三 | Sean Zhang</h1>
+      <p class="text-xl text-gray-600">全栈开发工程师 | Full Stack Developer</p>
+    </header>
 
-<svg id="svg" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 600 1200">
-  <path class="line01 line" d="M 10 200  600 200" ></path>
-  <path class="line02 line" d="M 10 400  600 400" ></path>
-  <path class="line03 line" d="M 10 600  600 600" ></path>
-  <path class="line04 line" d="M 10 800  600 800" ></path>
-  <path class="line05 line" d="M 10 1000  600 1000" ></path>
-  <text class="text01" x="30" y="190">2018</text>
-  <text class="text02" x="30" y="390">2019</text>
-  <text class="text03" x="30" y="590">2020</text>
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-4">关于我 | About Me</h2>
+      <p class="text-lg text-gray-700 leading-relaxed mb-4">
+        我是一名充满激情的全栈开发工程师，拥有8年的Web开发经验。我专注于创建用户友好的界面和高效的后端系统，为客户提供全面的数字解决方案。
+      </p>
+      <p class="text-lg text-gray-700 leading-relaxed">
+        I am a passionate full-stack developer with 8 years of experience in web development. I specialize in creating user-friendly interfaces and efficient backend systems, providing comprehensive digital solutions for clients.
+      </p>
+    </section>
 
-  <path class="theLine" 
-        d="M -5,0
-           Q 450 230 300 450 
-           T 130 750
-           Q 100 850 300 1000
-           T 150 1200"
-        fill="none" stroke="white" stroke-width="10px" />
-  
-  
-  
-  <circle class="ball ball01" r="20" cx="50" cy="100"></circle>
-  <circle class="ball ball02" r="20" cx="278" cy="201"></circle>
-  <circle class="ball ball03" r="20" cx="327" cy="401"></circle>
-  <circle class="ball ball04" r="20" cx="203" cy="601"></circle>
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">项目展示 | Projects</h2>
+      <ProjectGallery client:load />
+    </section>
 
-</svg>
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">专业技能 | Skills</h2>
+      <SkillsSection client:load />
+    </section>
 
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">工作经历 | Work Experience</h2>
+      <Timeline client:load />
+    </section>
 
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">教育背景 | Education</h2>
+      <div class="space-y-6">
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-semibold mb-2">计算机科学硕士 | Master's in Computer Science</h3>
+          <p class="text-gray-600">某知名大学 | Prestigious University | 2015 - 2017</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-sm">
+          <h3 class="text-xl font-semibold mb-2">计算机科学学士 | Bachelor's in Computer Science</h3>
+          <p class="text-gray-600">某著名大学 | Famous University | 2011 - 2015</p>
+        </div>
+      </div>
+    </section>
 
+    <section class="mb-16">
+      <h2 class="text-2xl font-bold mb-6">联系我 | Contact Me</h2>
+      <div class="flex justify-center space-x-6">
+        <a href="mailto:zhangsan@example.com" class="text-blue-600 hover:text-blue-800 transition duration-300">
+          <i class="fas fa-envelope text-2xl"></i>
+        </a>
+        <a href="https://github.com/zhangsan" class="text-gray-800 hover:text-gray-600 transition duration-300">
+          <i class="fab fa-github text-2xl"></i>
+        </a>
+        <a href="https://linkedin.com/in/zhangsan" class="text-blue-700 hover:text-blue-900 transition duration-300">
+          <i class="fab fa-linkedin text-2xl"></i>
+        </a>
+      </div>
+    </section>
 
-
-<header>
-   <a href="https://greensock.com/scrolltrigger">
-     <img class="greensock-icon" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/scroll-trigger-logo-light.svg" width="200" height="64" />
-  </a> 
-</header>
-      
-    
+    <section>
+      <div class="bg-gray-100 p-8 rounded-lg">
+        <h2 class="text-2xl font-bold mb-4 text-center">订阅我的更新 | Subscribe to My Updates</h2>
+        <form class="flex flex-col sm:flex-row justify-center items-center">
+          <input type="email" placeholder="输入您的邮箱 | Enter your email" class="w-full sm:w-auto mb-4 sm:mb-0 sm:mr-4 p-3 rounded-md border border-gray-300" />
+          <button type="submit" class="w-full sm:w-auto bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition duration-300">订阅 | Subscribe</button>
+        </form>
+      </div>
+    </section>
   </div>
 </IndexLayout>
-
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
-
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-      console.error('GSAP 或 ScrollTrigger 未加载');
-      return;
-    }
-
-    console.clear();
-
-gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin, MotionPathPlugin);
-gsap.defaults({ease: "none"});
-
-
-
-const pulses = gsap.timeline({
-  defaults: {
-    duration: 0.05, 
-    autoAlpha: 1, 
-    scale: 2, 
-    transformOrigin: 'center', 
-    ease: "elastic(2.5, 1)"
-  }})
-.to(".ball02, .text01", {}, 0.2) 
-.to(".ball03, .text02", {}, 0.33)
-.to(".ball04, .text03", {}, 0.46)
-
-const main = gsap.timeline({defaults: {duration: 1},
-  scrollTrigger: {
-    trigger: "#svg",
-    scrub: true,
-    start: "top center",
-    end: "bottom center"
-  }})
-.to(".ball01", {duration: 0.01, autoAlpha: 1})
-.from(".theLine", {drawSVG: 0}, 0)
-.to(".ball01", {motionPath: {
-  path: ".theLine", 
-  align:".theLine",
-  alignOrigin: [0.5, 0.5],
-}}, 0)
-.add(pulses, 0);
-
-
-    console.log('所有动画已设置完成');
-  });
-</script>
-  
