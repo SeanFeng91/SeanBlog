@@ -1,0 +1,185 @@
+---
+import IndexLayout from '../layouts/IndexLayout.astro';
+
+// 模拟的图片数据,增加了标题和描述
+const images = [
+  { id: 1, src: 'https://picsum.photos/id/1018/300/400', alt: '山景', title: '雄伟山峰', description: '巍峨的山峰耸立于云端,展现大自然的磅礴气势' },
+  { id: 2, src: 'https://picsum.photos/id/1015/300/300', alt: '河流', title: '蜿蜒河流', description: '清澈的河水蜿蜒流过,滋润着周围的生态' },
+  { id: 3, src: 'https://picsum.photos/id/1019/300/350', alt: '海滩', title: '金色沙滩', description: '阳光下的沙滩闪耀着金色光芒,海浪轻抚岸边' },
+  { id: 4, src: 'https://picsum.photos/id/1022/300/250', alt: '北极光', title: '绚丽北极光', description: '夜空中舞动的北极光,如梦如幻' },
+  { id: 5, src: 'https://picsum.photos/id/1023/300/450', alt: '熊', title: '野生棕熊', description: '森林中的棕熊,展现了野性的魅力' },
+  { id: 6, src: 'https://picsum.photos/id/1024/300/300', alt: '瀑布', title: '飞流直下', description: '气势磅礴的瀑布,水花四溅,蔚为壮观' },
+  { id: 7, src: 'https://picsum.photos/id/1025/300/400', alt: '羊驼', title: '可爱羊驼', description: '高原上的萌物,毛茸茸的羊驼让人忍俊不禁' },
+  { id: 8, src: 'https://picsum.photos/id/1028/300/350', alt: '灯塔', title: '孤独灯塔', description: '矗立在海边的灯塔,为航行者指引方向' },
+  { id: 9, src: 'https://picsum.photos/id/1029/300/300', alt: '森林', title: '神秘森林', description: '郁郁葱葱的森林,隐藏着无数的生命' },
+  { id: 10, src: 'https://picsum.photos/id/1031/300/250', alt: '山脉', title: '连绵山脉', description: '绵延不绝的山脉,如同巨龙般蜿蜒起伏' },
+  { id: 11, src: 'https://picsum.photos/id/1035/300/400', alt: '雪山', title: '皑皑雪山', description: '被白雪覆盖的山峰,纯净而神圣' },
+  { id: 12, src: 'https://picsum.photos/id/1036/300/350', alt: '城市夜景', title: '璀璨夜景', description: '灯火辉煌的城市夜景,展现现代文明的魅力' },
+  { id: 13, src: 'https://picsum.photos/id/1037/300/300', alt: '沙漠', title: '金色沙漠', description: '广袤无垠的沙漠,金色的沙丘起伏不定' },
+  { id: 14, src: 'https://picsum.photos/id/1039/300/450', alt: '冰川', title: '蓝色冰川', description: '蓝白相间的冰川,诉说着地球的古老历史' },
+  { id: 15, src: 'https://picsum.photos/id/1043/300/250', alt: '羊', title: '草原羊群', description: '悠闲吃草的羊群,构成了和谐的田园风光' },
+];
+---
+
+<IndexLayout title="ImageGallery">
+  <div slot="maindiv" class="image-gallery">
+    <h1>图片画廊</h1>
+    <div class="image-grid">
+      {images.map((image) => (
+        <div class="image-item" key={image.id}>
+          <img src={image.src} alt={image.alt} loading="lazy" />
+          <div class="image-description">
+            <h3>{image.title}</h3>
+            <p>{image.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div id="modal" class="modal">
+      <span class="close">&times;</span>
+      <img class="modal-content" id="modal-image" />
+      <div id="caption"></div>
+    </div>
+  </div>
+</IndexLayout>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+  .image-gallery {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    color: #333;
+  }
+  .image-grid {
+    column-count: 4;
+    column-gap: 20px;
+  }
+  @media (max-width: 1200px) {
+    .image-grid {
+      column-count: 3;
+    }
+  }
+  @media (max-width: 800px) {
+    .image-grid {
+      column-count: 2;
+    }
+  }
+  @media (max-width: 500px) {
+    .image-grid {
+      column-count: 1;
+    }
+  }
+  .image-item {
+    break-inside: avoid;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    position: relative;
+  }
+  .image-item:hover {
+    transform: scale(1.05);
+  }
+  .image-item img {
+    width: 100%;
+    display: block;
+  }
+  .image-description {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+  .image-item:hover .image-description {
+    transform: translateY(0);
+  }
+  .image-description h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .image-description p {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.4;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+  }
+  .modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    max-height: 80%;
+    object-fit: contain;
+  }
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  #caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+  }
+</style>
+
+<script>
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modal-image');
+  const captionText = document.getElementById('caption');
+  const closeBtn = document.getElementsByClassName('close')[0];
+  const images = document.querySelectorAll('.image-item img');
+
+  images.forEach(img => {
+    img.onclick = function() {
+      modal.style.display = "block";
+      modalImg.src = this.src;
+      captionText.innerHTML = this.alt;
+    }
+  });
+
+  closeBtn.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
