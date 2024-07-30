@@ -1,183 +1,124 @@
 ---
-
 import ThemeIcon from './ThemeIcon.astro';
 import Searchpage from './searchpage.astro';
 import { Icon } from 'astro-icon/components';
 const baseUrl = import.meta.env.BASE_URL;
 
+// 定义导航链接
+const navLinks = [
+  { href: `${baseUrl}`, text: '首页' },
+  { href: `${baseUrl}about`, text: '关于我' },
+  { href: `${baseUrl}tags`, text: '博客' },
+  { href: `${baseUrl}ImageGallery`, text: '图册' },
+  { href: `${baseUrl}posts/01PageProblemRecord`, text: '进展情况记录' },
+];
+
+// 定义功能测试下拉菜单项
+const testMenuItems = [
+  { href: `${baseUrl}textindex`, text: '页面布局测试' },
+  { href: `${baseUrl}Testdemo/searchtest`, text: 'SearchTest' },
+  { href: `${baseUrl}mygpt`, text: 'Mygpt GPT测试' },
+  { href: `${baseUrl}Testdemo/cursordemo`, text: 'Cursor测试' },
+  { href: `${baseUrl}Testdemo/ReactTest`, text: 'react测试' },
+];
 ---
 
-<header class="flex grow flex-wrap sm:item-center sm:flex-nowrap max-w-[90rem] text-sm py-0 ">
-    <nav class="w-full mx-auto px-4 sm:items-center basis-full text-slate-800 dark:text-white" aria-label="Global">
-      <div class="flex items-center min-h-10">
-        <a class="flex-none  text-xl font-semibold" href={`${baseUrl}`}>SeanBlog</a>
-        <!-- 搜索块 -->
-        <Searchpage />
+<header class="flex grow flex-wrap sm:item-center sm:flex-nowrap max-w-[90rem] text-sm py-0">
+  <nav class="w-full mx-auto px-4 sm:items-center basis-full text-slate-800 dark:text-white" aria-label="Global">
+    <div class="flex items-center min-h-10">
+      <!-- 网站标题 -->
+      <a class="flex-none text-xl font-semibold" href={`${baseUrl}`}>SeanBlog</a>
+      
+      <!-- 搜索块 -->
+      <Searchpage />
 
-        <div class="flex grow justify-end items-center order-6">
-          <!-- github -->
-          <a href="https://github.com/SeanFeng91/SeanBlog">
-            <!-- <Icon name="mdi:github" class="size-6 ml-5 "></Icon> -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-6 ml-6" viewBox="0 0 1024 1024">
-              <path fill="currentColor" d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5C64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703c30.9-15.9 62.4 4 98.9 57.9c26.4 39.1 77.9 32.5 104 26c5.7-23.5 17.9-44.5 34.7-60.8c-140.6-25.2-199.2-111-199.2-213c0-49.5 16.3-95 48.3-131.7c-20.4-60.5 1.9-112.3 4.9-120c58.1-5.2 118.5 41.6 123.2 45.3c33-8.9 70.7-13.6 112.9-13.6c42.4 0 80.2 4.9 113.5 13.9c11.3-8.6 67.3-48.8 121.3-43.9c2.9 7.7 24.7 58.3 5.5 118c32.4 36.8 48.9 82.7 48.9 132.3c0 102.2-59 188.1-200 212.9a127.5 127.5 0 0 1 38.1 91v112.5c.8 9 0 17.9 15 17.9c177.1-59.7 304.6-227 304.6-424.1c0-247.2-200.4-447.3-447.5-447.3" />
-            </svg>
-          </a>
-          <!-- dark mode -->
-          
-          <ThemeIcon />
-          
-          <!-- 放大镜 -->
-          <div class="lg:hidden inline-flex ml-6">
-            <button type="button" class="hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-large-modal">
-              <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14" />
-              </svg>
-            </button>
-          </div>
-        </div>
+      <div class="flex grow justify-end items-center order-6">
+        <!-- GitHub链接 -->
+        <a href="https://github.com/SeanFeng91/SeanBlog" class="ml-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 1024 1024">
+            <path fill="currentColor" d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5C64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703c30.9-15.9 62.4 4 98.9 57.9c26.4 39.1 77.9 32.5 104 26c5.7-23.5 17.9-44.5 34.7-60.8c-140.6-25.2-199.2-111-199.2-213c0-49.5 16.3-95 48.3-131.7c-20.4-60.5 1.9-112.3 4.9-120c58.1-5.2 118.5 41.6 123.2 45.3c33-8.9 70.7-13.6 112.9-13.6c42.4 0 80.2 4.9 113.5 13.9c11.3-8.6 67.3-48.8 121.3-43.9c2.9 7.7 24.7 58.3 5.5 118c32.4 36.8 48.9 82.7 48.9 132.3c0 102.2-59 188.1-200 212.9a127.5 127.5 0 0 1 38.1 91v112.5c.8 9 0 17.9 15 17.9c177.1-59.7 304.6-227 304.6-424.1c0-247.2-200.4-447.3-447.5-447.3" />
+          </svg>
+        </a>
         
-         <!-- 用dropdown代替方案 -->
-        <!-- <div class="md:hidden order-last">
-          <button type="button" class="hs-collapse-toggle p-2 inline-flex justify-center items-center gap-x-2 rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-transparent dark:border-neutral-700 dark:text-white dark:hover:bg-white/10" 
-          data-hs-collapse="#navbar-collapse-with-animation" aria-controls="navbar-collapse-with-animation" aria-label="Toggle navigation">
-            <svg class="hs-collapse-open:hidden inline-flex flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
-            <svg class="hs-collapse-open:block hidden flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        <!-- 暗黑模式切换 -->
+        <ThemeIcon />
+        
+        <!-- 移动端搜索按钮 -->
+        <div class="lg:hidden inline-flex ml-6">
+          <button type="button" class="hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-large-modal">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5S14 7.01 14 9.5S11.99 14 9.5 14" />
+            </svg>
           </button>
-        </div> -->
-        <!-- 文字导航部分 -->
-        <div id="navbar-collapse-with-animation" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full 
-          grow md:block">
-          <div class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:ps-5">
-              <a class="font-bold text-gray-600  hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-300" 
-              href={`${baseUrl}`} aria-current="page">首页</a>
-              <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-500" 
-              href={`${baseUrl}about`}>关于我</a>
-              <!-- <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-500" 
-              href={`${baseUrl}blog`}>博客</a> -->
-              <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-500" 
-              href={`${baseUrl}tags`}>博客</a>
-    
-              <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-500" 
-              href={`${baseUrl}ImageGallery`}>图册</a>
-              <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-500" 
-              href={`${baseUrl}posts/01PageProblemRecord`}>进展情况记录</a>
-              <div class="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] ">
-                <button id="hs-mega-menu-basic-dr" type="button" class="flex items-center w-full text-amber-600 hover:text-gray-400 font-bold dark:text-neutral-400 dark:hover:text-neutral-500 ">
-                  功能测试
-                  <svg class="ms-1 flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                </button>
-      
-                <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] sm:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 sm:w-48 z-10 bg-white sm:shadow-md rounded-lg p-2 dark:bg-neutral-800 sm:dark:border dark:border-neutral-700 dark:divide-neutral-700 before:absolute top-full sm:border before:-top-5 before:start-0 before:w-full before:h-5 hidden">
-                  <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300" 
-                  href={`${baseUrl}textindex`}>
-                    页面布局测试
-                  </a>
-                  
-                  <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300" 
-                  href={`${baseUrl}Testdemo/searchtest`}>
-                    SearchTest 
-                  </a>
-                  <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300" 
-                  href={`${baseUrl}mygpt`}>
-                    Mygpt GPT测试
-                  </a>
-                  <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" 
-                  href={`${baseUrl}Testdemo/cursordemo`}>
-                    Cursor测试
-                  </a>
-                  <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" 
-                  href={`${baseUrl}Testdemo/ReactTest`}>
-                    react测试
-                  </a>
-                </div>
-              </div>
-          </div>
         </div>
-
-        <!-- dropdown-menu 下拉导航栏@sm -->
-          <div class="md:hidden hs-dropdown hs-dropdown-example relative inline-flex order-last">
-            <button id="hs-dropdown-example" type="button" class="hs-dropdown-toggle ml-4 py-1 px-1 inline-flex items-center gap-x-2 
-            text-sm font-medium rounded-lg border-2 border-gray-800 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" 
-            aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
-              <svg class="hs-dropdown-open:rotate-180 size-4 text-gray-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m6 9 6 6 6-6"></path>
-              </svg>
-            </button>
-          
-            <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-56 hidden z-10 mt-2 min-w-60 bg-white shadow-md rounded-lg p-2" 
-            role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-example">
-              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-bold text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" href={`${baseUrl}`}>
-                首页
-              </a>
-              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-bold text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" href={`${baseUrl}about`}>
-                关于我
-              </a>
-              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-bold text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" href={`${baseUrl}tags`}>
-                博客
-              </a>
-              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-bold text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" href={`${baseUrl}imagegallery`}>
-                图册
-              </a>
-              <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-bold text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" href={`${baseUrl}posts/01PageProblemRecord`}>
-                进展情况记录
-              </a>
-              <div class="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none] ">
-                <button id="hs-mega-menu-basic-dr" type="button" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-bold text-amber-600 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100">
-                  功能测试
-                  <svg class="ms-1 flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                </button>
+      </div>
       
-                <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] sm:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 sm:w-48 z-10 bg-white sm:shadow-md rounded-lg p-2 dark:bg-neutral-800 sm:dark:border dark:border-neutral-700 dark:divide-neutral-700 before:absolute top-full sm:border before:-top-5 before:start-0 before:w-full before:h-5 hidden">
-                  <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" 
-                  href={`${baseUrl}textindex`}>
-                    页面布局测试
-                  </a>
-                  
-                  <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" 
-                  href={`${baseUrl}searchtest`}>
-                    SearchTest 
-                  </a>
-                  <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" 
-                  href={`${baseUrl}mygpt`}>
-                    Mygpt GPT测试
-                  </a>
-                  <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 
-              focus:outline-none focus:bg-gray-100" 
-                  href={`${baseUrl}Testdemo/cursordemo`}>
-                    Cursor测试
-                  </a>
-                </div>
-              </div>
-
+      <!-- 桌面端导航菜单 -->
+      <div id="navbar-collapse-with-animation" class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block">
+        <div class="flex flex-col gap-5 mt-5 sm:flex-row sm:items-center sm:justify-end sm:mt-0 sm:ps-5">
+          {navLinks.map(link => (
+            <a class="font-bold text-gray-600 hover:text-teal-500 dark:text-neutral-100 dark:hover:text-neutral-300" 
+               href={link.href}>{link.text}</a>
+          ))}
+          <!-- 功能测试下拉菜单 -->
+          <div class="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none]">
+            <button id="hs-mega-menu-basic-dr" type="button" class="flex items-center w-full text-amber-600 hover:text-gray-400 font-bold dark:text-neutral-400 dark:hover:text-neutral-500">
+              功能测试
+              <svg class="ms-1 flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] sm:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 sm:w-48 z-10 bg-white sm:shadow-md rounded-lg p-2 dark:bg-neutral-800 sm:dark:border dark:border-neutral-700 dark:divide-neutral-700 before:absolute top-full sm:border before:-top-5 before:start-0 before:w-full before:h-5 hidden">
+              {testMenuItems.map(item => (
+                <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300" 
+                   href={item.href}>{item.text}</a>
+              ))}
             </div>
           </div>
-
+        </div>
       </div>
-    </nav>
-  </header>
 
+      <!-- 移动端下拉导航菜单 -->
+      <div class="md:hidden hs-dropdown hs-dropdown-example relative inline-flex order-last">
+        <button id="hs-dropdown-example" type="button" class="hs-dropdown-toggle ml-4 py-1 px-1 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border-2 border-gray-800 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" 
+                aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+          <svg class="hs-dropdown-open:rotate-180 size-4 text-gray-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </button>
+        
+        <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-56 hidden z-10 mt-2 min-w-60 bg-white shadow-md rounded-lg p-2" 
+             role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-example">
+          {navLinks.map(link => (
+            <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-bold text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100" 
+               href={link.href}>{link.text}</a>
+          ))}
+          <!-- 移动端功能测试下拉菜单 -->
+          <div class="hs-dropdown [--strategy:static] sm:[--strategy:fixed] [--adaptive:none]">
+            <button id="hs-mega-menu-basic-dr" type="button" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm font-bold text-amber-600 hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+              功能测试
+              <svg class="ms-1 flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="hs-dropdown-menu transition-[opacity,margin] duration-[0.1ms] sm:duration-[150ms] hs-dropdown-open:opacity-100 opacity-0 sm:w-48 z-10 bg-white sm:shadow-md rounded-lg p-2 dark:bg-neutral-800 sm:dark:border dark:border-neutral-700 dark:divide-neutral-700 before:absolute top-full sm:border before:-top-5 before:start-0 before:w-full before:h-5 hidden">
+              {testMenuItems.map(item => (
+                <a class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100" 
+                   href={item.href}>{item.text}</a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
 
 <script src="../../node_modules/preline/dist/preline.js"></script>
 <script>
-  // This code should be added to <head>.
-// It's used to prevent page load glitches.
-const html = document.querySelector('html');
-const isLightOrAuto = localStorage.getItem('hs_theme') === 'light' || (localStorage.getItem('hs_theme') === 'auto' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
-const isDarkOrAuto = localStorage.getItem('hs_theme') === 'dark' || (localStorage.getItem('hs_theme') === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  // 防止页面加载闪烁
+  const html = document.querySelector('html');
+  const isLightOrAuto = localStorage.getItem('hs_theme') === 'light' || (localStorage.getItem('hs_theme') === 'auto' && !window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const isDarkOrAuto = localStorage.getItem('hs_theme') === 'dark' || (localStorage.getItem('hs_theme') === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dark');
-else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
-else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
-else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
+  if (isLightOrAuto && html.classList.contains('dark')) html.classList.remove('dark');
+  else if (isDarkOrAuto && html.classList.contains('light')) html.classList.remove('light');
+  else if (isDarkOrAuto && !html.classList.contains('dark')) html.classList.add('dark');
+  else if (isLightOrAuto && !html.classList.contains('light')) html.classList.add('light');
 </script>
