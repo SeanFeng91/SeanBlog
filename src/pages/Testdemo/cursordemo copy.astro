@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甘特图</title>
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    <link rel="stylesheet" href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css">
+    <style>
+        /* 使用更具体的选择器 */
+        #gantt_here .gantt_task_line.yellow_task {
+            background-color: #ffeb3b !important;
+            border-color: #fdd835 !important;
+        }
+        #gantt_here .gantt_task_line.yellow_task .gantt_task_progress {
+            background-color: #fbc02d !important;
+        }
+        #gantt_here .gantt_task_line.critical_task {
+            background-color: #ff5555 !important;
+            border-color: #dd3333 !important;
+        }
+        #gantt_here .gantt_task_line.critical_task .gantt_task_progress {
+            background-color: #ff9999 !important;
+        }
+        /* 覆盖选中状态的样式 */
+        #gantt_here .gantt_task_line.gantt_selected {
+            box-shadow: none !important;
+        }
+        #gantt_here .gantt_task_line.critical_task.gantt_selected {
+            background-color: #ff3333 !important;
+        }
+        #gantt_here .gantt_task_line.yellow_task.gantt_selected {
+            background-color: #ffd600 !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="gantt_here" style="width:1200px; height:600px;"></div>
+    <div>
+        <button onclick="setDayScale()">日视图</button>
+        <button onclick="setMonthScale()">月视图</button>
+        <button onclick="setYearScale()">年视图</button>
+    </div>
+
+    <script>
+        let ganttData = [];
+
+        async function fetchData() {
+            const response = await fetch('../../../public/plan_data.json');
+            const data = await response.json();
+            ganttData = data.map((task, index) => {
+                const startDate = new Date(task.Start);
+                const duration = parseInt(task["Duration (days)"]) || 1;
+                console.log(`Task ${index + 1}: ${task.Name}, Start Date: ${startDate}, Duration: ${duration}, Critical: ${task.Critical}`);
+                return {
+                    id: index + 1,
+                    text: task.Name,
+                    start_date: startDate,
+                    duration: duration,
+                    progress: 0,
+                    parent: task.Predecessor ? parseInt(task.Predecessor) : 0,
+                    critical: task.Critical === true
+                };
+            });
+            return ganttData;
+        }
+
+        function setDayScale() {
+            gantt.config.scale_unit = "day";
+            gantt.config.date_scale = "%d %M";
+            gantt.config.subscales = [];
+            gantt.render();
+        }
+
+        function setMonthScale() {
+            gantt.config.scale_unit = "month";
+            gantt.config.date_scale = "%Y年%m月";
+            gantt.config.subscales = [
+                {unit: "week", step: 1, date: "第%W周"}
+            ];
+            gantt.render();
+        }
+
+        function setYearScale() {
+            gantt.config.scale_unit = "year";
+            gantt.config.date_scale = "%Y年";
+            gantt.config.subscales = [
+                {unit: "month", step: 1, date: "%M"}
+            ];
+            gantt.render();
+        }
+
+        function initGantt(tasks) {
+            const startDates = tasks.map(task => task.start_date);
+            const endDates = tasks.map(task => {
+                let endDate = new Date(task.start_date);
+                endDate.setDate(endDate.getDate() + task.duration);
+                return endDate;
+            });
+            const minDate = new Date(Math.min.apply(null, startDates));
+            const maxDate = new Date(Math.max.apply(null, endDates));
+
+            gantt.config.start_date = minDate;
+            gantt.config.end_date = maxDate;
+
+            gantt.config.date_format = "%Y-%m-%d";
+            gantt.config.duration_unit = "day";
+            gantt.config.scale_height = 50;
+            gantt.config.row_height = 30;
+            gantt.config.open_tree_initially = true;
+
+            // 配置列
+            gantt.config.columns = [
+                {name: "text", label: "任务名称", tree: true, width: 200},
+                {name: "start_date", label: "开始时间", align: "center", width: 80},
+                {name: "duration", label: "持续时间(天)", align: "center", width: 80},
+                {name: "critical", label: "关键路径", align: "center", width: 80, template: function(task) {
+                    return task.critical ? "是" : "否";
+                }}
+            ];
+
+            gantt.templates.task_cell_class = function(task, date) {
+                return task.critical ? "critical_task" : "yellow_task";
+            };
+
+            gantt.templates.task_class = function(start, end, task) {
+                return task.critical ? "critical_task" : "yellow_task";
+            };
+
+            gantt.templates.task_text = function(start, end, task){
+                return "<span style='color: " + (task.critical ? "#ffffff" : "#000000") + ";'>" + task.text + "</span>";
+            };
+
+            gantt.attachEvent("onTaskLoading", function(task){
+                if (task.critical) {
+                    task.$class = "critical_task";
+                } else {
+                    task.$class = "yellow_task";
+                }
+                return true;
+            });
+
+            gantt.attachEvent("onAfterTaskDraw", function(task){
+                var taskElement = gantt.getTaskNode(task.id);
+                if (taskElement) {
+                    if (task.critical) {
+                        taskElement.style.backgroundColor = "#ff5555";
+                        taskElement.style.borderColor = "#dd3333";
+                    } else {
+                        taskElement.style.backgroundColor = "#ffeb3b";
+                        taskElement.style.borderColor = "#fdd835";
+                    }
+                }
+                return true;
+            });
+
+            gantt.init("gantt_here");
+            gantt.parse({data: tasks});
+            gantt.render(); // 添加这行
+        }
+
+        fetchData().then(initGantt);
+
+        // 确保这些函数在全局作用域中可用
+        window.setDayScale = setDayScale;
+        window.setMonthScale = setMonthScale;
+        window.setYearScale = setYearScale;
+    </script>
+</body>
+</html>

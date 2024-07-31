@@ -1,251 +1,287 @@
 ---
-// import { useState } from 'react';
-// import { h } from 'preact';
 import "../styles/global.css";
 import IndexLayout from "../layouts/IndexLayout.astro";
-// import { getMoonshotApiKey } from './api/api.js';
-// import { marked } from 'marked';
-
 ---
+
 <style>
 /* 写入global.css就可以了 */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.chat-bubble {
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-bubble {
+    background-color: #DCF8C6;
+    align-self: flex-end;
+}
+
+.assistant-bubble {
+    background-color: #F1F0F0;
+    align-self: flex-start;
+}
+
+.message-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-wrapper {
+    align-items: flex-end;
+}
+
+.assistant-wrapper {
+    align-items: flex-start;
+}
+
+#chat-box {
+    display: flex;
+    flex-direction: column;
+}
+
+#saved-records {
+    max-height: 200px;
+    overflow-y: auto;
+}
 </style>
 
 <IndexLayout>
-  <div class="bg-gray-100 max-h-[calc(100vh-10px)] flex overflow-y-scroll" slot="maindiv">
+  <div class="bg-gray-100 h-screen flex overflow-hidden" slot="maindiv">
+    <!-- Sidebar -->
     <div class="w-64 bg-white p-6 shadow-lg flex flex-col">
         <h2 class="text-xl font-bold mb-4">Settings</h2>
         <input type="text" id="api-key-input" placeholder="Enter your Kimi API Key" class="mb-4 p-2 border border-gray-300 rounded w-full" />
         <button id="clear-history-button" class="bg-red-500 text-white p-2 rounded mb-4 hover:bg-red-700">Clear All History</button>
         <button id="save-current-button" class="bg-green-500 text-white p-2 rounded mb-4 hover:bg-green-700">Save Current Record</button>
         <button id="create-new-button" class="bg-blue-500 text-white p-2 rounded mb-4 hover:bg-blue-700">Create New Chat</button>
-        <div id="saved-records" class="flex flex-col space-y-2">
+        <div id="saved-records" class="flex flex-col space-y-2 overflow-y-auto">
             <!-- Dynamically generated saved records will appear here -->
         </div>
     </div>
     <!-- Main Chat Interface -->
-    <div class="flex-1 flex flex-col ">
+    <div class="flex-1 flex flex-col">
         <div id="chat-box" class="flex-1 p-4 border-2 border-spacing-1 border-gray-300 rounded bg-white overflow-y-auto mb-4">
             <!-- Chat messages will appear here -->
         </div>
-        <div class="flex">
+        <div class="flex p-4 border-t border-gray-300">
             <input type="text" id="message-input" placeholder="Enter your message" class="flex-1 p-2 border border-gray-300 rounded mr-2" />
             <button id="send-button" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Send</button>
         </div>
     </div>
-    
-
-    <!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> -->
-    
+  </div>
 </IndexLayout>
-<!-- 定义 .chat-bubble 类，用于设置聊天气泡的通用样式。
-定义 .user-bubble 和 .assistant-bubble 类，分别用于用户和助手的消息气泡样式。
-.chat-container 类用于设置聊天框的布局，使其能够垂直排列消息。 -->
 
-
-<!-- 对话气泡版本 -->
 <script>
     import { marked } from 'marked';
-    // 你很关键啊
+
     document.addEventListener('DOMContentLoaded', () => {
-            loadChatHistory();
+        loadChatHistory();
+        renderSavedRecords();
 
-            document.getElementById('send-button').addEventListener('click', sendMessage);
-            document.getElementById('clear-history-button').addEventListener('click', clearChatHistory);
-            document.getElementById('save-current-button').addEventListener('click', saveCurrentRecord);
-            document.getElementById('create-new-button').addEventListener('click', createNewChat);
+        document.getElementById('send-button').addEventListener('click', sendMessage);
+        document.getElementById('clear-history-button').addEventListener('click', clearChatHistory);
+        document.getElementById('save-current-button').addEventListener('click', saveCurrentRecord);
+        document.getElementById('create-new-button').addEventListener('click', createNewChat);
+    });
+
+    function loadChatHistory() {
+        const chatBox = document.getElementById('chat-box');
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        chatBox.innerHTML = '';
+        chatHistory.forEach(entry => {
+            const messageWrapper = createChatWrapper(entry.role, entry.content);
+            chatBox.appendChild(messageWrapper);
         });
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-        function loadChatHistory() {
-            const chatBox = document.getElementById('chat-box');
-            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            chatBox.innerHTML = '';
-            chatHistory.forEach(entry => {
-                const messageWrapper = createChatWrapper(entry.role, entry.content);
-                chatBox.appendChild(messageWrapper);
+    function saveChatHistory(role, content) {
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        chatHistory.push({ role, content });
+        localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+    }
+
+    function clearChatHistory() {
+        localStorage.removeItem('chatHistory');
+        localStorage.removeItem('savedRecords');
+        document.getElementById('chat-box').innerHTML = '';
+        document.getElementById('saved-records').innerHTML = '';
+    }
+
+    function createChatBubble(role, content) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-bubble ${role === 'user' ? 'user-bubble' : 'assistant-bubble'}`;
+        messageDiv.innerHTML = marked.parse(content);
+        return messageDiv;
+    }
+
+    function createChatWrapper(role, content) {
+        const wrapperDiv = document.createElement('div');
+        wrapperDiv.className = `message-wrapper ${role === 'user' ? 'user-wrapper' : 'assistant-wrapper'}`;
+        const messageDiv = createChatBubble(role, content);
+        wrapperDiv.appendChild(messageDiv);
+        return wrapperDiv;
+    }
+
+    async function sendMessage() {
+        const apiKey = document.getElementById('api-key-input').value;
+        const messageInput = document.getElementById('message-input');
+        const message = messageInput.value.trim();
+        const chatBox = document.getElementById('chat-box');
+
+        if (!apiKey) {
+            alert("Please enter your API key.");
+            return;
+        }
+
+        if (!message) {
+            alert("Please enter a message.");
+            return;
+        }
+
+        const userMessageWrapper = createChatWrapper('user', message);
+        chatBox.appendChild(userMessageWrapper);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        saveChatHistory('user', message);
+        messageInput.value = '';
+
+        const requestBody = {
+            model: "moonshot-v1-8k",
+            messages: [
+                { role: "system", content: "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言。" },
+                { role: "user", content: message }
+            ],
+            stream: true
+        };
+
+        try {
+            const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify(requestBody)
             });
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
 
-        function saveChatHistory(role, content) {
-            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            chatHistory.push({ role, content });
-            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-        }
-
-        function clearChatHistory() {
-            localStorage.removeItem('chatHistory');
-            localStorage.removeItem('savedRecords');
-            document.getElementById('chat-box').innerHTML = '';
-            document.getElementById('saved-records').innerHTML = '';
-        }
-
-        function createChatBubble(role, content) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `chat-bubble ${role === 'user' ? 'user-bubble' : 'assistant-bubble'}`;
-            messageDiv.innerHTML = marked.parse(content); // 使用 marked.parse 方法
-            return messageDiv;
-        }
-
-        function createChatWrapper(role, content) {
-            const wrapperDiv = document.createElement('div');
-            // 根据角色动态添加类名
-            wrapperDiv.className = `message-wrapper ${role === 'user' ? 'user-wrapper' : 'assistant-wrapper'}`;
-            const messageDiv = createChatBubble(role, content);
-            wrapperDiv.appendChild(messageDiv);
-            return wrapperDiv;
-        }
-
-        async function sendMessage() {
-            const apiKey = document.getElementById('api-key-input').value;
-            const messageInput = document.getElementById('message-input');
-            const message = messageInput.value.trim();
-            const chatBox = document.getElementById('chat-box');
-
-            if (!apiKey) {
-                alert("Please enter your API key.");
-                return;
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            if (!message) {
-                alert("Please enter a message.");
-                return;
-            }
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let result = '';
 
-            // 显示用户消息
-            const userMessageWrapper = createChatWrapper('user', message);
-            chatBox.appendChild(userMessageWrapper);
-            chatBox.scrollTop = chatBox.scrollHeight; // 滚动到聊天框底部
-            saveChatHistory('user', message); // 保存用户消息
-            messageInput.value = '';
+            const assistantMessageWrapper = createChatWrapper('assistant', '');
+            chatBox.appendChild(assistantMessageWrapper);
 
-            const requestBody = {
-                model: "moonshot-v1-8k",
-                messages: [
-                    { role: "system", content: "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言。" },
-                    { role: "user", content: message }
-                ],
-                stream: true
-            };
+            const processStream = async () => {
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    const chunk = decoder.decode(value, { stream: true });
 
-            try {
-                // 发送请求到 Moonshot API
-                const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-                    body: JSON.stringify(requestBody)
-                });
-
-                // 检查响应状态
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                // 处理流式响应
-                const reader = response.body.getReader();
-                const decoder = new TextDecoder('utf-8');
-                let result = '';
-
-                const assistantMessageWrapper = createChatWrapper('assistant', '');
-                chatBox.appendChild(assistantMessageWrapper);
-
-                const processStream = async () => {
-                    while (true) {
-                        const { done, value } = await reader.read();
-                        if (done) break;
-                        const chunk = decoder.decode(value, { stream: true });
-
-                        // 解析并提取有用内容
-                        const lines = chunk.split('\n').filter(line => line.trim().startsWith('data: '));
-                        for (const line of lines) {
-                            const jsonStr = line.replace(/^data: /, '');
-                            if (jsonStr.trim() === '[DONE]') continue;
-                            const parsedData = JSON.parse(jsonStr);
-                            const content = parsedData.choices[0].delta.content;
-                            if (content) {
-                                result += content;
-                                assistantMessageWrapper.firstChild.innerHTML = marked.parse(result); // 使用 marked.parse 方法解析 Markdown
-                                chatBox.scrollTop = chatBox.scrollHeight;  // 保持滚动到底部
-                            }
+                    const lines = chunk.split('\n').filter(line => line.trim().startsWith('data: '));
+                    for (const line of lines) {
+                        const jsonStr = line.replace(/^data: /, '');
+                        if (jsonStr.trim() === '[DONE]') continue;
+                        const parsedData = JSON.parse(jsonStr);
+                        const content = parsedData.choices[0].delta.content;
+                        if (content) {
+                            result += content;
+                            assistantMessageWrapper.firstChild.innerHTML = marked.parse(result);
+                            chatBox.scrollTop = chatBox.scrollHeight;
                         }
                     }
-                    saveChatHistory('assistant', result); // 保存助手消息
-                };
+                }
+                saveChatHistory('assistant', result);
+            };
 
-                processStream().catch(error => {
-                    console.error('Error processing stream:', error);
-                });
-
-            } catch (error) {
-                chatBox.textContent = `Fetch error: ${error.message}`;
-            }
-        }
-
-        function saveCurrentRecord() {
-            const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
-            if (chatHistory.length === 0) {
-                alert("No conversation to save.");
-                return;
-            }
-
-            const savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
-            const recordId = `record-${Date.now()}`;
-            savedRecords.push({ id: recordId, history: chatHistory });
-            localStorage.setItem('savedRecords', JSON.stringify(savedRecords));
-
-            renderSavedRecords();
-        }
-
-        function renderSavedRecords() {
-            const savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
-            const savedRecordsContainer = document.getElementById('saved-records');
-            savedRecordsContainer.innerHTML = '';
-
-            savedRecords.forEach(record => {
-                const recordDiv = document.createElement('div');
-                recordDiv.className = 'flex justify-between items-center p-2 border rounded bg-gray-200';
-                const date = new Date(parseInt(record.id.replace('record-', '')));
-                recordDiv.innerHTML = `
-                    <span>Record ${date.toLocaleString()}</span>
-                    <div class="flex space-x-2">
-                        <button onclick="loadRecord('${record.id}')" class="bg-blue-500 text-white p-1 rounded hover:bg-blue-700">Load</button>
-                        <button onclick="deleteRecord('${record.id}')" class="bg-red-500 text-white p-1 rounded hover:bg-red-700">×</button>
-                    </div>
-                `;
-                savedRecordsContainer.appendChild(recordDiv);
+            processStream().catch(error => {
+                console.error('Error processing stream:', error);
             });
+
+        } catch (error) {
+            chatBox.textContent = `Fetch error: ${error.message}`;
+        }
+    }
+
+    function saveCurrentRecord() {
+        const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+        if (chatHistory.length === 0) {
+            alert("No conversation to save.");
+            return;
         }
 
-        function loadRecord(recordId) {
-            const savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
-            const record = savedRecords.find(r => r.id === recordId);
+        const savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
+        const recordId = `record-${Date.now()}`;
+        savedRecords.push({ id: recordId, history: chatHistory });
+        localStorage.setItem('savedRecords', JSON.stringify(savedRecords));
 
-            if (record) {
-                localStorage.setItem('chatHistory', JSON.stringify(record.history));
-                loadChatHistory();
-            } else {
-                alert("Record not found.");
+        renderSavedRecords();
+    }
+
+    function renderSavedRecords() {
+        const savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
+        const savedRecordsContainer = document.getElementById('saved-records');
+        savedRecordsContainer.innerHTML = '';
+
+        savedRecords.forEach(record => {
+            const recordDiv = document.createElement('div');
+            recordDiv.className = 'flex justify-between items-center p-2 border rounded bg-gray-200';
+            const date = new Date(parseInt(record.id.replace('record-', '')));
+            recordDiv.innerHTML = `
+                <span>Record ${date.toLocaleString()}</span>
+                <div class="flex space-x-2">
+                    <button data-action="load" data-id="${record.id}" class="bg-blue-500 text-white p-1 rounded hover:bg-blue-700">Load</button>
+                    <button data-action="delete" data-id="${record.id}" class="bg-red-500 text-white p-1 rounded hover:bg-red-700">×</button>
+                </div>
+            `;
+            savedRecordsContainer.appendChild(recordDiv);
+        });
+
+        // 使用事件委托处理按钮点击
+        savedRecordsContainer.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') {
+                const action = e.target.getAttribute('data-action');
+                const id = e.target.getAttribute('data-id');
+                if (action === 'load') {
+                    loadRecord(id);
+                } else if (action === 'delete') {
+                    deleteRecord(id);
+                }
             }
-        }
+        });
+    }
 
-        function deleteRecord(recordId) {
-            let savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
-            savedRecords = savedRecords.filter(r => r.id !== recordId);
-            localStorage.setItem('savedRecords', JSON.stringify(savedRecords));
-            renderSavedRecords();
-        }
+    function loadRecord(recordId) {
+        const savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
+        const record = savedRecords.find(r => r.id === recordId);
 
-        function createNewChat() {
-            localStorage.removeItem('chatHistory');
-            document.getElementById('chat-box').innerHTML = '';
-            document.getElementById('message-input').value = '';
+        if (record) {
+            localStorage.setItem('chatHistory', JSON.stringify(record.history));
+            loadChatHistory(); // 加载聊天历史到UI
+        } else {
+            alert("未找到记录。");
         }
+    }
 
-        renderSavedRecords(); // Initial render of saved records on page load
-    </script>
-</script> 
-   
+    function deleteRecord(recordId) {
+        let savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
+        savedRecords = savedRecords.filter(r => r.id !== recordId);
+        localStorage.setItem('savedRecords', JSON.stringify(savedRecords));
+        renderSavedRecords();
+    }
+
+    function createNewChat() {
+        localStorage.removeItem('chatHistory');
+        document.getElementById('chat-box').innerHTML = '';
+        document.getElementById('message-input').value = '';
+    }
+</script>
