@@ -53,33 +53,22 @@ body {
 
 <IndexLayout>
   <div class="bg-gray-100 h-screen flex overflow-hidden" slot="maindiv">
-    <!-- 侧边栏 -->
+    <!-- Sidebar -->
     <div class="w-64 bg-white p-6 shadow-lg flex flex-col">
         <h2 class="text-xl font-bold mb-4">Settings</h2>
         <input type="text" id="api-key-input" placeholder="Enter your Kimi API Key" class="mb-4 p-2 border border-gray-300 rounded w-full" />
         <button id="clear-history-button" class="bg-red-500 text-white p-2 rounded mb-4 hover:bg-red-700">Clear All History</button>
         <button id="save-current-button" class="bg-green-500 text-white p-2 rounded mb-4 hover:bg-green-700">Save Current Record</button>
         <button id="create-new-button" class="bg-blue-500 text-white p-2 rounded mb-4 hover:bg-blue-700">Create New Chat</button>
-        <input type="file" id="file-input" class="mb-4" multiple />
-        <button id="upload-file-button" class="bg-purple-500 text-white p-2 rounded mb-4 hover:bg-purple-700">Upload File</button>
-        <div id="upload-progress" class="w-full bg-gray-200 rounded-full h-2.5 mb-4 hidden">
-            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
-        </div>
-        <button id="clear-files-button" class="bg-yellow-500 text-white p-2 rounded mb-4 hover:bg-yellow-700">Clear Uploaded Files</button>
-        <button id="list-files-button" class="bg-green-500 text-white p-2 rounded mb-4 hover:bg-green-700">List All Files</button>
-        <button id="delete-file-button" class="bg-red-500 text-white p-2 rounded mb-4 hover:bg-red-700">Delete File</button>
-        <button id="get-file-info-button" class="bg-blue-500 text-white p-2 rounded mb-4 hover:bg-blue-700">Get File Info</button>
         <div id="saved-records" class="flex flex-col space-y-2 overflow-y-auto">
             <!-- Dynamically generated saved records will appear here -->
         </div>
     </div>
-    <!-- 主聊天界面 -->
+    <!-- Main Chat Interface -->
     <div class="flex-1 flex flex-col">
-        <!-- 聊天框 -->
         <div id="chat-box" class="flex-1 p-4 border-2 border-spacing-1 border-gray-300 rounded bg-white overflow-y-auto mb-4">
-            <!-- 聊天消息将在这里显示 -->
+            <!-- Chat messages will appear here -->
         </div>
-        <!-- 消息输入区 -->
         <div class="flex p-4 border-t border-gray-300">
             <input type="text" id="message-input" placeholder="Enter your message" class="flex-1 p-2 border border-gray-300 rounded mr-2" />
             <button id="send-button" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Send</button>
@@ -91,27 +80,16 @@ body {
 <script>
     import { marked } from 'marked';
 
-    // 存储上传的文件内容
-    let uploadedFiles = [];
-
-    // 页面加载完成后初始化
     document.addEventListener('DOMContentLoaded', () => {
         loadChatHistory();
         renderSavedRecords();
 
-        // 添加事件监听器
         document.getElementById('send-button').addEventListener('click', sendMessage);
         document.getElementById('clear-history-button').addEventListener('click', clearChatHistory);
         document.getElementById('save-current-button').addEventListener('click', saveCurrentRecord);
         document.getElementById('create-new-button').addEventListener('click', createNewChat);
-        document.getElementById('upload-file-button').addEventListener('click', uploadFiles);
-        document.getElementById('clear-files-button').addEventListener('click', clearUploadedFiles);
-        document.getElementById('list-files-button').addEventListener('click', listFiles);
-        document.getElementById('delete-file-button').addEventListener('click', deleteFile);
-        document.getElementById('get-file-info-button').addEventListener('click', getFileInfo);
     });
 
-    // 加载聊天历史
     function loadChatHistory() {
         const chatBox = document.getElementById('chat-box');
         const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
@@ -123,14 +101,12 @@ body {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    // 保存聊天历史
     function saveChatHistory(role, content) {
         const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
         chatHistory.push({ role, content });
         localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
     }
 
-    // 清除聊天历史
     function clearChatHistory() {
         localStorage.removeItem('chatHistory');
         localStorage.removeItem('savedRecords');
@@ -138,7 +114,6 @@ body {
         document.getElementById('saved-records').innerHTML = '';
     }
 
-    // 创建聊天气泡
     function createChatBubble(role, content) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `chat-bubble ${role === 'user' ? 'user-bubble' : 'assistant-bubble'}`;
@@ -146,7 +121,6 @@ body {
         return messageDiv;
     }
 
-    // 创建聊天包装器
     function createChatWrapper(role, content) {
         const wrapperDiv = document.createElement('div');
         wrapperDiv.className = `message-wrapper ${role === 'user' ? 'user-wrapper' : 'assistant-wrapper'}`;
@@ -155,32 +129,31 @@ body {
         return wrapperDiv;
     }
 
-    // 发送消息
     async function sendMessage() {
-        // 获取API密钥和消息内容
         const apiKey = document.getElementById('api-key-input').value;
         const messageInput = document.getElementById('message-input');
         const message = messageInput.value.trim();
         const chatBox = document.getElementById('chat-box');
 
-        // 验证输入
-        if (!apiKey || !message) {
-            alert("请输入API密钥和消息。");
+        if (!apiKey) {
+            alert("Please enter your API key.");
             return;
         }
 
-        // 显示用户消息
+        if (!message) {
+            alert("Please enter a message.");
+            return;
+        }
+
         const userMessageWrapper = createChatWrapper('user', message);
         chatBox.appendChild(userMessageWrapper);
         chatBox.scrollTop = chatBox.scrollHeight;
         saveChatHistory('user', message);
         messageInput.value = '';
 
-        // 准备请求体
         const requestBody = {
-            model: "moonshot-v1-128k",
+            model: "moonshot-v1-8k",
             messages: [
-                ...uploadedFiles,
                 { role: "system", content: "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言。" },
                 { role: "user", content: message }
             ],
@@ -188,7 +161,6 @@ body {
         };
 
         try {
-            // 发送请求到API
             const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
                 method: 'POST',
                 headers: {
@@ -202,7 +174,6 @@ body {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // 处理流式响应
             const reader = response.body.getReader();
             const decoder = new TextDecoder('utf-8');
             let result = '';
@@ -241,7 +212,6 @@ body {
         }
     }
 
-    // 保存当前记录
     function saveCurrentRecord() {
         const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
         if (chatHistory.length === 0) {
@@ -257,7 +227,6 @@ body {
         renderSavedRecords();
     }
 
-    // 渲染保存的记录
     function renderSavedRecords() {
         const savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
         const savedRecordsContainer = document.getElementById('saved-records');
@@ -291,7 +260,6 @@ body {
         });
     }
 
-    // 加载记录
     function loadRecord(recordId) {
         const savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
         const record = savedRecords.find(r => r.id === recordId);
@@ -304,7 +272,6 @@ body {
         }
     }
 
-    // 删除记录
     function deleteRecord(recordId) {
         let savedRecords = JSON.parse(localStorage.getItem('savedRecords')) || [];
         savedRecords = savedRecords.filter(r => r.id !== recordId);
@@ -312,178 +279,9 @@ body {
         renderSavedRecords();
     }
 
-    // 创建新聊天
     function createNewChat() {
         localStorage.removeItem('chatHistory');
         document.getElementById('chat-box').innerHTML = '';
         document.getElementById('message-input').value = '';
-    }
-
-    // 上传文件
-    async function uploadFiles() {
-        const apiKey = document.getElementById('api-key-input').value;
-        const fileInput = document.getElementById('file-input');
-        const files = fileInput.files;
-        const progressBar = document.getElementById('upload-progress');
-
-        if (!apiKey) {
-            alert("请输入您的API密钥。");
-            return;
-        }
-
-        if (files.length === 0) {
-            alert("请选择要上传的文件。");
-            return;
-        }
-
-        progressBar.style.width = '0%';
-        progressBar.textContent = '0%';
-        progressBar.style.display = 'block';
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const formData = new FormData();
-            formData.append('purpose', 'file-extract');
-            formData.append('file', file);
-
-            try {
-                const response = await fetch('https://api.moonshot.cn/v1/files', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP错误！状态：${response.status}`);
-                }
-
-                const result = await response.json();
-                console.log('文件上传成功：', result);
-
-                // 获取文件内容
-                const contentResponse = await fetch(`https://api.moonshot.cn/v1/files/${result.id}/content`, {
-                    headers: {
-                        'Authorization': `Bearer ${apiKey}`
-                    }
-                });
-
-                if (!contentResponse.ok) {
-                    throw new Error(`获取文件内容失败：${contentResponse.status}`);
-                }
-
-                const fileContent = await contentResponse.text();
-
-                uploadedFiles.push({
-                    role: "system",
-                    content: fileContent
-                });
-
-                const progress = Math.round(((i + 1) / files.length) * 100);
-                progressBar.style.width = `${progress}%`;
-                progressBar.textContent = `${progress}%`;
-
-                console.log(`文件 ${file.name} 上传成功并准备好用于对话。`);
-            } catch (error) {
-                console.error('文件上传或内容提取错误：', error);
-                alert(`文件 ${file.name} 上传失败：${error.message}`);
-            }
-        }
-
-        alert("所有文件上传完成。");
-        progressBar.style.display = 'none';
-        fileInput.value = '';
-    }
-
-    // 列出所有文件
-    async function listFiles() {
-        const apiKey = document.getElementById('api-key-input').value;
-        if (!apiKey) {
-            alert("请输入您的API密钥。");
-            return;
-        }
-
-        try {
-            const response = await fetch('https://api.moonshot.cn/v1/files', {
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP错误！状态：${response.status}`);
-            }
-
-            const result = await response.json();
-            console.log('文件列表：', result);
-            alert('文件列表已在控制台打印。');
-        } catch (error) {
-            console.error('获取文件列表错误：', error);
-            alert(`获取文件列表失败：${error.message}`);
-        }
-    }
-
-    // 删除文件
-    async function deleteFile() {
-        const apiKey = document.getElementById('api-key-input').value;
-        const fileId = prompt("请输入要删除的文件ID：");
-        if (!apiKey || !fileId) {
-            alert("请输入API密钥和文件ID。");
-            return;
-        }
-
-        try {
-            const response = await fetch(`https://api.moonshot.cn/v1/files/${fileId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP错误！状态：${response.status}`);
-            }
-
-            alert(`文件 ${fileId} 已成功删除。`);
-        } catch (error) {
-            console.error('删除文件错误：', error);
-            alert(`删除文件失败：${error.message}`);
-        }
-    }
-
-    // 获取文件信息
-    async function getFileInfo() {
-        const apiKey = document.getElementById('api-key-input').value;
-        const fileId = prompt("请输入要查询的文件ID：");
-        if (!apiKey || !fileId) {
-            alert("请输入API密钥和文件ID。");
-            return;
-        }
-
-        try {
-            const response = await fetch(`https://api.moonshot.cn/v1/files/${fileId}`, {
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP错误！状态：${response.status}`);
-            }
-
-            const result = await response.json();
-            console.log('文件信息：', result);
-            alert('文件信息已在控制台打印。');
-        } catch (error) {
-            console.error('获取文件信息错误：', error);
-            alert(`获取文件信息失败：${error.message}`);
-        }
-    }
-
-    // 清除上传的文件
-    function clearUploadedFiles() {
-        uploadedFiles = [];
-        alert("已清除所有上传的文件内容。");
     }
 </script>
