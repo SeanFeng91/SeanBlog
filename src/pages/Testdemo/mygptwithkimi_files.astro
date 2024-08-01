@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import IndexLayout from "../layouts/IndexLayout.astro";
+import IndexLayout from "../../layouts/IndexLayout.astro";
 ---
 
 <style>
@@ -52,72 +52,38 @@ body {
 </style>
 
 <IndexLayout>
-  <div class="bg-gray-100 h-screen flex flex-col overflow-hidden" slot="maindiv">
-    <!-- 标签页 -->
-    <div class="flex bg-white border-b">
-      <button id="kimi-tab" class="py-2 px-4 font-semibold text-blue-600 border-b-2 border-blue-600">Kimi</button>
-      <button id="other-tab" class="py-2 px-4 font-semibold text-gray-600">其他模型</button>
+  <div class="bg-gray-100 h-screen flex overflow-hidden" slot="maindiv">
+    <!-- 侧边栏 -->
+    <div class="w-64 bg-white p-6 shadow-lg flex flex-col">
+        <h2 class="text-xl font-bold mb-4">Settings</h2>
+        <input type="text" id="api-key-input" placeholder="Enter your Kimi API Key" class="mb-4 p-2 border border-gray-300 rounded w-full" />
+        <button id="clear-history-button" class="bg-red-500 text-white p-2 rounded mb-4 hover:bg-red-700">Clear All History</button>
+        <button id="save-current-button" class="bg-green-500 text-white p-2 rounded mb-4 hover:bg-green-700">Save Current Record</button>
+        <button id="create-new-button" class="bg-blue-500 text-white p-2 rounded mb-4 hover:bg-blue-700">Create New Chat</button>
+        <input type="file" id="file-input" class="mb-4" multiple />
+        <button id="upload-file-button" class="bg-purple-500 text-white p-2 rounded mb-4 hover:bg-purple-700">Upload File</button>
+        <div id="upload-progress" class="w-full bg-gray-200 rounded-full h-2.5 mb-4 hidden">
+            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+        </div>
+        <button id="clear-files-button" class="bg-yellow-500 text-white p-2 rounded mb-4 hover:bg-yellow-700">Clear Uploaded Files</button>
+        <button id="list-files-button" class="bg-green-500 text-white p-2 rounded mb-4 hover:bg-green-700">List All Files</button>
+        <button id="delete-file-button" class="bg-red-500 text-white p-2 rounded mb-4 hover:bg-red-700">Delete File</button>
+        <button id="get-file-info-button" class="bg-blue-500 text-white p-2 rounded mb-4 hover:bg-blue-700">Get File Info</button>
+        <div id="saved-records" class="flex flex-col space-y-2 overflow-y-auto">
+            <!-- Dynamically generated saved records will appear here -->
+        </div>
     </div>
-
-    <div class="flex flex-1 overflow-hidden">
-      <!-- Kimi 标签页内容 -->
-      <div id="kimi-content" class="flex-1 flex overflow-hidden">
-        <!-- 侧边栏 -->
-        <div class="w-64 bg-white p-6 shadow-lg flex flex-col">
-            <h2 class="text-xl font-bold mb-4">Settings</h2>
-            <input type="text" id="api-key-input" placeholder="Enter your Kimi API Key" class="mb-4 p-2 border border-gray-300 rounded w-full" />
-            <button id="clear-history-button" class="bg-red-500 text-white p-2 rounded mb-4 hover:bg-red-700">Clear All History</button>
-            <button id="save-current-button" class="bg-green-500 text-white p-2 rounded mb-4 hover:bg-green-700">Save Current Record</button>
-            <button id="create-new-button" class="bg-blue-500 text-white p-2 rounded mb-4 hover:bg-blue-700">Create New Chat</button>
-            <input type="file" id="file-input" class="mb-4" multiple />
-            <button id="upload-file-button" class="bg-purple-500 text-white p-2 rounded mb-4 hover:bg-purple-700">Upload File</button>
-            <div id="upload-progress" class="w-full bg-gray-200 rounded-full h-2.5 mb-4 hidden">
-                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
-            </div>
-            <button id="clear-files-button" class="bg-yellow-500 text-white p-2 rounded mb-4 hover:bg-yellow-700">Clear Uploaded Files</button>
-            <button id="list-files-button" class="bg-green-500 text-white p-2 rounded mb-4 hover:bg-green-700">List All Files</button>
-            <button id="delete-file-button" class="bg-red-500 text-white p-2 rounded mb-4 hover:bg-red-700">Delete File</button>
-            <button id="get-file-info-button" class="bg-blue-500 text-white p-2 rounded mb-4 hover:bg-blue-700">Get File Info</button>
-            <div id="saved-records" class="flex flex-col space-y-2 overflow-y-auto">
-                <!-- Dynamically generated saved records will appear here -->
-            </div>
-        </div>
-        <!-- 主聊天界面 -->
-        <div class="flex-1 flex flex-col">
-            <!-- 聊天框 -->
-            <div id="chat-box" class="flex-1 p-4 border-2 border-spacing-1 border-gray-300 rounded bg-white overflow-y-auto mb-4">
-                <!-- 聊天消息将在这里显示 -->
-            </div>
-            <!-- 消息输入区 -->
-            <div class="flex p-4 border-t border-gray-300">
-                <input type="text" id="message-input" placeholder="Enter your message" class="flex-1 p-2 border border-gray-300 rounded mr-2" />
-                <button id="send-button" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Send</button>
-            </div>
-        </div>
-      </div>
-
-      <!-- 其他模型标签页内容 -->
-      <div id="other-content" class="flex-1 flex overflow-hidden hidden">
-        <!-- 侧边栏 -->
-        <div class="w-64 bg-white p-6 shadow-lg flex flex-col">
-          <h2 class="text-xl font-bold mb-4">设置</h2>
-          <input type="text" id="other-api-key-input" placeholder="输入 API Key" class="mb-4 p-2 border border-gray-300 rounded w-full" />
-          <input type="text" id="model-input" placeholder="输入模型名称" class="mb-4 p-2 border border-gray-300 rounded w-full" />
-          <input type="text" id="base-url-input" placeholder="输入基础 URL" class="mb-4 p-2 border border-gray-300 rounded w-full" />
-          <button id="other-clear-history-button" class="bg-red-500 text-white p-2 rounded mb-4 hover:bg-red-700">清除历史</button>
-          <button id="other-create-new-button" class="bg-blue-500 text-white p-2 rounded mb-4 hover:bg-blue-700">新建聊天</button>
-        </div>
-        <!-- 主聊天界面 -->
-        <div class="flex-1 flex flex-col">
-          <div id="other-chat-box" class="flex-1 p-4 border-2 border-spacing-1 border-gray-300 rounded bg-white overflow-y-auto mb-4">
+    <!-- 主聊天界面 -->
+    <div class="flex-1 flex flex-col">
+        <!-- 聊天框 -->
+        <div id="chat-box" class="flex-1 p-4 border-2 border-spacing-1 border-gray-300 rounded bg-white overflow-y-auto mb-4">
             <!-- 聊天消息将在这里显示 -->
-          </div>
-          <div class="flex p-4 border-t border-gray-300">
-            <input type="text" id="other-message-input" placeholder="输入消息" class="flex-1 p-2 border border-gray-300 rounded mr-2" />
-            <button id="other-send-button" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">发送</button>
-          </div>
         </div>
-      </div>
+        <!-- 消息输入区 -->
+        <div class="flex p-4 border-t border-gray-300">
+            <input type="text" id="message-input" placeholder="Enter your message" class="flex-1 p-2 border border-gray-300 rounded mr-2" />
+            <button id="send-button" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Send</button>
+        </div>
     </div>
   </div>
 </IndexLayout>
@@ -145,15 +111,6 @@ body {
         document.getElementById('list-files-button').addEventListener('click', listFiles);
         document.getElementById('delete-file-button').addEventListener('click', deleteFile);
         document.getElementById('get-file-info-button').addEventListener('click', getFileInfo);
-
-        // 其他模型初始化
-        document.getElementById('other-send-button').addEventListener('click', sendOtherMessage);
-        document.getElementById('other-clear-history-button').addEventListener('click', clearOtherChatHistory);
-        document.getElementById('other-create-new-button').addEventListener('click', createOtherNewChat);
-
-        // 标签页切换
-        document.getElementById('kimi-tab').addEventListener('click', () => switchTab('kimi'));
-        document.getElementById('other-tab').addEventListener('click', () => switchTab('other'));
     });
 
     // 加载聊天历史
@@ -565,187 +522,5 @@ body {
     function clearUploadedFiles() {
         uploadedFiles = [];
         alert("已清除所有上传的文件内容。");
-    }
-
-    // 其他模型相关变量
-    let otherConversationHistory = [];
-
-    function switchTab(tab) {
-        const kimiContent = document.getElementById('kimi-content');
-        const otherContent = document.getElementById('other-content');
-        const kimiTab = document.getElementById('kimi-tab');
-        const otherTab = document.getElementById('other-tab');
-
-        if (tab === 'kimi') {
-            kimiContent.classList.remove('hidden');
-            otherContent.classList.add('hidden');
-            kimiTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
-            kimiTab.classList.remove('text-gray-600');
-            otherTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
-            otherTab.classList.add('text-gray-600');
-        } else {
-            kimiContent.classList.add('hidden');
-            otherContent.classList.remove('hidden');
-            otherTab.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
-            otherTab.classList.remove('text-gray-600');
-            kimiTab.classList.remove('text-blue-600', 'border-b-2', 'border-blue-600');
-            kimiTab.classList.add('text-gray-600');
-        }
-    }
-
-    async function sendOtherMessage() {
-        const apiKey = document.getElementById('other-api-key-input').value;
-        const model = document.getElementById('model-input').value;
-        const baseUrl = document.getElementById('base-url-input').value;
-        const messageInput = document.getElementById('other-message-input');
-        const message = messageInput.value.trim();
-        const chatBox = document.getElementById('other-chat-box');
-
-        if (!apiKey || !model || !baseUrl || !message) {
-            alert("请填写所有必要的信息。");
-            return;
-        }
-
-        // 显示用户消息
-        const userMessageWrapper = createChatWrapper('user', message);
-        chatBox.appendChild(userMessageWrapper);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        messageInput.value = '';
-
-        // 添加用户消息到对话历史
-        otherConversationHistory.push({ role: "user", content: message });
-
-        // 准备请求体
-        const requestBody = {
-            model: model,
-            messages: otherConversationHistory,
-            stream: true
-        };
-
-        try {
-            console.log('Sending request to:', `${baseUrl}/chat/completions`);
-            const response = await fetch(`${baseUrl}/chat/completions`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
-                },
-                body: JSON.stringify(requestBody)
-            });
-
-            console.log('Response status:', response.status);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const reader = response.body.getReader();
-            const decoder = new TextDecoder('utf-8');
-            let assistantMessage = '';
-            let isCodeBlock = false;
-            let codeLanguage = '';
-
-            // 创建助手消息包装器
-            const assistantMessageWrapper = createChatWrapper('assistant', '正在加载...');
-            chatBox.appendChild(assistantMessageWrapper);
-
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) {
-                    console.log('Stream complete');
-                    break;
-                }
-
-                const chunk = decoder.decode(value, { stream: true });
-                console.log('Received chunk:', chunk);
-
-                const lines = chunk.split('\n').filter(line => line.trim() !== '');
-
-                for (const line of lines) {
-                    if (line.startsWith('data: ')) {
-                        const data = line.slice(6).trim();
-                        if (data === '[DONE]' || data === '[ DONE ]') {
-                            console.log('Received DONE signal');
-                            continue;
-                        }
-
-                        try {
-                            const parsed = JSON.parse(data);
-                            if (parsed.error) {
-                                throw new Error(parsed.error.message);
-                            }
-                            const content = parsed.choices[0].delta.content;
-                            if (content) {
-                                // 处理代码块
-                                if (content.includes('```')) {
-                                    isCodeBlock = !isCodeBlock;
-                                    if (isCodeBlock) {
-                                        const languageMatch = content.match(/```(\w+)/);
-                                        codeLanguage = languageMatch ? languageMatch[1] : '';
-                                        assistantMessage += `<pre><code class="language-${codeLanguage}">`;
-                                    } else {
-                                        assistantMessage += '</code></pre>';
-                                    }
-                                } else if (isCodeBlock) {
-                                    assistantMessage += escapeHtml(content);
-                                } else {
-                                    // 处理普通文本和其他元素
-                                    assistantMessage += content;
-                                }
-
-                                // 使用 DOMParser 来解析 HTML
-                                const parser = new DOMParser();
-                                const doc = parser.parseFromString(marked.parse(assistantMessage), 'text/html');
-                                
-                                // 处理图片
-                                doc.querySelectorAll('img').forEach(img => {
-                                    img.style.maxWidth = '100%';
-                                    img.style.height = 'auto';
-                                });
-
-                                assistantMessageWrapper.firstChild.innerHTML = doc.body.innerHTML;
-                                chatBox.scrollTop = chatBox.scrollHeight;
-                            }
-                        } catch (error) {
-                            console.error('Error parsing JSON:', error, 'Raw data:', data);
-                            console.log('Full chunk:', chunk);
-                        }
-                    }
-                }
-            }
-
-            if (assistantMessage.trim() === '') {
-                assistantMessageWrapper.firstChild.innerHTML = '无响应或响应为空';
-            } else {
-                // 将助手的完整回复添加到对话历史
-                otherConversationHistory.push({ role: "assistant", content: assistantMessage });
-            }
-
-        } catch (error) {
-            console.error('Error:', error);
-            const errorMessageWrapper = createChatWrapper('assistant', `错误: ${error.message}`);
-            chatBox.appendChild(errorMessageWrapper);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-    }
-
-    function clearOtherChatHistory() {
-        document.getElementById('other-chat-box').innerHTML = '';
-        otherConversationHistory = [];
-    }
-
-    function createOtherNewChat() {
-        document.getElementById('other-chat-box').innerHTML = '';
-        document.getElementById('other-message-input').value = '';
-        otherConversationHistory = [];
-    }
-
-    // 辅助函数：转义 HTML 特殊字符
-    function escapeHtml(unsafe) {
-        return unsafe
-             .replace(/&/g, "&amp;")
-             .replace(/</g, "&lt;")
-             .replace(/>/g, "&gt;")
-             .replace(/"/g, "&quot;")
-             .replace(/'/g, "&#039;");
     }
 </script>
