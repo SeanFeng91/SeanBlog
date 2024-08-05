@@ -118,17 +118,23 @@ body {
   </div>
 </IndexLayout>
 
-<script>
+<script is:inline>
     import { marked } from 'marked';
-    
-    // 使用 Promise 来加载 D3
-    const d3Promise = import('d3');
+    import * as d3 from 'd3';
 
     document.addEventListener('DOMContentLoaded', async () => {
+        console.log('DOM 完全加载和解析');
         await loadChatHistory();
         renderSavedRecords();
 
-        document.getElementById('send-button').addEventListener('click', sendMessage);
+        const sendButton = document.getElementById('send-button');
+        if (sendButton) {
+            console.log('找到发送按钮');
+            sendButton.addEventListener('click', sendMessage);
+        } else {
+            console.error('未找到发送按钮');
+        }
+
         document.getElementById('clear-history-button').addEventListener('click', clearChatHistory);
         document.getElementById('save-current-button').addEventListener('click', saveCurrentRecord);
         document.getElementById('create-new-button').addEventListener('click', createNewChat);
@@ -163,9 +169,6 @@ body {
         console.log("Container:", container);
         console.log("Chart type:", chartType);
         console.log("Data:", JSON.stringify(data, null, 2));
-
-        // 等待 D3 加载完成
-        const d3 = await d3Promise;
 
         // 获取容器的实际宽度
         const containerWidth = container.clientWidth;
@@ -328,12 +331,12 @@ body {
         const chatBox = document.getElementById('chat-box');
 
         if (!apiKey) {
-            alert("Please enter your API key.");
+            alert("请输入您的 API 密钥。");
             return;
         }
 
         if (!message) {
-            alert("Please enter a message.");
+            alert("请输入消息。");
             return;
         }
 
@@ -386,7 +389,7 @@ body {
             stream: true
         };
 
-        console.log("Sending request:", JSON.stringify(requestBody, null, 2));
+        console.log("发送请求:", JSON.stringify(requestBody, null, 2));
 
         try {
             const response = await fetch('https://api.moonshot.cn/v1/chat/completions', {
@@ -399,7 +402,7 @@ body {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP 错误! 状态: ${response.status}`);
             }
 
             const reader = response.body.getReader();
@@ -417,7 +420,7 @@ body {
                     if (done) break;
                     const chunk = decoder.decode(value, { stream: true });
 
-                    console.log("Received chunk:", chunk);
+                    console.log("接收到的数据块:", chunk);
 
                     const lines = chunk.split('\n').filter(line => line.trim().startsWith('data: '));
                     for (const line of lines) {
@@ -438,10 +441,10 @@ body {
                     }
                 }
                 if (functionCallReceived) {
-                    console.log("Complete function call arguments:", functionCallArguments);
+                    console.log("完整的函数调用参数:", functionCallArguments);
                     try {
                         let functionCall = JSON.parse(functionCallArguments);
-                        console.log("Parsed function call:", functionCall);
+                        console.log("解析后的函数调用:", functionCall);
                         if (functionCall.chartType && functionCall.data) {
                             const chartId = `chart-${Date.now()}`;
                             localStorage.setItem(chartId, JSON.stringify(functionCall));
@@ -459,8 +462,8 @@ body {
                             assistantMessageWrapper.firstChild.innerHTML = marked.parse(result);
                         }
                     } catch (error) {
-                        console.error("Error parsing function call arguments:", error);
-                        console.log("Raw function call arguments:", functionCallArguments);
+                        console.error("解析函数调用参数时出错:", error);
+                        console.log("原始函数调用参数:", functionCallArguments);
                         result += "\n解析图表数据时出错。";
                         assistantMessageWrapper.firstChild.innerHTML = marked.parse(result);
                     }
@@ -469,10 +472,10 @@ body {
             };
 
             await processStream();
-            console.log("Final result:", result);
+            console.log("最终结果:", result);
 
         } catch (error) {
-            console.error('Error:', error);
+            console.error('错误:', error);
             const errorMessage = `发生错误: ${error.message}。请检查您的网络连接和API密钥，然后重试。`;
             const errorWrapper = createChatWrapper('assistant', errorMessage);
             chatBox.appendChild(errorWrapper);
@@ -516,7 +519,7 @@ body {
     function saveCurrentRecord() {
         const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
         if (chatHistory.length === 0) {
-            alert("No conversation to save.");
+            alert("没有对话可以保存。");
             return;
         }
 
@@ -538,9 +541,9 @@ body {
             recordDiv.className = 'flex justify-between items-center p-2 border rounded bg-gray-200';
             const date = new Date(parseInt(record.id.replace('record-', '')));
             recordDiv.innerHTML = `
-                <span>Record ${date.toLocaleString()}</span>
+                <span>记录 ${date.toLocaleString()}</span>
                 <div class="flex space-x-2">
-                    <button data-action="load" data-id="${record.id}" class="bg-blue-500 text-white p-1 rounded hover:bg-blue-700">Load</button>
+                    <button data-action="load" data-id="${record.id}" class="bg-blue-500 text-white p-1 rounded hover:bg-blue-700">加载</button>
                     <button data-action="delete" data-id="${record.id}" class="bg-red-500 text-white p-1 rounded hover:bg-red-700">×</button>
                 </div>
             `;

@@ -1,99 +1,132 @@
 ---
+import IndexLayout from "../../layouts/IndexLayout.astro";
+
+
+const recentSales = [
+  { name: '张三', email: 'zhangsan@example.com', amount: 1999.00 },
+  { name: '李四', email: 'lisi@example.com', amount: 39.00 },
+  { name: '王五', email: 'wangwu@example.com', amount: 299.00 },
+  { name: '赵六', email: 'zhaoliu@example.com', amount: 99.00 },
+  { name: '钱七', email: 'qianqi@example.com', amount: 39.00 },
+];
+
+const monthlyData = [3000, 2900, 5800, 3300, 4100, 4500, 5000, 2800, 3200, 4200, 2200, 4000];
 ---
 
-<html>
-<head>
-    <title>D3.js Bar Chart Example</title>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <style>
-        .bar {
-            fill: steelblue;
+<IndexLayout  title="仪表板">
+  <div slot="maindiv" class="min-h-screen bg-white">
+    <header class="border-b border-gray-200">
+      <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center">
+            <div class="w-8 h-8 bg-gray-200 rounded-full mr-3"></div>
+            <h1 class="text-xl font-semibold text-gray-900">张三</h1>
+          </div>
+          <nav>
+            <ul class="flex space-x-4">
+              <li><a href="#" class="text-sm font-medium text-gray-900">概览</a></li>
+              <li><a href="#" class="text-sm font-medium text-gray-500">客户</a></li>
+              <li><a href="#" class="text-sm font-medium text-gray-500">产品</a></li>
+              <li><a href="#" class="text-sm font-medium text-gray-500">设置</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      <div class="px-4 sm:px-0">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl font-bold text-gray-900">仪表板</h2>
+          <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-500">2023年1月20日 - 2023年2月9日</span>
+            <button class="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-medium">下载</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-sm font-medium text-gray-500 mb-1">总收入</h3>
+            <p class="text-2xl font-bold">$45,231.89</p>
+            <p class="text-sm text-green-600">+20.1% 较上月</p>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-sm font-medium text-gray-500 mb-1">订阅数</h3>
+            <p class="text-2xl font-bold">+2350</p>
+            <p class="text-sm text-green-600">+180.1% 较上月</p>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-sm font-medium text-gray-500 mb-1">销售额</h3>
+            <p class="text-2xl font-bold">+12,234</p>
+            <p class="text-sm text-green-600">+19% 较上月</p>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-sm font-medium text-gray-500 mb-1">当前活跃</h3>
+            <p class="text-2xl font-bold">+573</p>
+            <p class="text-sm text-green-600">+201 较上小时</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="lg:col-span-2 bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold mb-4">概览</h3>
+            <div class="h-64">
+              <!-- 这里应该插入实际的图表组件 -->
+              <canvas id="monthlyChart"></canvas>
+            </div>
+          </div>
+          <div class="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold mb-4">最近销售</h3>
+            <p class="text-sm text-gray-500 mb-4">本月您完成了265笔销售。</p>
+            <ul class="space-y-4">
+              {recentSales.map((sale) => (
+                <li class="flex items-center justify-between">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gray-200 rounded-full mr-3"></div>
+                    <div>
+                      <p class="font-medium">{sale.name}</p>
+                      <p class="text-sm text-gray-500">{sale.email}</p>
+                    </div>
+                  </div>
+                  <span class="font-medium">+¥{sale.amount.toFixed(2)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</IndexLayout>
+
+<script>
+  import Chart from 'chart.js/auto';
+
+  const ctx = document.getElementById('monthlyChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+      datasets: [{
+        label: '月收入',
+        data: [3000, 2900, 5800, 3300, 4100, 4500, 5000, 2800, 3200, 4200, 2200, 4000],
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        borderColor: 'rgba(0, 0, 0, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: function(value) {
+              return '$' + value;
+            }
+          }
         }
-        .bar:hover {
-            fill: orange;
-        }
-        .axis-label {
-            font-size: 12px;
-        }
-    </style>
-</head>
-<body>
-    <svg id="chart" width="800" height="400"></svg>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const d3 = window.d3;
-            // 数据
-            var data = [
-                {"date": "2024-06-30", "workers": 15},
-                {"date": "2024-07-03", "workers": 16},
-                {"date": "2024-07-10", "workers": 17}
-            ];
-
-            // 解析日期
-            var parseDate = d3.timeParse("%Y-%m-%d");
-            data.forEach(function(d) {
-                d.date = parseDate(d.date);
-            });
-
-            // 定义SVG中的柱状图容器
-            var svg = d3.select("svg"),
-                margin = {top: 20, right: 20, bottom: 50, left: 50},
-                width = +svg.attr("width") - margin.left - margin.right,
-                height = +svg.attr("height") - margin.top - margin.bottom,
-                g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            // 定义X轴和Y轴的刻度
-            var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-                y = d3.scaleLinear().rangeRound([height, 0]);
-
-            x.domain(data.map(function(d) { return d.date; }));
-            y.domain([0, d3.max(data, function(d) { return d.workers; })]);
-
-            // 添加X轴
-            g.append("g")
-                .attr("class", "axis axis--x")
-                .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")))
-                .selectAll("text")  
-                .style("text-anchor", "end")
-                .attr("dx", "-.8em")
-                .attr("dy", ".15em")
-                .attr("transform", "rotate(-45)");
-
-            // 添加X轴标签
-            g.append("text")
-                .attr("class", "axis-label")
-                .attr("y", height + margin.bottom - 10)
-                .attr("x", width / 2)
-                .attr("fill", "#000")
-                .attr("text-anchor", "middle")
-                .text("日期");
-
-            // 添加Y轴和标签
-            g.append("g")
-                .attr("class", "axis axis--y")
-                .call(d3.axisLeft(y).ticks(5))
-                .append("text")
-                .attr("class", "axis-label")
-                .attr("transform", "rotate(-90)")
-                .attr("y", -margin.left)
-                .attr("x", -height / 2)
-                .attr("dy", "1em")
-                .attr("fill", "#000")
-                .attr("text-anchor", "middle")
-                .text("工人数量");
-
-            // 添加柱状图
-            g.selectAll(".bar")
-                .data(data)
-                .enter().append("rect")
-                .attr("class", "bar")
-                .attr("x", function(d) { return x(d.date); })
-                .attr("y", function(d) { return y(d.workers); })
-                .attr("width", x.bandwidth())
-                .attr("height", function(d) { return height - y(d.workers); });
-        });
-    </script>
-</body>
-</html>
+      }
+    }
+  });
+</script>
