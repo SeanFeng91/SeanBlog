@@ -1,0 +1,180 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "ChatGPT + Midjourney + Runway实现自定义动画"
+author: Sean Feng
+description: "通过GPTs的Midjourney助手生成丰富的Midjourney提示词，并通过Mid尝试完善后，借助Runway强大能力转成有趣动画短视频"
+pubDate: 2024-08-10
+tags: ["Midjourney", "MDX", "AI","GPT","潮流","Runway"]
+# ## 高级样式
+
+# ### 文字高亮
+
+# 使用自定义的 Highlight 组件来实现文字高亮：
+
+# <Highlight color="#25c2a0">这是绿色高亮文本</Highlight>
+
+# <Highlight color="#1877F2">这是蓝色高亮文本</Highlight>
+
+
+# ### 提示框
+
+# 使用 Alert 组件来创建不同类型的提示框：
+
+# <Alert type="info" title="提示">
+#   这是一个信息提示框。
+# </Alert>
+
+# <Alert type="warning" title="警告">
+#   这是一个警告提示框。
+# </Alert>
+
+# ### 可折叠内容
+
+# 使用 Collapsible 组件来创建可折叠的内容块：
+
+# <Collapsible client:load title="点击展开更多内容">
+#   这是被折叠的内容。可以包含任何 Markdown 或 JSX 元素。
+# </Collapsible>
+
+# ### 标签页
+
+# 使用 Tabs 组件来创建标签页：
+
+# export const tabItems = [
+#   {
+#     label: "基本用法",
+#     content: `
+#       <p>这里是关于基本用法的内容。您可以包含任何Markdown或JSX元素。目前直接使用tabs组件会报错，所以暂时使用这个妥协方案。</p>
+#       <ul>
+#         <li>列表项1</li>
+#         <li>列表项2</li>
+#         <li>列表项3</li>
+#       </ul>
+#     `
+#   },
+#   {
+#     label: "高级特性",
+#     content: "<p>这里是关于高级特性的内容。</p>"
+#   },
+#   {
+#     label: "注意事项",
+#     content: `
+#       <p>使用本组件时需要注意以下几点:</p>
+#       <ol>
+#         <li>确保正确导入组件</li>
+#         <li>使用 client:load 指令以启用客户端交互</li>
+#         <li>每个 Tab 都需要一个唯一的 label 属性</li>
+#       </ol>
+#     `
+#   }
+# ];
+
+# <Tabs client:load items={tabItems} />
+
+
+---
+
+{/* 导入必要的样式和组件 */}
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+
+{/* import { MDXInlineCode } from '../../components/react/MDXFragmentCode'; */}
+
+{/* 定义自定义样式 */}
+<style>
+{`
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+`}
+</style>
+
+{/* 显示文章标签 */}
+<div className="flex justify-center flex-wrap gap-2 mb-4">
+  {frontmatter.tags.map((tag) => (
+    <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+      #{tag}
+    </span>
+  ))}
+</div>
+
+# 最终效果
+
+<div class="flex flex-1 justify-center">
+    <video controls width="400">
+    <source src="../../../public/videos/Disney Ears.mp4" type="video/mp4" />
+    会动的Ears
+    </video>
+</div>
+可以看到在3D景深情况下，动画的衔接非常的自然，包括光线的变化。
+
+## Step 1-ChatGpt
+使用了ロMidjourneyロ -- MJ Prompt Generator (V6)的GPTs。
+> 一个3D毛绒驴玩具，可爱，迪士尼风格，毛茸茸，慵懒，白色背景，真实
+
+> 已与“api.adzedek.com”对话:
+To complete your request and create great images in Midjourney, I will focus on enhancing the details of the plush donkey toy, its fluffy texture, and the Disney-inspired design while maintaining a realistic feel on a white background. I will create 5 optimized Midjourney commands for you.
+
+Prompt 1:
+```
+/imagine prompt: A 3D plush donkey toy, cute, Disney style, fluffy, lazy pose, white background. Detailed fur texture, soft shadows, and highlights to enhance realism. Created Using: 3D modeling software, Disney animation style, high-detail fur rendering, soft lighting, hd quality, natural look --ar 1:1 --v 6.0
+```
+Prompt 2:
+```
+/imagine prompt: A 3D plush donkey toy, adorable, Disney-inspired, fluffy and relaxed, white background. Emphasizing detailed fur, gentle lighting, and subtle shadows. Created Using: advanced 3D rendering, Disney character design, high-resolution textures, soft ambient light, hd quality, natural look --ar 1:1 --v 6.0
+```
+
+Prompt 3:
+```
+/imagine prompt: A 3D plush donkey toy, charming, Disney style, fluffy and lounging, white background. Focus on realistic fur detail, soft shadows, and highlights for a natural look. Created Using: Disney animation techniques, 3D modeling, fur simulation, soft lighting effects, hd quality, natural look --ar 1:1 --v 6.0
+```
+
+Prompt 4:
+```
+/imagine prompt: A 3D plush donkey toy, delightful, Disney-inspired, fluffy and relaxed, white background. Featuring intricate fur texture, gentle lighting, and realistic shadows. Created Using: high-detail 3D modeling, Disney character style, advanced fur rendering, soft ambient light, hd quality, natural look --ar 1:1 --v 6.0
+```
+
+Prompt 5:
+```
+/imagine prompt: A 3D plush donkey toy, lovable, Disney style, fluffy and lounging, white background. Detailed fur, soft lighting, and shadows to enhance realism. Created Using: 3D rendering software, Disney animation influence, high-detail textures, soft light effects, hd quality, natural look --ar 1:1 --v 6.0
+```
+---
+
+Now copy these prompts and generate images in Midjourney V6 :)
+[Gigapixel AI](https://www.topazlabs.com/gigapixel/ref/2451/): Upscale your AI-generated images to print quality without losing detail.
+**Sponsored**
+The Best AI [Summarizer](https://api.adzedek.com/click_linfo0314?chatbot_id=1714971429124x509935022332968960&operation_hash=e66fd44243199cc9f4468b1013a3bf86)
+
+最后推荐的放大和增加细节的Gigapixel有机会也体验一下。售价$199
+
+
+## Step 2-Midjourney
+提示词如下：
+> **A 3D plush donkey toy, charming, Disney style, fluffy and lounging, white background. Focus on realistic fur detail, soft shadows, and highlights for a natural look. Created Using: Disney animation techniques, 3D modeling, fur simulation, soft lighting effects, hd quality, natural look --ar 1:1 --v 6.0 --s 750** - Image #3 
+
+效果如下：
+<img src="../../../public/pictures/Disney Ears.png" alt="Disney Ears@Midjourney"></img>
+
+## Step 3-Runway
+地址[Runway](https://runwayml.com/)
+
+提示词如下：
+> A cute Disney ear, with a soft pink hue, playfully closes its eyes, wiggles its ears, and crawls on the floor. The floor is a shiny, colorful mosaic, and the ear leaves a trail of sparkling fairy dust as it moves. The scene is bathed in a warm, golden light
+ 
+Runway是一个图片、视频、音频生成、改造的AI工具。可以简单通过一个图片生产四秒的动作视频。目前已经有Gen-3 alpha版本。但是需要会员才能使用。免费版的是有限点数(500)的Gen-2模型。
+<img src="../../../public/pictures/Runway Dashboard.png" alt="Disney Ears@Midjourney"></img>
+从目前的功能列表看还包括视频生成视频、生成音频、语音模仿、背景调整、脸部虚化的30多个功能项。之前看宣传视频，应该还包括视频的收尾帧定义。
+### 图片生成视频/ImagetoVideo
+图片生成视频的模块包括几个调节场景：对画面景致的移动，包括上下左右，缩放等等，模拟镜头的运动。同样可以加上场景、环境、内容的描述提示词。还可以对运动部位进行绘制、对视频风格进行调整。整个fast model生成的速度非常的快
+大约几十秒即可完成生成。MP4格式的视频体积也可控。
+<img src="../../../public/pictures/Runway Dashboard-ItoV.png" alt="Disney Ears@Midjourney"></img>
+
+后续将实验一下自然场景的动画、人物的动画。
+
+#### 自然界场景
+
+#### 人物主体场景

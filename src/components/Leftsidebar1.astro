@@ -6,7 +6,7 @@ const categories: { name: string; icon: string; folder: string; files: any[] }[]
   { name: '工具类', icon: 'tool', folder: 'Tools', files: [] },
   { name: '网页开发类', icon: 'web', folder: 'posts', files: [] },
   { name: '大模型类', icon: 'ai', folder: 'blogs', files: [] },
-  { name: '摘录感悟', icon: 'ai', folder: 'thoughts', files: [] }
+  { name: '摘录感悟', icon: 'write', folder: 'thoughts', files: [] }
 ];
 
 // 为每个类别分配文件
@@ -44,7 +44,7 @@ function getIcon(iconName) {
           {category.name}
         </button>
         <div id={`hs-basic-always-open-collapse-${category.folder}`} class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby={`hs-basic-always-open-heading-${category.folder}`}>
-          <ul id={`left${category.folder}list`} class="space-y-2 text-sm border-l border-slate-100 dark:border-slate-800">
+          <ul id={`left${category.folder}list`} class="space-y- text-sm border-l border-slate-100 dark:border-slate-800">
             {category.files.map((file) => <BlogPost url={file.url} title={file.frontmatter.title}/>)}
           </ul>
         </div>
