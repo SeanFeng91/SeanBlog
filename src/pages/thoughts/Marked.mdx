@@ -1,0 +1,39 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "摘录一些有触动的内容"
+author: Sean Feng
+description: "信息的摘录"
+pubDate: 2024-08-09
+tags: ["MDX", "摘录","Marked","阅读"]
+---
+
+{/* 导入必要的样式和组件 */}
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+
+{/* import { MDXInlineCode } from '../../components/react/MDXFragmentCode'; */}
+
+{/* 定义自定义样式 */}
+<style>
+{`
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+`}
+</style>
+
+{/* 显示文章标签 */}
+<div className="flex justify-center flex-wrap gap-2 mb-4">
+  {frontmatter.tags.map((tag) => (
+    <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+      #{tag}
+    </span>
+  ))}
+</div>
+
+> 我在做数字化过程中，遇到不少团队整天闷头干活，到年底一盘点，<Highlight color="#1877F2">做了哪些有价值的事儿，给公司带来了什么价值</Highlight>，有哪些业务方比较认可，有哪些事儿能在公司挂上号，都说不上来。 所以，数字化人员要想在公司有好的发展，在当前较差的经济环境下，保住位子，还能升职加薪，一定要学会识别业务价值，在公司内部找能相互成就的合作伙伴。
+我们公司数字化部门不是光写代码的，是能<Highlight color="#1877F2">串联业务</Highlight>的，在这个公司里数字化部门不看全局谁还看全局？ 数字化部门需要跨领域推动一些业务问题的解决。 一个公司的数字化团队要想有所做为，一定是站在全局视角，负责担当，主动推动业务问题的解决，而不是仅做数字化项目的交付实现。@人人都是产品经理 20240809

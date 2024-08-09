@@ -1,0 +1,47 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "记录一些灵感"
+author: Sean Feng
+description: "在这里简单记录一些灵感，看能不能用简单的方式实现对应的demo并发布出来"
+pubDate: 2024-07-10
+tags: ["MDX", "灵感","thoughts","交互组件"]
+---
+
+{/* 导入必要的样式和组件 */}
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+
+{/* import { MDXInlineCode } from '../../components/react/MDXFragmentCode'; */}
+
+{/* 定义自定义样式 */}
+<style>
+{`
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+`}
+</style>
+
+{/* 显示文章标签 */}
+<div className="flex justify-center flex-wrap gap-2 mb-4">
+  {frontmatter.tags.map((tag) => (
+    <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+      #{tag}
+    </span>
+  ))}
+</div>
+
+我先在记录条目不多的情况下不尝试做分类。用二级标题记录不同的灵感。未来有需要的情况下再尝试做分类。
+## 有规律的随机构件
+[Color4bg](https://www.color4bg.com/zh-hans/quick-start/) 。这是一个✔️免费 开源项目，在线生成各种颜色主题的酷炫背景图片，适合于用在各类网页、站点、演示文稿项目中。免费，极速，支持通过JS的方式引入
+这个项目给我的灵感是，借助大模型编码的能力，为我构件一个可以参数化调整的随机效果的构件。目前的比如runway，stable diffusion等都是通过一定的参数调节，对随机生成的图片、视频进行调整，达到想要的效果。
+包括这几天midjourney的，随机seed --sref 功能，在0-40亿之间的随机数，可以生成迥然不同的设计风格。这就像挖坑一样。
+
+
+<div id="box" class="w-40 h-50">显示变化背景</div>
+
+<script src="./src/scripts/background.js"></script>
