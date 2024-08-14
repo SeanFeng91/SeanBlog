@@ -1,6 +1,5 @@
 ---
 // Astro 组件的前端部分
-import { onMount } from 'solid-js';
 ---
 
 <html lang="en">
@@ -9,18 +8,60 @@ import { onMount } from 'solid-js';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WE-MARKET LAB Graph</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+      }
+      #chart {
+        width: 960px;
+        height: 600px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin: 0 auto;
+      }
+      .links line {
+        stroke-opacity: 0.6;
+      }
+      .nodes circle {
+        stroke: #fff;
+        stroke-width: 1.5px;
+      }
+      .node-label {
+        font-size: 5px;
+        text-anchor: middle;
+        dominant-baseline: central;
+        pointer-events: none;
+        fill: white;
+      }
+      .link-label {
+        font-size: 4px;
+        fill: #acacac;
+        text-anchor: middle;
+      }
+    </style>
   </head>
   <body>
     <div id="chart"></div>
+
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        // 图表绘制代码
+      console.log('脚本开始执行');
+
+      import * as d3 from 'd3';
+
+      function drawChart() {
+        console.log('开始绘制图表');
         const svg = d3.select("#chart")
                       .append("svg")
                       .attr("width", 960)
                       .attr("height", 600);
+        
+        console.log('SVG元素已创建');
 
-        // 数据
+        // 数据（保持不变）
         const graph = {
           "nodes": [
             {"id": "Farmers", "group": 1},
@@ -82,15 +123,23 @@ import { onMount } from 'solid-js';
 
         const simulation = d3.forceSimulation(graph.nodes)
                              .force("link", d3.forceLink(graph.links).id(d => d.id).distance(200))
-                             .force("charge", d3.forceManyBody().strength(-300))
+                             .force("charge", d3.forceManyBody().strength(-500))
                              .force("center", d3.forceCenter(960 / 2, 600 / 2));
 
         const link = svg.append("g")
                         .attr("class", "links")
-                        .selectAll("line")
+                        .selectAll("g")
                         .data(graph.links)
-                        .enter().append("line")
-                        .attr("stroke-width", d => Math.sqrt(d.value));
+                        .enter().append("g");
+
+        link.append("line")
+            .attr("stroke-width", d => Math.sqrt(d.value))
+            .attr("stroke", "#999");
+
+        link.append("text")
+            .attr("class", "link-label")
+            .attr("dy", -2)
+            .text(d => d.label);
 
         const node = svg.append("g")
                         .attr("class", "nodes")
@@ -103,45 +152,63 @@ import { onMount } from 'solid-js';
                                 .on("end", dragended));
 
         node.append("circle")
-            .attr("r", 20)
-            .attr("fill", d => color(d.group));
+            .attr("r", 30)
+            .attr("fill", d => d3.schemeCategory10[d.group]);
 
         node.append("text")
-            .text(d => d.id)
-            .attr("x", 25)
-            .attr("y", 5);
+            .attr("class", "node-label")
+            .text(d => d.id);
+
+        node.append("title")
+            .text(d => d.id);
 
         simulation.on("tick", () => {
-          link
+          link.select("line")
               .attr("x1", d => d.source.x)
               .attr("y1", d => d.source.y)
               .attr("x2", d => d.target.x)
               .attr("y2", d => d.target.y);
 
+          link.select("text")
+              .attr("x", d => (d.source.x + d.target.x) / 2)
+              .attr("y", d => (d.source.y + d.target.y) / 2)
+              .attr("transform", d => {
+                const dx = d.target.x - d.source.x;
+                const dy = d.target.y - d.source.y;
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                return `rotate(${angle}, ${(d.source.x + d.target.x) / 2}, ${(d.source.y + d.target.y) / 2})`;
+              });
+
           node
               .attr("transform", d => `translate(${d.x},${d.y})`);
         });
 
-        const color = d3.scaleOrdinal(d3.schemeCategory10);
-
         function dragstarted(event, d) {
           if (!event.active) simulation.alphaTarget(0.3).restart();
           d.fx = d.x;
-         
           d.fy = d.y;
-          }
+        }
 
-          function dragged(event, d) {
-            d.fx = event.x;
-            d.fy = event.y;
-          }
+        function dragged(event, d) {
+          d.fx = event.x;
+          d.fy = event.y;
+        }
 
-          function dragended(event, d) {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-          }
+        function dragended(event, d) {
+          if (!event.active) simulation.alphaTarget(0);
+          d.fx = null;
+          d.fy = null;
+        }
+
+        console.log('图表绘制完成');
+      }
+
+      if (typeof document !== 'undefined') {
+        document.addEventListener('DOMContentLoaded', () => {
+          console.log('DOM已加载');
+          drawChart();
         });
-      </script>
-    </body>
-  </html>
+      }
+    </script>
+  </body>
+</html>

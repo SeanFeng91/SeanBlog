@@ -56,7 +56,7 @@
 /* 标题样式 */
 .nav-links h1 a{
   @media not all and (min-width: 640px) {font-size: 2rem };
-  font-size: 2.5rem;
+  font-size: 2.0rem;
   margin: 30rem 0;
   color: #000000;
   text-decoration-line: none;
@@ -70,7 +70,7 @@
 
 .nav-links h2 a {
   @media not all and (min-width: 640px) {font-size: 1.75rem };
-  font-size: 2.25rem;
+  font-size: 1.75rem;
   margin: 0rem 0;
   color: #000000;
   text-decoration-line: none;
@@ -82,7 +82,7 @@
 
 .nav-links h3 a {
   @media not all and (min-width: 640px) {font-size: 1.5rem };
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin: 0rem 0;
   color: #000000;
   text-decoration-line: none;
@@ -94,7 +94,7 @@
 
 .nav-links h4 a {
   @media not all and (min-width: 640px) {font-size: 1.5rem };
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   margin: 0rem 0;
   color: #000000;
   text-decoration-line: none;
@@ -106,7 +106,7 @@
 
 .nav-links h5 a {
   @media not all and (min-width: 640px) {font-size: 1.25rem };
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin: 0rem 0;
   color: #000000;
   text-decoration-line: none;
@@ -117,7 +117,7 @@
 }
 
 .nav-links h6 a {
-  font-size: 1.25rem;
+  font-size: 1.00rem;
   margin: 0rem 0;
   color: #000000;
   text-decoration-line: none;
