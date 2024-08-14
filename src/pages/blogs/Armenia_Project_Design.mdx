@@ -77,6 +77,7 @@ import React, { useState } from 'react';
 import { Counter } from '../../components/react/Spinner';
 import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
 import { Tabs } from '../../components/react/Tabs';
+import D3ChartComponent from '../Testdemo/D3ChartComponent.astro';
 
 {/* import { MDXInlineCode } from '../../components/react/MDXFragmentCode'; */}
 
@@ -322,8 +323,14 @@ plt.show()
 
 通过这些步骤，最终得到了一个结构合理、视觉效果较好的“WE-MARKET LAB”关系图表。这不仅有助于理解社区内部的互动，还体现了各个角色之间的协作和互惠关系。
 
-我还尝试用D3.js绘制了同样的图表，效果如下，可以在[ReactTest](../../Testdemo/ReactTest)中查看。
+我还尝试用D3.js绘制了同样的图表，效果如下，可以在[测试页面](../../Testdemo/ReactTest)中查看。
+{/* <div class="flex flex-1 justify-center">
+    <D3ChartComponent client:only="astro" />
+</div>
 
+<script>
+  console.log('D3 Chart Component script executed');
+</script> */}
 ## 参考案例泛化
 
 ### /Describe 和 --Sref
