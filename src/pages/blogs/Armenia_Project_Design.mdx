@@ -1,0 +1,345 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "基于Midjourney和Chatgpt的建筑设计提案辅助实战"
+author: Sean Feng
+description: "队友参与了一个亚美尼亚新兴市场项目的建筑提案投标工作。希望是在原有的旧市场的场地上设计一个开放融合的市场+厨师学校的建筑。投资人希望能够借助美食的力量，借助教学的传承，打造成亚美尼亚的新名片。"
+pubDate: 2024-08-10
+tags: ["Midjourney", "MDX", "AI","GPT","亚美尼亚","建筑"]
+# ## 高级样式
+
+# ### 文字高亮
+
+# 使用自定义的 Highlight 组件来实现文字高亮：
+
+# <Highlight color="#25c2a0">这是绿色高亮文本</Highlight>
+
+# <Highlight color="#1877F2">这是蓝色高亮文本</Highlight>
+
+
+# ### 提示框
+
+# 使用 Alert 组件来创建不同类型的提示框：
+
+# <Alert type="info" title="提示">
+#   这是一个信息提示框。
+# </Alert>
+
+# <Alert type="warning" title="警告">
+#   这是一个警告提示框。
+# </Alert>
+
+# ### 可折叠内容
+
+# 使用 Collapsible 组件来创建可折叠的内容块：
+
+# <Collapsible client:load title="点击展开更多内容">
+#   这是被折叠的内容。可以包含任何 Markdown 或 JSX 元素。
+# </Collapsible>
+
+# ### 标签页
+
+# 使用 Tabs 组件来创建标签页：
+
+# export const tabItems = [
+#   {
+#     label: "基本用法",
+#     content: `
+#       <p>这里是关于基本用法的内容。您可以包含任何Markdown或JSX元素。目前直接使用tabs组件会报错，所以暂时使用这个妥协方案。</p>
+#       <ul>
+#         <li>列表项1</li>
+#         <li>列表项2</li>
+#         <li>列表项3</li>
+#       </ul>
+#     `
+#   },
+#   {
+#     label: "高级特性",
+#     content: "<p>这里是关于高级特性的内容。</p>"
+#   },
+#   {
+#     label: "注意事项",
+#     content: `
+#       <p>使用本组件时需要注意以下几点:</p>
+#       <ol>
+#         <li>确保正确导入组件</li>
+#         <li>使用 client:load 指令以启用客户端交互</li>
+#         <li>每个 Tab 都需要一个唯一的 label 属性</li>
+#       </ol>
+#     `
+#   }
+# ];
+
+# <Tabs client:load items={tabItems} />
+---
+{/* 导入必要的样式和组件 */}
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+
+{/* import { MDXInlineCode } from '../../components/react/MDXFragmentCode'; */}
+
+{/* 定义自定义样式 */}
+<style>
+{`
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+`}
+</style>
+
+{/* 显示文章标签 */}
+<div className="flex justify-center flex-wrap gap-2 mb-4">
+  {frontmatter.tags.map((tag) => (
+    <span key={tag} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+      #{tag}
+    </span>
+  ))}
+</div>
+
+# 项目背景
+
+队友参与了一个亚美尼亚新兴市场项目的建筑提案投标工作。希望是在原有的旧市场的场地上设计一个开放融合的市场+厨师学校的建筑。投资人希望能够借助美食的力量，借助教学的传承，打造成亚美尼亚的新名片。
+
+
+# Ai在工作流中扮演的角色
+
+因为目前还在提案阶段。队友大致规划了整个工作流，大致如下：
+
+1. 【方案理解、头脑风暴阶段】有GPT-4/4o结合网上的讯息，对项目任务书进行深入解读，同时结合设计师对项目的理解，给出符合逻辑的策略、提案、设计功能场景。
+>此步骤主要包括任务的逐步解析、基本信息的快速收集、结合信息的快速提案
+2. 【策略深化阶段】基于不同的策略提案方向，利用GPTs快速生成文生图相关AI的Prompts。
+3. 【策略具象化阶段】Midjourney/SD，基于多样化提示词快速构件设计意向图并探讨方案可行性。
+4. 【策略具象化阶段】明确某一主要策略方案后，快速稳定提案手册整体展现效果，可以选择一个合适的设计参考，借助Midjourney的--sref 功能生成风格统一、风格一致的提案图。后期再由PS/AI/ID等软件进行深化处理及排版。
+5. 【建筑模型Demo阶段】基于风格参考，快速生成多种同类建筑样式
+6. 【文本整合阶段】虽然文本的生成还没办法像网页设计那样，继续喜欢的模板快速生成各种样式页面。但是目前GPTs已经可以游刃有余的完成文字的翻译校审、图文的理解和建议。
+
+## 图文理解
+
+>To GPT: 你觉得这张图里面的角色关联关系有没有不合理需要优化的?
+
+<image src="/SeanBlog/pictures/Armenia01.png" alt="Relationship"></image>
+
+**GPT的回答如下，可以看到它已经准确的识别了图中的文字，并且理解他们之间身份的关系，并提出了很多合乎逻辑的建议，同时还给出了总体设计的点评**
+
+```plain
+我已经看到了图中的角色关联关系。这张图展示了不同角色之间的互动与联系，并通过“WE”这个核心概念将各个群体连接在一起。以下是我对这些关联关系的一些分析和优化建议：
+1. 角色与动作的合理性
+Farmers（农民）和Food Makers（食品制造者）之间的“grow food”和“make food”是合乎逻辑的，因为农民种植食材，而食品制造者加工这些食材。
+Vendors（小贩）和Locals（本地居民）之间的“sell food”也很合理，符合市场经济中的常见互动。
+Unemployed（失业者）与Government（政府）之间的“job opportunity”（就业机会）连接也有其道理，体现了政府在解决失业问题上的责任。
+2. 角色之间的潜在关联遗漏
+Gourmets（美食家）和Farmers之间可以增加一种联系，比如“source quality ingredients”（寻找优质食材），因为美食家往往重视食材的来源和品质。
+Visitors（游客）与Food Makers之间也可以建立联系，如“explore local cuisine”（探索当地美食），以展示游客对地方特色食品的兴趣。
+3. 连接的清晰度和简洁性
+有些连接可以进一步简化。例如，New Armenian和Locals之间的“celebrate together”（共同庆祝）可以被整合到更广泛的“community engagement”（社区参与）中。
+New Armenian 和Chefs 之间的“find identity”（寻找身份认同）这一连接可能有些含糊不清，可以考虑更具体的描述，如“explore culinary heritage”（探索烹饪遗产）。
+4. 关系的双向性
+目前一些关系似乎是单向的，例如Vendors（小贩）到Farmers（农民）的“direct sale”（直接销售）。可以考虑将其调整为双向关系，表示农民也能从小贩的反馈中获取市场需求的信息。
+5. 视觉简化与清晰度
+图中某些部分的连接线较多，可能会导致视觉上的混乱。建议将某些角色和关系进行分组或分层次显示，以提升整体清晰度。
+优化建议总结：
+增加一些潜在的关联，如美食家与农民之间的联系。
+合并或简化部分重复或相近的关系，使得图示更加简洁明了。
+考虑使用双向箭头表示一些相互依存的关系，以反映角色之间的双向互动。
+改进视觉布局，减少交叉线条，以增强可读性。
+总的来说，这张图已经很好地展示了“WE”这个概念下的各个角色和他们的互动关系，但通过以上优化，可以进一步提升其逻辑性和视觉表现力。如果你有具体的改进方向或需要进一步讨论某些关系，欢迎继续交流。
+```
+我吸取了GPT的改进意见，对不同节点之间的连线进行了优化调整。我还尝试了能否让gpt绘制出调整后的样式。
+
+不止如此，gpt强大的多模态能力，还可以调用code interpreter，以及图表的库matplotlib.pyplot等，绘制图谱。同时进行完善和补充：
+为了进一步完善图表，并确保它能够全面合理地反映“WE-MARKET LAB”中的各个角色及其互动关系，我们可以从以下几个方面进行分析和补充：
+
+### 分析当前关系
+- **农民 (Farmers)**：主要与本地居民 (Locals)、食品制造者 (Food Makers)、小贩 (Vendors) 发生关系，涉及食物生产和销售。
+- **食品制造者 (Food Makers)**：与农民、厨师、学习者和新亚美尼亚 (New Armenian) 相关，涉及食品制作、学习和社区参与。
+- **本地居民 (Locals)**：与多个节点发生关系，特别是新亚美尼亚、政府、商贩等，反映了社区中心地位。
+- **新亚美尼亚 (New Armenian)**：作为社区中心，与几乎所有角色都有关系，特别是食物生产、教育、庆祝活动等。
+
+### 缺失或可补充的关系
+1. **农民 (Farmers)** 与 **政府 (Government)**:
+   - **补充理由**: 政府可能为农民提供政策支持、补贴或技术援助，以提高农业生产效率和可持续性。
+   - **补充关系**: 政府为农民提供支持或补贴。
+
+2. **食品制造者 (Food Makers)** 与 **投资者 (Investors)**:
+   - **补充理由**: 投资者可能会投资于食品制造的创新或扩展，以促进本地经济。
+   - **补充关系**: 投资者支持食品制造。
+
+3. **本地居民 (Locals)** 与 **学习者 (Learners)**:
+   - **补充理由**: 本地居民可以与学习者互动，通过文化传承或技能培训促进社区教育。
+   - **补充关系**: 本地居民参与教育或文化传承。
+
+4. **小贩 (Vendors)** 与 **学习者 (Learners)**:
+   - **补充理由**: 学习者可以从小贩处获得实践经验，如市场管理、销售技巧等。
+   - **补充关系**: 学习者从小贩学习市场技能。
+
+5. **厨师 (Chefs)** 与 **政府 (Government)**:
+   - **补充理由**: 政府可能会组织或支持厨艺培训、饮食文化活动，以促进旅游或本地文化。
+   - **补充关系**: 政府支持厨艺发展或饮食文化推广。
+
+6. **商贩 (Merchants)** 与 **投资者 (Investors)**:
+   - **补充理由**: 投资者可能会支持商贩的扩展，如基础设施建设、市场推广等。
+   - **补充关系**: 投资者投资于市场设施或推广。
+
+### 添加后的图表预期效果
+通过添加这些补充链接，整个图表将更加完整，能够全面展示“WE-MARKET LAB”各个角色之间复杂而紧密的互动网络。这种结构不仅强调了社区合作的重要性，还展示了不同角色如何通过多种形式的互动，共同促进社区的发展与繁荣。
+
+我将根据上述分析进行补充关系的添加，绘制图表。
+
+为了让图表更加生动形象，可以在以下几个方面进行增强：
+
+1. **节点样式**：
+   - 使用不同颜色或形状来表示不同类别的节点。
+   - 增加节点的图标或图片，使得每个节点的含义更加直观。
+
+2. **边线样式**：
+   - 不同的线条样式（实线、虚线、箭头等）来表示不同类型的关系。
+   - 在连线上添加标签，描述两个节点之间的关系。
+
+3. **增加注释**：
+   - 在图中增加注释，描述重要的关系或节点。
+
+<div class="flex flex-1 justify-center">
+    <image src="/SeanBlog/pictures/Armenia05.png" alt = "build demo" class="w-8/12" ></image>
+</div>
+
+具体实现原理如下：
+下面是绘制该“WE-MARKET LAB”图表的具体代码以及实现的原理解释。
+
+### 代码实现
+
+```python
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Step 1: Define the graph
+G = nx.DiGraph()  # 使用有向图 (DiGraph) 来表示方向性连接
+
+# Step 2: 添加节点，并为每个节点指定颜色和形状属性
+G.add_node('Farmers', color='lightgreen', shape='o')
+G.add_node('Food Makers', color='lightblue', shape='o')
+G.add_node('Locals', color='orange', shape='o')
+G.add_node('New Armenian', color='lightcoral', shape='o')
+G.add_node('Vendors', color='yellow', shape='o')
+G.add_node('Merchants', color='purple', shape='o')
+G.add_node('Unemployed', color='red', shape='o')
+G.add_node('Government', color='blue', shape='o')
+G.add_node('Investors', color='cyan', shape='o')
+G.add_node('Chefs', color='pink', shape='o')
+G.add_node('Gourmets', color='gold', shape='o')
+G.add_node('Learners', color='violet', shape='o')
+G.add_node('Visitors', color='brown', shape='o')
+
+# Step 3: 添加边并为每条边指定标签以描述关系
+edges = [
+    ('Farmers', 'Locals', 'sell food'), 
+    ('Farmers', 'Food Makers', 'grow food'), 
+    ('Farmers', 'Vendors', 'sell food'),
+    ('Food Makers', 'Locals', 'shared kitchen'),
+    ('Food Makers', 'New Armenian', 'community engagement'), 
+    ('Food Makers', 'Chefs', 'learn from'), 
+    ('Food Makers', 'Learners', 'learn from'),
+    ('Locals', 'New Armenian', 'celebrate together'),
+    ('Locals', 'Government', 'involve in'), 
+    ('Locals', 'Merchants', 'engage in'),
+    ('New Armenian', 'Chefs', 'taste and promote'), 
+    ('New Armenian', 'Gourmets', 'taste and promote'), 
+    ('New Armenian', 'Learners', 'find identity'), 
+    ('New Armenian', 'Visitors', 'taste and promote'), 
+    ('New Armenian', 'Investors', 'promote trade'),
+    ('Vendors', 'Farmers', 'direct sale'), 
+    ('Vendors', 'Merchants', 'equal selling chances'),
+    ('Merchants', 'Locals', 'engage in'), 
+    ('Merchants', 'Vendors', 'flexible stands'),
+    ('Unemployed', 'Government', 'job opportunity'),
+    ('Government', 'Locals', 'involve in'), 
+    ('Government', 'Investors', 'attract investment'), 
+    ('Government', 'Unemployed', 'provide jobs'),
+    ('Investors', 'Government', 'attract investment'), 
+    ('Investors', 'New Armenian', 'promote trade'),
+    ('Chefs', 'Food Makers', 'learn from'), 
+    ('Chefs', 'Gourmets', 'create food'), 
+    ('Chefs', 'New Armenian', 'taste and promote'),
+    ('Gourmets', 'Chefs', 'taste and promote'), 
+    ('Gourmets', 'New Armenian', 'buy and share'),
+    ('Learners', 'Food Makers', 'learn from'), 
+    ('Learners', 'New Armenian', 'find identity'),
+    ('Visitors', 'New Armenian', 'taste and promote'),
+    # Additional Relationships
+    ('Farmers', 'Government', 'receive support'),  # Farmers supported by Government
+    ('Food Makers', 'Investors', 'receive investment'),  # Food Makers supported by Investors
+    ('Locals', 'Learners', 'participate in education'),  # Locals engage with Learners
+    ('Vendors', 'Learners', 'provide market experience'),  # Learners gain experience from Vendors
+    ('Chefs', 'Government', 'receive support for events'),  # Chefs supported by Government
+    ('Merchants', 'Investors', 'receive investment')  # Merchants supported by Investors
+]
+G.add_edges_from((u, v, {'label': label}) for u, v, label in edges)
+
+# Step 4: 优化布局，使节点分布更加均匀
+pos = nx.spring_layout(G, seed=42, k=0.6)  # 使用spring_layout来控制节点间距
+
+# Step 5: 绘制节点
+plt.figure(figsize=(20, 18))
+
+# 根据每个节点的形状和颜色属性进行绘制
+shapes = nx.get_node_attributes(G, 'shape').values()
+for shape in set(shapes):
+    nodes = [node for node, node_shape in nx.get_node_attributes(G, 'shape').items() if node_shape == shape]
+    nx.draw_networkx_nodes(G, pos, nodelist=nodes, node_color=[G.nodes[n]['color'] for n in nodes], node_shape=shape, node_size=3000)
+
+# 绘制边
+nx.draw_networkx_edges(G, pos, arrowstyle='-|>', arrowsize=20, edge_color='gray')
+
+# 绘制节点标签
+nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
+
+# 绘制边标签（关系描述）
+edge_labels = nx.get_edge_attributes(G, 'label')
+nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='black', font_size=8)
+
+plt.title('Enhanced WE-MARKET LAB Graph with Additional Relationships', size=15)
+plt.show()
+```
+
+### 实现原理
+
+1. **节点和边的定义**：
+   - 使用 `NetworkX` 的 `DiGraph` 类来创建一个有向图，用来表示节点之间具有方向性的关系。
+   - 每个节点都被赋予了颜色和形状属性，用来在图中区分不同类型的角色。
+
+2. **布局优化**：
+   - 采用 `spring_layout` 布局算法，该算法模拟了弹簧之间的作用力，使得节点尽可能均匀分布。参数 `k` 控制节点之间的距离。
+
+3. **绘制图表**：
+   - 利用 `Matplotlib` 库中的 `plt.figure` 创建绘图区域，并通过 `nx.draw_networkx_nodes` 和 `nx.draw_networkx_edges` 分别绘制节点和边。
+   - 边的箭头样式和大小可以通过 `arrowstyle` 和 `arrowsize` 参数来设置。
+   - 节点和边上的标签通过 `nx.draw_networkx_labels` 和 `nx.draw_networkx_edge_labels` 函数来绘制。
+
+4. **关系的补充**：
+   - 通过分析现有节点间的互动关系，补充了农民与政府、食品制造者与投资者等关系，以使得图表更加全面合理地反映“WE-MARKET LAB”的生态系统。
+
+通过这些步骤，最终得到了一个结构合理、视觉效果较好的“WE-MARKET LAB”关系图表。这不仅有助于理解社区内部的互动，还体现了各个角色之间的协作和互惠关系。
+
+
+## 参考案例泛化
+
+### /Describe 和 --Sref
+首先通过midjourney的图生文功能，得到了图片的prompt，其中一个如下：
+<div class="flex flex-1 justify-center">
+    <image src="/SeanBlog/pictures/Armenia02.png" alt = "build demo" class="w-8/12"></image>
+</div>
+>Prompt: A grid of different images showing the design for various public spaces, including "Green Spaceashion andersen", multiple structures like small and large stairs or plazas with architectural details, small fountains or water features, photo-realistic renderings of Christmas tree decorations in square fields, several pavilions that could be used as exhibition areas, open-air cafes, community embroideries on , market days where people gather to shop at local stalls, "Melange Design" logo --ar 23:25
+
+为了确保最终生成的效果风格一致，在头部加入了参考样式链接，在尾部通过--Sref绘画风格参考来绑定整体生成效果
+> Prompt: https://s.mj.run/sUCb5Jmi-L0 A grid of different images showing the design for various public spaces, including "Green Spaceashion andersen", multiple structures like small and large stairs or plazas with architectural details, small fountains or water features, photo-realistic renderings of Christmas tree decorations in square fields, several pavilions that could be used as exhibition areas, open-air cafes, community embroideries on , market days where people gather to shop at local stalls, "Melange Design" logo --ar 23:25 --s 750 --sref https://s.mj.run/sUCb5Jmi-L0 --sw 500 - Variations (Strong)
+
+可以看到风格、样式、设计效果都非常的一致，对于小空间内demo的提案可以说非常的适用。整个过程在midjourny里也花费不超过10分钟。
+<div class="flex flex-1 justify-center">
+    <image src="/SeanBlog/pictures/Armenia03.png" alt = "build demo" class="w-8/12" ></image>
+</div>
+也可以用同样的方法对其中任意局部demo进行泛化衍生：
+<div class="flex flex-1 justify-center">
+    <image src="/SeanBlog/pictures/Armenia04.png" alt = "build demo" class="w-8/12" ></image>
+</div>

@@ -44,7 +44,7 @@ function getIcon(iconName) {
           {category.name}
         </button>
         <div id={`hs-basic-always-open-collapse-${category.folder}`} class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300" role="region" aria-labelledby={`hs-basic-always-open-heading-${category.folder}`}>
-          <ul id={`left${category.folder}list`} class="space-y- text-sm border-l border-slate-100 dark:border-slate-800">
+          <ul id={`left${category.folder}list`} class="space-y-2 text-sm border-l border-slate-100 dark:border-slate-800">
             {category.files.map((file) => <BlogPost url={file.url} title={file.frontmatter.title}/>)}
           </ul>
         </div>

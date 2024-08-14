@@ -1,213 +1,196 @@
----
-import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const pageTitle = "我的博客";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WE-MARKET LAB Graph</title>
+  <script src="https://d3js.org/d3.v6.min.js" is:inline></script>
+  <style>
+    .node {
+      cursor: pointer;
+    }
+    .node text {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      pointer-events: none;
+    }
+    .link {
+      fill: none;
+      stroke: #999;
+      stroke-width: 2px;
+    }
+    .link text {
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      fill: #555;
+    }
+  </style>
+</head>
+<body>
+  <svg width="960" height="600"></svg>
 
----
-
-<style>
-body {
-  font-family: "Century Gothic", Futura, sans-serif;
-  margin: 0;
-  padding: 20px;
-  background-color: #f0f0f0;
-}
-
-.game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.board {
-  background: #fff;
-  border: 2px solid #999;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-.board-row {
-  display: flex;
-}
-
-.square {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 50px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 50px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.square:focus {
-  outline: none;
-}
-
-.square:hover {
-  background-color: #f0f0f0;
-}
-
-.status {
-  margin-bottom: 10px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.game-info {
-  margin-top: 20px;
-}
-</style>
-
-<BaseLayout pageTitle={pageTitle}>
-  <div id="root"></div>
-</BaseLayout>
-
-<script is:inline>
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-function Square(props) {
-  return (
-    <button className="square" onClick={props.onClick}>
-      {props.value}
-    </button>
-  );
-}
-
-class Board extends React.Component {
-  renderSquare(i) {
-    return (
-      <Square
-        value={this.props.squares[i]}
-        onClick={() => this.props.onClick(i)}
-      />
-    );
-  }
-
-  render() {
-    return (
-      <div className="board">
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
-    );
-  }
-}
-
-class Game extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      history: [{
-        squares: Array(9).fill(null),
-      }],
-      stepNumber: 0,
-      xIsNext: true,
+  <script is:inline>
+    // Data for nodes and links
+    const graph = {
+      "nodes": [
+        {"id": "Farmers", "group": 1},
+        {"id": "Food Makers", "group": 1},
+        {"id": "Locals", "group": 1},
+        {"id": "New Armenian", "group": 2},
+        {"id": "Vendors", "group": 1},
+        {"id": "Merchants", "group": 1},
+        {"id": "Unemployed", "group": 3},
+        {"id": "Government", "group": 3},
+        {"id": "Investors", "group": 2},
+        {"id": "Chefs", "group": 1},
+        {"id": "Gourmets", "group": 1},
+        {"id": "Learners", "group": 1},
+        {"id": "Visitors", "group": 4}
+      ],
+      "links": [
+        {"source": "Farmers", "target": "Locals", "value": 1, "label": "sell food"},
+        {"source": "Farmers", "target": "Food Makers", "value": 1, "label": "grow food"},
+        {"source": "Farmers", "target": "Vendors", "value": 1, "label": "sell food"},
+        {"source": "Food Makers", "target": "Locals", "value": 1, "label": "shared kitchen"},
+        {"source": "Food Makers", "target": "New Armenian", "value": 1, "label": "community engagement"},
+        {"source": "Food Makers", "target": "Chefs", "value": 1, "label": "learn from"},
+        {"source": "Food Makers", "target": "Learners", "value": 1, "label": "learn from"},
+        {"source": "Locals", "target": "New Armenian", "value": 1, "label": "celebrate together"},
+        {"source": "Locals", "target": "Government", "value": 1, "label": "involve in"},
+        {"source": "Locals", "target": "Merchants", "value": 1, "label": "engage in"},
+        {"source": "New Armenian", "target": "Chefs", "value": 1, "label": "taste and promote"},
+        {"source": "New Armenian", "target": "Gourmets", "value": 1, "label": "taste and promote"},
+        {"source": "New Armenian", "target": "Learners", "value": 1, "label": "find identity"},
+        {"source": "New Armenian", "target": "Visitors", "value": 1, "label": "taste and promote"},
+        {"source": "New Armenian", "target": "Investors", "value": 1, "label": "promote trade"},
+        {"source": "Vendors", "target": "Farmers", "value": 1, "label": "direct sale"},
+        {"source": "Vendors", "target": "Merchants", "value": 1, "label": "equal selling chances"},
+        {"source": "Merchants", "target": "Locals", "value": 1, "label": "engage in"},
+        {"source": "Merchants", "target": "Vendors", "value": 1, "label": "flexible stands"},
+        {"source": "Unemployed", "target": "Government", "value": 1, "label": "job opportunity"},
+        {"source": "Government", "target": "Locals", "value": 1, "label": "involve in"},
+        {"source": "Government", "target": "Investors", "value": 1, "label": "attract investment"},
+        {"source": "Government", "target": "Unemployed", "value": 1, "label": "provide jobs"},
+        {"source": "Investors", "target": "Government", "value": 1, "label": "attract investment"},
+        {"source": "Investors", "target": "New Armenian", "value": 1, "label": "promote trade"},
+        {"source": "Chefs", "target": "Food Makers", "value": 1, "label": "learn from"},
+        {"source": "Chefs", "target": "Gourmets", "value": 1, "label": "create food"},
+        {"source": "Chefs", "target": "New Armenian", "value": 1, "label": "taste and promote"},
+        {"source": "Gourmets", "target": "Chefs", "value": 1, "label": "taste and promote"},
+        {"source": "Gourmets", "target": "New Armenian", "value": 1, "label": "buy and share"},
+        {"source": "Learners", "target": "Food Makers", "value": 1, "label": "learn from"},
+        {"source": "Learners", "target": "New Armenian", "value": 1, "label": "find identity"},
+        {"source": "Visitors", "target": "New Armenian", "value": 1, "label": "taste and promote"},
+        {"source": "Farmers", "target": "Government", "value": 1, "label": "receive support"},
+        {"source": "Food Makers", "target": "Investors", "value": 1, "label": "receive investment"},
+        {"source": "Locals", "target": "Learners", "value": 1, "label": "participate in education"},
+        {"source": "Vendors", "target": "Learners", "value": 1, "label": "provide market experience"},
+        {"source": "Chefs", "target": "Government", "value": 1, "label": "receive support for events"},
+        {"source": "Merchants", "target": "Investors", "value": 1, "label": "receive investment"}
+      ]
     };
-  }
 
-  handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
-    const current = history[history.length - 1];
-    const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
-    squares[i] = this.state.xIsNext ? 'X' : 'O';
-    this.setState({
-      history: history.concat([{
-        squares: squares,
-      }]),
-      stepNumber: history.length,
-      xIsNext: !this.state.xIsNext,
+    // Setting up the SVG area
+    const svg = d3.select("svg"),
+          width = +svg.attr("width"),
+          height = +svg.attr("height");
+
+    // Creating simulation
+    const simulation = d3.forceSimulation(graph.nodes)
+                         .force("link", d3.forceLink(graph.links).id(d => d.id).distance(200))
+                         .force("charge", d3.forceManyBody().strength(-300))
+                         .force("center", d3.forceCenter(width / 2, height / 2));
+
+    // Drawing links
+    const link = svg.append("g")
+                    .attr("class", "links")
+                    .selectAll("line")
+                    .data(graph.links)
+                    .enter().append("line")
+                    .attr("stroke-width", d => Math.sqrt(d.value));
+
+    // Adding link labels
+    svg.append("g")
+       .selectAll("text")
+       .data(graph.links)
+       .enter()
+       .append("text")
+       .attr("fill", "#555")
+       .attr("dy", -5)
+       .attr("text-anchor", "middle")
+       .append("textPath")
+       .attr("xlink:href", (d, i) => `#link${i}`)
+       .text(d => d.label);
+
+    // Drawing nodes
+    const node = svg.append("g")
+                    .attr("class", "nodes")
+                    .selectAll("g")
+                    .data(graph.nodes)
+                    .enter().append("g")
+                    .call(d3.drag()
+                            .on("start", dragstarted)
+                            .on("drag", dragged)
+                            .on("end", dragended));
+
+    // Adding circles to nodes
+    node.append("circle")
+        .attr("r", 20)
+        .attr("fill", d => color(d.group));
+
+    // Adding labels to nodes
+    node.append("text")
+        .text(d => d.id)
+        .attr("x", 25)
+        .attr("y", 5);
+
+        // Simulation tick function
+        simulation.on("tick", () => {
+      link
+          .attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+
+      node
+          .attr("transform", d => `translate(${d.x},${d.y})`);
+
+      svg.selectAll("textPath")
+          .attr("startOffset", "50%")
+          .attr("xlink:href", (d, i) => `#link${i}`)
+          .attr("x", d => (d.source.x + d.target.x) / 2)
+          .attr("y", d => (d.source.y + d.target.y) / 2);
     });
-  }
 
-  jumpTo(step) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: (step % 2) === 0,
-    });
-  }
+    // Color scale based on group
+    const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-  render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
-
-    const moves = history.map((step, move) => {
-      const desc = move ?
-        '回到第 ' + move + ' 步' :
-        '重新开始游戏';
-      return (
-        <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
-        </li>
-      );
-    });
-
-    let status;
-    if (winner) {
-      status = '获胜者: ' + winner;
-    } else {
-      status = '下一位玩家: ' + (this.state.xIsNext ? 'X' : 'O');
+    // Functions to handle dragging of nodes
+    function dragstarted(event, d) {
+      if (!event.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
     }
 
-    return (
-      <div className="game">
-        <div className="game-board">
-          <Board
-            squares={current.squares}
-            onClick={(i) => this.handleClick(i)}
-          />
-        </div>
-        <div className="game-info">
-          <div className="status">{status}</div>
-          <ol>{moves}</ol>
-        </div>
-      </div>
-    );
-  }
-}
-
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
+    function dragged(event, d) {
+      d.fx = event.x;
+      d.fy = event.y;
     }
-  }
-  return null;
-}
+
+    function dragended(event, d) {
+      if (!event.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
+
+    // Link labels paths
+    svg.selectAll(".link")
+       .data(graph.links)
+       .enter().append("path")
+       .attr("id", (d, i) => `link${i}`)
+       .attr("class", "link")
+       .attr("d", d => `M${d.source.x},${d.source.y} L${d.target.x},${d.target.y}`);
+  </script>
+</body>
+</html>
