@@ -30,18 +30,6 @@
         stroke: #fff;
         stroke-width: 1.5px;
       }
-      .node-label {
-        font-size: 5px;
-        text-anchor: middle;
-        dominant-baseline: central;
-        pointer-events: none;
-        fill: white;
-      }
-      .link-label {
-        font-size: 4px;
-        fill: #acacac;
-        text-anchor: middle;
-      }
     </style>
   </head>
   <body>
@@ -137,7 +125,9 @@
             .attr("stroke", "#999");
 
         link.append("text")
-            .attr("class", "link-label")
+            .attr("font-size", "8px")
+            .attr("fill", "#666")
+            .attr("text-anchor", "middle")
             .attr("dy", -2)
             .text(d => d.label);
 
@@ -156,10 +146,10 @@
             .attr("fill", d => d3.schemeCategory10[d.group]);
 
         node.append("text")
-            .attr("class", "node-label")
-            .text(d => d.id);
-
-        node.append("title")
+            .attr("font-size", "10px")
+            .attr("fill", "white")
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "central")
             .text(d => d.id);
 
         simulation.on("tick", () => {
