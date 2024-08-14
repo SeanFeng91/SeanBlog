@@ -1,196 +1,147 @@
+---
+// Astro 组件的前端部分
+import { onMount } from 'solid-js';
+---
 
-<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WE-MARKET LAB Graph</title>
-  <script src="https://d3js.org/d3.v6.min.js" is:inline></script>
-  <style>
-    .node {
-      cursor: pointer;
-    }
-    .node text {
-      font-family: Arial, sans-serif;
-      font-size: 12px;
-      pointer-events: none;
-    }
-    .link {
-      fill: none;
-      stroke: #999;
-      stroke-width: 2px;
-    }
-    .link text {
-      font-family: Arial, sans-serif;
-      font-size: 10px;
-      fill: #555;
-    }
-  </style>
-</head>
-<body>
-  <svg width="960" height="600"></svg>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE-MARKET LAB Graph</title>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        // 图表绘制代码
+        const svg = d3.select("#chart")
+                      .append("svg")
+                      .attr("width", 960)
+                      .attr("height", 600);
 
-  <script is:inline>
-    // Data for nodes and links
-    const graph = {
-      "nodes": [
-        {"id": "Farmers", "group": 1},
-        {"id": "Food Makers", "group": 1},
-        {"id": "Locals", "group": 1},
-        {"id": "New Armenian", "group": 2},
-        {"id": "Vendors", "group": 1},
-        {"id": "Merchants", "group": 1},
-        {"id": "Unemployed", "group": 3},
-        {"id": "Government", "group": 3},
-        {"id": "Investors", "group": 2},
-        {"id": "Chefs", "group": 1},
-        {"id": "Gourmets", "group": 1},
-        {"id": "Learners", "group": 1},
-        {"id": "Visitors", "group": 4}
-      ],
-      "links": [
-        {"source": "Farmers", "target": "Locals", "value": 1, "label": "sell food"},
-        {"source": "Farmers", "target": "Food Makers", "value": 1, "label": "grow food"},
-        {"source": "Farmers", "target": "Vendors", "value": 1, "label": "sell food"},
-        {"source": "Food Makers", "target": "Locals", "value": 1, "label": "shared kitchen"},
-        {"source": "Food Makers", "target": "New Armenian", "value": 1, "label": "community engagement"},
-        {"source": "Food Makers", "target": "Chefs", "value": 1, "label": "learn from"},
-        {"source": "Food Makers", "target": "Learners", "value": 1, "label": "learn from"},
-        {"source": "Locals", "target": "New Armenian", "value": 1, "label": "celebrate together"},
-        {"source": "Locals", "target": "Government", "value": 1, "label": "involve in"},
-        {"source": "Locals", "target": "Merchants", "value": 1, "label": "engage in"},
-        {"source": "New Armenian", "target": "Chefs", "value": 1, "label": "taste and promote"},
-        {"source": "New Armenian", "target": "Gourmets", "value": 1, "label": "taste and promote"},
-        {"source": "New Armenian", "target": "Learners", "value": 1, "label": "find identity"},
-        {"source": "New Armenian", "target": "Visitors", "value": 1, "label": "taste and promote"},
-        {"source": "New Armenian", "target": "Investors", "value": 1, "label": "promote trade"},
-        {"source": "Vendors", "target": "Farmers", "value": 1, "label": "direct sale"},
-        {"source": "Vendors", "target": "Merchants", "value": 1, "label": "equal selling chances"},
-        {"source": "Merchants", "target": "Locals", "value": 1, "label": "engage in"},
-        {"source": "Merchants", "target": "Vendors", "value": 1, "label": "flexible stands"},
-        {"source": "Unemployed", "target": "Government", "value": 1, "label": "job opportunity"},
-        {"source": "Government", "target": "Locals", "value": 1, "label": "involve in"},
-        {"source": "Government", "target": "Investors", "value": 1, "label": "attract investment"},
-        {"source": "Government", "target": "Unemployed", "value": 1, "label": "provide jobs"},
-        {"source": "Investors", "target": "Government", "value": 1, "label": "attract investment"},
-        {"source": "Investors", "target": "New Armenian", "value": 1, "label": "promote trade"},
-        {"source": "Chefs", "target": "Food Makers", "value": 1, "label": "learn from"},
-        {"source": "Chefs", "target": "Gourmets", "value": 1, "label": "create food"},
-        {"source": "Chefs", "target": "New Armenian", "value": 1, "label": "taste and promote"},
-        {"source": "Gourmets", "target": "Chefs", "value": 1, "label": "taste and promote"},
-        {"source": "Gourmets", "target": "New Armenian", "value": 1, "label": "buy and share"},
-        {"source": "Learners", "target": "Food Makers", "value": 1, "label": "learn from"},
-        {"source": "Learners", "target": "New Armenian", "value": 1, "label": "find identity"},
-        {"source": "Visitors", "target": "New Armenian", "value": 1, "label": "taste and promote"},
-        {"source": "Farmers", "target": "Government", "value": 1, "label": "receive support"},
-        {"source": "Food Makers", "target": "Investors", "value": 1, "label": "receive investment"},
-        {"source": "Locals", "target": "Learners", "value": 1, "label": "participate in education"},
-        {"source": "Vendors", "target": "Learners", "value": 1, "label": "provide market experience"},
-        {"source": "Chefs", "target": "Government", "value": 1, "label": "receive support for events"},
-        {"source": "Merchants", "target": "Investors", "value": 1, "label": "receive investment"}
-      ]
-    };
+        // 数据
+        const graph = {
+          "nodes": [
+            {"id": "Farmers", "group": 1},
+            {"id": "Food Makers", "group": 1},
+            {"id": "Locals", "group": 1},
+            {"id": "New Armenian", "group": 2},
+            {"id": "Vendors", "group": 1},
+            {"id": "Merchants", "group": 1},
+            {"id": "Unemployed", "group": 3},
+            {"id": "Government", "group": 3},
+            {"id": "Investors", "group": 2},
+            {"id": "Chefs", "group": 1},
+            {"id": "Gourmets", "group": 1},
+            {"id": "Learners", "group": 1},
+            {"id": "Visitors", "group": 4}
+          ],
+          "links": [
+            {"source": "Farmers", "target": "Locals", "value": 1, "label": "sell food"},
+            {"source": "Farmers", "target": "Food Makers", "value": 1, "label": "grow food"},
+            {"source": "Farmers", "target": "Vendors", "value": 1, "label": "sell food"},
+            {"source": "Food Makers", "target": "Locals", "value": 1, "label": "shared kitchen"},
+            {"source": "Food Makers", "target": "New Armenian", "value": 1, "label": "community engagement"},
+            {"source": "Food Makers", "target": "Chefs", "value": 1, "label": "learn from"},
+            {"source": "Food Makers", "target": "Learners", "value": 1, "label": "learn from"},
+            {"source": "Locals", "target": "New Armenian", "value": 1, "label": "celebrate together"},
+            {"source": "Locals", "target": "Government", "value": 1, "label": "involve in"},
+            {"source": "Locals", "target": "Merchants", "value": 1, "label": "engage in"},
+            {"source": "New Armenian", "target": "Chefs", "value": 1, "label": "taste and promote"},
+            {"source": "New Armenian", "target": "Gourmets", "value": 1, "label": "taste and promote"},
+            {"source": "New Armenian", "target": "Learners", "value": 1, "label": "find identity"},
+            {"source": "New Armenian", "target": "Visitors", "value": 1, "label": "taste and promote"},
+            {"source": "New Armenian", "target": "Investors", "value": 1, "label": "promote trade"},
+            {"source": "Vendors", "target": "Farmers", "value": 1, "label": "direct sale"},
+            {"source": "Vendors", "target": "Merchants", "value": 1, "label": "equal selling chances"},
+            {"source": "Merchants", "target": "Locals", "value": 1, "label": "engage in"},
+            {"source": "Merchants", "target": "Vendors", "value": 1, "label": "flexible stands"},
+            {"source": "Unemployed", "target": "Government", "value": 1, "label": "job opportunity"},
+            {"source": "Government", "target": "Locals", "value": 1, "label": "involve in"},
+            {"source": "Government", "target": "Investors", "value": 1, "label": "attract investment"},
+            {"source": "Government", "target": "Unemployed", "value": 1, "label": "provide jobs"},
+            {"source": "Investors", "target": "Government", "value": 1, "label": "attract investment"},
+            {"source": "Investors", "target": "New Armenian", "value": 1, "label": "promote trade"},
+            {"source": "Chefs", "target": "Food Makers", "value": 1, "label": "learn from"},
+            {"source": "Chefs", "target": "Gourmets", "value": 1, "label": "create food"},
+            {"source": "Chefs", "target": "New Armenian", "value": 1, "label": "taste and promote"},
+            {"source": "Gourmets", "target": "Chefs", "value": 1, "label": "taste and promote"},
+            {"source": "Gourmets", "target": "New Armenian", "value": 1, "label": "buy and share"},
+            {"source": "Learners", "target": "Food Makers", "value": 1, "label": "learn from"},
+            {"source": "Learners", "target": "New Armenian", "value": 1, "label": "find identity"},
+            {"source": "Visitors", "target": "New Armenian", "value": 1, "label": "taste and promote"},
+            {"source": "Farmers", "target": "Government", "value": 1, "label": "receive support"},
+            {"source": "Food Makers", "target": "Investors", "value": 1, "label": "receive investment"},
+            {"source": "Locals", "target": "Learners", "value": 1, "label": "participate in education"},
+            {"source": "Vendors", "target": "Learners", "value": 1, "label": "provide market experience"},
+            {"source": "Chefs", "target": "Government", "value": 1, "label": "receive support for events"},
+            {"source": "Merchants", "target": "Investors", "value": 1, "label": "receive investment"}
+          ]
+        };
 
-    // Setting up the SVG area
-    const svg = d3.select("svg"),
-          width = +svg.attr("width"),
-          height = +svg.attr("height");
+        const simulation = d3.forceSimulation(graph.nodes)
+                             .force("link", d3.forceLink(graph.links).id(d => d.id).distance(200))
+                             .force("charge", d3.forceManyBody().strength(-300))
+                             .force("center", d3.forceCenter(960 / 2, 600 / 2));
 
-    // Creating simulation
-    const simulation = d3.forceSimulation(graph.nodes)
-                         .force("link", d3.forceLink(graph.links).id(d => d.id).distance(200))
-                         .force("charge", d3.forceManyBody().strength(-300))
-                         .force("center", d3.forceCenter(width / 2, height / 2));
+        const link = svg.append("g")
+                        .attr("class", "links")
+                        .selectAll("line")
+                        .data(graph.links)
+                        .enter().append("line")
+                        .attr("stroke-width", d => Math.sqrt(d.value));
 
-    // Drawing links
-    const link = svg.append("g")
-                    .attr("class", "links")
-                    .selectAll("line")
-                    .data(graph.links)
-                    .enter().append("line")
-                    .attr("stroke-width", d => Math.sqrt(d.value));
+        const node = svg.append("g")
+                        .attr("class", "nodes")
+                        .selectAll("g")
+                        .data(graph.nodes)
+                        .enter().append("g")
+                        .call(d3.drag()
+                                .on("start", dragstarted)
+                                .on("drag", dragged)
+                                .on("end", dragended));
 
-    // Adding link labels
-    svg.append("g")
-       .selectAll("text")
-       .data(graph.links)
-       .enter()
-       .append("text")
-       .attr("fill", "#555")
-       .attr("dy", -5)
-       .attr("text-anchor", "middle")
-       .append("textPath")
-       .attr("xlink:href", (d, i) => `#link${i}`)
-       .text(d => d.label);
+        node.append("circle")
+            .attr("r", 20)
+            .attr("fill", d => color(d.group));
 
-    // Drawing nodes
-    const node = svg.append("g")
-                    .attr("class", "nodes")
-                    .selectAll("g")
-                    .data(graph.nodes)
-                    .enter().append("g")
-                    .call(d3.drag()
-                            .on("start", dragstarted)
-                            .on("drag", dragged)
-                            .on("end", dragended));
+        node.append("text")
+            .text(d => d.id)
+            .attr("x", 25)
+            .attr("y", 5);
 
-    // Adding circles to nodes
-    node.append("circle")
-        .attr("r", 20)
-        .attr("fill", d => color(d.group));
-
-    // Adding labels to nodes
-    node.append("text")
-        .text(d => d.id)
-        .attr("x", 25)
-        .attr("y", 5);
-
-        // Simulation tick function
         simulation.on("tick", () => {
-      link
-          .attr("x1", d => d.source.x)
-          .attr("y1", d => d.source.y)
-          .attr("x2", d => d.target.x)
-          .attr("y2", d => d.target.y);
+          link
+              .attr("x1", d => d.source.x)
+              .attr("y1", d => d.source.y)
+              .attr("x2", d => d.target.x)
+              .attr("y2", d => d.target.y);
 
-      node
-          .attr("transform", d => `translate(${d.x},${d.y})`);
+          node
+              .attr("transform", d => `translate(${d.x},${d.y})`);
+        });
 
-      svg.selectAll("textPath")
-          .attr("startOffset", "50%")
-          .attr("xlink:href", (d, i) => `#link${i}`)
-          .attr("x", d => (d.source.x + d.target.x) / 2)
-          .attr("y", d => (d.source.y + d.target.y) / 2);
-    });
+        const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    // Color scale based on group
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+        function dragstarted(event, d) {
+          if (!event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x;
+         
+          d.fy = d.y;
+          }
 
-    // Functions to handle dragging of nodes
-    function dragstarted(event, d) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    }
+          function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+          }
 
-    function dragged(event, d) {
-      d.fx = event.x;
-      d.fy = event.y;
-    }
-
-    function dragended(event, d) {
-      if (!event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    }
-
-    // Link labels paths
-    svg.selectAll(".link")
-       .data(graph.links)
-       .enter().append("path")
-       .attr("id", (d, i) => `link${i}`)
-       .attr("class", "link")
-       .attr("d", d => `M${d.source.x},${d.source.y} L${d.target.x},${d.target.y}`);
-  </script>
-</body>
-</html>
+          function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+          }
+        });
+      </script>
+    </body>
+  </html>
