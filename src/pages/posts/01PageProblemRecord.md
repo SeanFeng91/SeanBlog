@@ -25,8 +25,8 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 因为申请签证和准备工程数字化平台，所以最近没有太多时间更新博客。简单记录下最近信息:
 - cursor免费账号到期，可以通过更好邮箱的方式续命。暂时先保持这种模式吧。
 - 随着博客的不断增多，需要打造一个有效的汇总页面，对首页展示要规划。
-- 开始结合AI产品的使用撰写心得。先从最熟悉的Midjourney、cursor等开始。已经记录了一篇[Midjourney和Runway](../MidandRunway.mdx)
-- 结合一毛亚美尼亚的提案，也想写一篇[Armenia_Project_Design.mdx](../Armenia_Project_Design.mdx)。
+- 开始结合AI产品的使用撰写心得。先从最熟悉的Midjourney、cursor等开始。已经记录了一篇[Midjourney和Runway](../../blogs/MidandRunway.mdx)
+- 结合一毛亚美尼亚的提案，也想写一篇[Armenia_Project_Design.mdx](../../blogs/Armenia_Project_Design.mdx)。
 
 # 20240801记录
 结合大模型以前端的页面展示难度一下子上来了。今天尝试调用kimi上传文件的功能，跟openai的是几乎一样的。成功实现了多文件上传并且读取回复的能力。类似与上下文embedding。但是每个文件上传的时间还是要一会。需要几十秒的样子。可能主要还是后台处理分析的时间。同时增加了agicto的api接入。这个免费的api可以接入主流的大模型，包括openai、claude、kimi、文心一言等。但是token的计费比较贵，免费的token比较容易使用完。不像kimi非常耐用。openai的api太丰富了，只能一点点去尝试。感觉可以先从python入手，忽略前端的展示。
