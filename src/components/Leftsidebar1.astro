@@ -4,6 +4,7 @@ const allFiles = await Astro.glob('../pages/**/*.{md,mdx}');
 // 自动获取所有文件夹并分类
 const categories: { name: string; icon: string; folder: string; files: any[] }[] = [
   { name: '工具类', icon: 'tool', folder: 'Tools', files: [] },
+  { name: '旅行类', icon: 'web', folder: 'travels', files: [] },
   { name: '网页开发类', icon: 'web', folder: 'posts', files: [] },
   { name: '大模型类', icon: 'ai', folder: 'blogs', files: [] },
   { name: '摘录感悟', icon: 'write', folder: 'thoughts', files: [] }
@@ -23,6 +24,7 @@ function getIcon(iconName) {
     web: '<svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M.946 0L2.23 14.4L7.992 16l5.777-1.602L15.055 0zM12.26 4.71H5.502l.161 1.809H12.1l-.485 5.422l-3.623 1.004l-3.618-1.004l-.247-2.774H5.9l.126 1.41l1.967.53l.004-.001l1.968-.531l.204-2.29H4.048l-.476-5.341h8.847l-.158 1.766z" /></svg>',
     ai: '<svg class="inline-block size-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11V9h-2V7a2.006 2.006 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7a2.006 2.006 0 0 0-2 2v2H3v2h2v2H3v2h2v2a2.006 2.006 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2.006 2.006 0 0 0 2-2v-2h2v-2h-2v-2Zm-4 6H7V7h10Z" /><path fill="currentColor" d="M11.361 8h-1.345l-2.01 8h1.027l.464-1.875h2.316L12.265 16h1.062Zm-1.729 5.324L10.65 8.95h.046l.983 4.374ZM14.244 8h1v8h-1z" /></svg>',
     write: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="-0.5 -0.5 24 24"><path fill="currentColor" d="m21.289.98l.59.59c.813.814.69 2.257-.277 3.223L9.435 16.96l-3.942 1.442c-.495.182-.977-.054-1.075-.525a.93.93 0 0 1 .045-.51l1.47-3.976L18.066 1.257c.967-.966 2.41-1.09 3.223-.276zM8.904 2.19a1 1 0 1 1 0 2h-4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4a1 1 0 0 1 2 0v4a4 4 0 0 1-4 4h-12a4 4 0 0 1-4-4v-12a4 4 0 0 1 4-4z" /></svg>',
+    travel:'<svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21q-1.864 0-3.506-.71q-1.642-.711-2.857-1.926q-1.216-1.216-1.926-2.858Q3 13.864 3 12t.71-3.506t1.927-2.857T8.494 3.71Q10.137 3 12 3q3.496 0 6.032 2.307t2.903 5.699h-1.012q-.263-2.171-1.568-3.897T15 4.562V5q0 .825-.587 1.413T13 7h-2v2q0 .425-.288.713T10 10H8v2h1.846v3H9l-4.8-4.8q-.075.45-.137.9T4 12q0 3.275 2.3 5.625T12 20zm9.023-.27l-3.45-3.41q-.448.319-.971.5q-.523.18-1.102.18q-1.471 0-2.485-1.014Q12 15.97 12 14.5t1.015-2.485T15.5 11t2.486 1.015T19 14.5q0 .598-.19 1.13q-.19.533-.53.981l3.45 3.412zM15.5 17q1.05 0 1.775-.725T18 14.5t-.725-1.775T15.5 12t-1.775.725T13 14.5t.725 1.775T15.5 17" /></svg>'
   };
   return icons[iconName] || '';
 }
