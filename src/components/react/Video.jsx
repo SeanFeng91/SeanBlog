@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Video = ({ src, type = 'video/mp4', youtube, width = '100%', height = 'auto' }) => {
+const Video = ({ src, type = 'video/mp4', youtube, bilibili, width = '100%', height = 'auto' }) => {
   if (youtube) {
     return (
       <iframe
@@ -9,6 +9,21 @@ const Video = ({ src, type = 'video/mp4', youtube, width = '100%', height = 'aut
         src={`https://www.youtube.com/embed/${youtube}`}
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    );
+  }
+
+  if (bilibili) {
+    return (
+      <iframe
+        src={`https://player.bilibili.com/player.html?bvid=${bilibili}&high_quality=1&danmaku=0`}
+        width={width}
+        height={height}
+        scrolling="no"
+        border="0"
+        frameBorder="no"
+        framespacing="0"
         allowFullScreen
       ></iframe>
     );
