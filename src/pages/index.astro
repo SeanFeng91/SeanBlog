@@ -36,7 +36,7 @@ const pageTitle = "SeanBlog";
 		</h1>
 
 		<!-- 庆祝按钮 -->
-		<div class="flex justify-center mb-12">
+		<!-- <div class="flex justify-center mb-12">
 			<button 
 				@click="isFestive = !isFestive" 
 				class="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-2 px-4 rounded-full shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
@@ -44,21 +44,21 @@ const pageTitle = "SeanBlog";
 				<span x-text="isFestive ? 'Welcome!!' : 'Click to celebrate'"></span>
 				<i class="fas fa-party-horn ml-2"></i>
 			</button>
-		</div>
+		</div> -->
 
 		<!-- 彩带效果画布 -->
-		<canvas 
+		<!-- <canvas 
 			:class="isFestive ? 'opacity-100 translate-y-0 duration-1000' : 'opacity-0 -translate-y-full'" 
 			id="my-canvas" 
 			class="absolute top-0 left-0 w-full h-full pointer-events-none transition-all"
-		></canvas>
+		></canvas> -->
 
 		<!-- 动画文本部分 -->
-		<section class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-8 rounded-lg shadow-xl mb-12">
+		<!-- <section class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-8 rounded-lg shadow-xl mb-12">
 			<p class="tlt text-xl md:text-3xl text-center">
 				使用cursor编辑器,我可以轻松处理复杂的代码结构,快速定位和修改所需内容。无论是重构还是新功能开发,cursor都让我事半功倍。它智能的代码补全和实时错误检查功能大大提高了我的编码效率和质量。我现在可以更专注于创意和逻辑,而不是被繁琐的语法细节所困扰。cursor真是我的得力助手!
 			</p>
-		</section>
+		</section> -->
 
 		<!-- "正在进行" 和 "已完成" 部分 -->
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -95,7 +95,7 @@ const pageTitle = "SeanBlog";
 		</div>
 
 		<!-- 博客文章水平自动滚动区域 -->
-		<div class="mb-20 overflow-x-auto relative">
+		<!-- <div class="mb-20 overflow-x-auto relative">
 			<div class="flex animate-scroll" style="width: max-content;">
 				{allPosts.map((indexcard, index) => (
 					<div 
@@ -131,7 +131,7 @@ const pageTitle = "SeanBlog";
 					</div>
 				))}
 			</div>
-		</div>
+		</div> -->
 
 		<!-- 时间线部分 -->
 		<div class="relative mt-20 mb-20">
@@ -141,17 +141,17 @@ const pageTitle = "SeanBlog";
 			<div class="space-y-12 md:space-y-8">
 				{allPosts.sort((a, b) => new Date(b.frontmatter.pubDate) - new Date(a.frontmatter.pubDate)).map((indexcard, index) => (
 					<div 
-						class="relative flex items-center md:justify-between"
+						class="relative flex items-center"
 						data-aos="fade-up"
-						data-aos-duration="800"
-						data-aos-delay={index * 150}
+						data-aos-duration="600"
+						data-aos-delay={index * 80}
 						style={`margin-top: ${index === 0 ? '0' : 'var(--mt)'};`}
 					>
 						<div class="absolute left-2 md:left-1/2 w-5 h-5 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 shadow-lg flex 
 						items-center justify-center z-10 transform md:-translate-x-1/2">
 							<div class="w-3 h-3 rounded-full bg-white dark:bg-gray-700"></div>
 						</div>
-						<div class={`ml-12 md:ml-0 md:w-6/12 ${index % 2 === 0 ? 'md:mr-auto md:pr-8 ' : 'md:ml-auto md:pl-8'}`}>
+						<div class={`ml-12 md:ml-0 md:w-5/12 ${index % 2 === 0 ? 'md:text-right md:pr-0 md:ml-10' : 'md:ml-auto md:pl-0'}`}>
 							<div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
 								<div class="px-4">
 									<div class="mb-4">

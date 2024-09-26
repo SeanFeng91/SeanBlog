@@ -1,0 +1,178 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "新西兰旅游实时信息"
+author: Sean Feng
+description: "离出发去新西兰旅游还有不到一周的时间，最关心的就是当地的天气和气温。谁不希望十个晴天呢。"
+pubDate: 2024-09-11
+tags: ["新西兰", "旅游", "路书","使用说明"]
+# ## 高级样式
+
+# ### 文字高亮
+
+# 使用自定义的 Highlight 组件来实现文字高亮：
+
+# <Highlight color="#25c2a0">这是绿色高亮文本</Highlight>
+# <Highlight color="#1877F2">这是蓝色高亮文本</Highlight>
+
+
+# ### 提示框
+# 使用 Alert 组件来创建不同类型的提示框：
+# <Alert type="info" title="提示">
+#   这是一个信息提示框。
+# </Alert>
+
+# <Alert type="warning" title="警告">
+#   这是一个警告提示框。
+# </Alert>
+
+# ### 可折叠内容
+
+# 使用 Collapsible 组件来创建可折叠的内容块：
+# <Collapsible client:load title="点击展开更多内容">
+#   这是被折叠的内容。可以包含任何 Markdown 或 JSX 元素。
+# </Collapsible>
+
+# ### 标签页
+
+# 使用 Tabs 组件来创建标签页：
+
+# export const tabItems = [
+#   {
+#     label: "基本用法",
+#     content: `
+#       <p>这里是关于基本用法的内容。您可以包含任何Markdown或JSX元素。目前直接使用tabs组件会报错，所以暂时使用这个妥协方案。</p>
+#       <ul>
+#         <li>列表项1</li>
+#         <li>列表项2</li>
+#         <li>列表项3</li>
+#       </ul>
+#     `
+#   },
+#   {
+#     label: "高级特性",
+#     content: "<p>这里是关于高级特性的内容。</p>"
+#   },
+#   {
+#     label: "注意事项",
+#     content: `
+#       <p>使用本组件时需要注意以下几点:</p>
+#       <ol>
+#         <li>确保正确导入组件</li>
+#         <li>使用 client:load 指令以启用客户端交互</li>
+#         <li>每个 Tab 都需要一个唯一的 label 属性</li>
+#       </ol>
+#     `
+#   }
+# ];
+
+# <Tabs client:load items={tabItems} />
+
+---
+
+{/* 导入必要的样式和组件 */}
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+import { Image } from 'astro:assets';
+import ImageSwitcher from '../../components/react/ImageSwitcher';
+import Video from '../../components/react/Video';
+
+# 概述
+
+之前在石墨文档体验的嵌入网页页面的功能，在之前的新西兰博客中尝试插入了视频。因为最近需要频繁的查询天气，看实时摄像，看彗星等与新西兰旅游相关的讯息，于是就
+尝试能否把他们都集成嵌入到一篇博客中，这样我就可以只浏览这一个页面，非常方便。没想到仅仅需要一个简单的iframe就可以实现。不过有些网站有防止嵌入，只好找到替代方案。
+比如windy就没有办法。之后再看看还有那些讯息类的页面可以在此嵌入，方便查阅。
+
+# 新西兰天气
+
+新西兰南岛位于南纬40°至47°之间，属于温带海洋性气候，气候受海洋、大气环流、南极洋流的影响较大，天气变化较频繁。10月份是春季中期，此时南岛的气候逐渐变暖，以下是南岛10月份的主要气候特征：
+
+1. 大气环流和季风
+新西兰位于中纬度西风带，受西风带控制，大气环流的主导作用显著。西风带从南太平洋的广阔水域带来潮湿空气，在新西兰的南阿尔卑斯山遇到地形抬升，造成大量降水，尤其是西海岸地区。此外，偶尔会有来自南极的冷空气带来短暂的降温和降雪。
+新西兰南岛不受典型的季风影响，主要受制于周围的海洋影响，但在10月份，风向主要为西风，较为稳定。
+
+2. 降雨
+南岛西海岸地区降雨丰沛，尤其是南阿尔卑斯山脉的西侧，年均降雨量可以达到6000毫米。10月份，由于南岛正处于春季，西部地区降雨较多，月平均降水量约在200至400毫米左右。而东海岸如基督城（Christchurch）等地，降水量较少，月降雨量约为50至100毫米。
+
+3. 气温
+10月份南岛气温逐渐回升，平均气温在10°C至15°C之间，北部的尼尔森（Nelson）地区温度较高，日间气温可达18°C，夜间气温通常在5°C至10°C。南部地区如皇后镇（Queenstown）及菲奥尔德地区气温较低，日间气温在12°C左右，夜间可能降至0°C至5°C之间。
+
+## MetService
+metservice是新西兰最常用的天气预报网站，可以查询到各个地区的天气情况。还包括了手机APP。
+
+<iframe 
+  src="https://www.metservice.com/" 
+  width="100%" 
+  height="500px" 
+  style={{ border: 'none' }} 
+  title="Web Page Preview"
+/>
+
+## 皇后镇实时摄像头
+这个摄像头简直是如获至宝，随时可以看看皇后镇的实时情况。刮风下雪，落日星空！而且可以查询任意历史时刻。它大概每10分钟更新一次全景照片。
+<iframe 
+  src="https://queenstown.roundshot.com/" 
+  width="100%" 
+  height="500px" 
+  style={{ border: 'none' }} 
+  title="Web Page Preview"
+/>
+
+# 极光预测
+
+下图是未来27天的极光预测，红色表示极光概率较高。很幸运的是在10月5、6、10、11、12日这几天都是非常高的概率。尤其是我们在蒂卡普湖的两天！不过不算是
+大爆发，所以应该就是可以在南边的天空看到红色的极光。下图2就是9月24日这天皇后镇晚上的极光盛况，通过实况照片看到，极光持续了一个晚上。而且那几天的月相也相当的配合，非常期待。
+而且可能在极端良好天气的情况下，能看见C/2023 A3（紫金山-阿特拉斯）彗星。
+<ImageSwitcher 
+  client:load
+  images={[
+    '/SeanBlog/pictures/NZ64.png',
+    '/SeanBlog/pictures/NZ65.png',
+    '/SeanBlog/pictures/NZ66.png',
+
+  ]} 
+  maxHeight={800}
+/>
+
+<iframe 
+  src="http://dunedinaurora.nz/" 
+  width="100%" 
+  height="500px" 
+  style={{ border: 'none' }} 
+  title="Web Page Preview"
+/>
+
+# C/2023 A3（紫金山-阿特拉斯）彗星
+
+万众期待的C/2023彗星，目前已经进入观测期，在环境良好的区域日出前已经肉眼可见。下图是天文社学妹在澳大利亚拍摄的彗星，登上了NASA每日一图。目前预测峰值亮度在2等左右。
+不过我们在新西兰的时候，观测角度没有北半球更好。目前9月28日天气非常好，早起试一试！
+<ImageSwitcher 
+  client:load
+  images={[
+    '/SeanBlog/pictures/NZ67.jpg',
+    '/SeanBlog/pictures/NZ68.png',
+
+  ]} 
+  maxHeight={800}
+/>
+
+
+<iframe 
+  src="http://www.aerith.net/comet/catalog/2023A3/2023A3-j.html" 
+  width="100%" 
+  height="500px" 
+  style={{ border: 'none' }} 
+  title="Web Page Preview"
+/>
+
+下面这个theskylive可以实时模拟星空，包括彗星的位置。
+
+<iframe 
+  src="https://theskylive.com/planetarium?objects=sun-moon-c2023a3-mercury-venus-mars-jupiter-saturn-uranus-neptune-pluto&localdata=-45.03023%7C168.66271%7CQueenstown%20(NZ)%7CPacific%2FAuckland%7C0&obj=c2023a3&h=08&m=07&date=2024-09-26#ra|10.708067369096266|dec|-6.10582997734143|fov|56" 
+  width="100%" 
+  height="500px" 
+  style={{ border: 'none' }} 
+  title="Web Page Preview"
+/>

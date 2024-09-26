@@ -57,7 +57,7 @@ function generateTOC(posts) {
             </button>
           ))}
           {tags.map(tag => (
-            <button class="filter bg-gradient-to-r from-yellow-200 to-orange-200 hover:from-yellow-300 hover:to-orange-300 text-gray-800 font-medium text-sm py-1.5 px-4 rounded-full transition duration-300 shadow-sm" data-filter={tag}>
+            <button class="filter bg-gradient-to-r from-yellow-200 to-orange-200 hover:from-yellow-300 hover:to-orange-300 text-gray-800 font-medium text-xs py-1.5 px-2 rounded-full transition duration-300 shadow-sm" data-filter={tag}>
               <Icon name="mdi:tag" class="w-4 h-4 inline-block mr-1" />{tag}
             </button>
           ))}
@@ -84,7 +84,7 @@ function generateTOC(posts) {
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {posts.map((post, index) => (
                   <div class="post" data-folder={folder} data-tags={post.frontmatter.tags.join(',')}>
-                    <div data-aos="fade-up" data-aos-offset="100" data-aos-delay={index * 100} data-aos-duration="800" 
+                    <div data-aos="" data-aos-offset="100" data-aos-delay={index * 100} data-aos-duration="800" 
                          class="bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md overflow-hidden h-full flex flex-col transform transition duration-300 hover:scale-105 hover:shadow-lg">
                       <div class="px-6 py-4 flex-grow">
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">{folderNames[folder] || folder} #{index + 1}</p>
@@ -128,7 +128,7 @@ function generateTOC(posts) {
   }
 
   .filter {
-    transition: all 0.3s ease;
+    transition: all 0.0s ease;
   }
 
   .filter:hover {

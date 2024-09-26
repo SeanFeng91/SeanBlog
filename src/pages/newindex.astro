@@ -1,0 +1,192 @@
+---
+import "../styles/global.css";
+import IndexLayout from '../layouts/IndexLayout.astro';
+
+const allPosts = await Astro.glob('../pages/posts/*.{md,mdx}');
+const travelPosts = allPosts.filter(post => post.frontmatter.category === 'travel').slice(0, 6);
+const pageTitle = "生活方式";
+const pickupPosts = allPosts.slice(0, 5); // 假设我们展示5个项目
+---
+
+<IndexLayout pageTitle={pageTitle}>
+  <div slot="maindiv" class="container mx-auto px-4 py-8">
+    <!-- 头部搜索区域 -->
+    <div class="bg-green-100 rounded-lg p-6 mb-8">
+      <h1 class="text-3xl font-bold mb-4">发现生活中的美好</h1>
+      <div class="flex">
+        <input type="text" placeholder="搜索关键词" class="flex-grow p-2 rounded-l-lg border-2 border-green-300 focus:outline-none focus:border-green-500">
+        <button class="bg-green-500 text-white px-4 py-2 rounded-r-lg hover:bg-green-600">搜索</button>
+      </div>
+    </div>
+
+    <!-- PICK UP 区域 -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">
+        <span class="text-sm text-gray-500">自治体の紹介</span>
+        <br />
+        PICK UP
+      </h2>
+      <div class="relative swiper-container">
+        <div class="swiper-wrapper">
+          {pickupPosts.map((post) => (
+            <div class="swiper-slide">
+              <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src={post.frontmatter.image || "https://via.placeholder.com/300x200"} alt={post.frontmatter.title} class="w-full h-48 object-cover">
+                <div class="p-4">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">{post.frontmatter.category || "とかいなか"}</span>
+                    <span class="text-sm text-gray-500">{post.frontmatter.prefecture} {post.frontmatter.city}</span>
+                  </div>
+                  <h3 class="text-lg font-semibold mb-2">{post.frontmatter.title}</h3>
+                  <p class="text-sm text-gray-600">{post.frontmatter.description}</p>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    {post.frontmatter.tags && post.frontmatter.tags.map((tag) => (
+                      <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded-full">#{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+
+    <!-- 旅行生活方式部分 -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">NEW</span>
+        <h2 class="text-4xl font-bold text-green-600 mt-2">LIFESTYLE</h2>
+        <p class="text-xl text-gray-600 mt-2">在地域中实现自己的"生活方式"</p>
+        <p class="text-sm text-gray-500 mt-1">在可以选择自由工作方式和生活方式的时代，<br>如果被问到"人生中最重要的是什么？"，你会想到什么？</p>
+        <div class="inline-block bg-yellow-100 text-yellow-800 text-sm font-medium px-4 py-2 rounded-full mt-4">
+          通过探索不同地域，寻找实现自己理想"生活方式"的灵感
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {travelPosts.map((post) => (
+          <div class="relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70 z-10"></div>
+            <img src={post.frontmatter.image || "https://via.placeholder.com/400x300"} alt={post.frontmatter.title} class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+            <div class="absolute bottom-0 left-0 right-0 p-4 z-20">
+              <h3 class="text-lg font-semibold text-white mb-2 group-hover:underline">{post.frontmatter.title}</h3>
+              <p class="text-sm text-gray-200 mb-3 line-clamp-2">{post.frontmatter.description}</p>
+              <div class="flex flex-wrap gap-2">
+                {post.frontmatter.tags && post.frontmatter.tags.map((tag) => (
+                  <span class="bg-white bg-opacity-20 text-white text-xs px-2 py-1 rounded-full">{tag}</span>
+                ))}
+              </div>
+            </div>
+            <a href={post.url} class="absolute inset-0 z-30" aria-label={`阅读更多关于 ${post.frontmatter.title} 的内容`}></a>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-8">
+        <a href="/travel" class="inline-block bg-gray-800 text-white px-6 py-2 rounded-full hover:bg-gray-700 transition-colors">
+          希望了解更多地域信息的自治体和团体请点击这里 →
+        </a>
+      </div>
+    </div>
+
+    <!-- 周排行榜 -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">WEEKLY RANKING</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {allPosts.slice(0, 6).map((post, index) => (
+          <div class="flex items-center bg-white rounded-lg p-2 shadow-md">
+            <span class="text-2xl font-bold text-green-500 mr-3">{index + 1}</span>
+            <div>
+              <h3 class="font-semibold">{post.frontmatter.title}</h3>
+              <p class="text-sm text-gray-500">{post.frontmatter.author}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- 杂志区域 -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-4">MAGAZINE</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {allPosts.slice(0, 3).map((post) => (
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img src={post.frontmatter.image || "https://via.placeholder.com/300x200"} alt={post.frontmatter.title} class="w-full h-48 object-cover">
+            <div class="p-4">
+              <h3 class="text-xl font-semibold mb-2">{post.frontmatter.title}</h3>
+              <p class="text-gray-600">{post.frontmatter.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- 底部功能区 -->
+    <div class="bg-gray-100 rounded-lg p-6">
+      <h2 class="text-2xl font-bold mb-4">WHAT YOU CAN DO</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-lg p-4 shadow-md">
+          <h3 class="text-xl font-semibold mb-2">分享你的故事</h3>
+          <p class="text-gray-600">与他人分享你的生活经历和见解</p>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow-md">
+          <h3 class="text-xl font-semibold mb-2">探索新话题</h3>
+          <p class="text-gray-600">发现有趣的讨论和新鲜的观点</p>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow-md">
+          <h3 class="text-xl font-semibold mb-2">参与社区活动</h3>
+          <p class="text-gray-600">加入线上线下的社区互动</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOIN US 区域 -->
+    <div class="mt-12 bg-orange-100 rounded-lg p-6">
+      <h2 class="text-2xl font-bold mb-4">JOIN US</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white rounded-lg p-4 shadow-md">
+          <h3 class="text-lg font-semibold mb-2">注册</h3>
+          <p class="text-sm text-gray-600">创建你的账户</p>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow-md">
+          <h3 class="text-lg font-semibold mb-2">登录</h3>
+          <p class="text-sm text-gray-600">访问你的账户</p>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow-md">
+          <h3 class="text-lg font-semibold mb-2">订阅</h3>
+          <p class="text-sm text-gray-600">获取最新资讯</p>
+        </div>
+        <div class="bg-white rounded-lg p-4 shadow-md">
+          <h3 class="text-lg font-semibold mb-2">联系我们</h3>
+          <p class="text-sm text-gray-600">有问题？联系我们</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</IndexLayout>
+
+<script>
+  import Swiper from 'swiper';
+  import { Navigation } from 'swiper/modules';
+  import 'swiper/css';
+  import 'swiper/css/navigation';
+
+  new Swiper('.swiper-container', {
+    modules: [Navigation],
+    spaceBetween: 20,
+    slidesPerView: 3,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    loop: true,
+  });
+</script>
+
+<style>
+  @import 'swiper/css';
+  @import 'swiper/css/navigation';
+</style>
