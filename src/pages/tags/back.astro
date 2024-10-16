@@ -25,7 +25,7 @@ const pageTitle = "Tag Index";
       
       <div id="posts" class="mt-10 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-y-10 gap-x-5 dark:text-cyan-50">
         {allPosts.map((indexcard, index) =>
-          <div class="post" data-tags={indexcard.frontmatter.tags.join(',')}>
+          <div class="post" data-tags={indexcard.frontmatter.tags?.join(',') || ''}>
             <div class="min-w-sm border dark:border-sky-800 rounded-lg p-4 min-h-60 bg-gradient-to-t from-sky-50 to-sky-0 dark:from-sky-950 dark:to-sky-900 shadow-sm">
               <h4 class="mt-1 mb-0 font-bold light text-gray-400 dark:text-slate-200">Blog No.{index + 1}</h4>
               <h2 class="nav-links mt-1 text-2xl text-balance leading-tight font-bold hover:text-blue-900">
@@ -37,7 +37,7 @@ const pageTitle = "Tag Index";
             </div>
             <div>
               <p class="p-0 mt-2 mb-0 ml-2 font-bold text-slate-400">文档分类：</p>
-              {indexcard.frontmatter.tags.map((blogtags) => (
+              {indexcard.frontmatter.tags?.map((blogtags) => (
                 <div class="inline-block mt-1">
                   <p class="m-0 text-lg font-light">
                     <svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16">
