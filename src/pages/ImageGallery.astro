@@ -48,7 +48,7 @@ async function getImagesFromDirectory(dir) {
   const images = await Promise.all(imagePromises);
   return images.filter(image => image !== null);
 }
-
+ 
 const baseDir = 'public/pictures/Albums';
 console.log(`Base directory: ${baseDir}`);
 
