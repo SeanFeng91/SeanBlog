@@ -4,7 +4,6 @@ import fs from 'fs/promises';
 import path from 'path';
 import ExifReader from 'exifreader';
 import sharp from 'sharp';
-import heicConvert from 'heic-convert';
 
 let errorMessage = '';
 let albums = [];
@@ -12,14 +11,12 @@ let albums = [];
 const BASE_URL = import.meta.env.BASE_URL || '/SeanBlog';
 console.log(`Base URL: ${BASE_URL}`);
 
-async function convertHeicToJpeg(buffer) {
+async function convertHeicToWebp(buffer) {
   try {
-    const jpegBuffer = await heicConvert({
-      buffer: buffer,
-      format: 'JPEG',
-      quality: 90
-    });
-    return jpegBuffer;
+    const webpBuffer = await sharp(buffer)
+      .webp({ quality: 80 })
+      .toBuffer();
+    return webpBuffer;
   } catch (error) {
     console.error('HEIC 转换错误:', error);
     throw error;
@@ -42,8 +39,8 @@ async function getImagesFromDirectory(dir) {
         let imageSrc = `${BASE_URL}${path.join(dir, file).replace('public', '').replace(/\\/g, '/')}`;
         
         if (path.extname(file).toLowerCase() === '.heic') {
-          buffer = await convertHeicToJpeg(buffer);
-          imageSrc = imageSrc.replace('.heic', '.jpg');
+          buffer = await convertHeicToWebp(buffer);
+          imageSrc = imageSrc.replace('.heic', '.webp');
         }
         
         if (['.webp', '.heic'].includes(path.extname(file).toLowerCase())) {
@@ -76,13 +73,14 @@ async function getImagesFromDirectory(dir) {
   return images.filter(image => image !== null);
 }
 
-try {
-  const baseDir = 'public/pictures/Albums';
-  console.log(`Base directory: ${baseDir}`);
+async function getAlbums() {
+  try {
+    const baseDir = 'public/pictures/Albums';
+    console.log(`Base directory: ${baseDir}`);
 
-  const albumsPromise = Promise.all(
-    (await fs.readdir(baseDir))
-      .filter(async file => (await fs.stat(path.join(baseDir, file))).isDirectory())
+    const albumDirs = await fs.readdir(baseDir);
+    const albumPromises = albumDirs
+      .filter(async (file) => (await fs.stat(path.join(baseDir, file))).isDirectory())
       .map(async (albumName) => {
         console.log(`处理相册: ${albumName}`);
         const albumPath = path.join(baseDir, albumName);
@@ -94,10 +92,17 @@ try {
           path: albumPath,
           images: images
         };
-      })
-  );
+      });
 
-  albums = await albumsPromise;
+    return await Promise.all(albumPromises);
+  } catch (error) {
+    console.error('获取相册时发生错误:', error);
+    throw error;
+  }
+}
+
+try {
+  albums = await getAlbums();
   console.log(`总共相册数: ${albums.length}`);
 } catch (error) {
   console.error('发生错误:', error);
@@ -123,7 +128,9 @@ try {
               {album.images.length > 0 ? (
                 album.images.map((image) => (
                   <div class="image-item" key={image.id}>
-                    <img src={image.src} alt={image.alt} loading="lazy" />
+                    <div class="image-container">
+                      <img src={image.src} alt={image.alt} loading="lazy" />
+                    </div>
                     <div class="image-overlay">
                       <div class="image-title">{image.title}</div>
                       <div class="image-metadata">
@@ -160,10 +167,18 @@ try {
     position: relative;
     overflow: hidden;
   }
-  .image-item img {
+  .image-container {
     width: 100%;
-    height: auto;
-    display: block;
+    padding-top: 100%; /* 1:1 宽高比 */
+    position: relative;
+  }
+  .image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .image-overlay {
     position: absolute;
@@ -190,5 +205,5 @@ try {
 
 <script>
   console.log('客户端脚本已加载');
-  // 其余的客户端脚本
+  // 其他客户端脚本
 </script>
