@@ -36,7 +36,7 @@ async function getImagesFromDirectory(dir) {
       try {
         let buffer = await fs.readFile(filePath);
         let metadata;
-        let imageSrc = `${BASE_URL}/${path.relative('public', filePath).replace(/\\/g, '/')}`;
+        let imageSrc = path.relative('public', filePath).replace(/\\/g, '/');
         
         if (path.extname(file).toLowerCase() === '.heic') {
           buffer = await convertHeicToWebp(buffer);
@@ -104,16 +104,16 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 
 ---
 
-<IndexLayout title="Photo Gallery">
+<IndexLayout title="相册集">
   <div slot="maindiv" class="album-gallery">
-    <h1>My Album Collection</h1>
+    <h1>我的相册集</h1>
     
     {errorMessage && <p style="color: red;">{errorMessage}</p>}
     
-    {albums.length === 0 && <p>No albums found or an error occurred while processing albums.</p>}
+    {albums.length === 0 && <p>未找到相册或处理相册时出错。</p>}
     
     {albums.length > 0 && (
-      <div x-data="{ activeAlbum: '${defaultActiveAlbum}' }">
+      <div x-data="{ activeAlbum: '${defaultActiveAlbum}', loadedAlbums: {} }" x-init="$watch('activeAlbum', value => { if (!loadedAlbums[value]) { loadedAlbums[value] = true; } })">
         <div class="album-tabs">
           {albums.map((album) => (
             <button 
@@ -131,9 +131,14 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
             class="album" 
             id={album.id} 
             x-show="activeAlbum === '${album.id}'"
-            style="display: none;"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform scale-90"
+            x-transition:enter-end="opacity-100 transform scale-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 transform scale-100"
+            x-transition:leave-end="opacity-0 transform scale-90"
           >
-            <div class="image-grid">
+            <div class="image-grid" x-show="loadedAlbums['${album.id}']">
               {album.images.length > 0 ? (
                 album.images.map((image) => (
                   <div class="image-item">
@@ -150,7 +155,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
                   </div>
                 ))
               ) : (
-                <p>No images in this album.</p>
+                <p>此相册中没有图片。</p>
               )}
             </div>
           </div>
@@ -188,6 +193,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   }
   .album {
     margin-bottom: 30px;
+    transition: all 0.3s ease-in-out;
   }
   .image-grid {
     display: grid;
