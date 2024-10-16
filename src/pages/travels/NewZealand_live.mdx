@@ -5,6 +5,7 @@ author: Sean Feng
 description: "离出发去新西兰旅游还有不到一周的时间，最关心的就是当地的天气和气温。谁不希望十个晴天呢。"
 pubDate: 2024-09-26
 tags: ["新西兰", "旅游", "路书","使用说明"]
+wordCount: 1234  # 请替换为实际的字数
 # ## 高级样式
 
 # ### 文字高亮
@@ -78,6 +79,10 @@ import { Tabs } from '../../components/react/Tabs';
 import { Image } from 'astro:assets';
 import ImageSwitcher from '../../components/react/ImageSwitcher';
 import Video from '../../components/react/Video';
+
+<p style={{ textAlign: 'right', fontStyle: 'italic', color: '#888' }}>
+  本文字数：{frontmatter.wordCount} 字
+</p>
 
 # 概述
 

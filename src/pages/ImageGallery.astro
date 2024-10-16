@@ -1,40 +1,113 @@
 ---
 import IndexLayout from '../layouts/IndexLayout.astro';
+import fs from 'fs';
+import path from 'path';
+import ExifReader from 'exifreader';
+import sharp from 'sharp';
 
-// 模拟的图片数据,增加了标题和描述
-const images = [
-  { id: 1, src: 'https://picsum.photos/id/1018/300/400', alt: '山景', title: '雄伟山峰', description: '巍峨的山峰耸立于云端,展现大自然的磅礴气势' },
-  { id: 2, src: 'https://picsum.photos/id/1015/300/300', alt: '河流', title: '蜿蜒河流', description: '清澈的河水蜿蜒流过,滋润着周围的生态' },
-  { id: 3, src: 'https://picsum.photos/id/1019/300/350', alt: '海滩', title: '金色沙滩', description: '阳光下的沙滩闪耀着金色光芒,海浪轻抚岸边' },
-  { id: 4, src: 'https://picsum.photos/id/1022/300/250', alt: '北极光', title: '绚丽北极光', description: '夜空中舞动的北极光,如梦如幻' },
-  { id: 5, src: 'https://picsum.photos/id/1023/300/450', alt: '熊', title: '野生棕熊', description: '森林中的棕熊,展现了野性的魅力' },
-  { id: 6, src: 'https://picsum.photos/id/1024/300/300', alt: '瀑布', title: '飞流直下', description: '气势磅礴的瀑布,水花四溅,蔚为壮观' },
-  { id: 7, src: 'https://picsum.photos/id/1025/300/400', alt: '羊驼', title: '可爱羊驼', description: '高原上的萌物,毛茸茸的羊驼让人忍俊不禁' },
-  { id: 8, src: 'https://picsum.photos/id/1028/300/350', alt: '灯塔', title: '孤独灯塔', description: '矗立在海边的灯塔,为航行者指引方向' },
-  { id: 9, src: 'https://picsum.photos/id/1029/300/300', alt: '森林', title: '神秘森林', description: '郁郁葱葱的森林,隐藏着无数的生命' },
-  { id: 10, src: 'https://picsum.photos/id/1031/300/250', alt: '山脉', title: '连绵山脉', description: '绵延不绝的山脉,如同巨龙般蜿蜒起伏' },
-  { id: 11, src: 'https://picsum.photos/id/1035/300/400', alt: '雪山', title: '皑皑雪山', description: '被白雪覆盖的山峰,纯净而神圣' },
-  { id: 12, src: 'https://picsum.photos/id/1036/300/350', alt: '城市夜景', title: '璀璨夜景', description: '灯火辉煌的城市夜景,展现现代文明的魅力' },
-  { id: 13, src: 'https://picsum.photos/id/1037/300/300', alt: '沙漠', title: '金色沙漠', description: '广袤无垠的沙漠,金色的沙丘起伏不定' },
-  { id: 14, src: 'https://picsum.photos/id/1039/300/450', alt: '冰川', title: '蓝色冰川', description: '蓝白相间的冰川,诉说着地球的古老历史' },
-  { id: 15, src: 'https://picsum.photos/id/1043/300/250', alt: '羊', title: '草原羊群', description: '悠闲吃草的羊群,构成了和谐的田园风光' },
-];
+const BASE_URL = '/SeanBlog'; // 定义基础URL
+
+async function getImagesFromDirectory(dir) {
+  // console.log(`扫描目录: ${dir}`);
+  const files = fs.readdirSync(dir);
+  // console.log(`找到文件: ${files.join(', ')}`);
+  
+  const imagePromises = files
+    .filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(path.extname(file).toLowerCase()))
+    .map(async (file, index) => {
+      const filePath = path.join(dir, file);
+      // console.log(`处理文件: ${filePath}`);
+      try {
+        const buffer = fs.readFileSync(filePath);
+        let metadata;
+        
+        if (path.extname(file).toLowerCase() === '.webp') {
+          const image = sharp(buffer);
+          metadata = await image.metadata();
+        } else {
+          metadata = ExifReader.load(buffer);
+        }
+        
+        return {
+          id: index + 1,
+          src: path.join(BASE_URL, dir, file).replace('public', '').replace(/\\/g, '/'),
+          alt: path.parse(file).name,
+          title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
+          metadata: {
+            dateTime: metadata.DateTime ? metadata.DateTime.description : (metadata.exif ? metadata.exif.DateTimeOriginal : 'Unknown'),
+            make: metadata.Make ? metadata.Make.description : (metadata.exif ? metadata.exif.Make : 'Unknown'),
+            model: metadata.Model ? metadata.Model.description : (metadata.exif ? metadata.exif.Model : 'Unknown'),
+          }
+        };
+      } catch (error) {
+        console.error(`处理文件 ${filePath} 时出错:`, error);
+        return null;
+      }
+    });
+
+  const images = await Promise.all(imagePromises);
+  return images.filter(image => image !== null);
+}
+
+const baseDir = 'public/pictures/Albums';
+console.log(`Base directory: ${baseDir}`);
+
+const albumsPromise = Promise.all(
+  fs.readdirSync(baseDir)
+    .filter(file => fs.statSync(path.join(baseDir, file)).isDirectory())
+    .map(async (albumName) => {
+      console.log(`处理相册: ${albumName}`);
+      const albumPath = path.join(baseDir, albumName);
+      const images = await getImagesFromDirectory(albumPath);
+      console.log(`在 ${albumName} 中找到 ${images.length} 张图片`);
+      return {
+        id: albumName.toLowerCase(),
+        name: albumName.replace(/([A-Z])/g, ' $1').trim(),
+        path: albumPath,
+        images: images
+      };
+    })
+);
+
+const albums = await albumsPromise;
+console.log(`总共相册数: ${albums.length}`);
 ---
 
-<IndexLayout title="ImageGallery">
-  <div slot="maindiv" class="image-gallery">
-    <h1>图片画廊</h1>
-    <div class="image-grid">
-      {images.map((image) => (
-        <div class="image-item" key={image.id}>
-          <img src={image.src} alt={image.alt} loading="lazy" />
-          <div class="image-description">
-            <h3>{image.title}</h3>
-            <p>{image.description}</p>
-          </div>
-        </div>
+<IndexLayout title="图片相册">
+  <div slot="maindiv" class="album-gallery">
+    <h1>我的相册集</h1>
+    
+    <div class="album-tabs">
+      {albums.map((album) => (
+        <button class="album-tab" data-album={album.id}>{album.name}</button>
       ))}
     </div>
+
+    {albums.map((album) => (
+      <div class="album" id={album.id}>
+        <h2>{album.name}</h2>
+        <div class="image-grid">
+          {album.images.length > 0 ? (
+            album.images.map((image) => (
+              <div class="image-item" key={image.id}>
+                <div class="image-container">
+                  <img src={image.src} alt={image.alt} loading="lazy" data-image-id={image.id} />
+                  <div class="image-overlay">
+                    <div class="image-title">{image.title}</div>
+                    <div class="image-metadata">
+                      <p>{image.metadata.dateTime}</p>
+                      <p>{image.metadata.make} {image.metadata.model}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>这个相册中没有图片。</p>
+          )}
+        </div>
+      </div>
+    ))}
 
     <div id="modal" class="modal">
       <span class="close">&times;</span>
@@ -47,78 +120,98 @@ const images = [
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 
-  .image-gallery {
+  .album-gallery {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
     font-family: 'Roboto', sans-serif;
   }
-  h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-weight: 700;
-    color: #333;
-  }
-  .image-grid {
-    column-count: 4;
-    column-gap: 20px;
-  }
-  @media (max-width: 1200px) {
-    .image-grid {
-      column-count: 3;
-    }
-  }
-  @media (max-width: 800px) {
-    .image-grid {
-      column-count: 2;
-    }
-  }
-  @media (max-width: 500px) {
-    .image-grid {
-      column-count: 1;
-    }
-  }
-  .image-item {
-    break-inside: avoid;
+
+  .album-tabs {
+    display: flex;
+    justify-content: center;
     margin-bottom: 20px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-    position: relative;
   }
-  .image-item:hover {
-    transform: scale(1.05);
+
+  .album-tab {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
   }
-  .image-item img {
-    width: 100%;
+
+  .album-tab:hover, .album-tab.active {
+    background-color: #ddd;
+  }
+
+  .album {
+    display: none;
+  }
+
+  .album.active {
     display: block;
   }
-  .image-description {
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .image-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .image-container {
+    width: 100%;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+    position: relative;
+  }
+
+  .image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .image-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0,0,0,0.7);
     color: white;
     padding: 10px;
     transform: translateY(100%);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease-in-out;
   }
-  .image-item:hover .image-description {
+
+  .image-item:hover .image-overlay {
     transform: translateY(0);
   }
-  .image-description h3 {
-    margin: 0 0 5px;
-    font-size: 16px;
-    font-weight: 700;
+
+  .image-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
   }
-  .image-description p {
-    margin: 0;
+
+  .image-metadata {
     font-size: 12px;
-    font-weight: 300;
-    line-height: 1.4;
   }
+
+  .image-metadata p {
+    margin: 0;
+  }
+
   .modal {
     display: none;
     position: fixed;
@@ -128,15 +221,23 @@ const images = [
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.9);
+    overflow: auto;
   }
+
   .modal-content {
     margin: auto;
     display: block;
-    width: 80%;
-    max-width: 700px;
-    max-height: 80%;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
+
   .close {
     position: absolute;
     top: 15px;
@@ -145,7 +246,9 @@ const images = [
     font-size: 40px;
     font-weight: bold;
     cursor: pointer;
+    z-index: 1001;
   }
+
   #caption {
     margin: auto;
     display: block;
@@ -155,6 +258,10 @@ const images = [
     color: #ccc;
     padding: 10px 0;
     height: 150px;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
   }
 </style>
 
@@ -163,23 +270,58 @@ const images = [
   const modalImg = document.getElementById('modal-image');
   const captionText = document.getElementById('caption');
   const closeBtn = document.getElementsByClassName('close')[0];
-  const images = document.querySelectorAll('.image-item img');
+  const imageElements = document.querySelectorAll('.image-item img');
 
-  images.forEach(img => {
+  imageElements.forEach(img => {
     img.onclick = function() {
       modal.style.display = "block";
       modalImg.src = this.src;
       captionText.innerHTML = this.alt;
+      
+      // 禁止页面滚动
+      document.body.style.overflow = 'hidden';
     }
   });
 
   closeBtn.onclick = function() {
     modal.style.display = "none";
+    // 恢复页面滚动
+    document.body.style.overflow = 'auto';
   }
 
   window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
+      // 恢复页面滚动
+      document.body.style.overflow = 'auto';
     }
   }
+
+  // 添加键盘事件监听器
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && modal.style.display === 'block') {
+      modal.style.display = "none";
+      // 恢复页面滚动
+      document.body.style.overflow = 'auto';
+    }
+  });
+
+  // 添加标签切换功能
+  const albumTabs = document.querySelectorAll('.album-tab');
+  const albums = document.querySelectorAll('.album');
+
+  albumTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const albumId = tab.getAttribute('data-album');
+      
+      albumTabs.forEach(t => t.classList.remove('active'));
+      albums.forEach(a => a.classList.remove('active'));
+
+      tab.classList.add('active');
+      document.getElementById(albumId).classList.add('active');
+    });
+  });
+
+  // 默认显示第一个相册
+  albumTabs[0].click();
 </script>
