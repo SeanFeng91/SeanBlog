@@ -9,7 +9,7 @@ let errorMessage = '';
 let albums = [];
 
 const BASE_URL = import.meta.env.BASE_URL || '/SeanBlog';
-console.log(`基础 URL: ${BASE_URL}`);
+console.log(`Base URL: ${BASE_URL}`);
 
 async function convertHeicToWebp(buffer) {
   try {
@@ -18,25 +18,25 @@ async function convertHeicToWebp(buffer) {
       .toBuffer();
     return webpBuffer;
   } catch (error) {
-    console.error('HEIC 转换错误:', error);
+    console.error('HEIC conversion error:', error);
     throw error;
   }
 }
 
 async function getImagesFromDirectory(dir) {
-  console.log(`扫描目录: ${dir}`);
+  console.log(`Scanning directory: ${dir}`);
   const files = await fs.readdir(dir);
-  console.log(`找到文件: ${files.join(', ')}`);
+  console.log(`Found files: ${files.join(', ')}`);
   
   const imagePromises = files
     .filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic'].includes(path.extname(file).toLowerCase()))
     .map(async (file, index) => {
       const filePath = path.join(dir, file);
-      console.log(`处理文件: ${filePath}`);
+      console.log(`Processing file: ${filePath}`);
       try {
         let buffer = await fs.readFile(filePath);
         let metadata;
-        let imageSrc = `${BASE_URL}${path.join(dir, file).replace('public', '').replace(/\\/g, '/')}`;
+        let imageSrc = `${BASE_URL}/${path.relative('public', filePath).replace(/\\/g, '/')}`;
         
         if (path.extname(file).toLowerCase() === '.heic') {
           buffer = await convertHeicToWebp(buffer);
@@ -50,7 +50,7 @@ async function getImagesFromDirectory(dir) {
           metadata = ExifReader.load(buffer);
         }
         
-        console.log(`图片 src: ${imageSrc}`);
+        console.log(`Image src: ${imageSrc}`);
         
         return {
           id: index + 1,
@@ -58,13 +58,13 @@ async function getImagesFromDirectory(dir) {
           alt: path.parse(file).name,
           title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
           metadata: {
-            dateTime: metadata.DateTime ? metadata.DateTime.description : (metadata.exif ? metadata.exif.DateTimeOriginal : '未知'),
-            make: metadata.Make ? metadata.Make.description : (metadata.exif ? metadata.exif.Make : '未知'),
-            model: metadata.Model ? metadata.Model.description : (metadata.exif ? metadata.exif.Model : '未知'),
+            dateTime: metadata.DateTime ? metadata.DateTime.description : (metadata.exif ? metadata.exif.DateTimeOriginal : 'Unknown'),
+            make: metadata.Make ? metadata.Make.description : (metadata.exif ? metadata.exif.Make : 'Unknown'),
+            model: metadata.Model ? metadata.Model.description : (metadata.exif ? metadata.exif.Model : 'Unknown'),
           }
         };
       } catch (error) {
-        console.error(`处理文件 ${filePath} 时出错:`, error);
+        console.error(`Error processing file ${filePath}:`, error);
         return null;
       }
     });
@@ -75,16 +75,16 @@ async function getImagesFromDirectory(dir) {
 
 try {
   const baseDir = 'public/pictures/Albums';
-  console.log(`基础目录: ${baseDir}`);
+  console.log(`Base directory: ${baseDir}`);
 
   const albumDirs = await fs.readdir(baseDir);
   const albumPromises = albumDirs
     .filter(async (file) => (await fs.stat(path.join(baseDir, file))).isDirectory())
     .map(async (albumName) => {
-      console.log(`处理相册: ${albumName}`);
+      console.log(`Processing album: ${albumName}`);
       const albumPath = path.join(baseDir, albumName);
       const images = await getImagesFromDirectory(albumPath);
-      console.log(`在 ${albumName} 中找到 ${images.length} 张图片`);
+      console.log(`Found ${images.length} images in ${albumName}`);
       return {
         id: albumName.toLowerCase(),
         name: albumName.replace(/([A-Z])/g, ' $1').trim(),
@@ -94,23 +94,23 @@ try {
     });
 
   albums = await Promise.all(albumPromises);
-  console.log(`总共相册数: ${albums.length}`);
+  console.log(`Total albums: ${albums.length}`);
 } catch (error) {
-  console.error('发生错误:', error);
-  errorMessage = `错误: ${error.message}`;
+  console.error('Error occurred:', error);
+  errorMessage = `Error: ${error.message}`;
 }
 
 const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 
 ---
 
-<IndexLayout title="图片库">
+<IndexLayout title="Photo Gallery">
   <div slot="maindiv" class="album-gallery">
-    <h1>我的相册集</h1>
+    <h1>My Album Collection</h1>
     
     {errorMessage && <p style="color: red;">{errorMessage}</p>}
     
-    {albums.length === 0 && <p>没有找到相册或处理相册时出错。</p>}
+    {albums.length === 0 && <p>No albums found or an error occurred while processing albums.</p>}
     
     {albums.length > 0 && (
       <div x-data="{ activeAlbum: '${defaultActiveAlbum}' }">
@@ -150,7 +150,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
                   </div>
                 ))
               ) : (
-                <p>这个相册中没有图片。</p>
+                <p>No images in this album.</p>
               )}
             </div>
           </div>
@@ -200,7 +200,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   }
   .image-container {
     width: 100%;
-    padding-top: 100%; /* 1:1 宽高比 */
+    padding-top: 100%; /* 1:1 Aspect Ratio */
     position: relative;
   }
   .image-container img {
@@ -273,7 +273,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 </style>
 
 <script>
-  console.log('客户端脚本已加载');
+  console.log('Client script loaded');
 
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modal-image');
@@ -284,7 +284,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     const albums = document.querySelectorAll('.album');
     const tabs = document.querySelectorAll('.album-tab');
     
-    // 初始化：显示第一个相册
+    // Initialize: show the first album
     if (albums.length > 0) {
       albums[0].style.display = 'block';
       tabs[0].classList.add('active');
@@ -292,14 +292,14 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 
     tabs.forEach((tab, index) => {
       tab.addEventListener('click', () => {
-        // 隐藏所有相册
+        // Hide all albums
         albums.forEach(album => album.style.display = 'none');
-        // 移除所有标签的active类
+        // Remove active class from all tabs
         tabs.forEach(t => t.classList.remove('active'));
         
-        // 显示当前相册
+        // Show the current album
         albums[index].style.display = 'block';
-        // 添加active类到当前标签
+        // Add active class to the current tab
         tab.classList.add('active');
       });
     });
