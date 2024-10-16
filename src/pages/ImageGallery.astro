@@ -113,11 +113,11 @@ try {
       <div>
         <p>找到 {albums.length} 个相册</p>
         <div class="album-tabs">
-          {albums.map((album) => (
+          {albums.map((album, index) => (
             <button class="album-tab" data-album={album.id}>{album.name}</button>
           ))}
         </div>
-        {albums.map((album) => (
+        {albums.map((album, index) => (
           <div class="album" id={album.id}>
             <h2>{album.name}</h2>
             <div class="image-grid">
@@ -174,7 +174,6 @@ try {
   }
   .album {
     display: none;
-    margin-bottom: 30px;
   }
   .album.active {
     display: block;
@@ -269,20 +268,35 @@ try {
   const albumTabs = document.querySelectorAll('.album-tab');
   const albums = document.querySelectorAll('.album');
 
+  function showAlbum(albumId) {
+    albums.forEach(album => {
+      if (album.id === albumId) {
+        album.classList.add('active');
+        album.style.display = 'block';
+      } else {
+        album.classList.remove('active');
+        album.style.display = 'none';
+      }
+    });
+  }
+
   albumTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const albumId = tab.getAttribute('data-album');
       
       albumTabs.forEach(t => t.classList.remove('active'));
-      albums.forEach(a => a.classList.remove('active'));
-
       tab.classList.add('active');
-      document.getElementById(albumId).classList.add('active');
+
+      showAlbum(albumId);
     });
   });
 
   // 默认显示第一个相册
-  albumTabs[0].click();
+  if (albumTabs.length > 0) {
+    const firstAlbumId = albumTabs[0].getAttribute('data-album');
+    albumTabs[0].classList.add('active');
+    showAlbum(firstAlbumId);
+  }
 
   // 图片预览功能
   const modal = document.getElementById('modal');
