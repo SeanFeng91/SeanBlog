@@ -45,6 +45,7 @@
     "gatsby-remark-autolink-headers": "^6.13.1",
     "glob": "^11.0.0",
     "gsap": "^3.12.5",
+    "heic-convert": "^2.1.0",
     "jquery": "^3.7.1",
     "lru-cache": "^11.0.0",
     "marked": "^13.0.3",
