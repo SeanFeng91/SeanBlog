@@ -9,7 +9,7 @@ let errorMessage = '';
 let albums = [];
 
 const BASE_URL = import.meta.env.BASE_URL || '/SeanBlog';
-console.log(`Base URL: ${BASE_URL}`);
+console.log(`基础 URL: ${BASE_URL}`);
 
 async function convertHeicToWebp(buffer) {
   try {
@@ -58,9 +58,9 @@ async function getImagesFromDirectory(dir) {
           alt: path.parse(file).name,
           title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
           metadata: {
-            dateTime: metadata.DateTime ? metadata.DateTime.description : (metadata.exif ? metadata.exif.DateTimeOriginal : 'Unknown'),
-            make: metadata.Make ? metadata.Make.description : (metadata.exif ? metadata.exif.Make : 'Unknown'),
-            model: metadata.Model ? metadata.Model.description : (metadata.exif ? metadata.exif.Model : 'Unknown'),
+            dateTime: metadata.DateTime ? metadata.DateTime.description : (metadata.exif ? metadata.exif.DateTimeOriginal : '未知'),
+            make: metadata.Make ? metadata.Make.description : (metadata.exif ? metadata.exif.Make : '未知'),
+            model: metadata.Model ? metadata.Model.description : (metadata.exif ? metadata.exif.Model : '未知'),
           }
         };
       } catch (error) {
@@ -75,7 +75,7 @@ async function getImagesFromDirectory(dir) {
 
 try {
   const baseDir = 'public/pictures/Albums';
-  console.log(`Base directory: ${baseDir}`);
+  console.log(`基础目录: ${baseDir}`);
 
   const albumDirs = await fs.readdir(baseDir);
   const albumPromises = albumDirs
@@ -99,9 +99,12 @@ try {
   console.error('发生错误:', error);
   errorMessage = `错误: ${error.message}`;
 }
+
+const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
+
 ---
 
-<IndexLayout title="ImageGallery">
+<IndexLayout title="图片库">
   <div slot="maindiv" class="album-gallery">
     <h1>我的相册集</h1>
     
@@ -110,15 +113,30 @@ try {
     {albums.length === 0 && <p>没有找到相册或处理相册时出错。</p>}
     
     {albums.length > 0 && (
-      <div>
-        <p>找到 {albums.length} 个相册</p>
+      <div x-data="{ activeAlbum: '${defaultActiveAlbum}' }">
+        <div class="album-tabs">
+          {albums.map((album) => (
+            <button 
+              class="album-tab" 
+              :class="{ 'active': activeAlbum === '${album.id}' }"
+              @click="activeAlbum = '${album.id}'"
+            >
+              {album.name}
+            </button>
+          ))}
+        </div>
+        
         {albums.map((album) => (
-          <div class="album" id={album.id}>
-            <h2>{album.name}</h2>
+          <div 
+            class="album" 
+            id={album.id} 
+            x-show="activeAlbum === '${album.id}'"
+            style="display: none;"
+          >
             <div class="image-grid">
               {album.images.length > 0 ? (
                 album.images.map((image) => (
-                  <div class="image-item" key={image.id}>
+                  <div class="image-item">
                     <div class="image-container">
                       <img src={image.src} alt={image.alt} loading="lazy" data-image-id={image.id} />
                     </div>
@@ -150,6 +168,23 @@ try {
 <style>
   .album-gallery {
     padding: 20px;
+  }
+  .album-tabs {
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: 20px;
+  }
+  .album-tab {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+    white-space: nowrap;
+  }
+  .album-tab.active {
+    background-color: #ddd;
+    font-weight: bold;
   }
   .album {
     margin-bottom: 30px;
@@ -240,31 +275,55 @@ try {
 <script>
   console.log('客户端脚本已加载');
 
-  // 图片预览功能
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modal-image');
   const closeBtn = document.getElementsByClassName('close')[0];
   const imageElements = document.querySelectorAll('.image-item img');
 
+  document.addEventListener('DOMContentLoaded', (event) => {
+    const albums = document.querySelectorAll('.album');
+    const tabs = document.querySelectorAll('.album-tab');
+    
+    // 初始化：显示第一个相册
+    if (albums.length > 0) {
+      albums[0].style.display = 'block';
+      tabs[0].classList.add('active');
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        // 隐藏所有相册
+        albums.forEach(album => album.style.display = 'none');
+        // 移除所有标签的active类
+        tabs.forEach(t => t.classList.remove('active'));
+        
+        // 显示当前相册
+        albums[index].style.display = 'block';
+        // 添加active类到当前标签
+        tab.classList.add('active');
+      });
+    });
+  });
+
   imageElements.forEach(img => {
-    img.onclick = function() {
+    img.addEventListener('click', function() {
       modal.style.display = "block";
       modalImg.src = this.src;
       document.body.style.overflow = 'hidden';
-    }
+    });
   });
 
-  closeBtn.onclick = function() {
+  closeBtn.addEventListener('click', function() {
     modal.style.display = "none";
     document.body.style.overflow = 'auto';
-  }
+  });
 
-  window.onclick = function(event) {
+  window.addEventListener('click', function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
       document.body.style.overflow = 'auto';
     }
-  }
+  });
 
   document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' && modal.style.display === 'block') {
