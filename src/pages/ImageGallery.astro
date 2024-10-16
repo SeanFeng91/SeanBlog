@@ -8,15 +8,15 @@ import sharp from 'sharp';
 const BASE_URL = import.meta.env.BASE_URL || '/SeanBlog/'; // 使用环境变量或默认值
 
 async function getImagesFromDirectory(dir) {
-  // console.log(`扫描目录: ${dir}`);
+  console.log(`扫描目录: ${dir}`);
   const files = fs.readdirSync(dir);
-  // console.log(`找到文件: ${files.join(', ')}`);
+  console.log(`找到文件: ${files.join(', ')}`);
   
   const imagePromises = files
     .filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(path.extname(file).toLowerCase()))
     .map(async (file, index) => {
       const filePath = path.join(dir, file);
-      // console.log(`处理文件: ${filePath}`);
+      console.log(`处理文件: ${filePath}`);
       try {
         const buffer = fs.readFileSync(filePath);
         let metadata;
