@@ -5,7 +5,7 @@ import path from 'path';
 import ExifReader from 'exifreader';
 import sharp from 'sharp';
 
-const BASE_URL = '/SeanBlog'; // 定义基础URL
+const BASE_URL = import.meta.env.BASE_URL || '/SeanBlog'; // 使用环境变量或默认值
 
 async function getImagesFromDirectory(dir) {
   // console.log(`扫描目录: ${dir}`);
@@ -30,7 +30,7 @@ async function getImagesFromDirectory(dir) {
         
         return {
           id: index + 1,
-          src: path.join(BASE_URL, dir, file).replace('public', '').replace(/\\/g, '/'),
+          src: `${BASE_URL}${path.join(dir, file).replace('public', '').replace(/\\/g, '/')}`,
           alt: path.parse(file).name,
           title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
           metadata: {
@@ -73,7 +73,7 @@ const albums = await albumsPromise;
 console.log(`总共相册数: ${albums.length}`);
 ---
 
-<IndexLayout title="图片相册">
+<IndexLayout title="ImageGallery">
   <div slot="maindiv" class="album-gallery">
     <h1>我的相册集</h1>
     
