@@ -5,110 +5,133 @@ import path from 'path';
 import ExifReader from 'exifreader';
 import sharp from 'sharp';
 
-const BASE_URL = import.meta.env.BASE_URL || '/SeanBlog/'; // 使用环境变量或默认值
+let errorMessage = '';
+let albums = [];
 
-async function getImagesFromDirectory(dir) {
-  console.log(`扫描目录: ${dir}`);
-  const files = fs.readdirSync(dir);
-  console.log(`找到文件: ${files.join(', ')}`);
-  
-  const imagePromises = files
-    .filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(path.extname(file).toLowerCase()))
-    .map(async (file, index) => {
-      const filePath = path.join(dir, file);
-      console.log(`处理文件: ${filePath}`);
-      try {
-        const buffer = fs.readFileSync(filePath);
-        let metadata;
-        
-        if (path.extname(file).toLowerCase() === '.webp') {
-          const image = sharp(buffer);
-          metadata = await image.metadata();
-        } else {
-          metadata = ExifReader.load(buffer);
-        }
-        
-        return {
-          id: index + 1,
-          src: `${BASE_URL}${path.join(dir, file).replace('public', '').replace(/\\/g, '/')}`,
-          alt: path.parse(file).name,
-          title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
-          metadata: {
-            dateTime: metadata.DateTime ? metadata.DateTime.description : (metadata.exif ? metadata.exif.DateTimeOriginal : 'Unknown'),
-            make: metadata.Make ? metadata.Make.description : (metadata.exif ? metadata.exif.Make : 'Unknown'),
-            model: metadata.Model ? metadata.Model.description : (metadata.exif ? metadata.exif.Model : 'Unknown'),
+try {
+  const BASE_URL = import.meta.env.BASE_URL || '/SeanBlog';
+  console.log(`Base URL: ${BASE_URL}`);
+
+  async function getImagesFromDirectory(dir) {
+    console.log(`扫描目录: ${dir}`);
+    const files = fs.readdirSync(dir);
+    console.log(`找到文件: ${files.join(', ')}`);
+    
+    const imagePromises = files
+      .filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(path.extname(file).toLowerCase()))
+      .map(async (file, index) => {
+        const filePath = path.join(dir, file);
+        console.log(`处理文件: ${filePath}`);
+        try {
+          const buffer = fs.readFileSync(filePath);
+          let metadata;
+          
+          if (path.extname(file).toLowerCase() === '.webp') {
+            const image = sharp(buffer);
+            metadata = await image.metadata();
+          } else {
+            metadata = ExifReader.load(buffer);
           }
-        };
-      } catch (error) {
-        console.error(`处理文件 ${filePath} 时出错:`, error);
-        return null;
-      }
-    });
+          
+          const imageSrc = `${BASE_URL}${path.join(dir, file).replace('public', '').replace(/\\/g, '/')}`;
+          console.log(`图片 src: ${imageSrc}`); // 输出每张图片的 src
+        
+          return {
+            id: index + 1,
+            src: imageSrc,
+            alt: path.parse(file).name,
+            title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
+            metadata: {
+              dateTime: metadata.DateTime ? metadata.DateTime.description : (metadata.exif ? metadata.exif.DateTimeOriginal : 'Unknown'),
+              make: metadata.Make ? metadata.Make.description : (metadata.exif ? metadata.exif.Make : 'Unknown'),
+              model: metadata.Model ? metadata.Model.description : (metadata.exif ? metadata.exif.Model : 'Unknown'),
+            }
+          };
+        } catch (error) {
+          console.error(`处理文件 ${filePath} 时出错:`, error);
+          return null;
+        }
+      });
 
-  const images = await Promise.all(imagePromises);
-  return images.filter(image => image !== null);
-}
+    const images = await Promise.all(imagePromises);
+    return images.filter(image => image !== null);
+  }
  
-const baseDir = 'public/pictures/Albums';
-console.log(`Base directory: ${baseDir}`);
+  const baseDir = 'public/pictures/Albums';
+  console.log(`Base directory: ${baseDir}`);
 
-const albumsPromise = Promise.all(
-  fs.readdirSync(baseDir)
-    .filter(file => fs.statSync(path.join(baseDir, file)).isDirectory())
-    .map(async (albumName) => {
-      console.log(`处理相册: ${albumName}`);
-      const albumPath = path.join(baseDir, albumName);
-      const images = await getImagesFromDirectory(albumPath);
-      console.log(`在 ${albumName} 中找到 ${images.length} 张图片`);
-      return {
-        id: albumName.toLowerCase(),
-        name: albumName.replace(/([A-Z])/g, ' $1').trim(),
-        path: albumPath,
-        images: images
-      };
-    })
-);
+  const albumsPromise = Promise.all(
+    fs.readdirSync(baseDir)
+      .filter(file => fs.statSync(path.join(baseDir, file)).isDirectory())
+      .map(async (albumName) => {
+        console.log(`处理相册: ${albumName}`);
+        const albumPath = path.join(baseDir, albumName);
+        const images = await getImagesFromDirectory(albumPath);
+        console.log(`在 ${albumName} 中找到 ${images.length} 张图片`);
+        return {
+          id: albumName.toLowerCase(),
+          name: albumName.replace(/([A-Z])/g, ' $1').trim(),
+          path: albumPath,
+          images: images
+        };
+      })
+  );
 
-const albums = await albumsPromise;
-console.log(`总共相册数: ${albums.length}`);
+  albums = await albumsPromise;
+  console.log(`总共相册数: ${albums.length}`);
+} catch (error) {
+  console.error('发生错误:', error);
+  errorMessage = `错误: ${error.message}`;
+}
 ---
 
 <IndexLayout title="ImageGallery">
   <div slot="maindiv" class="album-gallery">
     <h1>我的相册集</h1>
     
-    <div class="album-tabs">
-      {albums.map((album) => (
-        <button class="album-tab" data-album={album.id}>{album.name}</button>
-      ))}
-    </div>
+    {errorMessage && <p style="color: red;">{errorMessage}</p>}
+    
+    {albums.length === 0 && <p>没有找到相册或处理相册时出错。</p>}
+    
+    {albums.length > 0 && (
+      <div>
+        <p>找到 {albums.length} 个相册</p>
+        <div class="album-tabs">
+          {albums.map((album) => (
+            <button class="album-tab" data-album={album.id}>{album.name}</button>
+          ))}
+        </div>
 
-    {albums.map((album) => (
-      <div class="album" id={album.id}>
-        <h2>{album.name}</h2>
-        <div class="image-grid">
-          {album.images.length > 0 ? (
-            album.images.map((image) => (
-              <div class="image-item" key={image.id}>
-                <div class="image-container">
-                  <img src={image.src} alt={image.alt} loading="lazy" data-image-id={image.id} />
-                  <div class="image-overlay">
-                    <div class="image-title">{image.title}</div>
-                    <div class="image-metadata">
-                      <p>{image.metadata.dateTime}</p>
-                      <p>{image.metadata.make} {image.metadata.model}</p>
+        {albums.map((album) => (
+          <div class="album" id={album.id}>
+            <h2>{album.name}</h2>
+            <div class="image-grid">
+              {album.images.length > 0 ? (
+                album.images.map((image) => (
+                  <div class="image-item" key={image.id}>
+                    <div class="image-container">
+                      <img src={image.src} alt={image.alt} loading="lazy" data-image-id={image.id} />
+                      <!-- 输出图片 src 到页面，方便调试 -->
+                      <p style="display: none;">{image.src}</p>
+                      <div class="image-overlay">
+                        <div class="image-title">{image.title}</div>
+                        <div class="image-metadata">
+                          <p>{image.metadata.dateTime}</p>
+                          <p>{image.metadata.make} {image.metadata.model}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>这个相册中没有图片。</p>
-          )}
-        </div>
+                ))
+              ) : (
+                <p>这个相册中没有图片。</p>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
-    ))}
-
+    )}
+    
     <div id="modal" class="modal">
       <span class="close">&times;</span>
       <img class="modal-content" id="modal-image" />
@@ -266,6 +289,7 @@ console.log(`总共相册数: ${albums.length}`);
 </style>
 
 <script>
+  console.log('客户端脚本已加载');
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modal-image');
   const captionText = document.getElementById('caption');
