@@ -142,9 +142,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
               {album.images.length > 0 ? (
                 album.images.map((image) => (
                   <div class="image-item">
-                    <div class="image-container">
-                      <img src={image.src} alt={image.alt} loading="lazy" data-image-id={image.id} />
-                    </div>
+                    <img src={image.src} alt={image.alt} loading="lazy" data-image-id={image.id} />
                     <div class="image-overlay">
                       <div class="image-title">{image.title}</div>
                       <div class="image-metadata">
@@ -173,27 +171,30 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 <style>
   .album-gallery {
     padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
   .album-tabs {
     display: flex;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
     margin-bottom: 20px;
   }
   .album-tab {
     padding: 10px 20px;
     background-color: #f0f0f0;
     border: none;
+    border-radius: 20px;
     cursor: pointer;
-    margin-right: 5px;
-    white-space: nowrap;
+    transition: all 0.3s ease;
   }
   .album-tab.active {
-    background-color: #ddd;
-    font-weight: bold;
+    background-color: #007bff;
+    color: white;
   }
   .album {
     margin-bottom: 30px;
-    transition: all 0.3s ease-in-out;
   }
   .image-grid {
     display: grid;
@@ -203,19 +204,17 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   .image-item {
     position: relative;
     overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   }
-  .image-container {
+  .image-item img {
     width: 100%;
-    padding-top: 100%; /* 1:1 Aspect Ratio */
-    position: relative;
-  }
-  .image-container img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    height: 200px;
     object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  .image-item:hover img {
+    transform: scale(1.05);
   }
   .image-overlay {
     position: absolute;
@@ -224,7 +223,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     right: 0;
     background-color: rgba(0,0,0,0.7);
     color: white;
-    padding: 5px;
+    padding: 10px;
     transform: translateY(100%);
     transition: transform 0.3s ease-in-out;
   }
@@ -234,7 +233,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   .image-title {
     font-weight: bold;
     font-size: 0.9em;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
   }
   .image-metadata {
     font-size: 0.7em;
