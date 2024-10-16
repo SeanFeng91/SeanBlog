@@ -112,12 +112,7 @@ try {
     {albums.length > 0 && (
       <div>
         <p>找到 {albums.length} 个相册</p>
-        <div class="album-tabs">
-          {albums.map((album, index) => (
-            <button class="album-tab" data-album={album.id}>{album.name}</button>
-          ))}
-        </div>
-        {albums.map((album, index) => (
+        {albums.map((album) => (
           <div class="album" id={album.id}>
             <h2>{album.name}</h2>
             <div class="image-grid">
@@ -156,27 +151,8 @@ try {
   .album-gallery {
     padding: 20px;
   }
-  .album-tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  .album-tab {
-    padding: 10px 20px;
-    margin: 0 5px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  .album-tab:hover, .album-tab.active {
-    background-color: #ddd;
-  }
   .album {
-    display: none;
-  }
-  .album.active {
-    display: block;
+    margin-bottom: 30px;
   }
   .image-grid {
     display: grid;
@@ -263,40 +239,6 @@ try {
 
 <script>
   console.log('客户端脚本已加载');
-
-  // 相册切换功能
-  const albumTabs = document.querySelectorAll('.album-tab');
-  const albums = document.querySelectorAll('.album');
-
-  function showAlbum(albumId) {
-    albums.forEach(album => {
-      if (album.id === albumId) {
-        album.classList.add('active');
-        album.style.display = 'block';
-      } else {
-        album.classList.remove('active');
-        album.style.display = 'none';
-      }
-    });
-  }
-
-  albumTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const albumId = tab.getAttribute('data-album');
-      
-      albumTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      showAlbum(albumId);
-    });
-  });
-
-  // 默认显示第一个相册
-  if (albumTabs.length > 0) {
-    const firstAlbumId = albumTabs[0].getAttribute('data-album');
-    albumTabs[0].classList.add('active');
-    showAlbum(firstAlbumId);
-  }
 
   // 图片预览功能
   const modal = document.getElementById('modal');
