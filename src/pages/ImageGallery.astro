@@ -5,6 +5,9 @@ import path from 'path';
 import ExifReader from 'exifreader';
 import sharp from 'sharp';
 
+let errorMessage = '';
+let albums = [];
+
 const BASE_URL = import.meta.env.BASE_URL || '/SeanBlog';
 console.log(`Base URL: ${BASE_URL}`);
 
@@ -70,7 +73,7 @@ async function getImagesFromDirectory(dir) {
   return images.filter(image => image !== null);
 }
 
-async function getAlbums() {
+try {
   const baseDir = 'public/pictures/Albums';
   console.log(`Base directory: ${baseDir}`);
 
@@ -90,16 +93,19 @@ async function getAlbums() {
       };
     });
 
-  return await Promise.all(albumPromises);
+  albums = await Promise.all(albumPromises);
+  console.log(`总共相册数: ${albums.length}`);
+} catch (error) {
+  console.error('发生错误:', error);
+  errorMessage = `错误: ${error.message}`;
 }
-
-const albums = await getAlbums();
-console.log(`总共相册数: ${albums.length}`);
 ---
 
 <IndexLayout title="ImageGallery">
   <div slot="maindiv" class="album-gallery">
     <h1>我的相册集</h1>
+    
+    {errorMessage && <p style="color: red;">{errorMessage}</p>}
     
     {albums.length === 0 && <p>没有找到相册或处理相册时出错。</p>}
     
@@ -147,7 +153,113 @@ console.log(`总共相册数: ${albums.length}`);
 </IndexLayout>
 
 <style>
-  /* 保持现有样式不变 */
+  .album-gallery {
+    padding: 20px;
+  }
+  .album-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .album-tab {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .album-tab:hover, .album-tab.active {
+    background-color: #ddd;
+  }
+  .album {
+    display: none;
+    margin-bottom: 30px;
+  }
+  .album.active {
+    display: block;
+  }
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  .image-item {
+    position: relative;
+    overflow: hidden;
+  }
+  .image-container {
+    width: 100%;
+    padding-top: 100%; /* 1:1 宽高比 */
+    position: relative;
+  }
+  .image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    padding: 5px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  .image-item:hover .image-overlay {
+    transform: translateY(0);
+  }
+  .image-title {
+    font-weight: bold;
+    font-size: 0.9em;
+    margin-bottom: 2px;
+  }
+  .image-metadata {
+    font-size: 0.7em;
+  }
+  .image-metadata p {
+    margin: 0;
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    overflow: auto;
+  }
+  .modal-content {
+    margin: auto;
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+  }
 </style>
 
 <script>
