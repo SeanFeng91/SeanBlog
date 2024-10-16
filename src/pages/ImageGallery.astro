@@ -36,7 +36,8 @@ async function getImagesFromDirectory(dir) {
       try {
         let buffer = await fs.readFile(filePath);
         let metadata;
-        let imageSrc = path.relative('public', filePath).replace(/\\/g, '/');
+        // 使用 BASE_URL 来构建图片路径
+        let imageSrc = `${BASE_URL}/${path.relative('public', filePath).replace(/\\/g, '/')}`;
         
         if (path.extname(file).toLowerCase() === '.heic') {
           buffer = await convertHeicToWebp(buffer);
