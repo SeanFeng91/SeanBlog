@@ -1,0 +1,81 @@
+---
+---
+<div id="modal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="modal-image" />
+</div>
+
+<script>
+  function setupModal() {
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-image');
+    const closeBtn = document.getElementsByClassName('close')[0];
+    const imageElements = document.querySelectorAll('.image-item img');
+
+    imageElements.forEach(img => {
+      img.addEventListener('click', function() {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    closeBtn.addEventListener('click', function() {
+      modal.style.display = "none";
+      document.body.style.overflow = 'auto';
+    });
+
+    window.addEventListener('click', function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && modal.style.display === 'block') {
+        modal.style.display = "none";
+        document.body.style.overflow = 'auto';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', setupModal);
+</script>
+
+<style>
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    overflow: auto;
+  }
+  .modal-content {
+    margin: auto;
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+  }
+</style>
