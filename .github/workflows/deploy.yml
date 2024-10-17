@@ -1,16 +1,12 @@
 name: Deploy to GitHub Pages
 
 on:
-  # 每次推送到 `main` 分支时触发这个“工作流程”
-  # 如果你使用了别的分支名，请按需将 `main` 替换成你的分支名
   push:
     branches: [ main ]
-  # 允许你在 GitHub 上的 Actions 标签中手动触发此“工作流程”
   workflow_dispatch:
 
-# 允许 job 克隆 repo 并创建一个 page deployment
 permissions:
-  contents: read
+  contents: write  # 更改为 write 以允许提交更改
   pages: write
   id-token: write
 
@@ -20,6 +16,27 @@ jobs:
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install Pillow
+
+      - name: Generate thumbnails
+        run: python generate_thumbnails.py public/pictures/Albums public/pictures/thumbnails
+
+      - name: Commit and push thumbnails if changed
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add public/pictures/thumbnails
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-generate thumbnails" && git push)
+
       - name: Install, build, and upload your site
         uses: withastro/action@v2
         # with:
