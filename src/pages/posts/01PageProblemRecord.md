@@ -33,6 +33,9 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 8. 研究一下photoprism等，看看他的展示的信息包括哪些。
 9. 尝试了AI Image to text，读取图片，识别内容作为文件的标题，而不是微信xxxx.jpg等。使用了huggingface的Salesforce/blip-image-captioning-large模型。可以比较精准的识别图片的物体，但感觉还需要再加一个模型，根据描述想一个图片标题，不然所有的标题都类似：there is a fern plant growing in the middle of a forest。这只是一个初步的尝试，图片的大小不能太大，10M以上的图片就会出现读取错误无法识别的问题。
 10. 要增加一个把jpg等图片转换成webp的工具文件，最好可以保留exif信息。写了一个jpg2webp.py，可以调整webp的质量。
+11. 现在统一在GalleryImageProcess.ipynb中进行图片的格式转换。针对heic和jpg都转换成webp，然后读取相关的exif信息，写到了对应文件夹里面exif_records.json的文件里。内容比较丰富，包括照片信息、时间、gps、相机信息等。iphone的信息是比较全面的。针对有新增加的图片，就通过客户端运行这个ipynb进行图片的转化。然后再通过generate_thumbnails.py生成缩略图，可以确保图片的信息和图片的显示。
+12. 尝试增加了视频展示功能。目前还没有办法用python运行ffmpeg，智能单独在cmd进行视频的压缩和格式转换。按理说参考这个[页面](https://www.cnblogs.com/kiwiblog/p/18127388)还可以剪辑视频等等。实现了视频的鼠标hover自动播放，点击播放等等。mov、MP4、webm的分别是前者的80%大。
+13. 相册初步具备了功能，接下来就是选择好看的图片上传，也可以结合midjourney生成对应相册。
 
 
 # 20241016记录
