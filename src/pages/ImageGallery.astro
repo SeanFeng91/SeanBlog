@@ -2,8 +2,6 @@
 import IndexLayout from '../layouts/IndexLayout.astro';
 import fs from 'fs/promises';
 import path from 'path';
-import ExifReader from 'exifreader';
-import sharp from 'sharp';
 
 let errorMessage = '';
 let albums = [];
@@ -11,73 +9,56 @@ let albums = [];
 const BASE_URL = import.meta.env.BASE_URL || '/SeanBlog';
 console.log(`Base URL: ${BASE_URL}`);
 
-async function convertHeicToWebp(buffer) {
-  try {
-    const webpBuffer = await sharp(buffer)
-      .webp({ quality: 80 })
-      .toBuffer();
-    return webpBuffer;
-  } catch (error) {
-    console.error('HEIC conversion error:', error);
-    throw error;
-  }
-}
-
 async function getImagesFromDirectory(dir) {
   console.log(`扫描目录: ${dir}`);
   const files = await fs.readdir(dir);
   console.log(`找到文件: ${files.join(', ')}`);
   
-  const imagePromises = files
-    .filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic'].includes(path.extname(file).toLowerCase()))
-    .map(async (file, index) => {
-      const filePath = path.join(dir, file);
-      console.log(`处理文件: ${filePath}`);
-      try {
-        let buffer = await fs.readFile(filePath);
-        let metadata;
-        // 使用 BASE_URL 构建原图路径
-        let imageSrc = `${BASE_URL}/${path.relative('public', filePath).replace(/\\/g, '/')}`;
-        
-        // 构建缩略图路径
-        let thumbnailSrc = imageSrc.replace('/Albums/', '/thumbnails/');
-        // 应用缩略图命名规则
-        thumbnailSrc = thumbnailSrc.replace(/(\.[^.]+)$/, '_thumb.webp');
-        
-        if (path.extname(file).toLowerCase() === '.heic') {
-          buffer = await convertHeicToWebp(buffer);
-          imageSrc = imageSrc.replace('.heic', '.webp');
-        }
-        
-        if (['.webp', '.heic'].includes(path.extname(file).toLowerCase())) {
-          const image = sharp(buffer);
-          metadata = await image.metadata();
-        } else {
-          metadata = ExifReader.load(buffer);
-        }
-        
-        console.log(`Image src: ${imageSrc}`);
-        
-        return {
-          id: index + 1,
-          src: imageSrc,
-          thumbnailSrc: thumbnailSrc,
-          alt: path.parse(file).name,
-          title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
-          metadata: {
-            dateTime: metadata.DateTime ? metadata.DateTime.description : (metadata.exif ? metadata.exif.DateTimeOriginal : 'Unknown'),
-            make: metadata.Make ? metadata.Make.description : (metadata.exif ? metadata.exif.Make : 'Unknown'),
-            model: metadata.Model ? metadata.Model.description : (metadata.exif ? metadata.exif.Model : 'Unknown'),
-          }
-        };
-      } catch (error) {
-        console.error(`处理文件 ${filePath} 时出错:`, error);
-        return null;
-      }
-    });
+  // 读取 exif_records.json 文件
+  const exifRecordsPath = path.join(dir, 'exif_records.json');
+  let exifRecords;
+  try {
+    const exifData = await fs.readFile(exifRecordsPath, 'utf-8');
+    exifRecords = JSON.parse(exifData);
+    console.log('成功读取 exif_records.json');
+  } catch (error) {
+    console.error('读取 exif_records.json 失败:', error);
+    exifRecords = {};
+  }
+  
+  const imageFiles = files.filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(path.extname(file).toLowerCase()));
+  console.log(`找到图片文件: ${imageFiles.join(', ')}`);
+
+  const imagePromises = imageFiles.map(async (file, index) => {
+    const filePath = path.join(dir, file);
+    console.log(`处理文件: ${filePath}`);
+    try {
+      let imageSrc = `${BASE_URL}/${path.relative('public', filePath).replace(/\\/g, '/')}`;
+      let thumbnailSrc = imageSrc.replace('/Albums/', '/thumbnails/');
+      thumbnailSrc = thumbnailSrc.replace(/(\.[^.]+)$/, '_thumb.webp');
+      
+      const exifData = exifRecords[file] || {};
+      
+      console.log(`Image src: ${imageSrc}`);
+      
+      return {
+        id: index + 1,
+        src: imageSrc,
+        thumbnailSrc: thumbnailSrc,
+        alt: path.parse(file).name,
+        title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
+        exifData: exifData
+      };
+    } catch (error) {
+      console.error(`处理文件 ${filePath} 时出错:`, error);
+      return null;
+    }
+  });
 
   const images = await Promise.all(imagePromises);
-  return images.filter(image => image !== null);
+  const validImages = images.filter(image => image !== null);
+  console.log(`处理后的有效图片数量: ${validImages.length}`);
+  return validImages;
 }
 
 try {
@@ -121,9 +102,8 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     
     {albums.length > 0 && (
       <div>
-        {/* <p>找到 {albums.length} 个相册</p> */}
         <div class="album-tabs">
-          {albums.map((album, index) => (
+          {albums.map((album) => (
             <button class="album-tab" data-album={album.id}>{album.name}</button>
           ))}
         </div>
@@ -140,8 +120,11 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
                     <div class="image-overlay">
                       <div class="image-title">{image.title}</div>
                       <div class="image-metadata">
-                        <p>{image.metadata.dateTime}</p>
-                        <p>{image.metadata.make} {image.metadata.model}</p>
+                        <p>拍摄时间: {image.exifData.DateTime || '未知'}</p>
+                        <p>相机: {image.exifData.Make || '未知'} {image.exifData.Model || ''}</p>
+                        {image.exifData.GPSInfo && (
+                          <p class="gps-info" data-gps={image.exifData.GPSInfo}>位置: 加载中...</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -242,7 +225,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     margin-bottom: 3px;
   }
   .image-metadata {
-    font-size: 0.7em;
+    font-size: 0.8em;
   }
   .image-metadata p {
     margin: 0;
@@ -409,5 +392,26 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   if (albumTabs.length > 0) {
     albumTabs[0].click();
   }
+
+  function formatGPS(gpsInfo) {
+    try {
+      const gps = JSON.parse(gpsInfo.replace(/'/g, '"'));
+      return `${gps[1]} ${gps[2][0]}°${gps[2][1]}'${gps[2][2]}" ${gps[3]} ${gps[4][0]}°${gps[4][1]}'${gps[4][2]}"`;
+    } catch (error) {
+      console.error('GPS 信息格式化失败:', error);
+      return '未知';
+    }
+  }
+
+  // 在页面加载完成后格式化 GPS 信息
+  document.addEventListener('DOMContentLoaded', function() {
+    const gpsElements = document.querySelectorAll('.gps-info');
+    gpsElements.forEach(element => {
+      const gpsInfo = element.getAttribute('data-gps');
+      if (gpsInfo) {
+        element.textContent = '位置: ' + formatGPS(gpsInfo);
+      }
+    });
+  });
 
 </script>
