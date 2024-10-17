@@ -380,4 +380,34 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   // 确保模态框初始状态为隐藏
   modal.style.display = "none"; 
   
+  // 添加以下代码来处理相册标签页切换
+  const albumTabs = document.querySelectorAll('.album-tab');
+  const albums = document.querySelectorAll('.album');
+
+  albumTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const albumId = tab.getAttribute('data-album');
+      
+      // 隐藏所有相册
+      albums.forEach(album => {
+        album.style.display = 'none';
+      });
+
+      // 显示选中的相册
+      const selectedAlbum = document.getElementById(albumId);
+      if (selectedAlbum) {
+        selectedAlbum.style.display = 'block';
+      }
+
+      // 更新标签页样式
+      albumTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+
+  // 初始化：激活第一个标签页
+  if (albumTabs.length > 0) {
+    albumTabs[0].click();
+  }
+
 </script>
