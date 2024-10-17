@@ -105,45 +105,32 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 
 ---
 
-<IndexLayout title="相册集">
+<IndexLayout title="ImageGallery">
   <div slot="maindiv" class="album-gallery">
     <h1>我的相册集</h1>
     
     {errorMessage && <p style="color: red;">{errorMessage}</p>}
     
-    {albums.length === 0 && <p>未找到相册或处理相册时出错。</p>}
+    {albums.length === 0 && <p>没有找到相册或处理相册时出错。</p>}
     
     {albums.length > 0 && (
-      <div x-data="{ activeAlbum: '${defaultActiveAlbum}', loadedAlbums: {} }" x-init="$watch('activeAlbum', value => { if (!loadedAlbums[value]) { loadedAlbums[value] = true; } })">
+      <div>
+        <p>找到 {albums.length} 个相册</p>
         <div class="album-tabs">
-          {albums.map((album) => (
-            <button 
-              class="album-tab" 
-              :class="{ 'active': activeAlbum === '${album.id}' }"
-              @click="activeAlbum = '${album.id}'"
-            >
-              {album.name}
-            </button>
+          {albums.map((album, index) => (
+            <button class="album-tab" data-album={album.id}>{album.name}</button>
           ))}
         </div>
-        
-        {albums.map((album) => (
-          <div 
-            class="album" 
-            id={album.id} 
-            x-show="activeAlbum === '${album.id}'"
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0 transform scale-90"
-            x-transition:enter-end="opacity-100 transform scale-100"
-            x-transition:leave="transition ease-in duration-300"
-            x-transition:leave-start="opacity-100 transform scale-100"
-            x-transition:leave-end="opacity-0 transform scale-90"
-          >
-            <div class="image-grid" x-show="loadedAlbums['${album.id}']">
+        {albums.map((album, index) => (
+          <div class="album" id={album.id} style={index === 0 ? "" : "display: none;"}>
+            <h2>{album.name}</h2>
+            <div class="image-grid">
               {album.images.length > 0 ? (
                 album.images.map((image) => (
-                  <div class="image-item">
-                    <img src={image.src} alt={image.alt} loading="lazy" data-image-id={image.id} />
+                  <div class="image-item" key={image.id}>
+                    <div class="image-container">
+                      <img src={image.src} alt={image.alt} loading="lazy" data-image-id={image.id} />
+                    </div>
                     <div class="image-overlay">
                       <div class="image-title">{image.title}</div>
                       <div class="image-metadata">
@@ -154,7 +141,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
                   </div>
                 ))
               ) : (
-                <p>此相册中没有图片。</p>
+                <p>这个相册中没有图片。</p>
               )}
             </div>
           </div>
@@ -177,22 +164,19 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   }
   .album-tabs {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
     margin-bottom: 20px;
   }
   .album-tab {
     padding: 10px 20px;
-    background-color: #f0f0f0;
+    margin: 0 5px;
     border: none;
-    border-radius: 20px;
+    background-color: #f0f0f0;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s;
   }
-  .album-tab.active {
-    background-color: #007bff;
-    color: white;
+  .album-tab:hover, .album-tab.active {
+    background-color: #ddd;
   }
   .album {
     margin-bottom: 30px;
@@ -279,57 +263,65 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 </style>
 
 <script is:inline>
-  console.log('Client script loaded');
+  console.log('客户端脚本已加载');
 
+  // 相册切换功能
+  const albumTabs = document.querySelectorAll('.album-tab');
+  const albums = document.querySelectorAll('.album');
+
+  function showAlbum(albumId) {
+    albums.forEach(album => {
+      if (album.id === albumId) {
+        album.style.display = 'block';
+      } else {
+        album.style.display = 'none';
+      }
+    });
+  }
+
+  albumTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const albumId = tab.getAttribute('data-album');
+      
+      albumTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      showAlbum(albumId);
+    });
+  });
+
+  // 默认激活第一个标签页
+  if (albumTabs.length > 0) {
+    albumTabs[0].classList.add('active');
+    const firstAlbumId = albumTabs[0].getAttribute('data-album');
+    showAlbum(firstAlbumId);
+  }
+
+  // 图片预览功能
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modal-image');
   const closeBtn = document.getElementsByClassName('close')[0];
   const imageElements = document.querySelectorAll('.image-item img');
 
-  document.addEventListener('DOMContentLoaded', (event) => {
-    const albums = document.querySelectorAll('.album');
-    const tabs = document.querySelectorAll('.album-tab');
-    
-    // Initialize: show the first album
-    if (albums.length > 0) {
-      albums[0].style.display = 'block';
-      tabs[0].classList.add('active');
-    }
-
-    tabs.forEach((tab, index) => {
-      tab.addEventListener('click', () => {
-        // Hide all albums
-        albums.forEach(album => album.style.display = 'none');
-        // Remove active class from all tabs
-        tabs.forEach(t => t.classList.remove('active'));
-        
-        // Show the current album
-        albums[index].style.display = 'block';
-        // Add active class to the current tab
-        tab.classList.add('active');
-      });
-    });
-  });
-
   imageElements.forEach(img => {
-    img.addEventListener('click', function() {
+    img.onclick = function() {
       modal.style.display = "block";
       modalImg.src = this.src;
       document.body.style.overflow = 'hidden';
-    });
+    }
   });
 
-  closeBtn.addEventListener('click', function() {
+  closeBtn.onclick = function() {
     modal.style.display = "none";
     document.body.style.overflow = 'auto';
-  });
+  }
 
-  window.addEventListener('click', function(event) {
+  window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
       document.body.style.overflow = 'auto';
     }
-  });
+  }
 
   document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' && modal.style.display === 'block') {
