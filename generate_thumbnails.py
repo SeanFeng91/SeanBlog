@@ -1,11 +1,30 @@
 import os
 import sys
-from PIL import Image
+from PIL import Image, ExifTags
 
-def create_thumbnail(image_path, output_path, size=(200, 200)):
+def create_thumbnail(image_path, output_path, size=(500, 500)):
     with Image.open(image_path) as img:
-        img.thumbnail(size)
-        img.save(output_path, "WEBP", quality=85)
+        # 处理图片方向
+        try:
+            for orientation in ExifTags.TAGS.keys():
+                if ExifTags.TAGS[orientation] == 'Orientation':
+                    break
+            exif = dict(img._getexif().items())
+            if exif[orientation] == 3:
+                img = img.rotate(180, expand=True)
+            elif exif[orientation] == 6:
+                img = img.rotate(270, expand=True)
+            elif exif[orientation] == 8:
+                img = img.rotate(90, expand=True)
+        except (AttributeError, KeyError, IndexError):
+            # 图片没有 EXIF 信息，不需要旋转
+            pass
+
+        # 计算缩放比例
+        img.thumbnail((size[0], size[1]), Image.LANCZOS)
+        
+        # 保存时不添加白边，保持原有比例
+        img.save(output_path, "WEBP", quality=95)
 
 def process_directory(input_dir, output_dir):
     if not os.path.exists(output_dir):

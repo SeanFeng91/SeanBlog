@@ -24,20 +24,25 @@ async function convertHeicToWebp(buffer) {
 }
 
 async function getImagesFromDirectory(dir) {
-  console.log(`Scanning directory: ${dir}`);
+  console.log(`扫描目录: ${dir}`);
   const files = await fs.readdir(dir);
-  console.log(`Found files: ${files.join(', ')}`);
+  console.log(`找到文件: ${files.join(', ')}`);
   
   const imagePromises = files
     .filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic'].includes(path.extname(file).toLowerCase()))
     .map(async (file, index) => {
       const filePath = path.join(dir, file);
-      console.log(`Processing file: ${filePath}`);
+      console.log(`处理文件: ${filePath}`);
       try {
         let buffer = await fs.readFile(filePath);
         let metadata;
-        // 使用 BASE_URL 来构建图片路径
+        // 使用 BASE_URL 构建原图路径
         let imageSrc = `${BASE_URL}/${path.relative('public', filePath).replace(/\\/g, '/')}`;
+        
+        // 构建缩略图路径
+        let thumbnailSrc = imageSrc.replace('/Albums/', '/thumbnails/');
+        // 应用缩略图命名规则
+        thumbnailSrc = thumbnailSrc.replace(/(\.[^.]+)$/, '_thumb.webp');
         
         if (path.extname(file).toLowerCase() === '.heic') {
           buffer = await convertHeicToWebp(buffer);
@@ -56,6 +61,7 @@ async function getImagesFromDirectory(dir) {
         return {
           id: index + 1,
           src: imageSrc,
+          thumbnailSrc: thumbnailSrc,
           alt: path.parse(file).name,
           title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
           metadata: {
@@ -65,7 +71,7 @@ async function getImagesFromDirectory(dir) {
           }
         };
       } catch (error) {
-        console.error(`Error processing file ${filePath}:`, error);
+        console.error(`处理文件 ${filePath} 时出错:`, error);
         return null;
       }
     });
@@ -129,7 +135,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
                 album.images.map((image) => (
                   <div class="image-item" key={image.id}>
                     <div class="image-container">
-                      <img src={image.src} alt={image.alt} loading="lazy" data-image-id={image.id} />
+                      <img src={image.thumbnailSrc} alt={image.alt} loading="lazy" data-image-id={image.id} data-full-src={image.src} />
                     </div>
                     <div class="image-overlay">
                       <div class="image-title">{image.title}</div>
@@ -183,18 +189,31 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   }
   .image-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    padding: 0;
+    margin: 0;
   }
   .image-item {
     position: relative;
     overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
+  }
+  .image-container {
+    position: relative;
+    width: 100%;
+    padding-top: 75%; /* 4:3 宽高比 */
+    overflow: hidden;
   }
   .image-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
   }
@@ -208,7 +227,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     right: 0;
     background-color: rgba(0,0,0,0.7);
     color: white;
-    padding: 10px;
+    padding: 8px;
     transform: translateY(100%);
     transition: transform 0.3s ease-in-out;
   }
@@ -218,13 +237,14 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   .image-title {
     font-weight: bold;
     font-size: 0.9em;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
   }
   .image-metadata {
     font-size: 0.7em;
   }
   .image-metadata p {
     margin: 0;
+    line-height: 1.2;
   }
   .modal {
     display: none;
@@ -306,7 +326,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   imageElements.forEach(img => {
     img.onclick = function() {
       modal.style.display = "block";
-      modalImg.src = this.src;
+      modalImg.src = this.getAttribute('data-full-src');
       document.body.style.overflow = 'hidden';
     }
   });
