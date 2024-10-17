@@ -32,7 +32,7 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 7. 图片名称的优化（不知道能不能通过ai来实现，对照片内容进行描述）
 8. 研究一下photoprism等，看看他的展示的信息包括哪些。
 9. 尝试了AI Image to text，读取图片，识别内容作为文件的标题，而不是微信xxxx.jpg等。使用了huggingface的Salesforce/blip-image-captioning-large模型。可以比较精准的识别图片的物体，但感觉还需要再加一个模型，根据描述想一个图片标题，不然所有的标题都类似：there is a fern plant growing in the middle of a forest。这只是一个初步的尝试，图片的大小不能太大，10M以上的图片就会出现读取错误无法识别的问题。
-10. 要增加一个把jpg等图片转换成webp的工具文件，最好可以保留exif信息。
+10. 要增加一个把jpg等图片转换成webp的工具文件，最好可以保留exif信息。写了一个jpg2webp.py，可以调整webp的质量。
 
 
 # 20241016记录
