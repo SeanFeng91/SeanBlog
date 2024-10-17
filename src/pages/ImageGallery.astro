@@ -70,6 +70,18 @@ async function getImagesFromDirectory(dir) {
   return validMediaItems;
 }
 
+// 在 getImagesFromDirectory 函数之后添加：
+async function getAlbumDescription(albumPath) {
+  try {
+    const descriptionPath = path.join(albumPath, 'description.txt');
+    const description = await fs.readFile(descriptionPath, 'utf-8');
+    return description.trim();
+  } catch (error) {
+    console.error(`读取相册描述失败: ${error}`);
+    return ''; // 如果没有描述文件或读取失败，返回空字符串
+  }
+}
+
 try {
   const baseDir = 'public/pictures/Albums';
   console.log(`Base directory: ${baseDir}`);
@@ -78,15 +90,17 @@ try {
   const albumPromises = albumDirs
     .filter(async (file) => (await fs.stat(path.join(baseDir, file))).isDirectory())
     .map(async (albumName) => {
-      console.log(`Processing album: ${albumName}`);
+      console.log(`处理相册: ${albumName}`);
       const albumPath = path.join(baseDir, albumName);
       const images = await getImagesFromDirectory(albumPath);
-      console.log(`Found ${images.length} images in ${albumName}`);
+      const description = await getAlbumDescription(albumPath);
+      console.log(`在 ${albumName} 中找到 ${images.length} 张图片`);
       return {
         id: albumName.toLowerCase(),
         name: albumName.replace(/([A-Z])/g, ' $1').trim(),
         path: albumPath,
-        images: images
+        images: images,
+        description: description
       };
     });
 
@@ -102,7 +116,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 ---
 
 <IndexLayout title="ImageGallery">
-  <div slot="maindiv" class="album-gallery">
+  <div slot="maindiv" class="album-gallery" style="text-align: center;">
     <h1>我的相册集</h1>
     
     {errorMessage && <p style="color: red;">{errorMessage}</p>}
@@ -119,6 +133,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
         {albums.map((album, index) => (
           <div class="album" id={album.id} style={index === 0 ? "" : "display: none;"}>
             <h2>{album.name}</h2>
+            <p class="album-description">{album.description}</p>
             <div class="image-grid">
               {album.images.length > 0 ? (
                 album.images.map((media) => (
@@ -332,6 +347,16 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     transition: transform 0.3s ease;
     margin: 0;
   }
+
+  .album-description {
+    margin-bottom: 20px;
+    font-style: italic;
+    color: #666;
+    line-height: 1.5;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 </style>
 
 <script is:inline>
@@ -396,35 +421,60 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   // 确保模态框初始状态为隐藏
   modal.style.display = "none"; 
   
-  // 添加以下代码来处理相册标签页切换
+  // 修改相册标签页切换逻辑
   const albumTabs = document.querySelectorAll('.album-tab');
   const albums = document.querySelectorAll('.album');
 
+  function switchToAlbum(albumId) {
+    // 隐藏所有相册
+    albums.forEach(album => {
+      album.style.display = 'none';
+    });
+
+    // 显示选中的相册
+    const selectedAlbum = document.getElementById(albumId);
+    if (selectedAlbum) {
+      selectedAlbum.style.display = 'block';
+    }
+
+    // 更新标签页样式
+    albumTabs.forEach(t => t.classList.remove('active'));
+    const activeTab = document.querySelector(`.album-tab[data-album="${albumId}"]`);
+    if (activeTab) {
+      activeTab.classList.add('active');
+    }
+
+    // 更新 URL hash，但不触发滚动
+    history.pushState(null, '', `#${albumId}`);
+  }
+
   albumTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
+    tab.addEventListener('click', (event) => {
+      event.preventDefault(); // 阻止默认的锚点行为
       const albumId = tab.getAttribute('data-album');
-      
-      // 隐藏所有相册
-      albums.forEach(album => {
-        album.style.display = 'none';
-      });
-
-      // 显示选中的相册
-      const selectedAlbum = document.getElementById(albumId);
-      if (selectedAlbum) {
-        selectedAlbum.style.display = 'block';
-      }
-
-      // 更新标签页样式
-      albumTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
+      switchToAlbum(albumId);
     });
   });
 
-  // 初始化：激活第一个标签页
-  if (albumTabs.length > 0) {
-    albumTabs[0].click();
-  }
+  // 页面加载时检查 URL hash 并切换到相应的相册
+  document.addEventListener('DOMContentLoaded', function() {
+    let albumId = window.location.hash.slice(1); // 移除开头的 #
+    if (!albumId || !document.getElementById(albumId)) {
+      // 如果没有有效的 hash 或相应的相册不存在，默认选择第一个相册
+      albumId = albumTabs.length > 0 ? albumTabs[0].getAttribute('data-album') : null;
+    }
+    if (albumId) {
+      switchToAlbum(albumId);
+    }
+  });
+
+  // 监听 hashchange 事件，以便在使用浏览器的前进/后退按钮时正确切换相册
+  window.addEventListener('hashchange', function() {
+    let albumId = window.location.hash.slice(1);
+    if (albumId && document.getElementById(albumId)) {
+      switchToAlbum(albumId);
+    }
+  });
 
   function formatGPS(gpsInfo) {
     try {
