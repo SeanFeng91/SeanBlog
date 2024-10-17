@@ -21,6 +21,20 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 - [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
 - [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
+# 20241017记录
+通过两天与cursor合作完善了第一版相册。包括了：
+1. 不同目录生成标签进行切换，实现不同相册的切换效果
+2. 读取图片的exif信息，通过移动到图片div上浮动显示。但是目前似乎只有jpg能够成功读取。apple拍摄的是heic格式，不知道转化成webp之后能否保留。jpg转化成webp之后也无法正常读取。可以进一步完善。
+3. 生成了一个压缩图片形成缩略图的python。避免原图直接用于缩略图显示，这样页面预览就不会卡顿了。目前需要针对相册手动进行generate_thumbnails.py的运行。未来可以尝试加入action自动压缩。
+4. 实现了图片懒加载。
+5. 实现了图片大图预览。加载了原图，增加了左右切换的按钮进行前后图片切换。
+6. 还需要增加不同相册的文字描述介绍。
+7. 图片名称的优化（不知道能不能通过ai来实现，对照片内容进行描述）
+8. 研究一下photoprism等，看看他的展示的信息包括哪些。
+9. 尝试了AI Image to text，读取图片，识别内容作为文件的标题，而不是微信xxxx.jpg等。使用了huggingface的Salesforce/blip-image-captioning-large模型。可以比较精准的识别图片的物体，但感觉还需要再加一个模型，根据描述想一个图片标题，不然所有的标题都类似：there is a fern plant growing in the middle of a forest。这只是一个初步的尝试，图片的大小不能太大，10M以上的图片就会出现读取错误无法识别的问题。
+10. 要增加一个把jpg等图片转换成webp的工具文件，最好可以保留exif信息。
+
+
 # 20241016记录
 已经很久没有更新了。今天尝试修改优化了图册页面，有很多新西兰回来的照片希望有展示的地方。
 cursor很快就更改了页面展示的效果，读取了照片exif信息。但是最后一步build之后服务器端始终没有正确显示照片，我怀疑还是路径的问题。我把/SeanBlog更换成/SeanBlog/，看看有没有成功。
