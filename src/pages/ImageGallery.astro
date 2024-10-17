@@ -157,7 +157,9 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 
     <div id="modal" class="modal">
       <span class="close">&times;</span>
+      <button class="nav-button prev">&lsaquo;</button>
       <img class="modal-content" id="modal-image" />
+      <button class="nav-button next">&rsaquo;</button>
     </div>
   </div>
 </IndexLayout>
@@ -247,7 +249,9 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     line-height: 1.2;
   }
   .modal {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -255,20 +259,14 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.9);
-    overflow: auto;
+    overflow: hidden;
   }
   .modal-content {
-    margin: auto;
-    display: block;
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 90%;
+    max-height: 90vh;
     object-fit: contain;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: block;
+    margin: 32px auto;
   }
   .close {
     position: absolute;
@@ -279,6 +277,28 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     font-weight: bold;
     cursor: pointer;
     z-index: 1001;
+  }
+  .nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    font-size: 36px;
+    padding: 20px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+  }
+  .nav-button:hover {
+    background-color: rgba(255,255,255,0.4);
+  }
+  .prev {
+    left: 20px;
+  }
+  .next {
+    right: 20px;
   }
 
   .prose :where(img.gallery-image):not(:where([class~="not-prose"],[class~="not-prose"] *)) {
@@ -337,12 +357,20 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modal-image');
   const closeBtn = document.getElementsByClassName('close')[0];
+  const prevBtn = document.querySelector('.nav-button.prev');
+  const nextBtn = document.querySelector('.nav-button.next');
   const imageElements = document.querySelectorAll('.image-item img');
+  let currentImageIndex = 0;
 
-  imageElements.forEach(img => {
+  function showImage(index) {
+    currentImageIndex = index;
+    modalImg.src = imageElements[index].getAttribute('data-full-src');
+  }
+
+  imageElements.forEach((img, index) => {
     img.onclick = function() {
       modal.style.display = "block";
-      modalImg.src = this.getAttribute('data-full-src');
+      showImage(index);
       document.body.style.overflow = 'hidden';
     }
   });
@@ -350,6 +378,16 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   closeBtn.onclick = function() {
     modal.style.display = "none";
     document.body.style.overflow = 'auto';
+  }
+
+  prevBtn.onclick = function() {
+    currentImageIndex = (currentImageIndex - 1 + imageElements.length) % imageElements.length;
+    showImage(currentImageIndex);
+  }
+
+  nextBtn.onclick = function() {
+    currentImageIndex = (currentImageIndex + 1) % imageElements.length;
+    showImage(currentImageIndex);
   }
 
   window.onclick = function(event) {
@@ -360,9 +398,15 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
   }
 
   document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape' && modal.style.display === 'block') {
-      modal.style.display = "none";
-      document.body.style.overflow = 'auto';
+    if (modal.style.display === 'block') {
+      if (event.key === 'Escape') {
+        modal.style.display = "none";
+        document.body.style.overflow = 'auto';
+      } else if (event.key === 'ArrowLeft') {
+        prevBtn.click();
+      } else if (event.key === 'ArrowRight') {
+        nextBtn.click();
+      }
     }
   });
 </script>
