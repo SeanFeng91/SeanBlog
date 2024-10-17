@@ -321,39 +321,6 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 <script is:inline>
   console.log('客户端脚本已加载');
 
-  // 相册切换功能
-  const albumTabs = document.querySelectorAll('.album-tab');
-  const albums = document.querySelectorAll('.album');
-
-  function showAlbum(albumId) {
-    albums.forEach(album => {
-      if (album.id === albumId) {
-        album.style.display = 'block';
-      } else {
-        album.style.display = 'none';
-      }
-    });
-  }
-
-  albumTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const albumId = tab.getAttribute('data-album');
-      
-      albumTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      showAlbum(albumId);
-    });
-  });
-
-  // 默认激活第一个标签页
-  if (albumTabs.length > 0) {
-    albumTabs[0].classList.add('active');
-    const firstAlbumId = albumTabs[0].getAttribute('data-album');
-    showAlbum(firstAlbumId);
-  }
-
-  // 图片预览功能
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modal-image');
   const closeBtn = document.getElementsByClassName('close')[0];
@@ -409,4 +376,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
       }
     }
   });
+
+  // 确保模态框初始状态为隐藏
+  modal.style.display = "none";
 </script>
