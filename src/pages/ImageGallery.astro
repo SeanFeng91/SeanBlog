@@ -115,7 +115,7 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     
     {albums.length > 0 && (
       <div>
-        <p>找到 {albums.length} 个相册</p>
+        {/* <p>找到 {albums.length} 个相册</p> */}
         <div class="album-tabs">
           {albums.map((album, index) => (
             <button class="album-tab" data-album={album.id}>{album.name}</button>
