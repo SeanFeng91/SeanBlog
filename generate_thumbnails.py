@@ -1,3 +1,6 @@
+# 这是一个针对相册压缩成缩略图的python程序，目前需要针对指定的相册文件手动运行
+# 运行模式：python generate_thumbnails.py public/pictures/Albums/NewZealand public/pictures/thumbnails/NewZealand
+
 import os
 import sys
 from PIL import Image, ExifTags
