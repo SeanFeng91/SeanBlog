@@ -26,28 +26,37 @@ async function getImagesFromDirectory(dir) {
     exifRecords = {};
   }
   
-  const imageFiles = files.filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(path.extname(file).toLowerCase()));
-  console.log(`找到图片文件: ${imageFiles.join(', ')}`);
+  const mediaFiles = files.filter(file => ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.mp4', '.mov', '.webm'].includes(path.extname(file).toLowerCase()));
+  console.log(`找到媒体文件: ${mediaFiles.join(', ')}`);
 
-  const imagePromises = imageFiles.map(async (file, index) => {
+  const mediaPromises = mediaFiles.map(async (file, index) => {
     const filePath = path.join(dir, file);
     console.log(`处理文件: ${filePath}`);
     try {
-      let imageSrc = `${BASE_URL}/${path.relative('public', filePath).replace(/\\/g, '/')}`;
-      let thumbnailSrc = imageSrc.replace('/Albums/', '/thumbnails/');
-      thumbnailSrc = thumbnailSrc.replace(/(\.[^.]+)$/, '_thumb.webp');
+      let mediaSrc = `${BASE_URL}/${path.relative('public', filePath).replace(/\\/g, '/')}`;
+      let thumbnailSrc = mediaSrc.replace('/Albums/', '/thumbnails/');
+      
+      const isVideo = ['.mp4', '.mov', '.webm'].includes(path.extname(file).toLowerCase());
+      
+      if (isVideo) {
+        thumbnailSrc = thumbnailSrc.replace(/\.[^.]+$/, '_thumb.jpg');
+      } else {
+        thumbnailSrc = thumbnailSrc.replace(/(\.[^.]+)$/, '_thumb.webp');
+      }
       
       const exifData = exifRecords[file] || {};
       
-      console.log(`Image src: ${imageSrc}`);
+      console.log(`Media src: ${mediaSrc}`);
+      console.log(`Thumbnail src: ${thumbnailSrc}`);
       
       return {
         id: index + 1,
-        src: imageSrc,
+        src: mediaSrc,
         thumbnailSrc: thumbnailSrc,
         alt: path.parse(file).name,
         title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim(),
-        exifData: exifData
+        exifData: exifData,
+        isVideo: isVideo
       };
     } catch (error) {
       console.error(`处理文件 ${filePath} 时出错:`, error);
@@ -55,10 +64,10 @@ async function getImagesFromDirectory(dir) {
     }
   });
 
-  const images = await Promise.all(imagePromises);
-  const validImages = images.filter(image => image !== null);
-  console.log(`处理后的有效图片数量: ${validImages.length}`);
-  return validImages;
+  const mediaItems = await Promise.all(mediaPromises);
+  const validMediaItems = mediaItems.filter(item => item !== null);
+  console.log(`处理后的有效媒体项目数量: ${validMediaItems.length}`);
+  return validMediaItems;
 }
 
 try {
@@ -112,25 +121,46 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
             <h2>{album.name}</h2>
             <div class="image-grid">
               {album.images.length > 0 ? (
-                album.images.map((image) => (
-                  <div class="image-item" key={image.id}>
+                album.images.map((media) => (
+                  <div class="image-item" key={media.id}>
                     <div class="image-container">
-                      <img src={image.thumbnailSrc} alt={image.alt} loading="lazy" data-image-id={image.id} data-full-src={image.src} class="gallery-image" />
+                      {media.isVideo ? (
+                        <video
+                          src={media.src}
+                          poster={media.thumbnailSrc}
+                          preload="metadata"
+                          loop
+                          muted
+                          playsinline
+                          class="gallery-image"
+                          data-media-id={media.id}
+                          data-full-src={media.src}
+                        ></video>
+                      ) : (
+                        <img
+                          src={media.thumbnailSrc}
+                          alt={media.alt}
+                          loading="lazy"
+                          data-media-id={media.id}
+                          data-full-src={media.src}
+                          class="gallery-image"
+                        />
+                      )}
                     </div>
                     <div class="image-overlay">
-                      <div class="image-title">{image.title}</div>
+                      <div class="image-title">{media.title}</div>
                       <div class="image-metadata">
-                        <p>拍摄时间: {image.exifData.DateTime || '未知'}</p>
-                        <p>相机: {image.exifData.Make || '未知'} {image.exifData.Model || ''}</p>
-                        {image.exifData.GPSInfo && (
-                          <p class="gps-info" data-gps={image.exifData.GPSInfo}>位置: 加载中...</p>
+                        <p>拍摄时间: {media.exifData.DateTime || '未知'}</p>
+                        <p>相机: {media.exifData.Make || '未知'} {media.exifData.Model || ''}</p>
+                        {media.exifData.GPSInfo && (
+                          <p class="gps-info" data-gps={media.exifData.GPSInfo}>位置: 加载中...</p>
                         )}
                       </div>
                     </div>
                   </div>
                 ))
               ) : (
-                <p>这个相册中没有图片。</p>
+                <p>这个相册中没有媒体文件。</p>
               )}
             </div>
           </div>
@@ -193,7 +223,8 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     padding-top: 75%; /* 4:3 宽高比 */
     overflow: hidden;
   }
-  .image-item img {
+  .image-item img.gallery-image,
+  .image-item video.gallery-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -201,8 +232,10 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    margin: 0;
   }
-  .image-item:hover img {
+  .image-item:hover img.gallery-image,
+  .image-item:hover video.gallery-image {
     transform: scale(1.05);
   }
   .image-overlay {
@@ -413,5 +446,72 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
       }
     });
   });
+
+  // 修改视频悬停播放功能
+  const videoElements = document.querySelectorAll('.image-item video');
+  videoElements.forEach(video => {
+    const container = video.closest('.image-item');
+    container.addEventListener('mouseenter', () => {
+      video.play().catch(e => console.error('视频播放失败:', e));
+    });
+    container.addEventListener('mouseleave', () => {
+      video.pause();
+      video.currentTime = 0;
+    });
+    
+    // 确保视频加载后显示第一帧
+    video.addEventListener('loadeddata', () => {
+      video.currentTime = 0;
+    });
+  });
+
+  // 修改模态框以支持视频
+  const mediaElements = document.querySelectorAll('.image-item .gallery-image');
+  
+  function showMedia(index) {
+    currentImageIndex = index;
+    const media = mediaElements[index];
+    if (media.tagName === 'VIDEO') {
+      modalImg.style.display = 'none';
+      let modalVideo = document.getElementById('modal-video');
+      if (!modalVideo) {
+        modalVideo = document.createElement('video');
+        modalVideo.controls = true;
+        modalVideo.autoplay = true;
+        modalVideo.loop = true;
+        modalVideo.className = 'modal-content';
+        modalVideo.id = 'modal-video';
+        modal.insertBefore(modalVideo, modalImg);
+      }
+      modalVideo.src = media.src;
+      modalVideo.style.display = 'block';
+    } else {
+      const modalVideo = document.getElementById('modal-video');
+      if (modalVideo) {
+        modalVideo.style.display = 'none';
+      }
+      modalImg.style.display = 'block';
+      modalImg.src = media.getAttribute('data-full-src');
+    }
+  }
+
+  mediaElements.forEach((media, index) => {
+    media.onclick = function() {
+      modal.style.display = "flex";
+      showMedia(index);
+      document.body.style.overflow = 'hidden';
+    }
+  });
+
+  // 更新 prevBtn 和 nextBtn 的点击事件处理程序
+  prevBtn.onclick = function() {
+    currentImageIndex = (currentImageIndex - 1 + mediaElements.length) % mediaElements.length;
+    showMedia(currentImageIndex);
+  }
+
+  nextBtn.onclick = function() {
+    currentImageIndex = (currentImageIndex + 1) % mediaElements.length;
+    showMedia(currentImageIndex);
+  }
 
 </script>
