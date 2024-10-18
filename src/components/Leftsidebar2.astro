@@ -10,6 +10,15 @@ const categories = {
   thoughts: allPosts.filter(file => file.url.includes('/thoughts/')),
 };
 
+// 对每个类别的文章进行排序
+for (const category in categories) {
+  categories[category].sort((a, b) => {
+    const dateA = new Date(a.frontmatter.pubDate || 0);
+    const dateB = new Date(b.frontmatter.pubDate || 0);
+    return dateB.getTime() - dateA.getTime();
+  });
+}
+
 const categoryIcons = {
   Tools: '<svg class="inline-block size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m15.224 15.508l-2.213 4.65a.6.6 0 0 1-.977.155l-3.542-3.739a.6.6 0 0 0-.358-.182l-5.106-.668a.6.6 0 0 1-.45-.881l2.462-4.524a.6.6 0 0 0 .063-.396L4.16 4.86a.6.6 0 0 1 .7-.7l5.062.943a.6.6 0 0 0 .397-.063l4.523-2.46a.6.6 0 0 1 .882.448l.668 5.107a.6.6 0 0 0 .182.357l3.739 3.542a.6.6 0 0 1-.155.977l-4.65 2.213a.6.6 0 0 0-.284.284m.797 1.927l1.414-1.414l4.243 4.242l-1.415 1.415z" /></svg>',
   Posts: '<svg class="inline-block" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M.946 0L2.23 14.4L7.992 16l5.777-1.602L15.055 0zM12.26 4.71H5.502l.161 1.809H12.1l-.485 5.422l-3.623 1.004l-3.618-1.004l-.247-2.774H5.9l.126 1.41l1.967.53l.004-.001l1.968-.531l.204-2.29H4.048l-.476-5.341h8.847l-.158 1.766z" /></svg>',
