@@ -116,8 +116,8 @@ const defaultActiveAlbum = albums.length > 0 ? albums[0].id : null;
 ---
 
 <IndexLayout title="ImageGallery">
-  <div slot="maindiv" class="album-gallery" style="text-align: center;">
-    <h1>我的相册集</h1>
+  <div slot="maindiv" class="album-gallery" >
+    <h1 style="text-align: center;">我的相册集</h1>
     
     {errorMessage && <p style="color: red;">{errorMessage}</p>}
     

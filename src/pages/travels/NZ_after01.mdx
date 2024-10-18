@@ -1,0 +1,111 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "新西兰之旅有感"
+author: Sean Feng
+description: "新西兰之旅顺利结束了，有惊喜有意外，虽然不是十个晴天，完成了人生婚礼，见到了唯一一只海狮，夜晚有极光陪伴，白天牛羊成群，雪山湖泊触手可及"
+pubDate: 2024-10-18
+tags: ["新西兰", "旅游", "总结回复","有感而发"]
+# wordCount: 1234  # 请替换为实际的字数
+# ## 高级样式
+
+# ### 文字高亮
+
+# 使用自定义的 Highlight 组件来实现文字高亮：
+
+# <Highlight color="#25c2a0">这是绿色高亮文本</Highlight>
+# <Highlight color="#1877F2">这是蓝色高亮文本</Highlight>
+
+
+# ### 提示框
+# 使用 Alert 组件来创建不同类型的提示框：
+# <Alert type="info" title="提示">
+#   这是一个信息提示框。
+# </Alert>
+
+# <Alert type="warning" title="警告">
+#   这是一个警告提示框。
+# </Alert>
+
+# ### 可折叠内容
+
+# 使用 Collapsible 组件来创建可折叠的内容块：
+# <Collapsible client:load title="点击展开更多内容">
+#   这是被折叠的内容。可以包含任何 Markdown 或 JSX 元素。
+# </Collapsible>
+
+# ### 标签页
+
+# 使用 Tabs 组件来创建标签页：
+
+# export const tabItems = [
+#   {
+#     label: "基本用法",
+#     content: `
+#       <p>这里是关于基本用法的内容。您可以包含任何Markdown或JSX元素。目前直接使用tabs组件会报错，所以暂时使用这个妥协方案。</p>
+#       <ul>
+#         <li>列表项1</li>
+#         <li>列表项2</li>
+#         <li>列表项3</li>
+#       </ul>
+#     `
+#   },
+#   {
+#     label: "高级特性",
+#     content: "<p>这里是关于高级特性的内容。</p>"
+#   },
+#   {
+#     label: "注意事项",
+#     content: `
+#       <p>使用本组件时需要注意以下几点:</p>
+#       <ol>
+#         <li>确保正确导入组件</li>
+#         <li>使用 client:load 指令以启用客户端交互</li>
+#         <li>每个 Tab 都需要一个唯一的 label 属性</li>
+#       </ol>
+#     `
+#   }
+# ];
+
+# <Tabs client:load items={tabItems} />
+
+---
+
+{/* 导入必要的样式和组件 */}
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+import { Image } from 'astro:assets';
+import ImageSwitcher from '../../components/react/ImageSwitcher';
+import Video from '../../components/react/Video';
+
+<p style={{ textAlign: 'center', fontStyle: 'italic', color: '#888' }}>
+  本文字数：{frontmatter.wordCount} 字
+</p>
+
+# 新西兰的天气
+
+# 从远眺到触手可及的雪山
+## 遇见雪崩
+## 雪山峡谷徒步
+## 天堂之路
+
+# 新西兰的动物们
+
+# 新西兰的婚礼
+
+# 新西兰的极光，城市的星空依然璀璨，未见彗星
+
+# 想要拥有一处宽敞的大房子
+
+# 靠左行最难的是转向灯和雨刮器
+## 无法缴费，被困停车场的我
+## 老爷车随处可见，特斯拉、BBA无影无踪
+
+# 春天的新西兰，鲜花满城
+
+# 纪念品购买，只要喜欢，不要想价格，波动30%很正常
+
+# 错过
+
