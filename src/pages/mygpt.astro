@@ -122,6 +122,8 @@ body {
   </div>
 </IndexLayout>
 
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <script is:inline>
     import { marked } from 'marked';
 
@@ -196,7 +198,7 @@ body {
         return messageDiv;
     }
 
-    // 创建聊天包装器
+    // 创聊天包装器
     function createChatWrapper(role, content) {
         const wrapperDiv = document.createElement('div');
         wrapperDiv.className = `message-wrapper ${role === 'user' ? 'user-wrapper' : 'assistant-wrapper'}`;
@@ -333,7 +335,7 @@ body {
             savedRecordsContainer.appendChild(recordDiv);
         });
 
-        // 使用事件委托处理按钮点击
+        // 使用事件委托理按钮点击
         savedRecordsContainer.addEventListener('click', function(e) {
             if (e.target.tagName === 'BUTTON') {
                 const action = e.target.getAttribute('data-action');
@@ -522,7 +524,7 @@ body {
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP错误！状态：${response.status}`);
+                throw new Error(`HTTP错误状态：${response.status}`);
             }
 
             alert(`文件 ${fileId} 已成功删除。`);
