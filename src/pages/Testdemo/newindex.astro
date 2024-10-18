@@ -1,8 +1,9 @@
 ---
+// 这是一个让cursor仿制日本一个网站的样式，暂时没有什么作用的页面
 import "../../styles/global.css";
 import IndexLayout from "../../layouts/IndexLayout.astro";
 
-const allPosts = await Astro.glob('../pages/posts/*.{md,mdx}');
+const allPosts = await Astro.glob('../../pages/posts/*.{md,mdx}');
 const travelPosts = allPosts.filter(post => post.frontmatter.category === 'travel').slice(0, 6);
 const pageTitle = "生活方式";
 const pickupPosts = allPosts.slice(0, 5); // 假设我们展示5个项目
