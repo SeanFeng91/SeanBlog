@@ -3,7 +3,7 @@ name: Run TryCrawl4ai Daily
 on:
   schedule:
     # 每天的 17:30 UTC 时间运行（你可以根据需要调整）
-    - cron: '30 17 * * *'
+    - cron: '40 17 * * *'
 
 jobs:
   run-script:
