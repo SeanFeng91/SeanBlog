@@ -34,6 +34,7 @@
     "aos": "^3.0.0-beta.6",
     "astro": "^4.12.2",
     "astro-icon": "^1.1.0",
+    "better-sqlite3": "^11.5.0",
     "chart.js": "^4.4.3",
     "d3": "^7.9.0",
     "dagre": "^0.8.5",
@@ -63,6 +64,7 @@
     "rimraf": "^6.0.1",
     "sharp": "^0.33.5",
     "slugify": "^1.6.6",
+    "sortablejs": "^1.15.3",
     "swiper": "^11.1.14",
     "tsparticles": "^3.5.0",
     "tw-elements": "^2.0.0"

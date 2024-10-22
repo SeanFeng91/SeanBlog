@@ -1,0 +1,62 @@
+---
+import "../../styles/global.css";
+import IndexLayout from "../../layouts/IndexLayout.astro";
+import { query } from "../../lib/database.js";
+
+// 从数据库获取最新的新闻摘要
+const news = query(`
+  SELECT id, headline, publication_date, summary, content
+  FROM news_teasers
+  WHERE summary IS NOT NULL
+  ORDER BY publication_date DESC
+  LIMIT 20
+`);
+
+const pageTitle = "今日资讯";
+---
+
+<IndexLayout pageTitle={pageTitle}>
+  <div slot="maindiv">
+    <h1 class="text-3xl font-bold mb-6">今日资讯</h1>
+    <div id="news-container">
+      {news.map((item) => (
+        <div class="news-item mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md" data-id={item.id}>
+          <h2 class="text-xl font-semibold mb-2">{item.headline}</h2>
+          <p class="text-sm text-gray-500 mb-2">{new Date(item.publication_date).toLocaleString()}</p>
+          <p class="summary cursor-pointer">{item.summary}</p>
+          <div class="full-content hidden">
+            <p>{item.content}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</IndexLayout>
+
+<script>
+  import Sortable from 'sortablejs';
+
+  // 初始化拖拽排序
+  new Sortable(document.getElementById('news-container'), {
+    animation: 150,
+    ghostClass: 'blue-background-class'
+  });
+
+  // 点击摘要显示全文
+  document.querySelectorAll('.summary').forEach(summary => {
+    summary.addEventListener('click', () => {
+      const fullContent = summary.nextElementSibling;
+      if (fullContent.classList.contains('hidden')) {
+        fullContent.classList.remove('hidden');
+      } else {
+        fullContent.classList.add('hidden');
+      }
+    });
+  });
+</script>
+
+<style>
+  .blue-background-class {
+    background-color: #E8F4FD;
+  }
+</style>
