@@ -1,5 +1,4 @@
 ---
-import "../../styles/global.css";
 import IndexLayout from "../../layouts/IndexLayout.astro";
 import { query } from "../../lib/database.js";
 
@@ -33,13 +32,14 @@ const pageTitle = "今日资讯";
   </div>
 </IndexLayout>
 
-<script>
-  import Sortable from 'sortablejs';
-
-  // 初始化拖拽排序
-  new Sortable(document.getElementById('news-container'), {
-    animation: 150,
-    ghostClass: 'blue-background-class'
+<script is:inline>
+  // 使用动态导入
+  import('sortablejs').then((Sortable) => {
+    // 初始化拖拽排序
+    new Sortable.default(document.getElementById('news-container'), {
+      animation: 150,
+      ghostClass: 'blue-background-class'
+    });
   });
 
   // 点击摘要显示全文
