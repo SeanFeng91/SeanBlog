@@ -6,6 +6,7 @@ import { query } from "../../lib/database.js";
 const dates = query(`
   SELECT DISTINCT substr(publication_date, 1, 11) as date
   FROM news_teasers
+  WHERE summary IS NOT NULL
   ORDER BY date DESC
   LIMIT 30
 `);
@@ -16,22 +17,21 @@ for (const date of dates) {
   const news = query(`
     SELECT id, headline, publication_date, content, summary
     FROM news_teasers
-    WHERE substr(publication_date, 1, 11) = ?
+    WHERE substr(publication_date, 1, 11) = ? AND summary IS NOT NULL
     ORDER BY publication_date DESC
   `, [date.date]);
   newsMap.set(date.date, news);
 }
 
-const pageTitle = "新闻资讯";
+const pageTitle = "今日资讯";
 
-// 辅助函数：格式化日期时间显示
 function formatDateTime(dateString) {
   if (!dateString) return '日期未知';
   try {
     const [datePart, timePart] = dateString.split(' ');
     if (!datePart) return dateString;
     const [year, month, day] = datePart.split(/年|月/);
-    return `${year}年${month}月${day.replace('号', '')} ${timePart || ''}`.trim();
+    return `${year}年${month}月${day.replace('号', '')}日 ${timePart || ''}`.trim();
   } catch (error) {
     console.error('Error formatting date:', error);
     return dateString;
@@ -41,7 +41,7 @@ function formatDateTime(dateString) {
 
 <IndexLayout pageTitle={pageTitle}>
   <div slot="maindiv">
-    <h1 class="text-3xl font-bold mb-6">新闻资讯</h1>
+    <h1 class="text-3xl font-bold mb-6">今日资讯</h1>
     
     <div class="mb-4">
       {dates.map((item) => (
@@ -62,9 +62,6 @@ function formatDateTime(dateString) {
               <div class="full-content hidden">
                 <p>{item.content}</p>
               </div>
-              <button class="toggle-content mt-2 text-blue-500 hover:text-blue-700">
-                展开全文
-              </button>
             </div>
           ))
         ) : (
@@ -97,40 +94,41 @@ function formatDateTime(dateString) {
     });
   });
 
-  // 展开/收起全文
-  document.querySelectorAll('.toggle-content').forEach(button => {
-    button.addEventListener('click', () => {
-      const newsItem = button.closest('.news-item');
-      const summary = newsItem.querySelector('.summary');
-      const fullContent = newsItem.querySelector('.full-content');
-      
-      summary.classList.toggle('hidden');
+  // 点击摘要显示全文
+  document.querySelectorAll('.summary').forEach(summary => {
+    summary.addEventListener('click', () => {
+      const fullContent = summary.nextElementSibling;
       fullContent.classList.toggle('hidden');
-      
-      button.textContent = fullContent.classList.contains('hidden') ? '展开全文' : '收起全文';
     });
   });
 
-  // 回到顶部按钮
-  const backToTopButton = document.createElement('button');
-  backToTopButton.id = 'back-to-top';
-  backToTopButton.innerHTML = '↑';
-  backToTopButton.className = 'fixed bottom-5 right-5 bg-blue-500 text-white p-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-blue-600';
-  document.body.appendChild(backToTopButton);
+  // 使用动态导入
+  import('sortablejs').then((Sortable) => {
+    // 初始化拖拽排序
+    new Sortable.default(document.getElementById('news-container'), {
+      animation: 150,
+      ghostClass: 'blue-background-class'
+    });
+  });
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-      backToTopButton.style.opacity = '1';
-    } else {
-      backToTopButton.style.opacity = '0';
+  // 添加这个函数来在客户端格式化日期
+  function formatDateTimeClient(dateString) {
+    if (!dateString) return '日期未知';
+    try {
+      const [datePart, timePart] = dateString.split(' ');
+      if (!datePart) return dateString;
+      const [year, month, day] = datePart.split(/年|月/);
+      return `${year}年${month}月${day.replace('号', '')}日 ${timePart || ''}`.trim();
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return dateString;
     }
-  });
+  }
 
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+  // 格式化所有日期显示
+  document.querySelectorAll('.news-item p:nth-child(2)').forEach(dateElement => {
+    const originalDate = dateElement.textContent.trim();
+    dateElement.textContent = formatDateTimeClient(originalDate);
   });
 </script>
 
@@ -138,7 +136,7 @@ function formatDateTime(dateString) {
   .hidden {
     display: none;
   }
-  #back-to-top {
-    z-index: 1000;
+  .blue-background-class {
+    background-color: #E8F4FD;
   }
 </style>
