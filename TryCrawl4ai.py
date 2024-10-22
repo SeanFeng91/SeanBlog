@@ -116,5 +116,5 @@ async def extract_news_teasers(start_id):
     print("爬取完成")
 
 if __name__ == "__main__":
-    start_id = 12621  # 设置起始ID
+    start_id = 12636  # 设置起始ID
     asyncio.run(extract_news_teasers(start_id))
