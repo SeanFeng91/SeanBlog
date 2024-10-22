@@ -2,61 +2,143 @@
 import IndexLayout from "../../layouts/IndexLayout.astro";
 import { query } from "../../lib/database.js";
 
-// 从数据库获取最新的新闻摘要
-const news = query(`
-  SELECT id, headline, publication_date, summary, content
+// 获取过去一个月内有新闻的日期
+const dates = query(`
+  SELECT DISTINCT substr(publication_date, 1, 11) as date
   FROM news_teasers
-  WHERE summary IS NOT NULL
-  ORDER BY publication_date DESC
-  LIMIT 20
+  ORDER BY date DESC
+  LIMIT 30
 `);
 
-const pageTitle = "今日资讯";
+// 为每个日期获取新闻
+const newsMap = new Map();
+for (const date of dates) {
+  const news = query(`
+    SELECT id, headline, publication_date, content, summary
+    FROM news_teasers
+    WHERE substr(publication_date, 1, 11) = ?
+    ORDER BY publication_date DESC
+  `, [date.date]);
+  newsMap.set(date.date, news);
+}
+
+const pageTitle = "新闻资讯";
+
+// 辅助函数：格式化日期时间显示
+function formatDateTime(dateString) {
+  if (!dateString) return '日期未知';
+  try {
+    const [datePart, timePart] = dateString.split(' ');
+    if (!datePart) return dateString;
+    const [year, month, day] = datePart.split(/年|月/);
+    return `${year}年${month}月${day.replace('号', '')} ${timePart || ''}`.trim();
+  } catch (error) {
+    console.error('Error formatting date:', error);
+    return dateString;
+  }
+}
 ---
 
 <IndexLayout pageTitle={pageTitle}>
   <div slot="maindiv">
-    <h1 class="text-3xl font-bold mb-6">今日资讯</h1>
-    <div id="news-container">
-      {news.map((item) => (
-        <div class="news-item mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md" data-id={item.id}>
-          <h2 class="text-xl font-semibold mb-2">{item.headline}</h2>
-          <p class="text-sm text-gray-500 mb-2">{new Date(item.publication_date).toLocaleString()}</p>
-          <p class="summary cursor-pointer">{item.summary}</p>
-          <div class="full-content hidden">
-            <p>{item.content}</p>
-          </div>
-        </div>
+    <h1 class="text-3xl font-bold mb-6">新闻资讯</h1>
+    
+    <div class="mb-4">
+      {dates.map((item) => (
+        <button class="date-tab p-2 border rounded mr-2 mb-2">{item.date}</button>
       ))}
     </div>
+    
+    {dates.map((date) => (
+      <div class="news-container" data-date={date.date} style="display: none;">
+        {newsMap.get(date.date).length > 0 ? (
+          newsMap.get(date.date).map((item) => (
+            <div class="news-item mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md" data-id={item.id}>
+              <h2 class="text-xl font-semibold mb-2">{item.headline}</h2>
+              <p class="text-sm text-gray-500 mb-2">
+                {item.publication_date ? formatDateTime(item.publication_date) : '日期未知'}
+              </p>
+              <p class="summary cursor-pointer">{item.summary}</p>
+              <div class="full-content hidden">
+                <p>{item.content}</p>
+              </div>
+              <button class="toggle-content mt-2 text-blue-500 hover:text-blue-700">
+                展开全文
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>该日期暂无新闻</p>
+        )}
+      </div>
+    ))}
   </div>
 </IndexLayout>
 
-<script is:inline>
-  // 使用动态导入
-  import('sortablejs').then((Sortable) => {
-    // 初始化拖拽排序
-    new Sortable.default(document.getElementById('news-container'), {
-      animation: 150,
-      ghostClass: 'blue-background-class'
+<script>
+  const dateTabs = document.querySelectorAll('.date-tab');
+  const newsContainers = document.querySelectorAll('.news-container');
+
+  // 默认显示第一个日期的新闻
+  if (newsContainers.length > 0) {
+    newsContainers[0].style.display = 'block';
+  }
+
+  dateTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const selectedDate = tab.textContent;
+      newsContainers.forEach(container => {
+        if (container.dataset.date === selectedDate) {
+          container.style.display = 'block';
+        } else {
+          container.style.display = 'none';
+        }
+      });
     });
   });
 
-  // 点击摘要显示全文
-  document.querySelectorAll('.summary').forEach(summary => {
-    summary.addEventListener('click', () => {
-      const fullContent = summary.nextElementSibling;
-      if (fullContent.classList.contains('hidden')) {
-        fullContent.classList.remove('hidden');
-      } else {
-        fullContent.classList.add('hidden');
-      }
+  // 展开/收起全文
+  document.querySelectorAll('.toggle-content').forEach(button => {
+    button.addEventListener('click', () => {
+      const newsItem = button.closest('.news-item');
+      const summary = newsItem.querySelector('.summary');
+      const fullContent = newsItem.querySelector('.full-content');
+      
+      summary.classList.toggle('hidden');
+      fullContent.classList.toggle('hidden');
+      
+      button.textContent = fullContent.classList.contains('hidden') ? '展开全文' : '收起全文';
+    });
+  });
+
+  // 回到顶部按钮
+  const backToTopButton = document.createElement('button');
+  backToTopButton.id = 'back-to-top';
+  backToTopButton.innerHTML = '↑';
+  backToTopButton.className = 'fixed bottom-5 right-5 bg-blue-500 text-white p-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-blue-600';
+  document.body.appendChild(backToTopButton);
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backToTopButton.style.opacity = '1';
+    } else {
+      backToTopButton.style.opacity = '0';
+    }
+  });
+
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
   });
 </script>
 
 <style>
-  .blue-background-class {
-    background-color: #E8F4FD;
+  .hidden {
+    display: none;
+  }
+  #back-to-top {
+    z-index: 1000;
   }
 </style>
