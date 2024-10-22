@@ -2,26 +2,14 @@
 import IndexLayout from "../../layouts/IndexLayout.astro";
 import { query } from "../../lib/database.js";
 
-// 获取过去一个月内有新闻的日期
-const dates = query(`
-  SELECT DISTINCT substr(publication_date, 1, 11) as date
+// 获取过去一个月内的所有新闻
+const news = query(`
+  SELECT id, headline, publication_date, content, summary
   FROM news_teasers
   WHERE summary IS NOT NULL
-  ORDER BY date DESC
-  LIMIT 30
+  ORDER BY publication_date DESC
+  LIMIT 100
 `);
-
-// 为每个日期获取新闻
-const newsMap = new Map();
-for (const date of dates) {
-  const news = query(`
-    SELECT id, headline, publication_date, content, summary
-    FROM news_teasers
-    WHERE substr(publication_date, 1, 11) = ? AND summary IS NOT NULL
-    ORDER BY publication_date DESC
-  `, [date.date]);
-  newsMap.set(date.date, news);
-}
 
 const pageTitle = "今日资讯";
 
@@ -43,57 +31,24 @@ function formatDateTime(dateString) {
   <div slot="maindiv">
     <h1 class="text-3xl font-bold mb-6">今日资讯</h1>
     
-    <div class="mb-4">
-      {dates.map((item) => (
-        <button class="date-tab p-2 border rounded mr-2 mb-2">{item.date}</button>
+    <div class="news-container">
+      {news.map((item) => (
+        <div class="news-item mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md" data-id={item.id}>
+          <h2 class="text-xl font-semibold mb-2">{item.headline}</h2>
+          <p class="text-sm text-gray-500 mb-2">
+            {item.publication_date ? formatDateTime(item.publication_date) : '日期未知'}
+          </p>
+          <p class="summary cursor-pointer">{item.summary}</p>
+          <div class="full-content hidden">
+            <p>{item.content}</p>
+          </div>
+        </div>
       ))}
     </div>
-    
-    {dates.map((date) => (
-      <div class="news-container" data-date={date.date} style="display: none;">
-        {newsMap.get(date.date).length > 0 ? (
-          newsMap.get(date.date).map((item) => (
-            <div class="news-item mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md" data-id={item.id}>
-              <h2 class="text-xl font-semibold mb-2">{item.headline}</h2>
-              <p class="text-sm text-gray-500 mb-2">
-                {item.publication_date ? formatDateTime(item.publication_date) : '日期未知'}
-              </p>
-              <p class="summary cursor-pointer">{item.summary}</p>
-              <div class="full-content hidden">
-                <p>{item.content}</p>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>该日期暂无新闻</p>
-        )}
-      </div>
-    ))}
   </div>
 </IndexLayout>
 
 <script is:inline>
-  const dateTabs = document.querySelectorAll('.date-tab');
-  const newsContainers = document.querySelectorAll('.news-container');
-
-  // 默认显示第一个日期的新闻
-  if (newsContainers.length > 0) {
-    newsContainers[0].style.display = 'block';
-  }
-
-  dateTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const selectedDate = tab.textContent;
-      newsContainers.forEach(container => {
-        if (container.dataset.date === selectedDate) {
-          container.style.display = 'block';
-        } else {
-          container.style.display = 'none';
-        }
-      });
-    });
-  });
-
   // 点击摘要显示全文
   document.querySelectorAll('.summary').forEach(summary => {
     summary.addEventListener('click', () => {
@@ -102,16 +57,12 @@ function formatDateTime(dateString) {
     });
   });
 
-  // 使用动态导入
-  import('sortablejs').then((Sortable) => {
-    // 初始化拖拽排序
-    new Sortable.default(document.getElementById('news-container'), {
-      animation: 150,
-      ghostClass: 'blue-background-class'
-    });
+  // 格式化所有日期显示
+  document.querySelectorAll('.news-item p:nth-child(2)').forEach(dateElement => {
+    const originalDate = dateElement.textContent.trim();
+    dateElement.textContent = formatDateTimeClient(originalDate);
   });
 
-  // 添加这个函数来在客户端格式化日期
   function formatDateTimeClient(dateString) {
     if (!dateString) return '日期未知';
     try {
@@ -124,19 +75,10 @@ function formatDateTime(dateString) {
       return dateString;
     }
   }
-
-  // 格式化所有日期显示
-  document.querySelectorAll('.news-item p:nth-child(2)').forEach(dateElement => {
-    const originalDate = dateElement.textContent.trim();
-    dateElement.textContent = formatDateTimeClient(originalDate);
-  });
 </script>
 
 <style>
   .hidden {
     display: none;
-  }
-  .blue-background-class {
-    background-color: #E8F4FD;
   }
 </style>
