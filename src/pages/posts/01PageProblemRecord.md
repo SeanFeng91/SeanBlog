@@ -21,6 +21,11 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 - [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
 - [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
+# 2024年10月22日记录
+这几天跟着卡兹的一个爬取新闻资讯的教程，尝试写了自己[新闻爬取页面](https://seanfeng91.github.io/SeanBlog/Testdemo/TodayNews/)。
+基本的功能都已经实现，可以本地通过python获取当天的新闻，然后写入sqlite数据库，并且在网页部署显示。
+但是在前端显示的时候还是有不少难题，页面切换，怎么自动爬取等还没有实现。
+
 # 20241018记录
 今天听完了一期播客，觉得讲的内容挺有启发的，但又没有精力和时间去慢慢总结，通过了通义千问的智能助手实现了对长达2.5小时语音的总结分析，并且写成了日志。
 
