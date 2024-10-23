@@ -46,7 +46,7 @@ function formatDateTime(dateString) {
       <p class="text-xl text-gray-600">不错过全球AI革新的每一个时刻</p>
     </div>
     
-    <h1 class="text-3xl font-bold mb-6">资讯日期    </h1>
+    <h1 class="text-3xl font-bold mb-6">资讯日期</h1>
     
     <div class="mb-4">
       {dates.map((item) => (
@@ -157,7 +157,7 @@ function formatDateTime(dateString) {
 </script>
 
 <!-- 添加新的脚本标签，专门用于回到顶部按钮 -->
-<script>
+<script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
       // 动态创建回到顶部按钮
       const backToTopButton = document.createElement('button');
