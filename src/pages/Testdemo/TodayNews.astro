@@ -71,8 +71,8 @@ function formatDateTime(dateString) {
     ))}
   </div>
   
-  <!-- 添加回到顶部按钮 -->
-  <button id="backToTop" class="fixed bottom-5 right-5 bg-blue-500 text-white p-2 rounded-full shadow-md hidden">
+  <!-- 修改回到顶部按钮 -->
+  <button id="backToTop" class="back-to-top-btn fixed bottom-5 right-5 bg-blue-500 text-white p-2 rounded-full shadow-md hidden z-[9999]">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
     </svg>
@@ -117,8 +117,8 @@ function formatDateTime(dateString) {
       ghostClass: 'blue-background-class'
     });
   });
-
-  // 添加这个函数来在客户端格式化日期
+ 
+  // ���加这个函数来在客户端格式化日期
   function formatDateTimeClient(dateString) {
     if (!dateString) return '日期未知';
     try {
@@ -137,22 +137,37 @@ function formatDateTime(dateString) {
     const originalDate = dateElement.textContent.trim();
     dateElement.textContent = formatDateTimeClient(originalDate);
   });
-
-  // 添加回到顶部按钮的功能
-  const backToTopButton = document.getElementById('backToTop');
-
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-      backToTopButton.classList.remove('hidden');
-    } else {
-      backToTopButton.classList.add('hidden');
-    }
-  });
-
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
 </script>
+
+<!-- 添加新的脚本标签，专门用于回到顶部按钮 -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 动态创建回到顶部按钮
+      const backToTopButton = document.createElement('button');
+      backToTopButton.id = 'back-to-top';
+      backToTopButton.innerHTML = '↑';
+      backToTopButton.className = 'fixed bottom-5 right-5 bg-blue-500 text-white p-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-blue-600';
+      document.body.appendChild(backToTopButton);
+
+      // 滚动事件监听器
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopButton.style.opacity = '1';
+        } else {
+          backToTopButton.style.opacity = '0';
+        }
+      });
+
+      // 点击按钮滚动到顶部
+      backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+  
 
 <style>
   .hidden {
@@ -161,4 +176,24 @@ function formatDateTime(dateString) {
   .blue-background-class {
     background-color: #E8F4FD;
   }
+  .back-to-top-btn {
+  display: none; /* 确保初始状态是隐藏的 */
+  z-index: 9999;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background-color: #007bff; /* 确保按钮的背景色显眼 */
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.back-to-top-btn:not(.hidden) {
+  display: block;
+}
+
+#back-to-top {
+  z-index: 9999;
+}
 </style>
