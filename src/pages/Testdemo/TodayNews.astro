@@ -70,6 +70,13 @@ function formatDateTime(dateString) {
       </div>
     ))}
   </div>
+  
+  <!-- 添加回到顶部按钮 -->
+  <button id="backToTop" class="fixed bottom-5 right-5 bg-blue-500 text-white p-2 rounded-full shadow-md hidden">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+  </button>
 </IndexLayout>
 
 <script is:inline>
@@ -129,6 +136,21 @@ function formatDateTime(dateString) {
   document.querySelectorAll('.news-item p:nth-child(2)').forEach(dateElement => {
     const originalDate = dateElement.textContent.trim();
     dateElement.textContent = formatDateTimeClient(originalDate);
+  });
+
+  // 添加回到顶部按钮的功能
+  const backToTopButton = document.getElementById('backToTop');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      backToTopButton.classList.remove('hidden');
+    } else {
+      backToTopButton.classList.add('hidden');
+    }
+  });
+
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 
