@@ -41,7 +41,12 @@ function formatDateTime(dateString) {
  
 <IndexLayout pageTitle={pageTitle}>
   <div slot="maindiv">
-    <h1 class="text-3xl font-bold mb-6">今日资讯</h1>
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-bold mb-2">AI新闻资讯</h1>
+      <p class="text-xl text-gray-600">不错过全球AI革新的每一个时刻</p>
+    </div>
+    
+    <h1 class="text-3xl font-bold mb-6">资讯日期    </h1>
     
     <div class="mb-4">
       {dates.map((item) => (
@@ -49,26 +54,25 @@ function formatDateTime(dateString) {
       ))}
     </div>
     
-    {dates.map((date) => (
-      <div class="news-container" data-date={date.date} style="display: none;">
-        {newsMap.get(date.date).length > 0 ? (
-          newsMap.get(date.date).map((item) => (
-            <div class="news-item mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md" data-id={item.id}>
-              <h2 class="text-xl font-semibold mb-2">{item.headline}</h2>
-              <p class="text-sm text-gray-500 mb-2">
-                {item.publication_date ? formatDateTime(item.publication_date) : '日期未知'}
-              </p>
-              <p class="summary cursor-pointer">{item.summary}</p>
-              <div class="full-content hidden">
-                <p>{item.content}</p>
+    <div class="max-w-max mx-auto">
+      {dates.map((date) => (
+        <div class="news-container mb-8" data-date={date.date}>
+          <h2 class="text-2xl font-semibold mb-4">{formatDateTime(date.date)}</h2>
+          {newsMap.get(date.date).map((item) => (
+            <div class="news-item mb-6 bg-white rounded-lg shadow-md overflow-hidden">
+              <div class="p-6">
+                <h3 class="text-xl font-semibold mb-2">{item.headline}</h3>
+                <p class="text-sm text-gray-500 mb-4">{formatDateTime(item.publication_date)}</p>
+                <p class="summary cursor-pointer text-gray-700">{item.summary}</p>
+                <div class="full-content hidden mt-4 text-gray-600">
+                  <p>{item.content}</p>
+                </div>
               </div>
             </div>
-          ))
-        ) : (
-          <p>该日期暂无新闻</p>
-        )}
-      </div>
-    ))}
+          ))}
+        </div>
+      ))}
+    </div>
   </div>
   
   <!-- 修改回到顶部按钮 -->
@@ -80,62 +84,75 @@ function formatDateTime(dateString) {
 </IndexLayout>
 
 <script is:inline>
-  const dateTabs = document.querySelectorAll('.date-tab');
-  const newsContainers = document.querySelectorAll('.news-container');
+  document.addEventListener('DOMContentLoaded', () => {
+    const dateTabs = document.querySelectorAll('.date-tab');
+    const newsContainers = document.querySelectorAll('.news-container');
 
-  // 默认显示第一个日期的新闻
-  if (newsContainers.length > 0) {
-    newsContainers[0].style.display = 'block';
-  }
-
-  dateTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const selectedDate = tab.textContent;
-      newsContainers.forEach(container => {
-        if (container.dataset.date === selectedDate) {
+    // 默认显示第一个日期的新闻，隐藏其他日期的新闻
+    if (newsContainers.length > 0) {
+      newsContainers.forEach((container, index) => {
+        if (index === 0) {
           container.style.display = 'block';
+          dateTabs[index].classList.add('active');
         } else {
           container.style.display = 'none';
         }
       });
-    });
-  });
-
-  // 点击摘要显示全文
-  document.querySelectorAll('.summary').forEach(summary => {
-    summary.addEventListener('click', () => {
-      const fullContent = summary.nextElementSibling;
-      fullContent.classList.toggle('hidden');
-    });
-  });
-
-  // 使用动态导入
-  import('sortablejs').then((Sortable) => {
-    // 初始化拖拽排序
-    new Sortable.default(document.getElementById('news-container'), {
-      animation: 150,
-      ghostClass: 'blue-background-class'
-    });
-  });
- 
-  // ���加这个函数来在客户端格式化日期
-  function formatDateTimeClient(dateString) {
-    if (!dateString) return '日期未知';
-    try {
-      const [datePart, timePart] = dateString.split(' ');
-      if (!datePart) return dateString;
-      const [year, month, day] = datePart.split(/年|月/);
-      return `${year}年${month}月${day.replace('号', '')}日 ${timePart || ''}`.trim();
-    } catch (error) {
-      console.error('Error formatting date:', error);
-      return dateString;
     }
-  }
 
-  // 格式化所有日期显示
-  document.querySelectorAll('.news-item p:nth-child(2)').forEach(dateElement => {
-    const originalDate = dateElement.textContent.trim();
-    dateElement.textContent = formatDateTimeClient(originalDate);
+    dateTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const selectedDate = tab.textContent;
+        newsContainers.forEach(container => {
+          if (container.dataset.date === selectedDate) {
+            container.style.display = 'block';
+          } else {
+            container.style.display = 'none';
+          }
+        });
+        
+        // 更新活动标签样式
+        dateTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+
+    // 点击摘要显示全文
+    document.querySelectorAll('.summary').forEach(summary => {
+      summary.addEventListener('click', () => {
+        const fullContent = summary.nextElementSibling;
+        fullContent.classList.toggle('hidden');
+      });
+    });
+
+    // 使用动态导入
+    import('sortablejs').then((Sortable) => {
+      // 初始化拖拽排序
+      new Sortable.default(document.getElementById('news-container'), {
+        animation: 150,
+        ghostClass: 'blue-background-class'
+      });
+    });
+ 
+    // 加这个函数来在客户端格式化日期
+    function formatDateTimeClient(dateString) {
+      if (!dateString) return '日期未知';
+      try {
+        const [datePart, timePart] = dateString.split(' ');
+        if (!datePart) return dateString;
+        const [year, month, day] = datePart.split(/年|月/);
+        return `${year}年${month}月${day.replace('号', '')}日 ${timePart || ''}`.trim();
+      } catch (error) {
+        console.error('Error formatting date:', error);
+        return dateString;
+      }
+    }
+
+    // 格式化所有日期显示
+    document.querySelectorAll('.news-item p:nth-child(2)').forEach(dateElement => {
+      const originalDate = dateElement.textContent.trim();
+      dateElement.textContent = formatDateTimeClient(originalDate);
+    });
   });
 </script>
 
@@ -145,8 +162,12 @@ function formatDateTime(dateString) {
       // 动态创建回到顶部按钮
       const backToTopButton = document.createElement('button');
       backToTopButton.id = 'back-to-top';
-      backToTopButton.innerHTML = '↑';
-      backToTopButton.className = 'fixed bottom-5 right-5 bg-blue-500 text-white p-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-blue-600';
+      backToTopButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+      `;
+      backToTopButton.className = 'fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50';
       document.body.appendChild(backToTopButton);
 
       // 滚动事件监听器
@@ -195,5 +216,18 @@ function formatDateTime(dateString) {
 
 #back-to-top {
   z-index: 9999;
+}
+
+body {
+  @apply bg-gray-100 text-gray-900;
+}
+.news-item {
+  @apply transition-shadow duration-300 hover:shadow-lg;
+}
+.summary {
+  @apply hover:text-blue-600 transition-colors duration-200;
+}
+.date-tab.active {
+  @apply bg-blue-500 text-white;
 }
 </style>
