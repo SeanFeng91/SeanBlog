@@ -21,6 +21,13 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 - [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
 - [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
+# 2024年10月23日记录
+- [ ] 新闻的时间排序还是有问题。24小时制转换没有成功。
+- 增加了一个AiAnalysis.py的程序用来总结关键词。
+- 学习卡兹，调整了kimi总结的prompt。
+- 修复了回到顶部按钮没有正常显示的问题。
+- 写了一个NewsCrawlMain.py，可以同时运行TryCrawl4ai.py、NewsConclusionKimi.py、AiAnalysis.py。
+
 # 2024年10月22日记录
 这几天跟着卡兹的一个爬取新闻资讯的教程，尝试写了自己[新闻爬取页面](https://seanfeng91.github.io/SeanBlog/Testdemo/TodayNews/)。
 基本的功能都已经实现，可以本地通过python获取当天的新闻，然后写入sqlite数据库，并且在网页部署显示。

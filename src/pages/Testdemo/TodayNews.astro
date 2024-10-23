@@ -15,10 +15,15 @@ const dates = query(`
 const newsMap = new Map();
 for (const date of dates) {
   const news = query(`
-    SELECT id, headline, publication_date, content, summary
+    SELECT id, headline, publication_date, content, summary, keywords 
     FROM news_teasers
     WHERE substr(publication_date, 1, 11) = ? AND summary IS NOT NULL
-    ORDER BY publication_date DESC
+    ORDER BY 
+      CAST(substr(publication_date, 1, 4) AS INTEGER) DESC,  /* 年 */
+      CAST(substr(publication_date, 6, 2) AS INTEGER) DESC,  /* 月 */
+      CAST(substr(publication_date, 9, 2) AS INTEGER) DESC,  /* 日 */
+      (24 - CAST(substr(publication_date, 12, 2) AS INTEGER)) ASC,  /* 24小时制转换 */
+      CAST(substr(publication_date, 15, 2) AS INTEGER) DESC  /* 分 */
   `, [date.date]);
   newsMap.set(date.date, news);
 }
@@ -63,6 +68,18 @@ function formatDateTime(dateString) {
               <div class="p-6">
                 <h3 class="text-xl font-semibold mb-2">{item.headline}</h3>
                 <p class="text-sm text-gray-500 mb-4">{formatDateTime(item.publication_date)}</p>
+                
+                {/* 修改关键词显示逻辑 */}
+                {item.keywords && (
+                  <div class="mb-3 flex flex-wrap gap-2">
+                    {item.keywords.split(/[,，、\s]+/).filter(keyword => keyword.trim()).map((keyword) => (
+                      <span class="px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                        {keyword.trim()}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                
                 <p class="summary cursor-pointer text-gray-700">{item.summary}</p>
                 <div class="full-content hidden mt-4 text-gray-600">
                   <p>{item.content}</p>
@@ -229,5 +246,13 @@ body {
 }
 .date-tab.active {
   @apply bg-blue-500 text-white;
+}
+
+/* 添加关键词标签样式 */
+.news-item span {
+  @apply inline-block transition-colors duration-200;
+}
+.news-item span:hover {
+  @apply bg-blue-200;
 }
 </style>
