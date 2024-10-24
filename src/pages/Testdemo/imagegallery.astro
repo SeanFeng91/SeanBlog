@@ -2,10 +2,355 @@
 import "../../styles/global.css";
 import IndexLayout from '../../layouts/IndexLayout.astro';
 const { frontmatter } = Astro.props;
-const pageTitle = "SeanBlog";
+const pageTitle = "3D Models Gallery";
 
 ---
 
 <IndexLayout pageTitle={pageTitle}>
-    <p>gallery</p>
+    <div slot="maindiv">
+        <h1>3D 模型展示</h1>
+        <p>欢迎来到我们的 3D 模型展示页面。在这里，您可以浏览和互动各种精美的 3D 模型。点击任何模型卡片以在查看器中打开并探索。</p>
+        <p>使用了Tripo 3D的AI模型生成功能，根据图片生成了3D模型。使用Three.js导入glb格式模型进行展示</p>
+    
+    <div class="gallery-container">
+        <div class="models-grid">
+            {/* 这里会放置多个模型预览框 */}
+            <div class="model-card" data-model-url="../../../public/models/doubleSheep.glb">
+                <div class="model-preview"></div>
+                <h3>两只小羊</h3>
+            </div>
+            <div class="model-card" data-model-url="../../../public/models/spider_man.glb">
+                <div class="model-preview"></div>
+                <h3>蜘蛛侠</h3>
+            </div>
+            <!-- 更多模型卡片 -->
+        </div>
+    </div>
+
+    <!-- 模型查看器弹窗 -->
+    <div id="modelViewer" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="canvas-container"></div>
+        </div>
+        </div>
+    </div>
+    <style>
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+        
+        .model-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .model-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .model-preview {
+            height: 280px;
+            width: 100%;
+            background: #f5f5f5;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .model-preview canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        .model-card h3 {
+            padding: 1rem;
+            margin: 0;
+            font-size: 1.2rem;
+            text-align: center;
+            color: #333;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+        }
+        .modal-content {
+            width: 90%;
+            height: 90%;
+            margin: 2% auto;
+            background: white;
+            position: relative;
+        }
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+        }
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+
+        let currentScene, currentCamera, currentRenderer, currentControls;
+
+        // 初始化查看器
+        function initViewer(containerElement) {
+            // 创建场景
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f0f0);
+
+            // 创建相机
+            const camera = new THREE.PerspectiveCamera(
+                75,
+                containerElement.clientWidth / containerElement.clientHeight,
+                0.1,
+                1000
+            );
+            camera.position.set(5, 5, 5);
+
+            // 创建渲染器
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(containerElement.clientWidth, containerElement.clientHeight);
+            containerElement.appendChild(renderer.domElement);
+
+            // 添加基础光源
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+
+            // 添加控制器
+            const controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+
+            currentScene = scene;
+            currentCamera = camera;
+            currentRenderer = renderer;
+            currentControls = controls;
+
+            // 动画循环
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // 输出调试信息
+            console.log('Viewer initialized');
+        }
+
+        // 加载模型
+        function loadModel(url) {
+            console.log('Loading model:', url); // 调试日志
+
+            const loader = new GLTFLoader();
+            
+            loader.load(
+                url,
+                (gltf) => {
+                    console.log('Model loaded successfully:', gltf); // 调试日志
+                    
+                    currentScene.clear();
+                    
+                    // 添加光源
+                    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+                    currentScene.add(ambientLight);
+                    
+                    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+                    directionalLight.position.set(5, 5, 5);
+                    currentScene.add(directionalLight);
+
+                    // 添加模型
+                    const model = gltf.scene;
+                    currentScene.add(model);
+
+                    // 调整相机位置以适应模型
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+                    
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const fov = currentCamera.fov * (Math.PI / 180);
+                    let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 2;
+                    
+                    currentCamera.position.set(cameraZ, cameraZ/2, cameraZ);
+                    currentCamera.lookAt(center);
+                    
+                    if (currentControls) {
+                        currentControls.target.copy(center);
+                        currentControls.update();
+                    }
+                },
+                (xhr) => {
+                    console.log((xhr.loaded / xhr.total * 100) + '% loaded'); // 加载进度
+                },
+                (error) => {
+                    console.error('Error loading model:', error); // 错误日志
+                }
+            );
+        }
+
+        // 初始化预览
+        function initPreview(element, modelUrl) {
+            console.log('Initializing preview for:', modelUrl);
+
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf5f5f5);
+
+            const camera = new THREE.PerspectiveCamera(
+                45,
+                element.clientWidth / element.clientHeight,
+                0.1,
+                1000
+            );
+            camera.position.set(3, 2, 3);
+
+            const renderer = new THREE.WebGLRenderer({ 
+                antialias: true,
+                alpha: true 
+            });
+            renderer.setSize(element.clientWidth, element.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            element.appendChild(renderer.domElement);
+
+            // 增强光照效果
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+
+            const backLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            backLight.position.set(-5, 5, -5);
+            scene.add(backLight);
+
+            const loader = new GLTFLoader();
+            loader.load(
+                modelUrl,
+                (gltf) => {
+                    console.log('Preview model loaded:', gltf);
+                    const model = gltf.scene;
+                    
+                    // 自动调整模型大小和位置
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+                    
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const fov = camera.fov * (Math.PI / 180);
+                    let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 1.5;
+                    
+                    camera.position.set(cameraZ, cameraZ/2, cameraZ);
+                    camera.lookAt(center);
+                    
+                    // 居中模型
+                    model.position.sub(center);
+                    
+                    scene.add(model);
+
+                    // 自动旋转动画
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        model.rotation.y += 0.01;
+                        renderer.render(scene, camera);
+                    }
+                    animate();
+                },
+                (xhr) => {
+                    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                },
+                (error) => {
+                    console.error('Error loading preview:', error);
+                }
+            );
+
+            // 响应窗口大小变化
+            window.addEventListener('resize', () => {
+                const width = element.clientWidth;
+                const height = element.clientHeight;
+                
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                
+                renderer.setSize(width, height);
+            });
+        }
+
+        // 设置事件监听
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded'); // 调试日志
+
+            const modelViewer = document.getElementById('modelViewer');
+            const closeBtn = document.querySelector('.close');
+            const canvasContainer = document.getElementById('canvas-container');
+            
+            // 初始化所有预览
+            document.querySelectorAll('.model-card').forEach(card => {
+                console.log('Found model card:', card.dataset.modelUrl); // 调试日志
+                const previewElement = card.querySelector('.model-preview');
+                const modelUrl = card.dataset.modelUrl;
+                initPreview(previewElement, modelUrl);
+            });
+
+            // 点击模型卡片时打开查看器
+            document.querySelectorAll('.model-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    console.log('Card clicked:', card.dataset.modelUrl); // 调试日志
+                    modelViewer.style.display = 'block';
+                    if (!currentRenderer) {
+                        initViewer(canvasContainer);
+                    }
+                    loadModel(card.dataset.modelUrl);
+                });
+            });
+
+            // 关闭查看器
+            closeBtn.addEventListener('click', () => {
+                modelViewer.style.display = 'none';
+            });
+
+            // 响应窗口大小变化
+            window.addEventListener('resize', () => {
+                if (currentCamera && currentRenderer) {
+                    currentCamera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
+                    currentCamera.updateProjectionMatrix();
+                    currentRenderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+                }
+            });
+        });
+    </script>
 </IndexLayout>
