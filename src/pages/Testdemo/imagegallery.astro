@@ -64,8 +64,7 @@ try {
                         <div class="model-preview"></div>
                         <h3>{model.title}</h3>
                     </div>
-                ))}
-            </div>
+                ))}            </div>
         </div>
 
         <div id="modelViewer" class="modal">
@@ -157,10 +156,11 @@ try {
         }
     </style>
 
-    <script>
-        import * as THREE from 'three';
-        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+    <script is:inline>
+        // 使用 ESM 方式导入 Three.js
+        import * as THREE from 'https://unpkg.com/three@0.132.2/build/three.module.js';
+        import { GLTFLoader } from 'https://unpkg.com/three@0.132.2/examples/jsm/loaders/GLTFLoader.js';
+        import { OrbitControls } from 'https://unpkg.com/three@0.132.2/examples/jsm/controls/OrbitControls.js';
 
         let currentScene, currentCamera, currentRenderer, currentControls;
 
@@ -213,32 +213,56 @@ try {
             console.log('Viewer initialized');
         }
 
-        // 加载模型
+        // 修改 loadModel 函数
         function loadModel(url) {
             console.log('Loading model:', url);
             const loader = new GLTFLoader();
             
-            // 添加错误处理和加载状态
-            try {
-                loader.load(
-                    url,
-                    (gltf) => {
-                        console.log('Model loaded successfully:', gltf);
-                        // ... 其他加载成功的代码 ...
-                    },
-                    (xhr) => {
-                        // 添加加载进度提示
-                        const percent = (xhr.loaded / xhr.total * 100).toFixed(2);
-                        console.log(`Loading progress: ${percent}%`);
-                    },
-                    (error) => {
-                        console.error('Error loading model:', error);
-                        console.error('Failed URL:', url);
-                    }
-                );
-            } catch (error) {
-                console.error('Error in loadModel:', error);
+            // 清除当前场景中的所有对象
+            while(currentScene.children.length > 0){ 
+                currentScene.remove(currentScene.children[0]); 
             }
+
+            // 添加加载进度提示
+            const loadingElem = document.createElement('div');
+            loadingElem.style.position = 'absolute';
+            loadingElem.style.top = '50%';
+            loadingElem.style.left = '50%';
+            loadingElem.style.transform = 'translate(-50%, -50%)';
+            loadingElem.style.color = 'white';
+            loadingElem.textContent = 'Loading...';
+            document.getElementById('canvas-container').appendChild(loadingElem);
+
+            loader.load(
+                url,
+                (gltf) => {
+                    console.log('Model loaded successfully:', gltf);
+                    const model = gltf.scene;
+                    currentScene.add(model);
+
+                    // 自动调整相机位置以适应模型
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const fov = currentCamera.fov * (Math.PI / 180);
+                    let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 2;
+                    currentCamera.position.set(center.x, center.y, center.z + cameraZ);
+                    currentCamera.lookAt(center);
+                    currentControls.target.copy(center);
+
+                    // 移除加载提示
+                    loadingElem.remove();
+                },
+                (xhr) => {
+                    const percent = (xhr.loaded / xhr.total * 100).toFixed(2);
+                    loadingElem.textContent = `Loading: ${percent}%`;
+                },
+                (error) => {
+                    console.error('Error loading model:', error);
+                    loadingElem.textContent = 'Error loading model';
+                }
+            );
         }
 
         // 初始化预览
@@ -322,7 +346,7 @@ try {
             }
         }
 
-        // 设置事件监听
+        // 修改事件监听部分
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM Content Loaded');
             
@@ -350,7 +374,7 @@ try {
                 // 点击模型卡片时打开查看器
                 document.querySelectorAll('.model-card').forEach(card => {
                     card.addEventListener('click', () => {
-                        console.log('Card clicked:', card.dataset.modelUrl); // 调试日志
+                        console.log('Card clicked:', card.dataset.modelUrl);
                         modelViewer.style.display = 'block';
                         if (!currentRenderer) {
                             initViewer(canvasContainer);
