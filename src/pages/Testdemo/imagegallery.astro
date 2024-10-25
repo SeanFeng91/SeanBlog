@@ -156,7 +156,7 @@ try {
         }
     </style>
 
-    <script is:inline>
+    <script>
         // 使用 ESM 方式导入 Three.js
         import * as THREE from 'https://unpkg.com/three@0.132.2/build/three.module.js';
         import { GLTFLoader } from 'https://unpkg.com/three@0.132.2/examples/jsm/loaders/GLTFLoader.js';
@@ -215,28 +215,13 @@ try {
 
         // 修改 loadModel 函数
         function loadModel(url) {
-            console.log('Loading model:', url);
+            console.log('正在加载模型，URL:', url);
             const loader = new GLTFLoader();
             
-            // 清除当前场景中的所有对象
-            while(currentScene.children.length > 0){ 
-                currentScene.remove(currentScene.children[0]); 
-            }
-
-            // 添加加载进度提示
-            const loadingElem = document.createElement('div');
-            loadingElem.style.position = 'absolute';
-            loadingElem.style.top = '50%';
-            loadingElem.style.left = '50%';
-            loadingElem.style.transform = 'translate(-50%, -50%)';
-            loadingElem.style.color = 'white';
-            loadingElem.textContent = 'Loading...';
-            document.getElementById('canvas-container').appendChild(loadingElem);
-
             loader.load(
                 url,
                 (gltf) => {
-                    console.log('Model loaded successfully:', gltf);
+                    console.log('模型加载成功:', gltf);
                     const model = gltf.scene;
                     currentScene.add(model);
 
@@ -255,19 +240,17 @@ try {
                     loadingElem.remove();
                 },
                 (xhr) => {
-                    const percent = (xhr.loaded / xhr.total * 100).toFixed(2);
-                    loadingElem.textContent = `Loading: ${percent}%`;
+                    console.log(`加载进度: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
                 },
                 (error) => {
-                    console.error('Error loading model:', error);
-                    loadingElem.textContent = 'Error loading model';
+                    console.error('模型加载失败:', error);
                 }
             );
         }
 
         // 初始化预览
         function initPreview(element, modelUrl) {
-            console.log('Initializing preview for:', modelUrl);
+            console.log('正在初始化预览，模型 URL:', modelUrl);
             
             try {
                 const scene = new THREE.Scene();
@@ -400,5 +383,12 @@ try {
                 console.error('Error in DOMContentLoaded:', error);
             }
         });
+
+        console.log('Three.js 版本:', THREE.REVISION);
+        console.log('GLTFLoader 是否存在:', typeof GLTFLoader !== 'undefined');
+        console.log('OrbitControls 是否存在:', typeof OrbitControls !== 'undefined');
     </script>
 </IndexLayout>
+
+
+
