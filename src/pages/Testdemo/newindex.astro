@@ -8,35 +8,37 @@ const pageTitle = "Three.js 演示";
 
 <IndexLayout pageTitle={pageTitle}>
   <div slot="maindiv" class="container mx-auto px-4 py-8">
-    <canvas id="threejs-canvas" class="w-full h-[500px]"></canvas>
+    <div class="mb-8">
+      <h2 class="text-xl mb-4">方法1: 直接在页面中实现</h2>
+      <canvas id="threejs-canvas-1" class="w-full h-[500px]"></canvas>
+    </div>
+
+    <div>
+      <h2 class="text-xl mb-4">方法2: 通过外部文件实现</h2>
+      <canvas id="threejs-canvas-2" class="w-full h-[500px]"></canvas>
+    </div>
   </div>
 </IndexLayout>
 
+<!-- 方法1: 直接在页面中实现 -->
 <script>
-  // 确保代码只在浏览器环境中运行
   function initThreeJS() {
     import('three').then((THREE) => {
-      // 创建场景
       const scene = new THREE.Scene();
-      
-      // 创建相机
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.z = 5;
 
-      // 创建渲染器
-      const canvas = document.querySelector('#threejs-canvas');
+      const canvas = document.querySelector('#threejs-canvas-1');
       if (!canvas) return;
       
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
       renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
-      // 创建一个简单的立方体
       const geometry = new THREE.BoxGeometry();
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // 红色立方体
       const cube = new THREE.Mesh(geometry, material);
       scene.add(cube);
 
-      // 动画循环
       function animate() {
         requestAnimationFrame(animate);
         cube.rotation.x += 0.01;
@@ -44,7 +46,6 @@ const pageTitle = "Three.js 演示";
         renderer.render(scene, camera);
       }
 
-      // 处理窗口大小变化
       window.addEventListener('resize', () => {
         camera.aspect = canvas.clientWidth / canvas.clientHeight;
         camera.updateProjectionMatrix();
@@ -55,6 +56,11 @@ const pageTitle = "Three.js 演示";
     });
   }
 
-  // 等待 DOM 加载完成后初始化
   document.addEventListener('DOMContentLoaded', initThreeJS);
+</script>
+
+<!-- 方法2: 通过外部文件实现 -->
+<script>
+  import { initThreeScene } from '../../components/ThreeJS/three-demo.js';
+  document.addEventListener('DOMContentLoaded', () => initThreeScene('threejs-canvas-2'));
 </script>
