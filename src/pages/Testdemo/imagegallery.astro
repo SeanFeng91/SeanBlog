@@ -71,20 +71,20 @@ try {
     <div slot="maindiv">
         <h1>3D 模型展示</h1>
         <!-- 添加调试开关 -->
-        <button id="toggleDebug" style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
+        <!-- <button id="toggleDebug" style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
             Toggle Debug
-        </button>
+        </button> -->
         
         <p>欢迎来到我们的 3D 模型展示页面。在这里，您可以浏览和互动各种精美的 3D 模型。点击任何模型卡片以在查看器中打开并探索。</p>
         <p>使用了Tripo 3D的AI模型生成功能，根据图片生成了3D模型。使用Three.js导入glb格式模型进行展示</p>
     
-        {errorMessage && <p style="color: red;">{errorMessage}</p>}
+        <!-- {errorMessage && <p style="color: red;">{errorMessage}</p>} -->
         
         <!-- 添加调试区域 -->
-        <div id="debugArea" style="background-color: #f0f0f0; padding: 10px; margin-top: 20px; border: 1px solid #ccc; max-height: 200px; overflow-y: auto;">
+        <!-- <div id="debugArea" style="background-color: #f0f0f0; padding: 10px; margin-top: 20px; border: 1px solid #ccc; max-height: 200px; overflow-y: auto;">
             <h3>调试信息：</h3>
             <pre id="debugLog"></pre>
-        </div>
+        </div> -->
         
         <div class="gallery-container" id="galleryContainer">
             <div class="models-grid">
@@ -139,11 +139,30 @@ try {
 
         let currentScene, currentCamera, currentRenderer, currentControls;
 
-        // 初始化查看器
+        // 在 script 标签内添加预览渲染器的管理
+        let previewRenderers = new Map();
+
+        // 修改 initViewer 函数，添加清理场景的功能
         function initViewer(containerElement) {
             debugLog('初始化查看器');
             try {
-                // 创建场景
+                // 清理现有场景
+                if (currentRenderer) {
+                    currentRenderer.dispose();
+                    currentRenderer.domElement.remove();
+                }
+                if (currentControls) {
+                    currentControls.dispose();
+                }
+                if (currentScene) {
+                    // 清理场景中的所有对象
+                    while(currentScene.children.length > 0) { 
+                        const object = currentScene.children[0];
+                        currentScene.remove(object);
+                    }
+                }
+                
+                // 创建新场景
                 currentScene = new THREE.Scene();
                 currentScene.background = new THREE.Color(0xf0f0f0);
                 debugLog('场景创建成功');
@@ -192,12 +211,75 @@ try {
             }
         }
 
-        // 加载模型
+        // 修改预览初始化函数
+        function initPreview(previewElement, modelUrl) {
+            const width = previewElement.clientWidth;
+            const height = previewElement.clientHeight;
+            
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffffff); // 设置白色背景
+            
+            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            
+            renderer.setSize(width, height);
+            previewElement.appendChild(renderer.domElement);
+            
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(5, 5, 5);
+            scene.add(directionalLight);
+            
+            const loader = new GLTFLoader();
+            loader.load(modelUrl, (gltf) => {
+                const model = gltf.scene;
+                scene.add(model);
+                
+                // 自动调整模型大小和位置
+                const box = new THREE.Box3().setFromObject(model);
+                const size = box.getSize(new THREE.Vector3());
+                const center = box.getCenter(new THREE.Vector3());
+                
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const fov = camera.fov * (Math.PI / 180);
+                let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 0.8; // 调整系数使模型更大
+                
+                camera.position.set(0, 0, cameraZ);
+                camera.lookAt(center);
+                
+                // 自动旋转展示
+                function animate() {
+                    requestAnimationFrame(animate);
+                    model.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+                animate();
+            });
+            
+            previewRenderers.set(previewElement, { scene, camera, renderer });
+        }
+
+        // 修改加载模型函数
         function loadModel(url) {
             debugLog('开始加载模型:', url);
             try {
-                const loader = new GLTFLoader();
+                // 确保场景是空的
+                while(currentScene.children.length > 0) { 
+                    const object = currentScene.children[0];
+                    currentScene.remove(object);
+                }
                 
+                // 添加光源
+                const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+                currentScene.add(ambientLight);
+                
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+                directionalLight.position.set(5, 5, 5);
+                currentScene.add(directionalLight);
+                
+                const loader = new GLTFLoader();
                 loader.load(
                     url,
                     (gltf) => {
@@ -211,7 +293,7 @@ try {
                         const size = box.getSize(new THREE.Vector3());
                         const maxDim = Math.max(size.x, size.y, size.z);
                         const fov = currentCamera.fov * (Math.PI / 180);
-                        let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 2;
+                        let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 2;
                         
                         currentCamera.position.set(center.x, center.y, center.z + cameraZ);
                         currentCamera.lookAt(center);
@@ -255,7 +337,17 @@ try {
                     });
                 }
 
-                // 模型卡片点击事件
+                // 初始化所有预览
+                const modelCards = document.querySelectorAll('.model-card');
+                modelCards.forEach(card => {
+                    const previewElement = card.querySelector('.model-preview');
+                    const modelUrl = card.dataset.modelUrl;
+                    if (previewElement && modelUrl) {
+                        initPreview(previewElement, modelUrl);
+                    }
+                });
+
+                // 修改模型卡片点击事件
                 if (galleryContainer) {
                     galleryContainer.addEventListener('click', (event) => {
                         const modelCard = event.target.closest('.model-card');
@@ -264,9 +356,7 @@ try {
                             debugLog('模型卡片被点击，URL:', modelUrl);
                             
                             modelViewer.style.display = 'block';
-                            if (!currentRenderer) {
-                                initViewer(canvasContainer);
-                            }
+                            initViewer(canvasContainer); // 每次都重新初始化
                             loadModel(modelUrl);
                         }
                     });
@@ -288,6 +378,13 @@ try {
                         currentCamera.updateProjectionMatrix();
                         currentRenderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
                     }
+                });
+
+                // 添加清理函数
+                window.addEventListener('beforeunload', () => {
+                    previewRenderers.forEach(({ renderer }) => {
+                        renderer.dispose();
+                    });
                 });
 
                 debugLog('事件监听器设置完成');
@@ -384,3 +481,4 @@ try {
         }
     </style>
 </IndexLayout>
+
