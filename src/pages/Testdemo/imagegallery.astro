@@ -161,16 +161,13 @@ try {
     </style>
 
     <script>
-        console.log('客户端脚本已加载');
-
-        // 使用 ESM 方式导入 Three.js
-        import * as THREE from 'https://unpkg.com/three@0.132.2/build/three.module.js';
-        import { GLTFLoader } from 'https://unpkg.com/three@0.132.2/examples/jsm/loaders/GLTFLoader.js';
-        import { OrbitControls } from 'https://unpkg.com/three@0.132.2/examples/jsm/controls/OrbitControls.js';
+        // 这个脚本用于初始化 Three.js 和模型渲染
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
         let currentScene, currentCamera, currentRenderer, currentControls;
 
-        // 初始化查看器
         function initViewer(containerElement) {
             console.log('初始化查看器');
             // 创建场景
@@ -220,7 +217,6 @@ try {
             console.log('Viewer initialized');
         }
 
-        // 加载模型
         function loadModel(url) {
             console.log('加载模型:', url);
             console.log('正在加载模型，URL:', url);
@@ -253,7 +249,6 @@ try {
             );
         }
 
-        // 初始化预览
         function initPreview(element, modelUrl) {
             console.log('正在初始化预览，模型 URL:', modelUrl);
             
@@ -334,6 +329,16 @@ try {
             }
         }
 
+        // 将这些函数暴露给全局作用域，以便在其他脚本中使用
+        window.modelViewer = {
+            initViewer,
+            loadModel,
+            initPreview
+        };
+    </script>
+
+    <script>
+        // 这个脚本用于处理用户交互
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM Content Loaded');
             
@@ -355,10 +360,10 @@ try {
                     console.log('模型卡片被点击:', modelUrl);
                     
                     modelViewer.style.display = 'block';
-                    if (!currentRenderer) {
-                        initViewer(canvasContainer);
+                    if (!window.modelViewer.currentRenderer) {
+                        window.modelViewer.initViewer(canvasContainer);
                     }
-                    loadModel(modelUrl);
+                    window.modelViewer.loadModel(modelUrl);
                 }
             });
 
@@ -367,7 +372,7 @@ try {
                 const modelCard = previewElement.closest('.model-card');
                 if (modelCard) {
                     const modelUrl = modelCard.dataset.modelUrl;
-                    initPreview(previewElement, modelUrl);
+                    window.modelViewer.initPreview(previewElement, modelUrl);
                 }
             });
 
@@ -378,16 +383,12 @@ try {
 
             // 响应窗口大小变化
             window.addEventListener('resize', () => {
-                if (currentCamera && currentRenderer) {
-                    currentCamera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
-                    currentCamera.updateProjectionMatrix();
-                    currentRenderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+                if (window.modelViewer.currentCamera && window.modelViewer.currentRenderer) {
+                    window.modelViewer.currentCamera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
+                    window.modelViewer.currentCamera.updateProjectionMatrix();
+                    window.modelViewer.currentRenderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
                 }
             });
         });
-
-        console.log('Three.js 版本:', THREE.REVISION);
-        console.log('GLTFLoader 是否存在:', typeof GLTFLoader !== 'undefined');
-        console.log('OrbitControls 是否存在:', typeof OrbitControls !== 'undefined');
     </script>
 </IndexLayout>
