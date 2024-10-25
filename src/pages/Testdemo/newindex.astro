@@ -56,7 +56,8 @@ const pageTitle = "Three.js 演示";
 <script is:inline>
   (async () => {
     try {
-      const module = await import('/src/components/ThreeJS/three-demo.js');
+      // 修改导入路径
+      const module = await import('/scripts/three-demo.js');
       window.addEventListener('load', () => {
         module.initThreeScene('threejs-canvas-2');
       });
