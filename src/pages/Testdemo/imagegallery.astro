@@ -4,56 +4,77 @@ import IndexLayout from '../../layouts/IndexLayout.astro';
 import fs from 'fs/promises';
 import path from 'path';
 
+// 添加调试函数
+function debug(message, ...args) {
+    const timestamp = new Date().toISOString();
+    console.log(`[${timestamp}] ${message}`, ...args);
+}
+
+// 在页面加载时立即输出调试信息
+const debugScript = `
+    console.log('[Debug] 页面初始化开始 -----------');
+    console.log('[Debug] Window URL:', window.location.href);
+    console.log('[Debug] Document Ready State:', document.readyState);
+`;
+
 let errorMessage = '';
 let models = [];
 
-// 确保 BASE_URL 总是以 '/' 结尾但不以 '/' 开头
+// 确保 BASE_URL 正确设置
 const BASE_URL = (import.meta.env.BASE_URL || '/SeanBlog').replace(/\/$/, '');
-console.log(`Base URL: ${BASE_URL}`);
+debug('Base URL configured as:', BASE_URL);
 
 async function getModelsFromDirectory() {
-  try {
-    const baseDir = 'public/models';
-    const files = await fs.readdir(baseDir);
-    console.log(`找到模型文件: ${files.join(', ')}`);
-    
-    const modelFiles = files.filter(file => ['.glb'].includes(path.extname(file).toLowerCase()));
-    
-    const modelItems = modelFiles.map((file, index) => {
-      const modelPath = path.join(baseDir, file);
-      console.log(`处理模型: ${modelPath}`);
-      
-      // 修正模型路径，确保正确的URL格式
-      const modelSrc = `${BASE_URL}/models/${file}`;
-      console.log(`Model src: ${modelSrc}`);
-      
-      return {
-        id: index + 1,
-        src: modelSrc,
-        title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim()
-      };
-    });
+    debug('开始读取模型目录');
+    try {
+        const baseDir = 'public/models';
+        const files = await fs.readdir(baseDir);
+        debug('找到的文件:', files);
+        
+        const modelFiles = files.filter(file => ['.glb'].includes(path.extname(file).toLowerCase()));
+        debug('筛选后的模型文件:', modelFiles);
+        
+        const modelItems = modelFiles.map((file, index) => {
+            const modelSrc = `${BASE_URL}/models/${file}`;
+            debug('处理模型:', { file, modelSrc });
+            
+            return {
+                id: index + 1,
+                src: modelSrc,
+                title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim()
+            };
+        });
 
-    console.log(`处理后的模型数量: ${modelItems.length}`);
-    return modelItems;
-  } catch (error) {
-    console.error('读取模型目录失败:', error);
-    return [];
-  }
+        debug('处理完成的模型列表:', modelItems);
+        return modelItems;
+    } catch (error) {
+        debug('读取模型目录失败:', error);
+        return [];
+    }
 }
 
 try {
-  models = await getModelsFromDirectory();
-  console.log(`Total models: ${models.length}`);
+    models = await getModelsFromDirectory();
+    debug('模型加载完成，总数:', models.length);
 } catch (error) {
-  console.error('Error occurred:', error);
-  errorMessage = `Error: ${error.message}`;
+    debug('发生错误:', error);
+    errorMessage = `Error: ${error.message}`;
 }
 ---
 
 <IndexLayout pageTitle="3D Models Gallery">
+    <!-- 添加调试信息显示区域 -->
+    <div id="debugInfo" style="position: fixed; bottom: 0; left: 0; background: rgba(0,0,0,0.8); color: white; padding: 10px; max-height: 200px; overflow-y: auto; width: 100%; display: none;">
+        <div id="debugContent"></div>
+    </div>
+
     <div slot="maindiv">
         <h1>3D 模型展示</h1>
+        <!-- 添加调试开关 -->
+        <button id="toggleDebug" style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
+            Toggle Debug
+        </button>
+        
         <p>欢迎来到我们的 3D 模型展示页面。在这里，您可以浏览和互动各种精美的 3D 模型。点击任何模型卡片以在查看器中打开并探索。</p>
         <p>使用了Tripo 3D的AI模型生成功能，根据图片生成了3D模型。使用Three.js导入glb格式模型进行展示</p>
     
@@ -77,6 +98,205 @@ try {
             </div>
         </div>
     </div>
+
+    <!-- 注入初始调试脚本 -->
+    <script is:inline set:html={debugScript} />
+
+    <script>
+        // 调试工具函数
+        function debugLog(message, ...args) {
+            const timestamp = new Date().toISOString();
+            console.log(`[${timestamp}] ${message}`, ...args);
+            
+            // 同时更新调试信息面板
+            const debugContent = document.getElementById('debugContent');
+            if (debugContent) {
+                const logEntry = document.createElement('div');
+                logEntry.textContent = `[${timestamp}] ${message} ${args.map(arg => JSON.stringify(arg)).join(' ')}`;
+                debugContent.appendChild(logEntry);
+                debugContent.scrollTop = debugContent.scrollHeight;
+            }
+        }
+
+        // 错误处理函数
+        function handleError(error, context) {
+            debugLog(`Error in ${context}:`, error);
+            console.error(error);
+        }
+
+        // 导入 Three.js
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+
+        debugLog('Three.js 版本:', THREE.REVISION);
+
+        let currentScene, currentCamera, currentRenderer, currentControls;
+
+        // 初始化查看器
+        function initViewer(containerElement) {
+            debugLog('初始化查看器');
+            try {
+                // 创建场景
+                currentScene = new THREE.Scene();
+                currentScene.background = new THREE.Color(0xf0f0f0);
+                debugLog('场景创建成功');
+
+                // 创建相机
+                currentCamera = new THREE.PerspectiveCamera(
+                    75,
+                    containerElement.clientWidth / containerElement.clientHeight,
+                    0.1,
+                    1000
+                );
+                currentCamera.position.set(5, 5, 5);
+                debugLog('相机设置完成');
+
+                // 创建渲染器
+                currentRenderer = new THREE.WebGLRenderer({ antialias: true });
+                currentRenderer.setSize(containerElement.clientWidth, containerElement.clientHeight);
+                containerElement.appendChild(currentRenderer.domElement);
+                debugLog('渲染器创建成功');
+
+                // 添加光源
+                const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+                currentScene.add(ambientLight);
+                
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+                directionalLight.position.set(5, 5, 5);
+                currentScene.add(directionalLight);
+                debugLog('光源添加完成');
+
+                // 添加控制器
+                currentControls = new OrbitControls(currentCamera, currentRenderer.domElement);
+                currentControls.enableDamping = true;
+                debugLog('控制器设置完成');
+
+                // 动画循环
+                function animate() {
+                    requestAnimationFrame(animate);
+                    currentControls.update();
+                    currentRenderer.render(currentScene, currentCamera);
+                }
+                animate();
+                debugLog('动画循环启动');
+
+            } catch (error) {
+                handleError(error, 'initViewer');
+            }
+        }
+
+        // 加载模型
+        function loadModel(url) {
+            debugLog('开始加载模型:', url);
+            try {
+                const loader = new GLTFLoader();
+                
+                loader.load(
+                    url,
+                    (gltf) => {
+                        debugLog('模型加载成功');
+                        const model = gltf.scene;
+                        currentScene.add(model);
+
+                        // 调整相机位置
+                        const box = new THREE.Box3().setFromObject(model);
+                        const center = box.getCenter(new THREE.Vector3());
+                        const size = box.getSize(new THREE.Vector3());
+                        const maxDim = Math.max(size.x, size.y, size.z);
+                        const fov = currentCamera.fov * (Math.PI / 180);
+                        let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 2;
+                        
+                        currentCamera.position.set(center.x, center.y, center.z + cameraZ);
+                        currentCamera.lookAt(center);
+                        currentControls.target.copy(center);
+                        debugLog('相机位置已调整');
+                    },
+                    (xhr) => {
+                        const percent = (xhr.loaded / xhr.total * 100).toFixed(2);
+                        debugLog(`加载进度: ${percent}%`);
+                    },
+                    (error) => handleError(error, 'loadModel')
+                );
+            } catch (error) {
+                handleError(error, 'loadModel');
+            }
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            debugLog('DOM加载完成');
+            
+            try {
+                const galleryContainer = document.getElementById('galleryContainer');
+                const modelViewer = document.getElementById('modelViewer');
+                const closeBtn = document.querySelector('.close');
+                const canvasContainer = document.getElementById('canvas-container');
+                const toggleDebugBtn = document.getElementById('toggleDebug');
+                const debugInfo = document.getElementById('debugInfo');
+
+                debugLog('DOM元素获取状态:', {
+                    hasGallery: !!galleryContainer,
+                    hasViewer: !!modelViewer,
+                    hasCloseBtn: !!closeBtn,
+                    hasCanvas: !!canvasContainer
+                });
+
+                // 调试开关功能
+                if (toggleDebugBtn && debugInfo) {
+                    toggleDebugBtn.addEventListener('click', () => {
+                        debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
+                    });
+                }
+
+                // 模型卡片点击事件
+                if (galleryContainer) {
+                    galleryContainer.addEventListener('click', (event) => {
+                        const modelCard = event.target.closest('.model-card');
+                        if (modelCard) {
+                            const modelUrl = modelCard.dataset.modelUrl;
+                            debugLog('模型卡片被点击，URL:', modelUrl);
+                            
+                            modelViewer.style.display = 'block';
+                            if (!currentRenderer) {
+                                initViewer(canvasContainer);
+                            }
+                            loadModel(modelUrl);
+                        }
+                    });
+                }
+
+                // 关闭按钮事件
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        debugLog('关闭按钮被点击');
+                        modelViewer.style.display = 'none';
+                    });
+                }
+
+                // 窗口大小变化处理
+                window.addEventListener('resize', () => {
+                    debugLog('窗口大小发生变化');
+                    if (currentCamera && currentRenderer) {
+                        currentCamera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
+                        currentCamera.updateProjectionMatrix();
+                        currentRenderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+                    }
+                });
+
+                debugLog('事件监听器设置完成');
+            } catch (error) {
+                handleError(error, 'DOMContentLoaded');
+            }
+        });
+
+        // 将调试工具暴露给全局作用域
+        window.debugLog = debugLog;
+        window.modelViewer = {
+            initViewer,
+            loadModel
+        };
+    </script>
 
     <style>
         /* 保持原有样式不变 */
@@ -113,15 +333,6 @@ try {
             background: #f5f5f5;
             position: relative;
             overflow: hidden;
-        }
-        
-        .model-preview canvas {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100% !important;
-            height: 100% !important;
         }
         
         .model-card h3 {
@@ -166,197 +377,4 @@ try {
             z-index: 1001;
         }
     </style>
-
-    <script>
-        // 确保 Three.js 和相关库被正确加载
-        import * as THREE from 'three';
-        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-
-        // 存储当前场景状态的全局变量
-        let currentScene, currentCamera, currentRenderer, currentControls;
-        let currentModel = null;
-
-        function cleanupScene() {
-            if (currentScene) {
-                // 清理当前模型
-                if (currentModel) {
-                    currentScene.remove(currentModel);
-                    if (currentModel.geometry) currentModel.geometry.dispose();
-                    if (currentModel.material) currentModel.material.dispose();
-                }
-                
-                // 清理场景中的其他对象
-                currentScene.traverse((object) => {
-                    if (object.geometry) object.geometry.dispose();
-                    if (object.material) {
-                        if (Array.isArray(object.material)) {
-                            object.material.forEach(material => material.dispose());
-                        } else {
-                            object.material.dispose();
-                        }
-                    }
-                });
-            }
-        }
-
-        function initViewer(containerElement) {
-            console.log('初始化查看器');
-            cleanupScene();
-
-            // 创建新场景
-            const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xf0f0f0);
-
-            // 设置相机
-            const camera = new THREE.PerspectiveCamera(
-                75,
-                containerElement.clientWidth / containerElement.clientHeight,
-                0.1,
-                1000
-            );
-            camera.position.set(5, 5, 5);
-
-            // 创建渲染器
-            const renderer = new THREE.WebGLRenderer({ 
-                antialias: true,
-                powerPreference: "high-performance"
-            });
-            renderer.setSize(containerElement.clientWidth, containerElement.clientHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            containerElement.innerHTML = ''; // 清除之前的内容
-            containerElement.appendChild(renderer.domElement);
-
-            // 设置光源
-            const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-            scene.add(ambientLight);
-
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(5, 5, 5);
-            scene.add(directionalLight);
-
-            // 设置控制器
-            const controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.screenSpacePanning = false;
-            controls.maxPolarAngle = Math.PI / 2;
-
-            currentScene = scene;
-            currentCamera = camera;
-            currentRenderer = renderer;
-            currentControls = controls;
-
-            // 动画循环
-            function animate() {
-                if (!currentRenderer) return;
-                
-                requestAnimationFrame(animate);
-                controls.update();
-                renderer.render(scene, camera);
-            }
-            animate();
-        }
-
-        function loadModel(url) {
-            console.log('加载模型:', url);
-            if (!currentScene || !currentCamera || !currentRenderer) {
-                console.error('查看器未初始化');
-                return;
-            }
-
-            cleanupScene();
-
-            const loader = new GLTFLoader();
-            
-            loader.load(
-                url,
-                (gltf) => {
-                    console.log('模型加载成功:', gltf);
-                    const model = gltf.scene;
-                    currentModel = model;
-                    currentScene.add(model);
-
-                    // 自动调整相机位置
-                    const box = new THREE.Box3().setFromObject(model);
-                    const center = box.getCenter(new THREE.Vector3());
-                    const size = box.getSize(new THREE.Vector3());
-                    
-                    const maxDim = Math.max(size.x, size.y, size.z);
-                    const fov = currentCamera.fov * (Math.PI / 180);
-                    let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 2;
-                    
-                    currentCamera.position.set(center.x, center.y, center.z + cameraZ);
-                    currentCamera.lookAt(center);
-                    currentControls.target.copy(center);
-                    currentControls.update();
-                },
-                (xhr) => {
-                    console.log(`加载进度: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
-                },
-                (error) => {
-                    console.error('模型加载失败:', error);
-                }
-            );
-        }
-
-        // 将函数暴露给全局作用域
-        window.modelViewer = {
-            initViewer,
-            loadModel
-        };
-
-        // 初始化页面交互
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM Content Loaded');
-            
-            const galleryContainer = document.getElementById('galleryContainer');
-            const modelViewer = document.getElementById('modelViewer');
-            const closeBtn = document.querySelector('.close');
-            const canvasContainer = document.getElementById('canvas-container');
-
-            if (!galleryContainer || !modelViewer || !closeBtn || !canvasContainer) {
-                console.error('必要的元素未找到');
-                return;
-            }
-
-            // 处理模型卡片点击
-            galleryContainer.addEventListener('click', (event) => {
-                const modelCard = event.target.closest('.model-card');
-                if (modelCard) {
-                    const modelUrl = modelCard.dataset.modelUrl;
-                    console.log('模型卡片被点击:', modelUrl);
-                    
-                    modelViewer.style.display = 'block';
-                    
-                    // 确保查看器已初始化
-                    if (!window.modelViewer.currentRenderer) {
-                        window.modelViewer.initViewer(canvasContainer);
-                    }
-                    
-                    // 加载模型
-                    window.modelViewer.loadModel(modelUrl);
-                }
-            });
-
-            // 处理关闭按钮点击
-            closeBtn.addEventListener('click', () => {
-                modelViewer.style.display = 'none';
-                cleanupScene();
-            });
-
-            // 处理窗口大小变化
-            let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    if (currentCamera && currentRenderer) {
-                        currentCamera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
-                        currentCamera.updateProjectionMatrix();
-                        currentRenderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-                    }
-                }, 250);
-            });
-        });
-    </script>
 </IndexLayout>
