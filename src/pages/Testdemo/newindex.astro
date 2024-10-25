@@ -20,47 +20,48 @@ const pageTitle = "Three.js 演示";
   </div>
 </IndexLayout>
 
-<!-- 方法1: 直接在页面中实现 -->
+<!-- 方法1 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <script>
-  function initThreeJS() {
-    import('three').then((THREE) => {
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 5;
+  window.addEventListener('load', () => {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
 
-      const canvas = document.querySelector('#threejs-canvas-1');
-      if (!canvas) return;
-      
-      const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    const canvas = document.querySelector('#threejs-canvas-1');
+    if (!canvas) return;
+    
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
 
-      const geometry = new THREE.BoxGeometry();
-      const material = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // 红色立方体
-      const cube = new THREE.Mesh(geometry, material);
-      scene.add(cube);
+    const geometry = new THREE.BoxGeometry();
+    const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
 
-      function animate() {
-        requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-        renderer.render(scene, camera);
-      }
+    function animate() {
+      requestAnimationFrame(animate);
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
 
-      window.addEventListener('resize', () => {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-      });
-
-      animate();
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', initThreeJS);
+    animate();
+  });
 </script>
 
-<!-- 方法2: 通过外部文件实现 -->
+<!-- 方法2 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
 <script>
-  import { initThreeScene } from '../../components/ThreeJS/three-demo.js';
-  document.addEventListener('DOMContentLoaded', () => initThreeScene('threejs-canvas-2'));
+  // 使用立即执行函数来避免全局作用域污染
+  (async () => {
+    try {
+      const module = await import('../../components/ThreeJS/three-demo.js');
+      window.addEventListener('load', () => {
+        module.initThreeScene('threejs-canvas-2');
+      });
+    } catch (error) {
+      console.error('加载 three-demo.js 失败:', error);
+    }
+  })();
 </script>
