@@ -22,7 +22,7 @@ async function getModelsFromDirectory() {
       const modelPath = path.join(baseDir, file);
       console.log(`处理模型: ${modelPath}`);
       
-      const modelSrc = `${BASE_URL}/models/${file}`;
+      const modelSrc = `${BASE_URL}/public/models/${file}`;
       console.log(`Model src: ${modelSrc}`);
       
       return {
@@ -337,7 +337,7 @@ try {
         };
     </script>
 
-    <script>
+    <script is:inline>
         // 这个脚本用于处理用户交互
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM Content Loaded');
