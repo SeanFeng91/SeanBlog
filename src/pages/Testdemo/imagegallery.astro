@@ -57,14 +57,16 @@ try {
     
         {errorMessage && <p style="color: red;">{errorMessage}</p>}
         
-        <div class="gallery-container">
+        <div class="gallery-container" id="galleryContainer">
             <div class="models-grid">
                 {models.map((model) => (
                     <div class="model-card" data-model-url={model.src}>
                         <div class="model-preview"></div>
                         <h3>{model.title}</h3>
+                        <p>Model URL: {model.src}</p>
                     </div>
-                ))}            </div>
+                ))}
+            </div>
         </div>
 
         <div id="modelViewer" class="modal">
@@ -328,59 +330,56 @@ try {
             }
         }
 
-        // 修改事件监听部分
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM Content Loaded');
             
-            try {
-                const modelViewer = document.getElementById('modelViewer');
-                const closeBtn = document.querySelector('.close');
-                const canvasContainer = document.getElementById('canvas-container');
-                
-                if (!modelViewer || !closeBtn || !canvasContainer) {
-                    console.error('Required elements not found');
-                    return;
-                }
+            const galleryContainer = document.getElementById('galleryContainer');
+            const modelViewer = document.getElementById('modelViewer');
+            const closeBtn = document.querySelector('.close');
+            const canvasContainer = document.getElementById('canvas-container');
 
-                // 初始化所有预览
-                document.querySelectorAll('.model-card').forEach(card => {
-                    const modelUrl = card.dataset.modelUrl;
-                    console.log('Processing model card:', modelUrl);
-                    
-                    const previewElement = card.querySelector('.model-preview');
-                    if (previewElement) {
-                        initPreview(previewElement, modelUrl);
-                    }
-                });
-
-                // 点击模型卡片时打开查看器
-                document.querySelectorAll('.model-card').forEach(card => {
-                    card.addEventListener('click', () => {
-                        console.log('Card clicked:', card.dataset.modelUrl);
-                        modelViewer.style.display = 'block';
-                        if (!currentRenderer) {
-                            initViewer(canvasContainer);
-                        }
-                        loadModel(card.dataset.modelUrl);
-                    });
-                });
-
-                // 关闭查看器
-                closeBtn.addEventListener('click', () => {
-                    modelViewer.style.display = 'none';
-                });
-
-                // 响应窗口大小变化
-                window.addEventListener('resize', () => {
-                    if (currentCamera && currentRenderer) {
-                        currentCamera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
-                        currentCamera.updateProjectionMatrix();
-                        currentRenderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-                    }
-                });
-            } catch (error) {
-                console.error('Error in DOMContentLoaded:', error);
+            if (!galleryContainer || !modelViewer || !closeBtn || !canvasContainer) {
+                console.error('必要的元素未找到');
+                return;
             }
+
+            // 使用事件委托处理点击事件
+            galleryContainer.addEventListener('click', (event) => {
+                const modelCard = event.target.closest('.model-card');
+                if (modelCard) {
+                    const modelUrl = modelCard.dataset.modelUrl;
+                    console.log('模型卡片被点击:', modelUrl);
+                    
+                    modelViewer.style.display = 'block';
+                    if (!currentRenderer) {
+                        initViewer(canvasContainer);
+                    }
+                    loadModel(modelUrl);
+                }
+            });
+
+            // 初始化所有预览
+            document.querySelectorAll('.model-preview').forEach(previewElement => {
+                const modelCard = previewElement.closest('.model-card');
+                if (modelCard) {
+                    const modelUrl = modelCard.dataset.modelUrl;
+                    initPreview(previewElement, modelUrl);
+                }
+            });
+
+            // 关闭查看器
+            closeBtn.addEventListener('click', () => {
+                modelViewer.style.display = 'none';
+            });
+
+            // 响应窗口大小变化
+            window.addEventListener('resize', () => {
+                if (currentCamera && currentRenderer) {
+                    currentCamera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
+                    currentCamera.updateProjectionMatrix();
+                    currentRenderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+                }
+            });
         });
 
         console.log('Three.js 版本:', THREE.REVISION);
@@ -388,11 +387,3 @@ try {
         console.log('OrbitControls 是否存在:', typeof OrbitControls !== 'undefined');
     </script>
 </IndexLayout>
-
-
-
-
-
-
-
-
