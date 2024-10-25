@@ -80,6 +80,12 @@ try {
     
         {errorMessage && <p style="color: red;">{errorMessage}</p>}
         
+        <!-- 添加调试区域 -->
+        <div id="debugArea" style="background-color: #f0f0f0; padding: 10px; margin-top: 20px; border: 1px solid #ccc; max-height: 200px; overflow-y: auto;">
+            <h3>调试信息：</h3>
+            <pre id="debugLog"></pre>
+        </div>
+        
         <div class="gallery-container" id="galleryContainer">
             <div class="models-grid">
                 {models.map((model) => (
