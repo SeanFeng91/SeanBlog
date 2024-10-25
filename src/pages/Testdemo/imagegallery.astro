@@ -156,7 +156,7 @@ try {
         }
     </style>
 
-    <script>
+    <script is:inline>
         // 使用 ESM 方式导入 Three.js
         import * as THREE from 'https://unpkg.com/three@0.132.2/build/three.module.js';
         import { GLTFLoader } from 'https://unpkg.com/three@0.132.2/examples/jsm/loaders/GLTFLoader.js';
@@ -213,7 +213,7 @@ try {
             console.log('Viewer initialized');
         }
 
-        // 修改 loadModel 函数
+        // 加载模型
         function loadModel(url) {
             console.log('正在加载模型，URL:', url);
             const loader = new GLTFLoader();
@@ -235,9 +235,6 @@ try {
                     currentCamera.position.set(center.x, center.y, center.z + cameraZ);
                     currentCamera.lookAt(center);
                     currentControls.target.copy(center);
-
-                    // 移除加载提示
-                    loadingElem.remove();
                 },
                 (xhr) => {
                     console.log(`加载进度: ${(xhr.loaded / xhr.total * 100).toFixed(2)}%`);
@@ -389,6 +386,9 @@ try {
         console.log('OrbitControls 是否存在:', typeof OrbitControls !== 'undefined');
     </script>
 </IndexLayout>
+
+
+
 
 
 
