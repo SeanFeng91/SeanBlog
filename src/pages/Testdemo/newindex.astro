@@ -52,11 +52,11 @@ const pageTitle = "Three.js 演示";
 
 <!-- 方法2 -->
 <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
-<script is:inline>
+<script>
   // 使用立即执行函数来避免全局作用域污染
   (async () => {
     try {
-      const module = await import('../../components/ThreeJS/three-demo.js');
+      const module = await import('../../../src/components/ThreeJS/three-demo.js');
       window.addEventListener('load', () => {
         module.initThreeScene('threejs-canvas-2');
       });
