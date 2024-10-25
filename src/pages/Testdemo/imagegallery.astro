@@ -80,6 +80,9 @@ try {
     
         {errorMessage && <p style="color: red;">{errorMessage}</p>}
         
+        <!-- 添加一个用于测试 Three.js 的容器 -->
+        <div id="threeJsTest" style="width: 300px; height: 300px; margin: 20px auto;"></div>
+
         <!-- 添加调试区域 -->
         <div id="debugArea" style="background-color: #f0f0f0; padding: 10px; margin-top: 20px; border: 1px solid #ccc; max-height: 200px; overflow-y: auto;">
             <h3>调试信息：</h3>
@@ -108,7 +111,7 @@ try {
     <!-- 注入初始调试脚本 -->
     <script is:inline set:html={debugScript} />
 
-    <script is:inline>
+    <script>
         // 调试工具函数
         function debugLog(message, ...args) {
             const timestamp = new Date().toISOString();
@@ -383,4 +386,69 @@ try {
             z-index: 1001;
         }
     </style>
+
+    <script is:inline>
+        document.getElementById('debugLog').innerHTML += '基本内联脚本执行\n';
+
+        window.onerror = function(message, source, lineno, colno, error) {
+            document.getElementById('debugLog').innerHTML += '捕获到错误: ' + message + '\n';
+            return false;
+        };
+    </script>
+
+    <script>
+        document.getElementById('debugLog').innerHTML += '开始加载主脚本\n';
+
+        function debugLog(message) {
+            const debugLogElement = document.getElementById('debugLog');
+            if (debugLogElement) {
+                debugLogElement.innerHTML += message + '\n';
+                debugLogElement.scrollTop = debugLogElement.scrollHeight;
+            }
+            console.log(message);
+        }
+
+        debugLog('正在加载 Three.js...');
+        
+        try {
+            import * as THREE from 'three';
+            debugLog('Three.js 加载完成');
+
+            // 创建一个基本的 Three.js 场景
+            function createBasicScene() {
+                debugLog('开始创建基本 Three.js 场景');
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer();
+                renderer.setSize(300, 300);
+                document.getElementById('threeJsTest').appendChild(renderer.domElement);
+
+                const geometry = new THREE.BoxGeometry();
+                const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+                const cube = new THREE.Mesh(geometry, material);
+                scene.add(cube);
+
+                camera.position.z = 5;
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    cube.rotation.x += 0.01;
+                    cube.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+                animate();
+                debugLog('基本 Three.js 场景创建完成');
+            }
+
+            // 在 DOM 加载完成后创建场景
+            document.addEventListener('DOMContentLoaded', createBasicScene);
+
+        } catch (error) {
+            debugLog('Three.js 加载或执行失败: ' + error.message);
+        }
+
+        // ... 其余代码保持不变 ...
+
+        debugLog('主脚本加载完成');
+    </script>
 </IndexLayout>
