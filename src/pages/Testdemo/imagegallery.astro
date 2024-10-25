@@ -107,6 +107,10 @@ try {
 
     <!-- 注入初始调试脚本 -->
     <script is:inline set:html={debugScript} />
+ <!-- 直接引入 Three.js 库 -->
+    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
     <script >
         // 调试工具函数
@@ -134,6 +138,8 @@ try {
         import * as THREE from 'three';
         import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
         import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+
+        
 
         debugLog('Three.js 版本:', THREE.REVISION);
 
