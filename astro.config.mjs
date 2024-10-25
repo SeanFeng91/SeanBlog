@@ -30,7 +30,7 @@ export default defineConfig({
   integrations: [tailwind(), mdx(), icon(), react()],
   vite: {
     ssr: {
-      external: ['jquery','better-sqlite3','sortablejs'],
+      external: ['jquery','better-sqlite3','sortablejs','three'],
     },
   },
   markdown: {
