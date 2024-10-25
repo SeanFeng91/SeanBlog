@@ -166,6 +166,7 @@ try {
 
         // 初始化查看器
         function initViewer(containerElement) {
+            console.log('初始化查看器');
             // 创建场景
             const scene = new THREE.Scene();
             scene.background = new THREE.Color(0xf0f0f0);
@@ -215,6 +216,7 @@ try {
 
         // 加载模型
         function loadModel(url) {
+            console.log('加载模型:', url);
             console.log('正在加载模型，URL:', url);
             const loader = new GLTFLoader();
             
@@ -386,6 +388,8 @@ try {
         console.log('OrbitControls 是否存在:', typeof OrbitControls !== 'undefined');
     </script>
 </IndexLayout>
+
+
 
 
 
