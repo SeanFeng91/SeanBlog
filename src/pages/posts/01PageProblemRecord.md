@@ -21,6 +21,97 @@ mdx和md的语法不一样，需要再补充一下mdx的语法
 - [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
 - [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
 
+# 20241025记录
+今天为了显示3d模型，一顿修改，就是无法加载，然后build还经历了不知所以然的错误，提升mdi找不到。只好学习了一下github如何滚回历史版本
+
+要将之前的版本拉取下来并推送为最新版本，你可以按照以下步骤操作：
+
+### 步骤 1: 查找要恢复的 `commit` 哈希
+首先，你需要找到你想恢复的 `commit` 的哈希值。
+
+1. **查看提交历史**：
+   在本地执行以下命令查看提交历史，并找到你要恢复的提交哈希：
+   ```bash
+   git log
+   ```
+
+   你会看到类似下面的输出：
+   ```bash
+   commit abc123456789 (HEAD -> main)
+   Author: Your Name <you@example.com>
+   Date:   Tue Oct 24 18:00:00 2024 +0800
+
+       Add some new features
+   ```
+
+   记下你想恢复的那个 `commit` 的哈希值（如 `abc123456789`）。
+
+### 步骤 2: 检出到指定的 `commit`
+你可以将当前的代码切换到那个特定的 `commit`。
+
+1. **检出到该 `commit`**：
+   使用 `checkout` 命令检出到那个你想恢复的 `commit`：
+   ```bash
+   git checkout abc123456789
+   ```
+
+   这会让你的代码切换到那个提交点，但是你现在处于“**分离的 HEAD**”状态，这意味着你没有在任何分支上。
+
+### 步骤 3: 创建一个新分支或重置当前分支
+为了使这个版本成为最新的并可以推送，你可以选择**创建一个新分支**，或者**强制将现有分支重置到这个版本**。
+
+#### 方法 1: 创建一个新的分支（推荐）
+
+1. **创建新分支**：
+   你可以基于这个 `commit` 创建一个新的分支（例如 `revert-to-old-version`）：
+   ```bash
+   git checkout -b revert-to-old-version
+   ```
+
+2. **推送到远程**：
+   然后你可以将这个新分支推送到远程：
+   ```bash
+   git push origin revert-to-old-version
+   ```
+
+3. **重命名分支为 `main` 或合并回 `main`**：
+   - 如果你想让这个新分支成为 `main`，你可以将 `main` 切换到这个分支，然后推送。
+   - 或者，你也可以将其合并到 `main`，并将 `main` 推送为最新版本。
+
+#### 方法 2: 重置当前分支到指定的 `commit`
+
+1. **切回主分支**：
+   首先切回你想要重置的分支（例如 `main`）：
+   ```bash
+   git checkout main
+   ```
+
+2. **强制重置到那个 `commit`**：
+   使用 `git reset --hard` 将 `main` 分支重置到那个特定的 `commit`：
+   ```bash
+   git reset --hard abc123456789
+   ```
+
+   这样会将 `main` 分支指向那个特定的提交，所有之后的提交将被丢弃。
+
+3. **强制推送到远程**：
+   现在你可以强制将这个重置后的 `main` 分支推送到远程，覆盖远程的 `main`：
+   ```bash
+   git push origin main --force
+   ```
+
+   **注意**：`--force` 将覆盖远程分支上的现有提交，因此请确保你不会丢失任何重要的更改。
+
+### 总结
+
+- **查看历史并找到目标 `commit`**：使用 `git log` 找到想要恢复的 `commit`。
+- **检出到该 `commit`**：使用 `git checkout <commit-hash>` 检出到目标 `commit`。
+- **创建新分支或重置现有分支**：
+  - 创建一个新分支并推送，或者重置当前分支到该 `commit` 并强制推送。
+- **强制推送到远程**：如果你重置现有分支，使用 `git push --force` 覆盖远程。
+
+通过这些步骤，你可以成功恢复之前的某个版本并将其作为最新的版本推送到远程仓库。
+
 # 20241024记录
 尝试了使用Tripo 3D的AI模型生成功能，根据图片生成了3D模型。使用Three.js导入glb格式模型进行[展示](https://seanfeng91.github.io/SeanBlog/Testdemo/imagegallery/)。
 
