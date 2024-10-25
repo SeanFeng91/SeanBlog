@@ -1,5 +1,5 @@
-// 使用全局 THREE 对象
 export function initThreeScene(canvasId) {
+    if (typeof window === 'undefined') return;
     if (typeof THREE === 'undefined') {
       console.error('THREE.js 未加载');
       return;
