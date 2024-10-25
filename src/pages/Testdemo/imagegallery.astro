@@ -108,345 +108,113 @@ try {
     <!-- 注入初始调试脚本 -->
     <script is:inline set:html={debugScript} />
 
-    <script client:load>
-        // 调试工具函数
-        function debugLog(message, ...args) {
-            const timestamp = new Date().toISOString();
-            console.log(`[${timestamp}] ${message}`, ...args);
-            
-            // 同时更新调试信息面板
-            const debugContent = document.getElementById('debugContent');
-            if (debugContent) {
-                const logEntry = document.createElement('div');
-                logEntry.textContent = `[${timestamp}] ${message} ${args.map(arg => JSON.stringify(arg)).join(' ')}`;
-                debugContent.appendChild(logEntry);
-                debugContent.scrollTop = debugContent.scrollHeight;
-            }
+    <!-- 直接引入 Three.js 库 -->
+    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script is:inline>
+        // 调试函数
+        function debugLog(message) {
+            console.log(`[Debug] ${message}`);
         }
 
-        // 错误处理函数
-        function handleError(error, context) {
-            debugLog(`Error in ${context}:`, error);
-            console.error(error);
-        }
-
-        // 导入 Three.js
-        import * as THREE from 'three';
-        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-
-        debugLog('Three.js 版本:', THREE.REVISION);
-
+        // 全局变量
         let currentScene, currentCamera, currentRenderer, currentControls;
 
-        // 在 script 标签内添加预览渲染器的管理
-        let previewRenderers = new Map();
-
-        // 修改 initViewer 函数，添加清理场景的功能
+        // 初始化查看器
         function initViewer(containerElement) {
             debugLog('初始化查看器');
-            try {
-                // 清理现有场景
-                if (currentRenderer) {
-                    currentRenderer.dispose();
-                    currentRenderer.domElement.remove();
-                }
-                if (currentControls) {
-                    currentControls.dispose();
-                }
-                if (currentScene) {
-                    // 清理场景中的所有对象
-                    while(currentScene.children.length > 0) { 
-                        const object = currentScene.children[0];
-                        currentScene.remove(object);
-                    }
-                }
-                
-                // 创建新场景
-                currentScene = new THREE.Scene();
-                currentScene.background = new THREE.Color(0xf0f0f0);
-                debugLog('场景创建成功');
-
-                // 创建相机
-                currentCamera = new THREE.PerspectiveCamera(
-                    75,
-                    containerElement.clientWidth / containerElement.clientHeight,
-                    0.1,
-                    1000
-                );
-                currentCamera.position.set(5, 5, 5);
-                debugLog('相机设置完成');
-
-                // 创建渲染器
-                currentRenderer = new THREE.WebGLRenderer({ antialias: true });
-                currentRenderer.setSize(containerElement.clientWidth, containerElement.clientHeight);
-                containerElement.appendChild(currentRenderer.domElement);
-                debugLog('渲染器创建成功');
-
-                // 添加光源
-                const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-                currentScene.add(ambientLight);
-                
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-                directionalLight.position.set(5, 5, 5);
-                currentScene.add(directionalLight);
-                debugLog('光源添加完成');
-
-                // 添加控制器
-                currentControls = new OrbitControls(currentCamera, currentRenderer.domElement);
-                currentControls.enableDamping = true;
-                debugLog('控制器设置完成');
-
-                // 动画循环
-                function animate() {
-                    requestAnimationFrame(animate);
-                    currentControls.update();
-                    currentRenderer.render(currentScene, currentCamera);
-                }
-                animate();
-                debugLog('动画循环启动');
-
-            } catch (error) {
-                handleError(error, 'initViewer');
-            }
-        }
-
-        // 修改预览初始化函数
-        function initPreview(previewElement, modelUrl) {
-            const width = previewElement.clientWidth;
-            const height = previewElement.clientHeight;
             
-            const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xffffff); // 设置白色背景
-            
-            const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ antialias: true });
-            
-            renderer.setSize(width, height);
-            previewElement.appendChild(renderer.domElement);
-            
+            currentScene = new THREE.Scene();
+            currentScene.background = new THREE.Color(0xf0f0f0);
+
+            currentCamera = new THREE.PerspectiveCamera(75, containerElement.clientWidth / containerElement.clientHeight, 0.1, 1000);
+            currentCamera.position.set(5, 5, 5);
+
+            currentRenderer = new THREE.WebGLRenderer({ antialias: true });
+            currentRenderer.setSize(containerElement.clientWidth, containerElement.clientHeight);
+            containerElement.appendChild(currentRenderer.domElement);
+
             const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-            scene.add(ambientLight);
-            
+            currentScene.add(ambientLight);
+
             const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
             directionalLight.position.set(5, 5, 5);
-            scene.add(directionalLight);
-            
-            const loader = new GLTFLoader();
-            loader.load(modelUrl, (gltf) => {
-                const model = gltf.scene;
-                scene.add(model);
-                
-                // 自动调整模型大小和位置
-                const box = new THREE.Box3().setFromObject(model);
-                const size = box.getSize(new THREE.Vector3());
-                const center = box.getCenter(new THREE.Vector3());
-                
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const fov = camera.fov * (Math.PI / 180);
-                let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 0.8; // 调整系数使模型更大
-                
-                camera.position.set(0, 0, cameraZ);
-                camera.lookAt(center);
-                
-                // 自动旋转展示
-                function animate() {
-                    requestAnimationFrame(animate);
-                    model.rotation.y += 0.01;
-                    renderer.render(scene, camera);
-                }
-                animate();
-            });
-            
-            previewRenderers.set(previewElement, { scene, camera, renderer });
+            currentScene.add(directionalLight);
+
+            currentControls = new THREE.OrbitControls(currentCamera, currentRenderer.domElement);
+            currentControls.enableDamping = true;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                currentControls.update();
+                currentRenderer.render(currentScene, currentCamera);
+            }
+            animate();
         }
 
-        // 修改加载模型函数
+        // 加载模型
         function loadModel(url) {
-            debugLog('开始加载模型:', url);
-            try {
-                // 确保场景是空的
-                while(currentScene.children.length > 0) { 
-                    const object = currentScene.children[0];
-                    currentScene.remove(object);
-                }
-                
-                // 添加光源
-                const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-                currentScene.add(ambientLight);
-                
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-                directionalLight.position.set(5, 5, 5);
-                currentScene.add(directionalLight);
-                
-                const loader = new GLTFLoader();
-                loader.load(
-                    url,
-                    (gltf) => {
-                        debugLog('模型加载成功');
-                        const model = gltf.scene;
-                        currentScene.add(model);
+            debugLog(`加载模型: ${url}`);
+            const loader = new THREE.GLTFLoader();
+            loader.load(url, (gltf) => {
+                const model = gltf.scene;
+                currentScene.add(model);
 
-                        // 调整相机位置
-                        const box = new THREE.Box3().setFromObject(model);
-                        const center = box.getCenter(new THREE.Vector3());
-                        const size = box.getSize(new THREE.Vector3());
-                        const maxDim = Math.max(size.x, size.y, size.z);
-                        const fov = currentCamera.fov * (Math.PI / 180);
-                        let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 2;
-                        
-                        currentCamera.position.set(center.x, center.y, center.z + cameraZ);
-                        currentCamera.lookAt(center);
-                        currentControls.target.copy(center);
-                        debugLog('相机位置已调整');
-                    },
-                    (xhr) => {
-                        const percent = (xhr.loaded / xhr.total * 100).toFixed(2);
-                        debugLog(`加载进度: ${percent}%`);
-                    },
-                    (error) => handleError(error, 'loadModel')
-                );
-            } catch (error) {
-                handleError(error, 'loadModel');
-            }
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const fov = currentCamera.fov * (Math.PI / 180);
+                let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 2;
+
+                currentCamera.position.set(center.x, center.y, center.z + cameraZ);
+                currentCamera.lookAt(center);
+                currentControls.target.copy(center);
+
+                debugLog('模型加载完成');
+            });
         }
 
         // 页面加载完成后的初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            debugLog('DOM加载完成');
-            
-            try {
-                const galleryContainer = document.getElementById('galleryContainer');
-                const modelViewer = document.getElementById('modelViewer');
-                const closeBtn = document.querySelector('.close');
-                const canvasContainer = document.getElementById('canvas-container');
-                const toggleDebugBtn = document.getElementById('toggleDebug');
-                const debugInfo = document.getElementById('debugInfo');
-
-                debugLog('DOM元素获取状态:', {
-                    hasGallery: !!galleryContainer,
-                    hasViewer: !!modelViewer,
-                    hasCloseBtn: !!closeBtn,
-                    hasCanvas: !!canvasContainer
-                });
-
-                // 调试开关功能
-                if (toggleDebugBtn && debugInfo) {
-                    toggleDebugBtn.addEventListener('click', () => {
-                        debugInfo.style.display = debugInfo.style.display === 'none' ? 'block' : 'none';
-                    });
-                }
-
-                // 初始化所有预览
-                const modelCards = document.querySelectorAll('.model-card');
-                modelCards.forEach(card => {
-                    const previewElement = card.querySelector('.model-preview');
-                    const modelUrl = card.dataset.modelUrl;
-                    if (previewElement && modelUrl) {
-                        initPreview(previewElement, modelUrl);
-                    }
-                });
-
-                // 修改模型卡片点击事件
-                if (galleryContainer) {
-                    galleryContainer.addEventListener('click', (event) => {
-                        const modelCard = event.target.closest('.model-card');
-                        if (modelCard) {
-                            const modelUrl = modelCard.dataset.modelUrl;
-                            debugLog('模型卡片被点击，URL:', modelUrl);
-                            
-                            modelViewer.style.display = 'block';
-                            initViewer(canvasContainer); // 每次都重新化
-                            loadModel(modelUrl);
-                        }
-                    });
-                }
-
-                // 关闭按钮事件
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', () => {
-                        debugLog('关闭按钮被点击');
-                        modelViewer.style.display = 'none';
-                    });
-                }
-
-                // 窗口大小变化处理
-                window.addEventListener('resize', () => {
-                    debugLog('窗口大小发生变化');
-                    if (currentCamera && currentRenderer) {
-                        currentCamera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
-                        currentCamera.updateProjectionMatrix();
-                        currentRenderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-                    }
-                });
-
-                // 添加清理函数
-                window.addEventListener('beforeunload', () => {
-                    previewRenderers.forEach(({ renderer }) => {
-                        renderer.dispose();
-                    });
-                });
-
-                debugLog('事件监听器设置完成');
-            } catch (error) {
-                handleError(error, 'DOMContentLoaded');
-            }
-        });
-
-        // 将调试工具暴露给全局作用域
-        window.debugLog = debugLog;
-        window.modelViewer = {
-            initViewer,
-            loadModel
-        };
-
-        // 在客户端代码中添加
-        console.log('客户端资源加载情况：');
-        console.log('Three.js 是否加载:', typeof THREE !== 'undefined');
-        console.log('GLTFLoader 是否加载:', typeof GLTFLoader !== 'undefined');
-        console.log('OrbitControls 是否加载:', typeof OrbitControls !== 'undefined');
-
-        // 添加网络请求检查
         window.addEventListener('load', () => {
-            const resources = window.performance.getEntriesByType('resource');
-            const threeResources = resources.filter(r => r.name.includes('three'));
-            console.log('Three.js 相关资源加载情况:', threeResources);
-        });
+            debugLog('页面加载完成');
+            
+            const galleryContainer = document.getElementById('galleryContainer');
+            const modelViewer = document.getElementById('modelViewer');
+            const closeBtn = document.querySelector('.close');
+            const canvasContainer = document.getElementById('canvas-container');
 
-        let threeJsLoaded = false;
-        let gltfLoaderLoaded = false;
-        let orbitControlsLoaded = false;
-
-        async function checkDependencies() {
-            try {
-                await import('three');
-                threeJsLoaded = true;
-                debugLog('Three.js 加载成功');
-
-                await import('three/examples/jsm/loaders/GLTFLoader');
-                gltfLoaderLoaded = true;
-                debugLog('GLTFLoader 加载成功');
-
-                await import('three/examples/jsm/controls/OrbitControls');
-                orbitControlsLoaded = true;
-                debugLog('OrbitControls 加载成功');
-
-                return true;
-            } catch (error) {
-                debugLog('依赖加载失败:', error);
-                return false;
+            if (galleryContainer) {
+                galleryContainer.addEventListener('click', (event) => {
+                    const modelCard = event.target.closest('.model-card');
+                    if (modelCard) {
+                        const modelUrl = modelCard.dataset.modelUrl;
+                        debugLog(`点击模型卡片，URL: ${modelUrl}`);
+                        
+                        modelViewer.style.display = 'block';
+                        initViewer(canvasContainer);
+                        loadModel(modelUrl);
+                    }
+                });
             }
-        }
 
-        // 在初始化之前检查依赖
-        document.addEventListener('DOMContentLoaded', async () => {
-            const dependenciesLoaded = await checkDependencies();
-            if (dependenciesLoaded) {
-                debugLog('所有依赖加载完成，开始初始化');
-                // 初始化代码...
-            } else {
-                debugLog('依赖加载失败，无法初始化');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    modelViewer.style.display = 'none';
+                });
             }
+
+            // 初始化预览（如果需要的话）
+            const modelCards = document.querySelectorAll('.model-card');
+            modelCards.forEach(card => {
+                const previewElement = card.querySelector('.model-preview');
+                const modelUrl = card.dataset.modelUrl;
+                if (previewElement && modelUrl) {
+                    // 这里可以添加预览初始化逻辑
+                }
+            });
         });
     </script>
 
@@ -530,7 +298,3 @@ try {
         }
     </style>
 </IndexLayout>
-
-
-
-
