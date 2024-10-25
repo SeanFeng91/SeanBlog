@@ -3,6 +3,9 @@ import "../../styles/global.css";
 import IndexLayout from '../../layouts/IndexLayout.astro';
 import fs from 'fs/promises';
 import path from 'path';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // 添加调试函数
 function debug(message, ...args) {
