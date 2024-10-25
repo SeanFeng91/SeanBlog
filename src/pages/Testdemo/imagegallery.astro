@@ -108,7 +108,7 @@ try {
     <!-- 注入初始调试脚本 -->
     <script is:inline set:html={debugScript} />
 
-    <script>
+    <script is:inline>
         // 调试工具函数
         function debugLog(message, ...args) {
             const timestamp = new Date().toISOString();
