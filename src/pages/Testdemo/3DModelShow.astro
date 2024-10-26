@@ -1,0 +1,250 @@
+---
+import "../../styles/global.css";
+import IndexLayout from "../../layouts/IndexLayout.astro";
+import fs from 'fs/promises';
+import path from 'path';
+
+// 声明变量（只声明一次）
+let models = [];
+let errorMessage = '';
+
+// 添加调试函数
+function debug(message, ...args) {
+    const timestamp = new Date().toISOString();
+    console.log(`[${timestamp}] ${message}`, ...args);
+}
+
+const pageTitle = "GLB 模型展示";
+
+// 确保 BASE_URL 正确设置
+const BASE_URL = (import.meta.env.BASE_URL || '/SeanBlog/').replace(/\/$/, '');
+debug('Base URL configured as:', BASE_URL);
+
+async function getModelsFromDirectory() {
+    debug('开始读取模型目录');
+    try {
+        const baseDir = 'public/models';
+        const files = await fs.readdir(baseDir);
+        debug('找到的文件:', files);
+        
+        const modelFiles = files.filter(file => ['.glb'].includes(path.extname(file).toLowerCase()));
+        debug('筛选后的模型文件:', modelFiles);
+        
+        return modelFiles.map((file, index) => {
+            const modelSrc = `${BASE_URL}/models/${file}`;
+            debug('处理模型:', { file, modelSrc });
+            
+            return {
+                id: index + 1,
+                src: modelSrc,
+                title: path.parse(file).name.replace(/([A-Z])/g, ' $1').trim()
+            };
+        });
+    } catch (error) {
+        debug('读取模型目录失败:', error);
+        errorMessage = `读取模型目录失败: ${error.message}`;
+        return [];
+    }
+}
+
+try {
+    // 直接赋值给已声明的 models 变量
+    models = await getModelsFromDirectory();
+    debug('模型加载完成，总数:', models.length);
+    debug('模型列表:', models);
+} catch (error) {
+    debug('发生错误:', error);
+    errorMessage = `Error: ${error.message}`;
+}
+---
+
+<IndexLayout pageTitle={pageTitle}>
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">GLB 模型展示</h1>
+    
+    <!-- 添加调试信息 -->
+    <div class="mb-4">
+      <p>模型总数: {models.length}</p>
+      <pre class="bg-gray-100 p-2 rounded">
+        {JSON.stringify(models, null, 2)}
+      </pre>
+    </div>
+    
+    {errorMessage && (
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        {errorMessage}
+      </div>
+    )}
+
+    {models.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="models-container">
+        {models.map((model) => (
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="h-64 w-full relative model-container" data-model-src={model.src}>
+              <!-- canvas 将被动态创建 -->
+            </div>
+            <div class="p-4">
+              <h2 class="text-xl font-semibold">{model.title}</h2>
+              <button 
+                class="mt-2 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+                onclick={`window.showFullscreen('${model.src}')`}
+              >
+                放大查看
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-8">
+        <p class="text-gray-500">暂无模型数据</p>
+      </div>
+    )}
+
+    <!-- 全屏查看容器 -->
+    <div id="fullscreen-container" class="fixed inset-0 bg-black bg-opacity-90 hidden z-50">
+      <div class="relative w-full h-full">
+        <div id="fullscreen-model-container" class="w-full h-full"></div>
+        <button 
+          onclick="window.closeFullscreen()"
+          class="absolute top-4 right-4 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 transition-colors"
+        >
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </main>
+</IndexLayout>
+
+<!-- Three.js 相关库 -->
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+
+<!-- 初始化模型查看器的脚本 -->
+<script>
+  function initModelViewer(container, modelSrc, isFullscreen = false) {
+    // 创建场景
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xf0f0f0);
+
+    // 创建相机
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    // 创建渲染器
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    // 添加灯光
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(1, 1, 1);
+    scene.add(directionalLight);
+
+    // 创建控制器
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+
+    // 加载模型
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      modelSrc,
+      (gltf) => {
+        const model = gltf.scene;
+        scene.add(model);
+
+        // 自动调整相机位置以适应模型大小
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const fov = camera.fov * (Math.PI / 180);
+        let cameraZ = Math.abs(maxDim / Math.sin(fov / 2) / 2);
+        
+        // 添加一些边距
+        cameraZ *= 1.5;
+        
+        camera.position.z = cameraZ;
+        controls.target.copy(center);
+        controls.update();
+
+        // 渲染循环
+        function animate() {
+          requestAnimationFrame(animate);
+          controls.update();
+          renderer.render(scene, camera);
+        }
+        animate();
+      },
+      (xhr) => {
+        const percent = (xhr.loaded / xhr.total * 100).toFixed(0);
+        console.log(`模型加载进度: ${percent}%`);
+      },
+      (error) => {
+        console.error('模型加载失败:', error);
+      }
+    );
+
+    // 处理窗口大小变化
+    function handleResize() {
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    // 返回清理函数
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      container.removeChild(renderer.domElement);
+      renderer.dispose();
+    };
+  }
+
+  // 初始化所有模型查看器
+  document.querySelectorAll('.model-container').forEach(container => {
+    const modelSrc = container.dataset.modelSrc;
+    if (modelSrc) {
+      initModelViewer(container, modelSrc);
+    }
+  });
+
+  // 全屏查看功能
+  window.showFullscreen = function(modelSrc) {
+    const container = document.getElementById('fullscreen-container');
+    const modelContainer = document.getElementById('fullscreen-model-container');
+    
+    // 清空之前的内容
+    modelContainer.innerHTML = '';
+    
+    // 显示容器
+    container.classList.remove('hidden');
+    
+    // 初始化全屏查看器
+    initModelViewer(modelContainer, modelSrc, true);
+  };
+
+  // 关闭全屏查看
+  window.closeFullscreen = function() {
+    const container = document.getElementById('fullscreen-container');
+    const modelContainer = document.getElementById('fullscreen-model-container');
+    
+    // 清空内容
+    modelContainer.innerHTML = '';
+    
+    // 隐藏容器
+    container.classList.add('hidden');
+  };
+</script>
