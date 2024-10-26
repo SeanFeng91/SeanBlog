@@ -57,9 +57,13 @@ const pageTitle = "Three.js 演示";
   (async () => {
     try {
       // 修改导入路径
-      const module = await import('./src/scripts/three-demo.js');
+      const module1 = await import('../src/scripts/three-demo.js');
+      // const module2 = await import('./src/scripts/three-demo.js');
+
+      // const module3 = await import('../../src/scripts/three-demo.js');
+
       window.addEventListener('load', () => {
-        module.initThreeScene('threejs-canvas-2');
+        module1.initThreeScene('threejs-canvas-2');
       });
     } catch (error) {
       console.error('加载 three-demo.js 失败:', error);
