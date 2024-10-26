@@ -58,35 +58,14 @@ const baseUrl = import.meta.env.BASE_URL;
 <script is:inline>
   (async () => {
     try {
-      // 修改导入路径
-      // const module1 = await import('../src/scripts/three-demo.js');
-      // const module2 = await import('/SeanBlog/components/ThreeJS/three-demo.js');
-
-      // 这种写法确实存在一些问题。让我们尝试一种更可靠的方法：
-      let threeDemo;
-      try {
-        threeDemo = await import('./src/components/ThreeJS/three-demo.js');
-      } catch (error) {
-        console.error('无法加载 three-demo.js:', error);
-        // 可以在这里添加一些错误处理逻辑
-      }
-
-      // const module3 = await import('../../src/scripts/three-demo.js');
+      const baseUrl = import.meta.env.BASE_URL || '';
+      const threeDemo = await import(`${baseUrl}/src/components/ThreeJS/three-demo.js`);
 
       window.addEventListener('load', () => {
         threeDemo.initThreeScene('threejs-canvas-2');
       });
-      // window.addEventListener('load', () => {
-      //   module2.initThreeScene('threejs-canvas-2');
-      // });
-      // window.addEventListener('load', () => {
-      //   module3.initThreeScene('threejs-canvas-2');
-      // });
-      // window.addEventListener('load', () => {
-      //   module4.initThreeScene('threejs-canvas-2');
-      // });
     } catch (error) {
       console.error('加载 three-demo.js 失败:', error);
     }
   })();
-</script>
+</script> 
