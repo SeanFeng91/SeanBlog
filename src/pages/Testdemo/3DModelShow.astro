@@ -249,51 +249,74 @@ try {
 
         // 修改预览初始化函数
         function initPreview(previewElement, modelUrl) {
+            debugLog('初始化预览:', modelUrl);
+            
+            // 检查 GLTFLoader 是否可用
+            if (typeof THREE.GLTFLoader === 'undefined') {
+                debugLog('错误: GLTFLoader 未定义');
+                console.error('GLTFLoader is not loaded');
+                return;
+            }
+            
             const width = previewElement.clientWidth;
             const height = previewElement.clientHeight;
             
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xffffff); // 设置白色背景
+            scene.background = new THREE.Color(0xf0f0f0);
             
             const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            camera.position.set(0, 0, 5);
             
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(width, height);
             previewElement.appendChild(renderer.domElement);
             
-            const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+            // 添加光源
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
             scene.add(ambientLight);
             
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(5, 5, 5);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
             scene.add(directionalLight);
             
-            const loader = new GLTFLoader();
-            loader.load(modelUrl, (gltf) => {
-                const model = gltf.scene;
-                scene.add(model);
-                
-                // 自动调整模型大小和位置
-                const box = new THREE.Box3().setFromObject(model);
-                const size = box.getSize(new THREE.Vector3());
-                const center = box.getCenter(new THREE.Vector3());
-                
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const fov = camera.fov * (Math.PI / 180);
-                let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 0.8; // 调整系数使模型更大
-                
-                camera.position.set(0, 0, cameraZ);
-                camera.lookAt(center);
-                
-                // 自动旋转展示
-                function animate() {
-                    requestAnimationFrame(animate);
-                    model.rotation.y += 0.01;
-                    renderer.render(scene, camera);
+            const loader = new THREE.GLTFLoader();  // 使用 THREE.GLTFLoader
+            loader.load(
+                modelUrl,
+                (gltf) => {
+                    debugLog('预览模型加载成功:', modelUrl);
+                    const model = gltf.scene;
+                    scene.add(model);
+                    
+                    // 自动调整模型大小和位置
+                    const box = new THREE.Box3().setFromObject(model);
+                    const size = box.getSize(new THREE.Vector3());
+                    const center = box.getCenter(new THREE.Vector3());
+                    
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const fov = camera.fov * (Math.PI / 180);
+                    let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 1.5;
+                    
+                    camera.position.set(0, 0, cameraZ);
+                    camera.lookAt(center);
+                    
+                    // 添加自动旋转动画
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        model.rotation.y += 0.01;
+                        renderer.render(scene, camera);
+                    }
+                    animate();
+                },
+                (xhr) => {
+                    const percent = (xhr.loaded / xhr.total * 100).toFixed(2);
+                    debugLog(`预览加载进度 ${modelUrl}: ${percent}%`);
+                },
+                (error) => {
+                    debugLog('预览模型加载失败:', error);
                 }
-                animate();
-            });
+            );
             
+            // 保存渲染器引用以便后续清理
             previewRenderers.set(previewElement, { scene, camera, renderer });
         }
 
@@ -301,48 +324,71 @@ try {
         function loadModel(url) {
             debugLog('开始加载模型:', url);
             try {
-                // 确保场景是空的
-                while(currentScene.children.length > 0) { 
-                    const object = currentScene.children[0];
-                    currentScene.remove(object);
+                if (!currentScene || !currentCamera || !currentRenderer) {
+                    debugLog('场景未正确初始化');
+                    return;
                 }
-                
-                // 添加光源
-                const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-                currentScene.add(ambientLight);
-                
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-                directionalLight.position.set(5, 5, 5);
-                currentScene.add(directionalLight);
-                
+
                 const loader = new GLTFLoader();
                 loader.load(
                     url,
                     (gltf) => {
-                        debugLog('模型加载成功');
+                        debugLog('模型加载成功，模型数据:', gltf);
                         const model = gltf.scene;
+                        
+                        // 检查模型是否有效
+                        if (!model) {
+                            debugLog('加载的模型无效');
+                            return;
+                        }
+
+                        // 清理现有场景
+                        while(currentScene.children.length > 0) { 
+                            currentScene.remove(currentScene.children[0]);
+                        }
+
+                        // 添加模型到场景
                         currentScene.add(model);
 
-                        // 调整相机位置
+                        // 自动调整相机视角
                         const box = new THREE.Box3().setFromObject(model);
                         const center = box.getCenter(new THREE.Vector3());
                         const size = box.getSize(new THREE.Vector3());
+                        
+                        debugLog('模型尺寸:', size);
+                        debugLog('模型中心点:', center);
+
                         const maxDim = Math.max(size.x, size.y, size.z);
                         const fov = currentCamera.fov * (Math.PI / 180);
                         let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 2;
-                        
-                        currentCamera.position.set(center.x, center.y, center.z + cameraZ);
+
+                        currentCamera.position.set(center.x, center.y + (size.y / 2), center.z + cameraZ);
                         currentCamera.lookAt(center);
                         currentControls.target.copy(center);
-                        debugLog('相机位置已调整');
+
+                        // 添加环境光和方向光
+                        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+                        directionalLight.position.set(5, 5, 5);
+                        currentScene.add(ambientLight);
+                        currentScene.add(directionalLight);
+
+                        debugLog('场景设置完成');
+                        
+                        // 强制渲染一帧
+                        currentRenderer.render(currentScene, currentCamera);
                     },
                     (xhr) => {
                         const percent = (xhr.loaded / xhr.total * 100).toFixed(2);
                         debugLog(`加载进度: ${percent}%`);
                     },
-                    (error) => handleError(error, 'loadModel')
+                    (error) => {
+                        debugLog('模型加载错误:', error);
+                        handleError(error, 'loadModel');
+                    }
                 );
             } catch (error) {
+                debugLog('loadModel 发生错误:', error);
                 handleError(error, 'loadModel');
             }
         }
@@ -428,6 +474,29 @@ try {
                 handleError(error, 'DOMContentLoaded');
             }
         });
+
+        // 在页面加载完成后，等待一小段时间确保所有库都加载完成
+        setTimeout(() => {
+            if (typeof THREE === 'undefined') {
+                console.error('Three.js not loaded');
+                return;
+            }
+            if (typeof THREE.GLTFLoader === 'undefined') {
+                console.error('GLTFLoader not loaded');
+                return;
+            }
+            
+            debugLog('Three.js 和 GLTFLoader 已加载');
+            
+            // 初始化所有预览
+            const modelContainers = document.querySelectorAll('.model-container');
+            modelContainers.forEach(container => {
+                const modelUrl = container.dataset.modelSrc;
+                if (modelUrl) {
+                    initPreview(container, modelUrl);
+                }
+            });
+        }, 1000); // 等待1秒确保所有库都加载完成
 </script>
 <style>
     /* 保持原有样式不变 */
@@ -507,4 +576,19 @@ try {
         color: white;
         z-index: 1001;
     }
+    
+    .model-container {
+        width: 100%;
+        height: 100%;
+        min-height: 300px; /* 确保容器有最小高度 */
+    }
+
+    #canvas-container {
+        width: 100%;
+        height: 100%;
+        min-height: 400px; /* 确保3D容器有足够的显示空间 */
+    }
 </style>
+
+
+
