@@ -82,7 +82,7 @@ import { Image } from 'astro:assets';
 import ImageSwitcher from '../../components/react/ImageSwitcher';
 import Video from '../../components/react/Video';
 
-# 背景
+# 项目背景
 <div style="display: flex; justify-content: center; align-items: center;">
     <image src="/SeanBlog/pictures/20241025-Tripo_blog/SheepChess.jpg" alt="SheepChess" style="width: 600px; height: auto;" />
 </div>
@@ -91,7 +91,7 @@ $279,换算成人民币大概1300多。最终在收银台花了$5买了一只小
 Tripo实现了手办自由，虽然不是真正所谓自由，就是可以非常便捷的在无需建模的情况下生成可以3D打印的模型，然后自己白模打印后上色。我才
 觉得可以找一下小羊的照片，生成模型看看效果。
 
-# 目标
+# 项目目标
 - [x] 通过Tripo3D，结合网上小羊棋子的照片生成每个棋子的3D模型
 - [ ] 尝试3D打印
 - [x] 使用Three.js，将3D模型展示在网页上
@@ -131,3 +131,50 @@ Cursor登场的时候到了。我也很快在本地实现了卡片式模型展�
 
 # 3D打印
 未完待续...
+
+# 3D花瓶
+在研究Tripo的同时，一毛还在准备一个关于3D花瓶的工作。主要的工作内容类似电商需要快速出一个产品的效果图。
+伴随这个AI的发展，很多平台推出了一键去除背景、一键换背景等相对单一但是在设计行业非常受欢迎的功能。还有的就是有一些PS基础。
+结合抠图+AI生成背景图，可以快速生成一个产品图。然后再丢个Midjourney去做适当的优化和发挥。或者是借助SD的图形控制能力，局部重绘等等。
+
+由于需求也比较急，之前也没有专门的运行过ComfyUI关于换背景的脚本。所以想着肯定是找相对现成的AI技术。碰巧Midjourney最近发布了
+类似ControlNet和局部重绘的功能。功能演示可以参考这个油管视频：
+<div style="display: flex; justify-content: center; align-items: center;">
+  <Video youtube="HiDc-v9eilE" width="640" height="360" />
+</div>
+Midjourney这次带来的更新可以概况为：
+- 允许基于用户的图像局部重绘。重绘提供参考图、参考风格、人物参考等与常规MD图片生成的--sref/--cref一样。
+- 提供Retexture功能，可以基于用户提供的参考图，对图像的纹理进行重绘。（保持姿势）
+
+## 功能点评
+1. 局部重绘物体最好不要扣的太干净，不然容易无法理解边界，会随意扩充。可以带一些背景或影子等；
+2. 参考图和参考风格对结果影响很大。
+3. 重绘区域抠图可以加入物体识别等，直接选中等，方便抠图。
+4. 有图片size和Aspect Ratio，图片size的作用是什么不是很清楚；
+5. Edit功能需要年度会员、生成10000图的门槛，但是目前图片生成速度很快，也没有edit功能使用次数限制。针对本来就包年或者连续包月用户很友好。
+6. 喜欢的图片上传Gallery之后还可以继续跟Midjourney绘图一样，扩大、微调等等；
+7. Retexture是保持姿势，风格重绘，的确姿势保持不错，但是需要保持面部就有点难。
+
+由于Midjourney本身功能的强大，这次Edit最终生成的图片效果都非常不错。有一定的真实感。相比于其他试用的几个AI换背景，从体验、费用、效果、易上手
+程度都更胜一筹。学习成本比SD或者ComfyUI低很多。
+
+下面可以看到我使用Midjourney的Edit功能，基于一张图片生成的不同效果。
+<ImageSwitcher 
+  client:load
+  images={[
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney00.jpg',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney01.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney02.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney03.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney04.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney05.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney06.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney07.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney08.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney09.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney10.png',
+    '/SeanBlog/pictures/20241025-Tripo_blog/Midjourney11.png',
+  ]} 
+  height="auto"
+  width="100%"
+/>
