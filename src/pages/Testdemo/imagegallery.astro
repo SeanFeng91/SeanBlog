@@ -272,19 +272,33 @@ try {
                 }
                 
                 // 添加光源
-                const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // 调整环境光强度
                 currentScene.add(ambientLight);
                 
                 currentLight = new THREE.DirectionalLight(0xffffff, 1);
                 currentLight.position.set(5, 5, 5);
+                currentLight.castShadow = true; // 启用阴影
                 currentScene.add(currentLight);
                 
+                // 创建地面
+                const groundGeometry = new THREE.PlaneGeometry(100, 100);
+                const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.5 }); // 使用阴影材质
+                const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+                ground.rotation.x = -Math.PI / 2; // 使地面水平
+                ground.receiveShadow = true; // 使地面接收阴影
+                currentScene.add(ground);
+
                 const loader = new THREE.GLTFLoader();
                 loader.load(
                     url,
                     (gltf) => {
                         debugLog('模型加载成功');
                         const model = gltf.scene;
+                        model.traverse((child) => {
+                            if (child.isMesh) {
+                                child.castShadow = true; // 启用模型的阴影
+                            }
+                        });
                         currentScene.add(model);
 
                         // 调整相机位置
@@ -295,7 +309,7 @@ try {
                         const fov = currentCamera.fov * (Math.PI / 150);
                         let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 1;
                         
-                        currentCamera.position.set(center.x+1.5, center.y, center.z + cameraZ);
+                        currentCamera.position.set(center.x + 1.5, center.y, center.z + cameraZ);
                         currentCamera.lookAt(center);
                         currentControls.target.copy(center);
                         debugLog('相机位置已调整');
@@ -506,6 +520,7 @@ try {
             margin-left: 10px;
         }
     </style>
+
 
 
 
