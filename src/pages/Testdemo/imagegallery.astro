@@ -64,11 +64,11 @@ try {
 
 <IndexLayout pageTitle="3D Models Gallery">
     <!-- 添加调试信息显示区域 -->
-    <div id="debugInfo" style="position: fixed; bottom: 0; left: 0; background: rgba(0,0,0,0.8); color: white; padding: 10px; max-height: 200px; overflow-y: auto; width: 100%; display: none;">
+    <!-- <div id="debugInfo" style="position: fixed; bottom: 0; left: 0; background: rgba(0,0,0,0.8); color: white; padding: 10px; max-height: 200px; overflow-y: auto; width: 100%; display: none;">
         <div id="debugContent"></div>
-    </div>
+    </div> -->
 
-    <div slot="maindiv" client:load>
+    <div slot="maindiv">
         <h1>3D 模型展示</h1>
         <!-- 添加调试开关 -->
         <!-- <button id="toggleDebug" style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
@@ -105,17 +105,19 @@ try {
         </div>
     </div>
 
-    <!-- 注入初始调试脚本 -->
-    <script is:inline set:html={debugScript} />
- <!-- 直接引入 Three.js 库 -->
-    <script  src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script  src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script  src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+   
+</IndexLayout>
 
-    <script  >
+ <!-- 注入初始调试脚本 -->
+ <script is:inline set:html={debugScript} />
+ <!-- 直接引入 Three.js 库 -->
+    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script is:inline src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script is:inline >
   console.log('客户端脚本已加载');
 </script>
-    <script >
+    <script is:inline>
          console.log('客户端脚本已加载2');
         // 调试工具函数
         function debugLog(message, ...args) {
@@ -137,12 +139,6 @@ try {
             debugLog(`Error in ${context}:`, error);
             console.error(error);
         }
-
-        // 导入 Three.js
-        import * as THREE from 'three';
-        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-        import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-
         
 
         debugLog('Three.js 版本:', THREE.REVISION);
@@ -203,7 +199,7 @@ try {
                 debugLog('光源添加完成');
 
                 // 添加控制器
-                currentControls = new OrbitControls(currentCamera, currentRenderer.domElement);
+                currentControls = new THREE.OrbitControls(currentCamera, currentRenderer.domElement);
                 currentControls.enableDamping = true;
                 debugLog('控制器设置完成');
 
@@ -242,7 +238,7 @@ try {
             directionalLight.position.set(5, 5, 5);
             scene.add(directionalLight);
             
-            const loader = new GLTFLoader();
+            const loader = new THREE.GLTFLoader();
             loader.load(modelUrl, (gltf) => {
                 const model = gltf.scene;
                 scene.add(model);
@@ -289,7 +285,7 @@ try {
                 directionalLight.position.set(5, 5, 5);
                 currentScene.add(directionalLight);
                 
-                const loader = new GLTFLoader();
+                const loader = new THREE.GLTFLoader();
                 loader.load(
                     url,
                     (gltf) => {
@@ -413,50 +409,14 @@ try {
         // 在客户端代码中添加
         console.log('客户端资源加载情况：');
         console.log('Three.js 是否加载:', typeof THREE !== 'undefined');
-        console.log('GLTFLoader 是否加载:', typeof GLTFLoader !== 'undefined');
-        console.log('OrbitControls 是否加载:', typeof OrbitControls !== 'undefined');
+        console.log('GLTFLoader 是否加载:', typeof THREE.GLTFLoader !== 'undefined');
+        console.log('OrbitControls 是否加载:', typeof THREE.OrbitControls !== 'undefined');
 
         // 添加网络请求检查
         window.addEventListener('load', () => {
             const resources = window.performance.getEntriesByType('resource');
             const threeResources = resources.filter(r => r.name.includes('three'));
             console.log('Three.js 相关资源加载情况:', threeResources);
-        });
-
-        let threeJsLoaded = false;
-        let gltfLoaderLoaded = false;
-        let orbitControlsLoaded = false;
-
-        async function checkDependencies() {
-            try {
-                await import('three');
-                threeJsLoaded = true;
-                debugLog('Three.js 加载成功');
-
-                await import('three/examples/jsm/loaders/GLTFLoader');
-                gltfLoaderLoaded = true;
-                debugLog('GLTFLoader 加载成功');
-
-                await import('three/examples/jsm/controls/OrbitControls');
-                orbitControlsLoaded = true;
-                debugLog('OrbitControls 加载成功');
-
-                return true;
-            } catch (error) {
-                debugLog('依赖加载失败:', error);
-                return false;
-            }
-        }
-
-        // 在初始化之前检查依赖
-        document.addEventListener('DOMContentLoaded', async () => {
-            const dependenciesLoaded = await checkDependencies();
-            if (dependenciesLoaded) {
-                debugLog('所有依赖加载完成，开始初始化');
-                // 初始化代码...
-            } else {
-                debugLog('依赖加载失败，无法初始化');
-            }
         });
     </script>
 
@@ -539,7 +499,8 @@ try {
             z-index: 1001;
         }
     </style>
-</IndexLayout>
+
+
 
 
 

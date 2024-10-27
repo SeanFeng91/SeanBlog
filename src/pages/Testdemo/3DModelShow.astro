@@ -60,21 +60,15 @@ try {
 
 <IndexLayout pageTitle={pageTitle}>
   <div slot="maindiv" class="mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8">GLB 模型展示</h1>
+    <h1>3D 模型展示</h1>
+    <!-- 添加调试开关 -->
+    <!-- <button id="toggleDebug" style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
+        Toggle Debug
+    </button> -->
     
-    <!-- 添加调试信息 -->
-    <!-- <div class="mb-4">
-      <p>模型总数: {models.length}</p>
-      <pre class="bg-gray-100 p-2 rounded">
-        {JSON.stringify(models, null, 2)}
-      </pre>
-    </div>
+    <p>欢迎来到我们的 3D 模型展示页面。在这里，您可以浏览和互动各种精美的 3D 模型。点击任何模型卡片以在查看器中打开并探索。</p>
+    <p>使用了Tripo 3D的AI模型生成功能，根据图片生成了3D模型。使用Three.js导入glb格式模型进行展示</p>
     
-    {errorMessage && (
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-        {errorMessage}
-      </div>
-    )} -->
     <!-- 原来的卡片 -->
     <div class="gallery-container" id="galleryContainer">
         <div class="models-grid">
@@ -93,32 +87,9 @@ try {
             <div id="canvas-container"></div>
         </div>
     </div>
-    <!-- {models.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="models-container">
-        {models.map((model) => (
-          <div class="bg-white rounded-lg shadow-md overflow-hidden">
-            <div class="h-64 w-full relative model-container" data-model-src={model.src}>
-            </div>
-            <div class="p-4">
-              <h2 class="text-xl font-semibold">{model.title}</h2>
-              <button 
-                class="mt-2 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-                onclick={`window.showFullscreen('${model.src}')`}
-              >
-                放大查看
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    ) : (
-      <div class="text-center py-8">
-        <p class="text-gray-500">暂无模型数据</p>
-      </div>
-    )} -->
-
+   
     <!-- 全屏查看容器 -->
-    <div id="fullscreen-container" class="fixed inset-0 bg-black bg-opacity-90 hidden z-50">
+    <!-- <div id="fullscreen-container" class="fixed inset-0 bg-black bg-opacity-90 hidden z-50">
       <div class="relative w-full h-full">
         <div id="fullscreen-model-container" class="w-full h-full"></div>
         <button 
@@ -130,7 +101,7 @@ try {
           </svg>
         </button>
       </div>
-    </div>
+    </div> -->
 </div>
 </IndexLayout>
 
