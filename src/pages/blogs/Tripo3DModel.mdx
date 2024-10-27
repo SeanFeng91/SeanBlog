@@ -83,18 +83,51 @@ import ImageSwitcher from '../../components/react/ImageSwitcher';
 import Video from '../../components/react/Video';
 
 # 背景
-<image src="/SeanBlog/pictures/20241025-Tripo_blog/SheepChess.jpg" alt="SheepChess" />
-新西兰皇后镇旅游的时候，我们乘坐了TSS蒸汽船，抵达一个小羊农场。在纪念品商店里面看到了这个非常可爱的小羊主题的国际象棋。
+<div style="display: flex; justify-content: center; align-items: center;">
+    <image src="/SeanBlog/pictures/20241025-Tripo_blog/SheepChess.jpg" alt="SheepChess" style="width: 600px; height: auto;" />
+</div>
+新西兰皇后镇旅游的时候，我们乘坐了TSS蒸汽船，抵达一个小羊农场。在纪念品商店里面看到了这个非常可爱的小羊主题的国际象棋。只不过价格不菲
+$279,换算成人民币大概1300多。最终在收银台花了$5买了一只小羊-兵回家。本以为这个国际象棋的念想就这样结束了，前几天看到卡兹提到了用
+Tripo实现了手办自由，虽然不是真正所谓自由，就是可以非常便捷的在无需建模的情况下生成可以3D打印的模型，然后自己白模打印后上色。我才
+觉得可以找一下小羊的照片，生成模型看看效果。
 
 # 目标
 - [x] 通过Tripo3D，结合网上小羊棋子的照片生成每个棋子的3D模型
-- [x] 使用Three.js，将3D模型展示在网页上
 - [ ] 尝试3D打印
-
+- [x] 使用Three.js，将3D模型展示在网页上
+- [ ] 记录整个生成的过程
 # Tripo构建模型
 这一轮更新之后，[Tripo](https://www.tripo3d.ai/app)给每个新注册的用户提供了600积分。如果是文字描述生成模型花费60积分，如果是图片生成模型花费20积分。每次生成模型如果不满意可以免费再生成，不会额外扣几分。
 但一旦生成结束进入预览，好像就不可以再重新生成模型了。
 <image src="/SeanBlog/pictures/20241025-Tripo_blog/Tripo01.png" alt="Tripo01" />
 
+我在网上搜索了一下小羊国际象棋的照片，似乎没有全新的，在ebay等找到了二手的。卖家拍摄了比我当时更多不同角度的照片
+<ImageSwitcher 
+  client:load
+  images={[
+    '/SeanBlog/pictures/20241025-Tripo_blog/s-l1600.webp',
+    '/SeanBlog/pictures/20241025-Tripo_blog/s-l1601.webp',
+    '/SeanBlog/pictures/20241025-Tripo_blog/s-l1602.webp',
+    '/SeanBlog/pictures/20241025-Tripo_blog/s-l1603.webp',
+     '/SeanBlog/pictures/20241025-Tripo_blog/s-l1600.webp',
+  ]} 
+  maxHeight={800}
+/>
 
+我选择了其中比较特别的两只叠合的小羊照片，上传到Tripo3D，然后选择生成模型。没想到效果还不错。
+<div style="display: flex; justify-content: center; align-items: center;">
+    <image src="/SeanBlog/pictures/20241025-Tripo_blog/Tripo02.png" alt="Tripo02" style="width: 400px; height: auto;"/>
+</div>
+Tripo提供了丰富的模型下载接口。除了用于3D打印的，maya、Unity、three.js等等都有。等一毛咨询了办公室3D打印小伙伴尝试之后就会诞生第一只克隆羊。
+看到有three.js的模型，于是我就想着能不能在我的Blog上开辟一个[页面](https://seanfeng91.github.io/SeanBlog/Testdemo/imagegallery/)把模型展示出来。
 
+Cursor登场的时候到了。我也很快在本地实现了卡片式模型展示的效果，预览的模型也可以自动的旋转展示，点击之后还可以放大浏览。但是没想到
+一部署到github就怎么也显示不成功。来回调试和重写了几天都没搞定（Script没有正确加载）。还是跟Script的加载顺序有关。目前展示的效果比较简单，
+每一个模型使用一个卡片，点击之后预览。在小红书上还看到了一个类似档案抽取的效果。用了figma+scaniverse的方案。
+
+<div style="display: flex; justify-content: center; align-items: center;">
+  <img src="/SeanBlog/pictures/20241025-Tripo_blog/Tripo03.jpg" alt="Tripo03" style="width: 300px; height: auto;" />
+</div>
+
+# 3D打印
+未完待续...
