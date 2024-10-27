@@ -1,11 +1,10 @@
 ---
 layout: ../../layouts/MarkdownPostLayout.astro
-title: "借着爬取AI资讯的契机学习如何使用数据库"
+title: "不会建模也可以一键照片转3D模型-Tripo3D"
 author: Sean Feng
-description: "学习网页相关，数据库是必不可少的，不管是数据存储还是数据检索。之前丘可乐使用了Sqlite存储了他的新闻资讯，大概了解了一下之后也非常容易上手，就
-借着爬取AI资讯的契机，学习了一下Sqlite的使用。然后学习数字卡兹的推文，尽可能用网页端做好资讯的展示。"
-pubDate: 2024-10-22
-tags: ["AI资讯", "数据库", "Crawl4ai","Sqlite"]
+description: "最近几个研究AI的产品经理开始关注Tripo的3D模型生成，可能是因为发布了2.0模型版本，生成效果的确不错。想到之前在新西兰看上了一个小羊主题的国际象棋，把棋子小羊化。就想着能不能找到每个棋子的照片，生成可以3D打印的模型。然后自己打一副国际象棋。"
+pubDate: 2024-10-27
+tags: ["Tripo", "3D模型", "3D打印","Three.js"]
 wordCount:   # 请替换为实际的字数
 # ## 高级样式
 
@@ -83,13 +82,19 @@ import { Image } from 'astro:assets';
 import ImageSwitcher from '../../components/react/ImageSwitcher';
 import Video from '../../components/react/Video';
 
+# 背景
+<image src="/SeanBlog/pictures/20241025-Tripo_blog/SheepChess.jpg" alt="SheepChess" />
+新西兰皇后镇旅游的时候，我们乘坐了TSS蒸汽船，抵达一个小羊农场。在纪念品商店里面看到了这个非常可爱的小羊主题的国际象棋。
+
 # 目标
-- [x] 通过[Crawl4ai](crawl4ai)爬取[AIbase](www.aibase.com)的AI资讯
-- [x] 使用cursor写一个将爬取内容存入sqlite的database的python程序，可以格式化存储标题、日期、内容。只爬取当天信息。
-- [x] 写一个调用Kimi的api，读取sqlite库，对每一条资讯内容进行总结，只总结新的条目，并存入数据库。
-- [x] 写一个新的TodayNews.astro页面，展示数据库中的资讯，并可以拖拽排序。
-- [x] 调整了爬取的思路，从上一次结束的编号往大爬取，这样可以确保每次爬取都是最新的资讯。
-- [ ] 看能否实现定时的咨询刷新（自动运行的似乎没成功）
-- [ ] 增加不同的新闻源，看能不能都实现爬取
+- [x] 通过Tripo3D，结合网上小羊棋子的照片生成每个棋子的3D模型
+- [x] 使用Three.js，将3D模型展示在网页上
+- [ ] 尝试3D打印
+
+# Tripo构建模型
+这一轮更新之后，[Tripo](https://www.tripo3d.ai/app)给每个新注册的用户提供了600积分。如果是文字描述生成模型花费60积分，如果是图片生成模型花费20积分。每次生成模型如果不满意可以免费再生成，不会额外扣几分。
+但一旦生成结束进入预览，好像就不可以再重新生成模型了。
+<image src="/SeanBlog/pictures/20241025-Tripo_blog/Tripo01.png" alt="Tripo01" />
+
 
 
