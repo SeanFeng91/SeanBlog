@@ -63,29 +63,12 @@ try {
 ---
 
 <IndexLayout pageTitle="3D Models Gallery">
-    <!-- 添加调试信息显示区域 -->
-    <!-- <div id="debugInfo" style="position: fixed; bottom: 0; left: 0; background: rgba(0,0,0,0.8); color: white; padding: 10px; max-height: 200px; overflow-y: auto; width: 100%; display: none;">
-        <div id="debugContent"></div>
-    </div> -->
-
     <div slot="maindiv">
         <h1>3D 模型展示</h1>
-        <!-- 添加调试开关 -->
-        <!-- <button id="toggleDebug" style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
-            Toggle Debug
-        </button> -->
         
         <p>欢迎来到我们的 3D 模型展示页面。在这里，您可以浏览和互动各种精美的 3D 模型。点击任何模型卡片以在查看器中打开并探索。</p>
         <p>使用了Tripo 3D的AI模型生成功能，根据图片生成了3D模型。使用Three.js导入glb格式模型进行展示</p>
     
-        <!-- {errorMessage && <p style="color: red;">{errorMessage}</p>} -->
-        
-        <!-- 添加调试区域 -->
-        <!-- <div id="debugArea" style="background-color: #f0f0f0; padding: 10px; margin-top: 20px; border: 1px solid #ccc; max-height: 200px; overflow-y: auto;">
-            <h3>调试信息：</h3>
-            <pre id="debugLog"></pre>
-        </div> -->
-        
         <div class="gallery-container" id="galleryContainer">
             <div class="models-grid">
                 {models.map((model) => (
@@ -101,6 +84,10 @@ try {
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <div id="canvas-container"></div>
+                <div class="viewer-light-controls">
+                    <label>灯光颜色：</label>
+                    <input type="color" id="viewerLightColor" value="#ffffff">
+                </div>
             </div>
         </div>
     </div>
@@ -143,7 +130,7 @@ try {
 
         debugLog('Three.js 版本:', THREE.REVISION);
 
-        let currentScene, currentCamera, currentRenderer, currentControls;
+        let currentScene, currentCamera, currentRenderer, currentControls, currentLight;
 
         // 在 script 标签内添加预览渲染器的管理
         let previewRenderers = new Map();
@@ -193,9 +180,9 @@ try {
                 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
                 currentScene.add(ambientLight);
                 
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-                directionalLight.position.set(5, 5, 5);
-                currentScene.add(directionalLight);
+                currentLight = new THREE.DirectionalLight(0xffffff, 1);
+                currentLight.position.set(5, 5, 5);
+                currentScene.add(currentLight);
                 debugLog('光源添加完成');
 
                 // 添加控制器
@@ -211,6 +198,13 @@ try {
                 }
                 animate();
                 debugLog('动画循环启动');
+
+                // 添加灯光颜色控制
+                const lightColorPicker = document.getElementById('viewerLightColor');
+                lightColorPicker.addEventListener('input', (event) => {
+                    const color = new THREE.Color(event.target.value);
+                    currentLight.color.set(color);
+                });
 
             } catch (error) {
                 handleError(error, 'initViewer');
@@ -264,7 +258,7 @@ try {
                 animate();
             });
             
-            previewRenderers.set(previewElement, { scene, camera, renderer });
+            previewRenderers.set(previewElement, { scene, camera, renderer, directionalLight });
         }
 
         // 修改加载模型函数
@@ -281,9 +275,9 @@ try {
                 const ambientLight = new THREE.AmbientLight(0xffffff, 1);
                 currentScene.add(ambientLight);
                 
-                const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-                directionalLight.position.set(5, 5, 5);
-                currentScene.add(directionalLight);
+                currentLight = new THREE.DirectionalLight(0xffffff, 1);
+                currentLight.position.set(5, 5, 5);
+                currentScene.add(currentLight);
                 
                 const loader = new THREE.GLTFLoader();
                 loader.load(
@@ -298,10 +292,10 @@ try {
                         const center = box.getCenter(new THREE.Vector3());
                         const size = box.getSize(new THREE.Vector3());
                         const maxDim = Math.max(size.x, size.y, size.z);
-                        const fov = currentCamera.fov * (Math.PI / 180);
-                        let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 2;
+                        const fov = currentCamera.fov * (Math.PI / 150);
+                        let cameraZ = Math.abs(maxDim / Math.tan(fov / 2)) * 1;
                         
-                        currentCamera.position.set(center.x, center.y, center.z + cameraZ);
+                        currentCamera.position.set(center.x+1.5, center.y, center.z + cameraZ);
                         currentCamera.lookAt(center);
                         currentControls.target.copy(center);
                         debugLog('相机位置已调整');
@@ -498,9 +492,20 @@ try {
             color: white;
             z-index: 1001;
         }
+
+        .viewer-light-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .viewer-light-controls input {
+            margin-left: 10px;
+        }
     </style>
-
-
 
 
 
