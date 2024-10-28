@@ -24,6 +24,8 @@ tags: ["astro", "problems", "astro"]
 ## 使用ComfyUI桌面版本，已经加入waitlist
 ## 修改midjourney的订阅，使用edit功能
 ## 结合Tripo和3D打印，尝试做一个小羊国际象棋
+## 整理一下public的文件目录，更新新西兰Blog的图片路径
+## 优化模型加载页的速度
 
 <!-- - [ ] 小屏幕模式下博客目录导航fixed无法滚动，下面的标题会显示不出来。
 - [ ] 优化小屏幕模式左侧导航栏样式
