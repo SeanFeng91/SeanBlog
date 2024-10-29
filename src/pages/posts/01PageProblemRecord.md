@@ -13,13 +13,13 @@ import: '../../styles/markdown.css'
 
 
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
->居然有AI写作功能！
-# MarkDown语法支持
-简单的检索了以下三个网页，可以查询丰富的Markdown语法使用。
-mdx和md的语法不一样，需要再补充一下mdx的语法
-- [markdown](https://markdown.p2hp.com/basic-syntax/index.html)
-- [约翰·格鲁伯设计文档中概述的Markdown元素-Markdown基本语法](https://markdown.p2hp.com/basic-syntax/index.html)
-- [Markdown 语法指南 (Basic Syntax)](https://zhuanlan.zhihu.com/p/668256808)
+
+# 20241029记录
+记录了一条博客的心得。在当前文件夹图片导入的方法可以用引用模式，但是Audio导入路径似乎不行，我还是放在了public文件夹。
+尝试修复一下build过程中的warning。
+
+# 20241027记录
+终于成功在github端加载了3D模型。
 
 # 20241025记录
 今天为了显示3d模型，一顿修改，就是无法加载，然后build还经历了不知所以然的错误，提升mdi找不到。只好学习了一下github如何滚回历史版本
