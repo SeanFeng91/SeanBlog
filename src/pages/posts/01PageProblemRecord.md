@@ -20,7 +20,7 @@ import: '../../styles/markdown.css'
 
 # 20241027记录
 终于成功在github端加载了3D模型。
-
+[Three.js的官方使用说明](https://threejs.org/docs/index.html#manual/zh/introduction/Creating-a-scene)
 # 20241025记录
 今天为了显示3d模型，一顿修改，就是无法加载，然后build还经历了不知所以然的错误，提升mdi找不到。只好学习了一下github如何滚回历史版本
 

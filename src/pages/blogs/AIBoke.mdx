@@ -1,0 +1,51 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "用AI生成一档自己的播客节目"
+author: Sean Feng
+description: "谷歌出的NotebookLM、Heygen、F5 TTS等工具，结合现有文稿或者用GPT生成，可以快速生成一档自己的播客节目。"
+pubDate: 2024-10-29
+tags: ["AI播客", "NotebookLM","Heygen","F5 TTS"]
+wordCount:   # 请替换为实际的字数
+
+---
+
+{/* 导入必要的样式和组件 */}
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+import { Image } from 'astro:assets';
+import ImageSwitcher from '../../components/react/ImageSwitcher';
+import Video from '../../components/react/Video';
+
+# 背景信息
+[谷歌AI播客刚火，Meta就开源了平替，效果一言难尽](https://mp.weixin.qq.com/s/WF02SzrNSxZEKQr7IyNsSg)
+
+[NotebookLM +PodLM + F5：AI播客系列，个性化中英文播客（本地安装、Colab部署）](https://mp.weixin.qq.com/s/J3WqebtCR09vzEB3g2JDzw)
+
+[AI+播客？这个智能体让你变的更专业！](https://mp.weixin.qq.com/s/yp1kq8YXfNjp5axxjLrNHA)
+
+[HeyGen5.0来了！ 上线实时数字人聊天和视频翻译功能（详细操作指南）](https://mp.weixin.qq.com/s/PP6cubZgfPUQkdKBV41QbA)
+
+[连续24小时直播不停歇，靠的是AI数字人！（推荐6款工具）](https://mp.weixin.qq.com/s/7QbMA56Vv2zBJhJfAngVtw)
+
+# 初步思路
+## 研报、论文的阅读，类似谷歌illumination。
+
+## 古文赏析——英文版
+
+## 用GPT生成播客文稿、用NotebookLM生成播客音频、用Heygen生成播客视频
+
+## GPT生成文稿、MD生成画面、NotebookLM配上解说。
+
+## AI资讯、财经资讯爬取，用数据库存储，用GPT生成文稿，用NotebookLM生成音频
+
+# 目前难点
+
+1. NotebookLM生成的是英文
+2. Meta的NotebookLLama还没找到开源路径
+3. Heygen数字人单一角色
+4. MD的生成画面不够稳定
+
+
