@@ -19,13 +19,18 @@ tags: ["astro", "problems", "astro"]
 近期待解决、研究的问题
 ## 尝试接入Qanything，做一个问答助手
 ## 修复kimi页面，保障可以做到问答和文件问答
-## 整理一些好看照片，丰富相册
 ## 使用体验一下海螺大模型
 ## 使用ComfyUI桌面版本，已经加入waitlist
-## 修改midjourney的订阅，使用edit功能
 ## 结合Tripo和3D打印，尝试做一个小羊国际象棋
-## 整理一下public的文件目录，更新新西兰Blog的图片路径
 ## 优化模型加载页的速度
+## 研究智谱[GLM-4-Voice](https://mp.weixin.qq.com/s/bX8-PDyFq9Xuk_IHaX23Aw)（端到端语音模型）
+## 修复一些blog在Build过程中的bug
+
+
+<!-- ## 整理一下public的文件目录，更新新西兰Blog的图片路径 20241028 -->
+<!-- ## 修改midjourney的订阅，使用edit功能 20241027-->
+<!-- ## 整理一些好看照片，丰富相册 -->
+
 
 <!-- - [ ] 小屏幕模式下博客目录导航fixed无法滚动，下面的标题会显示不出来。
 - [ ] 优化小屏幕模式左侧导航栏样式
