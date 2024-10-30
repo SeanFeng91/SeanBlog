@@ -30,16 +30,17 @@ import Video from '../../components/react/Video';
 
 [连续24小时直播不停歇，靠的是AI数字人！（推荐6款工具）](https://mp.weixin.qq.com/s/7QbMA56Vv2zBJhJfAngVtw)
 
+[Podlm](https://github.com/lihuithe/podlm-public?tab=readme-ov-file)
 # 初步思路
-## 研报、论文的阅读，类似谷歌illumination。
+- 研报、论文的阅读，类似谷歌illumination。
 
-## 古文赏析——英文版
+- 古文赏析——英文版
 
-## 用GPT生成播客文稿、用NotebookLM生成播客音频、用Heygen生成播客视频
+- 用GPT生成播客文稿、用NotebookLM生成播客音频、用Heygen生成播客视频
 
-## GPT生成文稿、MD生成画面、NotebookLM配上解说。
+- GPT生成文稿、MD生成画面、NotebookLM配上解说。
 
-## AI资讯、财经资讯爬取，用数据库存储，用GPT生成文稿，用NotebookLM生成音频
+- AI资讯、财经资讯爬取，用数据库存储，用GPT生成文稿，用NotebookLM生成音频
 
 # 目前难点
 
@@ -48,4 +49,76 @@ import Video from '../../components/react/Video';
 3. Heygen数字人单一角色
 4. MD的生成画面不够稳定
 
+# 目前成果
+## 1. TTS所需音频剪辑
+TTS建议是一段不超过15秒的音频，所以开始找了很久音频剪辑的工具。真的是什么都是收费的。最后发现了Audacity。
+Audacity的[官方网站](https://www.audacityteam.org/)，可以通过这个网站下载软件、获取用户手册和教程。选择Download without Muse Hub。
+<div style="display: flex; justify-content: center; align-items: center;">
+  ![alt text](./AIBoke/Boke02.png)
+</div>
+Audacity是一款免费、开源的音频编辑和录音软件，广泛应用于音乐制作、广播后期制作以及普通用户的音频处理。
+它支持多种操作系统，包括Windows、macOS和Linux，提供了直观的用户界面和强大的音频处理工具。Audacity的核心功能包括音频录制、编辑、效果处理、多轨混音等，用户可以通过剪切、复制、粘贴等基本编辑操作，以及应用各种音频效果来改善和创作音频内容。
+<div style="display: flex; justify-content: center; align-items: center;">
+  ![alt text](./AIBoke/Boke01.png)
+</div>
+使用了最基本的功能，在最下方选取选择需要截取的片段时间，然后直接导出即可。
+
+## 2. 通过F5-TTS生成播客
+通过F5-TTS可以结合多人的音频，配合文本内容，很好的生成一个访谈的播客，声音模仿度很高。
+目前可执行路径参考AI进修生的[Colab执行文件](https://colab.research.google.com/drive/1KoMvZQyxXiE3bw00_InCyNDbD4WkPlNr?pli=1#scrollTo=1XuoyxM0F3-_)，在T4模式下运行。
+**如果需要长期稳定运行，需要搭建家里电脑的本地环境** T4的连接非常的不稳定。但是基础环境配置、速度的确快。
+注：Colab的运行参考了[AI进修生](https://mp.weixin.qq.com/s/J3WqebtCR09vzEB3g2JDzw)的发文，因为F5-TTS更新了，我还线上咨询了博主做了修改。
+
+<div style="display: flex; justify-content: center; align-items: center;">
+  ![alt text](./AIBoke/Boke03.png)
+</div>
+为了构建播客模式，需要做的是根据提示提供不同人物、语气的人物声音输入，配合后续需要配音的文本内容。比如有regular、
+Surprised、Sad、Angry、Whisper、Shouting等。或者发言人1、发言人2的声音类似。然后在生成文本前缀给以匹配，运行得到的
+音频就可以很好的实现对应的聊天效果。多人都可以。
+```
+{Regular} Hello, I'd like to order a sandwich please.
+{Surprised} What do you mean you're out of bread?
+{Sad} I really wanted a sandwich though...
+{Angry} You know what, darn you and your little shop!
+{Whisper} I'll just go back home and cry now.
+{Shouting} Why me?!
+
+Example Input 2:
+{Speaker1_Happy} Hello, I'd like to order a sandwich please.
+{Speaker2_Regular} Sorry, we're out of bread.
+{Speaker1_Sad} I really wanted a sandwich though...
+{Speaker2_Whisper} I'll give you the last o
+```
+我从播客的录音中截取了两个人分别十几秒的音频，作为输入了。
+<Alert type="info" title="音频文件">
+  <audio controls style="width: 100%; max-width: 500px;">
+    <source src="/SeanBlog/Audios/AIBoke01-Speaker1.mp3" type="audio/mpeg" />
+    您的浏览器不支持音频播放。为啥没有了
+  </audio>
+  <audio controls style="width: 100%; max-width: 500px;">
+    <source src="/SeanBlog/Audios/AIBoke01-Speaker2.mp3" type="audio/mpeg" />
+    您的浏览器不支持音频播放。为啥没有了
+  </audio>
+</Alert>
+
+同时节选了后面他们一段对话的文字脚本，按照需要的格式输入给TTS
+```
+{Speaker1} 修养算是最最看重最能加分的，那如果说最能扣分的品质，你觉得是哪一两个关键词？
+{Speaker2} 如果从我心理学的角度来说，我会把这个成瘾性放进去，就是赌博。哇哦我会把赌博的成瘾性放进去，就是赌博博障碍。
+{Speaker1} 赌博障碍这个东西正好就引到我们，等会要重要的我们股民的这个心态。赌博障碍这个词或者说成瘾性可能在某些投资人去评判创业者的时候，他甚至是一个正面的。比如说我记得宁德时代的对那个曾总曾就是曾老板，他的办公室就挂着一个叫赌性坚强。
+{Speaker2} 没错，所以我刚刚在您在问我这个问题的时候，我是说从我的这个角度，确实是我虽然是学经济学这个宏观经济，我更多的还是看重这个风险厌恶型风险厌恶，我还是比较偏向于这样的确。
+{Speaker1} 确实赌性或者说成瘾性的这个是不是持续的全部压上去下重注，这是一个非常两面化的问题。没错，没有标准答案。
+{Speaker2} 没错。
+{Speaker1} 这个也是我们在股市，就是股民我们这个群体当中很容易出现的一种心态。就是经常我们有个表情包就是满仓干，不要怂。对什么赢了会所嫩模，输了下海干活，是这个就深刻的很生动的表达了我们某些股民的一些心态。其实我我在我们录这期之前，我是想了很多我们股民容易遇到一些心理问题。我还专门查了集体就是基PT，就是官方的或者机器人告诉我答案。我就问股民有什么典型的情绪？那当然就列了很多了，比如说追涨杀跌、贪婪、恐惧还有什么？我还我还记录了一下狂躁、焦虑、悔恨、盲目自信、炫耀、从众，反正就是我觉得是人性的，各种情绪都有，股市或者说其他的资本市场它会把它放的更大我觉得我们很难就每一个情绪来展开，但我想了几种情绪是我我自己近期深刻体会到的。
+{Speaker1} 比如你看我们今天录制的时间是10月20号，在我们这个国庆节。假期的那几天我们的A股是暴涨的，那个不叫大涨，是叫暴涨，直线拉升。所以叠加当时这个上涨的这种情况，和当时一些自媒体推波助澜。所以在我的观察中，整个国庆假期只要是你炒股的或者接触到这些信息的人，可能他们都很焦虑的在想办法去筹钱。没错，甚至还有说排队开户。然后那些券商还都说有些孩子国庆假期不休息。对，加班加点开户。
+{Speaker1} 那种时候我就感觉自己和身边人沉浸在一种焦虑，一种狂躁的状态。我们怕什么呢？我们怕赶不上这趟了。
+{Speaker1} 对应到我们股市中一个专有名词叫踏空。没错，踏空的反义词叫被套，这不叫反义词义词就反面的情况，我给大家稍微解释一下，这个相信我们的听众应该都知道。被套就是你买了之后，比如说十块钱买一个股票，然后来跌了，跌到九块钱、八块钱你都不舍得卖，你就想等他有一天回来就要被套。那踏空是什么意思呢？就是我有两个股票可以选，比如说A和B那我买了B没买A结果B就结果结果没买的那个A股票就暴涨，那B没有涨，这是一种踏空形式。还有一种就是我在大涨之前卖了它，也就是就踏空暴涨那也是踏空。还有另外一种是可能是我觉得这个是个机会，但是犹豫了一下没买，心态上也觉得自己是踏空了。是的，我自己的感受以及我身边的感受是踏空其实比被套要难受很多很多。
+```
+就可以得到以下这段对话，可以听出来声音的完成度非常好。
+<Alert type="info" title="音频文件">
+  <audio controls style="width: 100%; max-width: 500px;">
+    <source src="/SeanBlog/Audios/AIBoke02-TTS.wav" type="audio/wav" />
+    您的浏览器不支持音频播放。为啥没有了
+  </audio>
+</Alert>
 
