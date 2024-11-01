@@ -10,9 +10,13 @@ image:
 tags: ["问题记录","日志","过程记录"]
 import: '../../styles/markdown.css'
 ---
-
-
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
+
+# 20241030记录
+通过与AI进修生的沟通，成功实现了F5-TTS的音频生成，并且构思了一条可以[闭环的资料生产路径](https://seanfeng91.github.io/SeanBlog/blogs/AIBoke)。整个过程主要涉及了F5-TTS、Colab、NotebookLM、通义千问、GPT-4o等相关产品。
+
+github action今天故障，要等到他们修复之后才可以更新。
+
 
 # 20241029记录
 记录了一条博客的心得。在当前文件夹图片导入的方法可以用引用模式，但是Audio导入路径似乎不行，我还是放在了public文件夹。
