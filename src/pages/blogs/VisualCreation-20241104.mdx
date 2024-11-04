@@ -1,0 +1,35 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "如何使用Midjourney、Stable Diffusion、Flux、海螺、Tripo 3D等图像视频类AI生成有趣内容"
+author: Sean Feng
+description: "这几个是我使用之后相对比较容易上手，没有高昂的会员费用，天花板非常高的图像类AI。这篇博客我会尝试记录脑中或者生活中发现的可以用AI实现的有趣想法，并且探索可行性。"
+pubDate: 2024-10-29
+tags: ["图像", "创意", "AI","视觉"]
+wordCount:   # 请替换为实际的字数
+
+---
+
+{/* 导入必要的样式和组件 */}
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+import { Image } from 'astro:assets';
+import ImageSwitcher from '../../components/react/ImageSwitcher';
+import Video from '../../components/react/Video';
+
+# 创意想法
+
+## 现实世界乐高化
+利用Midjourney的Retexture功能。将建筑改编成Lego积木风格。或者人物形象转化成Lego
+### 困难点
+1. Midjourney的edit和retexture都没法很好实现效果。edit是局部重回，re则完全保留了轮廓，而想象中的乐高化其实需要对图形进行适当的简化和色块化，不需要那么丰富的颜色。
+
+### 改进方案
+1. 刚刚写的时候想到，乐高要简化，简化形状、颜色、细节等。所以不能够原图直接Lego world。是不是要首先把图片颜色变成只有10种或者更少的颜色。然后适当的像素画减少图片信息。
+然后再Lego world。
+
+
+## 宠物、玩偶形象创意或者物件宠物化
+宠物形象椅子、复刻黏土风格、十二星座、十二笙筲
