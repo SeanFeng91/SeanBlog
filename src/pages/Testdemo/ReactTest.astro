@@ -13,10 +13,28 @@ const title = "QGIS Spatial Analysis Web Demo";
         <button onclick="toggleRoadAnalysis()">道路分析</button>
         <button onclick="toggleBuildingAnalysis()">建筑密度分析</button>
         <div id="analysis-options" style="display: none;">
-            <label>分析范围 (米):</label>
-            <input type="number" id="searchRadius" value="1000">
-            <label>缓冲区 (米):</label>
-            <input type="number" id="bufferRadius" value="50">
+            <div class="analysis-row">
+                <label>分析范围 (米):</label>
+                <input type="number" id="searchRadius" value="1000">
+                <label>缓冲区 (米):</label>
+                <input type="number" id="bufferRadius" value="50">
+            </div>
+            
+            <div class="style-options">
+                <div class="analysis-row">
+                    <label>道路线宽:</label>
+                    <input type="number" id="roadWidth" value="2" min="1" max="10" step="0.5">
+                    <label>道路颜色:</label>
+                    <input type="color" id="roadColor" value="#ff7800">
+                </div>
+                <div class="analysis-row">
+                    <label>缓冲区透明度:</label>
+                    <input type="range" id="bufferOpacity" min="0" max="1" step="0.1" value="0.2">
+                    <label>缓冲区颜色:</label>
+                    <input type="color" id="bufferColor" value="#ff7800">
+                </div>
+            </div>
+            
             <button onclick="runAnalysis()">执行分析</button>
         </div>
         <div id="analysis-info"></div>
@@ -64,6 +82,24 @@ const title = "QGIS Spatial Analysis Web Demo";
         padding: 10px;
         border: 1px solid #ddd;
         border-radius: 4px;
+    }
+    .analysis-row {
+        margin: 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .style-options {
+        margin: 10px 0;
+        padding: 10px;
+        background: #eee;
+        border-radius: 4px;
+    }
+    .analysis-controls input[type="number"] {
+        width: 60px;
+    }
+    .analysis-controls input[type="range"] {
+        width: 100px;
     }
 </style>
 
@@ -142,12 +178,18 @@ const title = "QGIS Spatial Analysis Web Demo";
             const data = await response.json();
 
             if (currentAnalysisMode === 'road') {
+                // 获取样式设置
+                const roadWidth = document.getElementById('roadWidth').value;
+                const roadColor = document.getElementById('roadColor').value;
+                const bufferOpacity = document.getElementById('bufferOpacity').value;
+                const bufferColor = document.getElementById('bufferColor').value;
+
                 // 道路分析
                 const roads = osmtogeojson(data);
                 analysisLayer = L.geoJSON(roads, {
                     style: {
-                        color: '#ff7800',
-                        weight: 2
+                        color: roadColor,
+                        weight: roadWidth
                     }
                 }).addTo(map);
 
@@ -156,9 +198,10 @@ const title = "QGIS Spatial Analysis Web Demo";
                     const buffer = turf.buffer(feature, bufferRadius/1000, {units: 'kilometers'});
                     L.geoJSON(buffer, {
                         style: {
-                            color: '#ff7800',
-                            fillColor: '#ff7800',
-                            fillOpacity: 0.2
+                            color: bufferColor,
+                            fillColor: bufferColor,
+                            fillOpacity: parseFloat(bufferOpacity),
+                            weight: 1
                         }
                     }).addTo(map);
                 });
