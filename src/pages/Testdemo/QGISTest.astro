@@ -1,270 +1,619 @@
 ---
 import "../../styles/global.css";
 import IndexLayout from '../../layouts/IndexLayout.astro';
-// import Footer from '../components/Footer.astro';
-// import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 const title = "QGIS Spatial Analysis Web Demo";
 ---
 
 <IndexLayout>
-	<div slot="maindiv"> 
-    <h1>{title}</h1>
-    <div class="analysis-controls">
-        <button onclick="toggleRoadAnalysis()">道路分析</button>
-        <button onclick="toggleBuildingAnalysis()">建筑密度分析</button>
-        <button onclick="toggleHeatmapAnalysis()">POI热力图</button>
-        <button onclick="toggleAccessibilityAnalysis()">步行可达性</button>
-        <div id="analysis-options" style="display: none;">
-            <div class="analysis-row">
+    <div slot="maindiv" class="analysis-page"> 
+        <h1>{title}</h1>
+        
+        <!-- 分析控件部分 -->
+        <div class="control-panel">
+            <div class="button-group">
+                <button class="analysis-btn">道路分析</button>
+                <button class="analysis-btn">建筑密度分析</button>
+                <button class="analysis-btn">POI热力图</button>
+                <button class="analysis-btn">步行可达性</button>
+                <button class="analysis-btn">土地利用变化分析</button>
+            </div>
+
+            <div class="params-group">
                 <label>分析范围 (米):</label>
-                <input type="number" id="searchRadius" value="1000">
-                <label>POI类型:</label>
-                <select id="poiType">
-                    <option value="restaurant">餐馆</option>
-                    <option value="shop">商店</option>
-                    <option value="school">学校</option>
-                    <option value="hospital">医院</option>
-                </select>
+                <input type="number" id="analysis-radius" value="1000" min="100" max="5000"/>
+                <button id="execute-analysis" class="execute-btn">执行分析</button>
             </div>
-            <div class="analysis-row" id="walkingOptions" style="display: none;">
-                <label>步行时间 (分钟):</label>
-                <input type="number" id="walkingTime" value="15" min="5" max="30">
-                <label>步行速度 (km/h):</label>
-                <input type="number" id="walkingSpeed" value="4.8" step="0.1">
-            </div>
-            <button onclick="runAnalysis()">执行分析</button>
         </div>
-        <div id="analysis-info"></div>
+
+        <!-- 主要内容区域 -->
+        <div class="main-content">
+            <!-- 地图容器 -->
+            <div id="map"></div>
+            
+            <!-- 数据面板 -->
+            <div class="data-panel">
+                <h3>分析结果数据</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>类型</th>
+                            <th>名称</th>
+                            <th>位置信息</th>
+                            <th>其他属性</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-tbody"></tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <div id="map"></div>
-  </div>
 </IndexLayout>
 
-<!-- 添加 Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-
 <style>
-    #map {
-        width: 100%;
-        height: 600px;
+    .analysis-page {
+        padding: 20px;
     }
-    .analysis-controls {
-        margin: 10px 0;
-        padding: 10px;
+
+    .control-panel {
         background: #f5f5f5;
-        border-radius: 4px;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
     }
-    .analysis-controls input {
-        width: 80px;
-        margin: 0 10px;
+
+    .button-group {
+        margin-bottom: 15px;
     }
-    #analysis-info {
-        margin-top: 10px;
-        color: #666;
-    }
-    .analysis-controls button {
-        margin: 5px;
-        padding: 5px 10px;
-        background-color: #4CAF50;
+
+    .analysis-btn {
+        background: #4CAF50;
         color: white;
         border: none;
+        padding: 10px 20px;
+        margin-right: 10px;
         border-radius: 4px;
         cursor: pointer;
+        transition: background 0.3s;
     }
-    .analysis-controls button:hover {
-        background-color: #45a049;
+
+    .analysis-btn:hover {
+        background: #45a049;
     }
-    #analysis-options {
-        margin-top: 10px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-    .analysis-row {
-        margin: 8px 0;
+
+    .params-group {
         display: flex;
         align-items: center;
         gap: 10px;
     }
-    .style-options {
-        margin: 10px 0;
-        padding: 10px;
-        background: #eee;
+
+    #analysis-radius {
+        width: 100px;
+        padding: 8px;
+        border: 1px solid #ddd;
         border-radius: 4px;
     }
-    .analysis-controls input[type="number"] {
-        width: 60px;
+
+    .execute-btn {
+        background: #2196F3;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 4px;
+        cursor: pointer;
     }
-    .analysis-controls input[type="range"] {
-        width: 100px;
+
+    .main-content {
+        display: flex;
+        gap: 20px;
+        height: 600px;
+    }
+
+    #map {
+        flex: 1;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        min-height: 600px;
+    }
+
+    .data-panel {
+        width: 300px;
+        background: white;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow-y: auto;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 8px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .data-table th {
+        background: #f5f5f5;
     }
 </style>
 
-<script is:inline src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-<script is:inline src="https://cdn.jsdelivr.net/npm/leaflet-qgis-plugin/dist/leaflet-qgis.min.js"></script>
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+
+<!-- Scripts -->
+<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+<script is:inline src="https://unpkg.com/osmtogeojson@3.0.0-beta.4/osmtogeojson.js"></script>
+
 <script is:inline>
-    // 初始化地图
-    const map = L.map('map').setView([39.9042, 116.4074], 13); // 默认北京市中心
-
-    // 添加底图
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-    }).addTo(map);
-
+    let map;
     let currentAnalysisMode = null;
     let analysisLayer = null;
-    let searchArea = null;
-
-    // 添加点击获取分析中心点的功能
     let centerMarker = null;
-    map.on('click', function(e) {
-        if (currentAnalysisMode) {
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化地图
+        const apiKey = '6W50OBSxoVJwexSc2n2d';
+        map = L.map('map').setView([30.8042, 120.4574], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        L.tileLayer(`https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${apiKey}`, {
+            tileSize: 512,
+            zoomOffset: -1,
+            minZoom: 1,
+            attribution: '© <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a>',
+            crossOrigin: true
+        }).addTo(map);
+
+        // 添加分析按钮事件监听
+        document.querySelectorAll('.analysis-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // 移除其他按钮的active类
+                document.querySelectorAll('.analysis-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                // 添加当前按钮的active类
+                this.classList.add('active');
+                currentAnalysisMode = this.textContent;
+                alert('请在地图上点击选择分析中心点');
+            });
+        });
+
+        // 地图点击事件
+        map.on('click', function(e) {
+            if (!currentAnalysisMode) return;
+            
             if (centerMarker) {
                 map.removeLayer(centerMarker);
             }
             centerMarker = L.marker(e.latlng).addTo(map);
-            document.getElementById('analysis-info').innerHTML = '已选择分析中心点，点击"执行分析"开始分析';
-        }
-    });
+        });
 
-    function toggleRoadAnalysis() {
-        currentAnalysisMode = 'road';
-        document.getElementById('analysis-options').style.display = 'block';
-        document.getElementById('analysis-info').innerHTML = '请点击地图选择分析中心点';
-    }
+        // 修改执行分析按钮的事件监听
+        document.querySelector('.execute-btn').addEventListener('click', async function() {
+            if (!centerMarker) {
+                alert('请先在地图上选择分析中心点');
+                return;
+            }
 
-    function toggleBuildingAnalysis() {
-        currentAnalysisMode = 'building';
-        document.getElementById('analysis-options').style.display = 'block';
-        document.getElementById('analysis-info').innerHTML = '请点击地图选择分析中心点';
-    }
-
-    // 添加热力图库
-    let heatmapLayer = null;
-    
-    function toggleHeatmapAnalysis() {
-        currentAnalysisMode = 'heatmap';
-        document.getElementById('analysis-options').style.display = 'block';
-        document.getElementById('walkingOptions').style.display = 'none';
-        document.getElementById('analysis-info').innerHTML = '请点击地图选择分析中心点';
-    }
-
-    function toggleAccessibilityAnalysis() {
-        currentAnalysisMode = 'accessibility';
-        document.getElementById('analysis-options').style.display = 'block';
-        document.getElementById('walkingOptions').style.display = 'block';
-        document.getElementById('analysis-info').innerHTML = '请点击地图选择分析中心点';
-    }
-
-    async function runAnalysis() {
-        if (!centerMarker) {
-            alert('请先点击地图选择分析中心点');
-            return;
-        }
-
-        // 清除之前的图层
-        if (analysisLayer) map.removeLayer(analysisLayer);
-        if (heatmapLayer) map.removeLayer(heatmapLayer);
-
-        const searchRadius = document.getElementById('searchRadius').value;
-        const center = centerMarker.getLatLng();
-
-        if (currentAnalysisMode === 'heatmap') {
-            const poiType = document.getElementById('poiType').value;
-            const query = `[out:json][timeout:25];
-                node(around:${searchRadius},${center.lat},${center.lng})["amenity"="${poiType}"];
-                out body;`;
+            const radius = document.getElementById('analysis-radius').value;
+            const center = centerMarker.getLatLng();
 
             try {
+                if (!currentAnalysisMode) {
+                    alert('请先选择分析类型');
+                    return;
+                }
+
+                console.log('开始分析:', currentAnalysisMode, '中心点:', center, '半径:', radius);
+
+                switch (currentAnalysisMode) {
+                    case '道路分析':
+                        await runRoadAnalysis(center, radius);
+                        break;
+                    case '建筑密度分析':
+                        await runBuildingAnalysis(center, radius);
+                        break;
+                    case 'POI热力图':
+                        await runPOIAnalysis(center, radius);
+                        break;
+                    case '步行可达性':
+                        await runAccessibilityAnalysis(center, radius);
+                        break;
+                    case '土地利用变化分析':
+                        await runLandUseAnalysis(center, radius);
+                        break;
+                    default:
+                        alert('未知的分析类型');
+                        return;
+                }
+            } catch (error) {
+                console.error('分析出错:', error);
+                alert('分析过程出错: ' + error.message);
+            }
+        });
+
+        // 添加一个简单的道路分析实现
+        async function runRoadAnalysis(center, radius) {
+            try {
+                const query = `
+                    [out:json][timeout:25];
+                    way(around:${radius},${center.lat},${center.lng})["highway"];
+                    out body;
+                    >;
+                    out skel qt;
+                `;
+                
+                console.log('发送查询:', query);
+                
                 const response = await fetch('https://overpass-api.de/api/interpreter', {
                     method: 'POST',
                     body: query
                 });
+
+                if (!response.ok) {
+                    throw new Error('网络请求失败');
+                }
+
                 const data = await response.json();
+                console.log('收到数据:', data);
 
-                const heatData = data.elements.map(element => {
-                    return [element.lat, element.lon, 1];
-                });
+                const geojson = osmtogeojson(data);
 
-                heatmapLayer = L.heatLayer(heatData, {
-                    radius: 25,
-                    blur: 15,
-                    maxZoom: 18,
-                    max: 1.0
-                }).addTo(map);
+                if (analysisLayer) {
+                    map.removeLayer(analysisLayer);
+                }
 
-                document.getElementById('analysis-info').innerHTML = 
-                    `分析完成：找到 ${data.elements.length} 个 ${poiType} 类型的POI点`;
-
-            } catch (error) {
-                document.getElementById('analysis-info').innerHTML = '分析出错：' + error.message;
-            }
-        } 
-        else if (currentAnalysisMode === 'accessibility') {
-            const walkingTime = document.getElementById('walkingTime').value;
-            const walkingSpeed = document.getElementById('walkingSpeed').value;
-            const distance = (walkingSpeed * walkingTime / 60); // 转换为公里
-
-            try {
-                // 首先创建步行时间圈
-                const circle = turf.circle(
-                    [center.lng, center.lat],
-                    distance,
-                    {steps: 64, units: 'kilometers'}
-                );
-
-                // 添加半透明的步行范围圈
-                analysisLayer = L.geoJSON(circle, {
+                analysisLayer = L.geoJSON(geojson, {
                     style: {
-                        color: '#1e88e5',
-                        fillColor: '#1e88e5',
-                        fillOpacity: 0.1,
-                        weight: 2,
-                        dashArray: '5, 5'  // 虚线边框
+                        color: "#ff7800",
+                        weight: 5,
+                        opacity: 0.65
                     }
                 }).addTo(map);
 
-                // 获取范围内的POI点
-                const poiType = document.getElementById('poiType').value;
-                const query = `[out:json][timeout:25];
-                    node(around:${distance*1000},${center.lat},${center.lng})["amenity"="${poiType}"];
-                    out body;`;
+                // 更新数据面板
+                const tbody = document.getElementById('data-tbody');
+                tbody.innerHTML = '';
+                geojson.features.forEach((feature, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>道路</td>
+                        <td>${feature.properties.name || '未命名'}</td>
+                        <td>${feature.geometry.coordinates[0].join(', ')}</td>
+                        <td>${feature.properties.highway || '-'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
 
+                alert('分析完成');
+            } catch (error) {
+                console.error('道路分析错误:', error);
+                throw new Error('道路分析失败: ' + error.message);
+            }
+        }
+
+        // 添加建筑密度分析函数
+        async function runBuildingAnalysis(center, radius) {
+            try {
+                const query = `
+                    [out:json][timeout:25];
+                    (
+                        way(around:${radius},${center.lat},${center.lng})["building"];
+                        relation(around:${radius},${center.lat},${center.lng})["building"];
+                    );
+                    out body;
+                    >;
+                    out skel qt;
+                `;
+                
+                console.log('发送建筑查询:', query);
+                
                 const response = await fetch('https://overpass-api.de/api/interpreter', {
                     method: 'POST',
                     body: query
                 });
-                const data = await response.json();
 
-                // 为每个POI点添加标记
-                data.elements.forEach(element => {
-                    L.circleMarker([element.lat, element.lon], {
-                        radius: 6,
-                        fillColor: '#e74c3c',
-                        color: '#c0392b',
+                if (!response.ok) {
+                    throw new Error('网络请求失败');
+                }
+
+                const data = await response.json();
+                console.log('收到建筑数据:', data);
+
+                const geojson = osmtogeojson(data);
+
+                // 移除之前的分析图层
+                if (analysisLayer) {
+                    map.removeLayer(analysisLayer);
+                }
+
+                // 添加新的建筑图层
+                analysisLayer = L.geoJSON(geojson, {
+                    style: {
+                        color: "#1e88e5",
                         weight: 1,
-                        opacity: 1,
-                        fillOpacity: 0.8
-                    })
-                    .bindPopup(`${poiType}`) // 添加弹出提示
-                    .addTo(map);
+                        opacity: 0.8,
+                        fillColor: "#1e88e5",
+                        fillOpacity: 0.35
+                    }
+                }).addTo(map);
+
+                // 计算建筑密度
+                let totalArea = 0;
+                let buildingCount = 0;
+                geojson.features.forEach(feature => {
+                    if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
+                        buildingCount++;
+                        // 使用turf.js计算面积
+                        const area = turf.area(feature);
+                        totalArea += area;
+                    }
                 });
 
-                document.getElementById('analysis-info').innerHTML = 
-                    `分析完成：${walkingTime}分钟步行范围内有 ${data.elements.length} 个${poiType}
-                    <br>步行距离：${distance.toFixed(2)}公里`;
+                const circleArea = Math.PI * radius * radius;
+                const density = (totalArea / circleArea * 100).toFixed(2);
 
+                // 更新数据面板
+                const tbody = document.getElementById('data-tbody');
+                tbody.innerHTML = '';
+                
+                // 添加总体统计行
+                const summaryRow = document.createElement('tr');
+                summaryRow.innerHTML = `
+                    <td>1</td>
+                    <td>建筑密度统计</td>
+                    <td>总计</td>
+                    <td>建筑数量: ${buildingCount}</td>
+                    <td>密度: ${density}%</td>
+                `;
+                tbody.appendChild(summaryRow);
+
+                // 添加各个建筑的详细信息
+                geojson.features.forEach((feature, index) => {
+                    if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
+                        const row = document.createElement('tr');
+                        const area = turf.area(feature);
+                        row.innerHTML = `
+                            <td>${index + 2}</td>
+                            <td>建筑</td>
+                            <td>${feature.properties.name || '未命名建筑'}</td>
+                            <td>面积: ${(area).toFixed(2)}㎡</td>
+                            <td>${feature.properties.building_type || feature.properties.building || '-'}</td>
+                        `;
+                        tbody.appendChild(row);
+                    }
+                });
+
+                alert(`分析完成\n建筑数量: ${buildingCount}\n建筑密度: ${density}%`);
             } catch (error) {
-                document.getElementById('analysis-info').innerHTML = '分析出错：' + error.message;
+                console.error('建筑密度分析错误:', error);
+                throw new Error('建筑密度分析失败: ' + error.message);
             }
         }
-        // ... 保留原有的 road 和 building 分析代码 ...
-    }
+
+        // 添加 POI 热力图分析函数
+        async function runPOIAnalysis(center, radius) {
+            try {
+                const query = `
+                    [out:json][timeout:25];
+                    (
+                        node(around:${radius},${center.lat},${center.lng})["amenity"];
+                        node(around:${radius},${center.lat},${center.lng})["shop"];
+                        node(around:${radius},${center.lat},${center.lng})["leisure"];
+                        node(around:${radius},${center.lat},${center.lng})["tourism"];
+                    );
+                    out body;
+                `;
+                
+                console.log('发送POI查询:', query);
+                
+                const response = await fetch('https://overpass-api.de/api/interpreter', {
+                    method: 'POST',
+                    body: query
+                });
+
+                if (!response.ok) {
+                    throw new Error('网络请求失败');
+                }
+
+                const data = await response.json();
+                console.log('收到POI数据:', data);
+
+                // 移除之前的分析图层
+                if (analysisLayer) {
+                    map.removeLayer(analysisLayer);
+                }
+
+                // 准备热力图数据
+                const heatData = data.elements.map(element => {
+                    return [element.lat, element.lon, 1]; // 位置和权重
+                });
+
+                // 添加热力图层
+                analysisLayer = L.heatLayer(heatData, {
+                    radius: 25,
+                    blur: 15,
+                    maxZoom: 18,
+                    gradient: {
+                        0.4: 'blue',
+                        0.6: 'lime',
+                        0.8: 'yellow',
+                        1.0: 'red'
+                    }
+                }).addTo(map);
+
+                // 更新数据面板
+                const tbody = document.getElementById('data-tbody');
+                tbody.innerHTML = '';
+
+                // 添加总体统计
+                const summaryRow = document.createElement('tr');
+                summaryRow.innerHTML = `
+                    <td>1</td>
+                    <td>POI统计</td>
+                    <td>总计</td>
+                    <td>POI数量: ${data.elements.length}</td>
+                    <td>分析半径: ${radius}米</td>
+                `;
+                tbody.appendChild(summaryRow);
+
+                // 添加POI详细信息
+                data.elements.forEach((element, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 2}</td>
+                        <td>${element.tags.amenity || element.tags.shop || element.tags.leisure || element.tags.tourism || 'POI'}</td>
+                        <td>${element.tags.name || '未命名'}</td>
+                        <td>${element.lat.toFixed(6)}, ${element.lon.toFixed(6)}</td>
+                        <td>${Object.entries(element.tags).map(([k,v]) => `${k}:${v}`).join(', ')}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                alert(`分析完成\nPOI总数: ${data.elements.length}`);
+            } catch (error) {
+                console.error('POI分析错误:', error);
+                throw new Error('POI分析失败: ' + error.message);
+            }
+        }
+
+        // 添加步行可达性分析函数
+        async function runAccessibilityAnalysis(center, radius) {
+            try {
+                // 首先获取道路网络
+                const query = `
+                    [out:json][timeout:25];
+                    (
+                        way(around:${radius},${center.lat},${center.lng})["highway"]["foot"!="no"];
+                        way(around:${radius},${center.lat},${center.lng})["highway"="footway"];
+                        way(around:${radius},${center.lat},${center.lng})["highway"="pedestrian"];
+                    );
+                    out body;
+                    >;
+                    out skel qt;
+                `;
+                
+                console.log('发送步行道路查询:', query);
+                
+                const response = await fetch('https://overpass-api.de/api/interpreter', {
+                    method: 'POST',
+                    body: query
+                });
+
+                if (!response.ok) {
+                    throw new Error('网络请求失败');
+                }
+
+                const data = await response.json();
+                console.log('收到步行道路数据:', data);
+
+                const geojson = osmtogeojson(data);
+
+                // 移除之前的分析图层
+                if (analysisLayer) {
+                    map.removeLayer(analysisLayer);
+                }
+
+                // 创建不同步行时间的缓冲区
+                const walkingSpeedMPS = 1.4; // 平均步行速度 1.4 米/秒
+                const timeIntervals = [5, 10, 15]; // 步行时间间隔（分钟）
+
+                // 创建分层颜色的缓冲区
+                const bufferLayers = timeIntervals.map(minutes => {
+                    const distance = walkingSpeedMPS * 60 * minutes; // 转换为米
+                    const color = minutes === 5 ? '#1a9850' : 
+                                 minutes === 10 ? '#ffd700' : '#d73027';
+
+                    // 创建圆形缓冲区
+                    return L.circle(center, {
+                        radius: distance,
+                        color: color,
+                        fillColor: color,
+                        fillOpacity: 0.2,
+                        weight: 1
+                    });
+                });
+
+                // 创建步行道路图层
+                const walkwaysLayer = L.geoJSON(geojson, {
+                    style: {
+                        color: "#4a4a4a",
+                        weight: 3,
+                        opacity: 0.8
+                    }
+                });
+
+                // 创建图层组
+                analysisLayer = L.layerGroup([...bufferLayers, walkwaysLayer]).addTo(map);
+
+                // 更新数据面板
+                const tbody = document.getElementById('data-tbody');
+                tbody.innerHTML = '';
+
+                // 添加总体统计
+                const summaryRow = document.createElement('tr');
+                summaryRow.innerHTML = `
+                    <td>1</td>
+                    <td>步行可达性统计</td>
+                    <td>总计</td>
+                    <td>步行道路数量: ${geojson.features.length}</td>
+                    <td>分析范围: ${radius}米</td>
+                `;
+                tbody.appendChild(summaryRow);
+
+                // 添加时间区间信息
+                timeIntervals.forEach((minutes, index) => {
+                    const distance = walkingSpeedMPS * 60 * minutes;
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 2}</td>
+                        <td>步行时间区间</td>
+                        <td>${minutes}分钟</td>
+                        <td>覆盖范围: ${distance.toFixed(0)}米</td>
+                        <td>从中心点步行${minutes}分钟可达范围</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // 添加步行道路详细信息
+                geojson.features.forEach((feature, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + timeIntervals.length + 2}</td>
+                        <td>步行道路</td>
+                        <td>${feature.properties.name || '未命名道路'}</td>
+                        <td>${feature.properties.highway || '普通道路'}</td>
+                        <td>${feature.properties.surface || '未知路面'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                alert(`分析完成\n步行道路数量: ${geojson.features.length}\n已显示 5/10/15 分钟步行可达范围`);
+            } catch (error) {
+                console.error('步行可达性分析错误:', error);
+                throw new Error('步行可达性分析失败: ' + error.message);
+            }
+        }
+    });
+
+    // 分析函数实现...（保持原有的分析函数不变）
 </script>
 
-<!-- 添加必要的库 -->
-<script src="https://unpkg.com/osmtogeojson@3.0.0-beta.4/osmtogeojson.js" is:inline></script>
-<script src="https://unpkg.com/@turf/turf@6/turf.min.js" is:inline></script>
+<!-- 添加 Turf.js 库用于空间计算 -->
+<script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 
-<!-- 添加热力图库 -->
-<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js" is:inline></script>
+<!-- 添加 Leaflet.heat 插件用于热力图显示 -->
+<script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
