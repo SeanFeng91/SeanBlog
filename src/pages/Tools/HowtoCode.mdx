@@ -117,8 +117,59 @@ conda env export > environment.yml
 conda env create -f environment.yml
 ```
 
+### 遇到系统变量环境错误情况
+> 我在C盘cmd使用conda已经可以找到对应版本，但是我在G盘一个python文件夹，想要创建虚拟环境，没有对应的conda怎么办
+提示了：G盘的目录'conda' 不是内部或外部命令，也不是可运行的程序或批处理文件。
 
+如果在G盘的cmd中无法直接使用`conda`命令，可能是因为Conda的路径没有添加到系统的环境变量中。你可以尝试以下方法解决这个问题：
 
+#### 方法一：在C盘激活Conda环境后切换到G盘
+1. 打开C盘的Anaconda Prompt（或任何可以运行Conda的终端）。
+2. 切换到G盘的目录。
+3. 使用`conda create -p G:\path\to\your\env_name python=3.x`创建虚拟环境，`-p`参数指定环境路径为G盘的目录。
+4. 创建完成后，你可以使用`conda activate G:\path\to\your\env_name`激活该虚拟环境。
+
+#### 方法二：将Conda路径添加到系统环境变量（采用方式）
+1. 找到你的Anaconda安装路径（通常在`C:\Users\YourUsername\Anaconda3`或`C:\ProgramData\Anaconda3`）。
+2. 将以下两个路径添加到系统环境变量 `Path` 中：
+   - `C:\Users\YourUsername\Anaconda3`
+   - `C:\Users\YourUsername\Anaconda3\Scripts`
+3. 重启你的终端，然后在G盘的cmd中尝试输入`conda`，看是否能够正常识别。
+
+#### 方法三：在G盘直接使用Python虚拟环境
+如果不便修改系统环境变量，也可以使用Python自带的`venv`模块创建虚拟环境：
+1. 打开G盘的cmd终端，运行以下命令：
+   ```cmd
+   python -m venv G:\path\to\your\env_name
+   ```
+2. 虚拟环境创建完成后，使用以下命令激活环境：
+   ```cmd
+   G:\path\to\your\env_name\Scripts\activate
+   ```
+
+这样之后可能出现的情况是我直接使用cmd可以conda，但是我在cursor里面的终端输入conda还是不行。
+
+在Cursor中无法识别`conda`命令的情况可能是因为Cursor的终端没有加载系统环境变量中的路径。你可以尝试以下方法：
+
+#### 方法一：在Cursor的设置中检查环境变量
+1. 确保Cursor终端已经加载了系统的环境变量。
+2. 如果Cursor支持设置启动时加载的环境变量，可以手动将`Conda`路径添加到Cursor的终端配置中。
+
+#### 方法二：在Cursor的终端中手动设置环境变量(采用方式)
+1. 通过在Cursor终端中运行以下命令来手动添加`conda`路径：
+   ```bash
+   set PATH=%PATH%;C:\Users\YourUsername\Anaconda3;C:\Users\YourUsername\Anaconda3\Scripts
+   ```
+   将路径替换为你Anaconda的安装路径。
+2. 执行上述命令后，尝试输入`conda`查看是否可以识别。
+
+#### 方法三：直接在Cursor终端中调用完整路径
+如果前两种方法无效，可以尝试在Cursor终端中直接调用`conda`的完整路径，例如：
+```bash
+C:\Users\YourUsername\Anaconda3\Scripts\conda.exe
+```
+
+这将确保Conda在Cursor终端中可以被识别，即使环境变量没有正确加载。
 
 
 # 3. Github
