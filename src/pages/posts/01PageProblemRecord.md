@@ -26,7 +26,28 @@ import: '../../styles/markdown.css'
 
 在Bilibili看到了一个如何[用cursor完成一个前后端项目的部署](https://www.bilibili.com/video/BV124D5YEEAD/?spm_id_from=333.1007.tianma.1-2-2.click&vd_source=2091aba39b09a0c2a3915bb04ad20fc4)的视频，使用了sealos，前端vue和后端node.js，并且可以发布使用，形成了一个完整的闭环。我觉得可以按部就班学习一下。部署一个自己的小项目。
 
+# 20241112
+Vercel提供了很多一键部署的模板和方案。除了一些便捷的博客模板，我还找到了几个有趣的项目：
+[Photo Blog with Admin Panel](https://vercel.com/templates/next.js/photo-blog):这个项目可以直接部署一个包括账号密码的在线相册。与之前kellie给到的相册非常的类似。包括了大图模式，显示了照片的exif信息。而且上传jpg、png会自动生成webp格式。部署直接使用了Vercel的免费数据库。唯一的遗憾是Vercel给到的链接还是需要梯子才可以访问。不然可以作为一个很好的分享途径。
 
+通过在Vercel的项目设置Admin的账号、密码，实现了[相册](https://seanphotoblog.vercel.app)部署。有梯子情况下可以快速的访问打卡。
+
+[StockBot - Powered by Groq](https://vercel.com/templates/next.js/stockbot-powered-by-groq)
+- 实时AI聊天机器人：这个功能允许用户通过自然语言对话与由Llama3 70b驱动的AI进行互动，以请求股票新闻、信息和图表。
+
+- 交互式股票图表：用户可以接收到几乎即时的、上下文感知的响应，这些响应包含托管实时数据的交互式TradingView图表。
+
+- 自适应界面：根据用户的具体查询，动态渲染TradingView用户界面组件，以提供定制的金融界面。
+
+- Groq驱动性能：利用Groq的尖端推理技术，实现几乎即时的响应和无缝的用户体验。
+
+- 多资产市场覆盖：提供全面的数据和分析，涵盖股票、外汇、债券和加密货币等资产类别。
+
+通过创建Groq的API，这个[项目](https://stockbot-powered-by-groq-orpin.vercel.app)已经成功部署在Vercel上，可以正常使用。
+
+## 几个博客模版
+[A Next.js 14 Blog with Server Components](https://vercel.com/templates/next.js/14-blog-server-components)
+[Stablo – Minimal Blog Template](https://vercel.com/templates/next.js/stablo-blog)
 
 # 20241106
 可以记录两个内容，一个是昨天跟GJJ聊完之后关于QGIS的一个初步尝试，另一个是BBQ关于美国大选投票的可视化分析图记录，两个都是比较初始的记录，后续会不断完善。
