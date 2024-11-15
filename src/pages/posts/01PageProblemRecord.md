@@ -16,7 +16,11 @@ import: '../../styles/markdown.css'
 使用sealos的devbox部署了一个todolist项目。包括了前端、后端。
 项目发布的地址：https://umuzpofmaxqs.sealoshzh.site/
 
+
 [视频](https://www.bilibili.com/video/BV124D5YEEAD/?spm_id_from=333.1007.tianma.1-2-2.click&vd_source=2091aba39b09a0c2a3915bb04ad20fc4)学习地址。
+
+[cursor提示词](https://square-raver-97d.notion.site/cursor-12f9f3b8b57980fbbb52f5106d3a6a00)。
+如果要搭建类似的项目，要学习一下 RESTful API 设计原则。
 
 对于新的服务器要克隆github代码要先配置ssh key、name、email。
 
