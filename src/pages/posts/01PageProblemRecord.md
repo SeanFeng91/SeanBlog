@@ -21,6 +21,9 @@ import: '../../styles/markdown.css'
 图床的访问地址：[https://telegraph-image-5cq.pages.dev/](https://telegraph-image-5cq.pages.dev/)
 后续还可以开启图片审核。但是这个图床是公开的，需要想办法加密？
 
+npm源更换 npm config set registry https://registry.npmmirror.com
+
+
 # 20241114
 使用sealos的devbox部署了一个todolist项目。包括了前端、后端。
 项目发布的地址：https://umuzpofmaxqs.sealoshzh.site/
