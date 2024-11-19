@@ -20,6 +20,49 @@ import { Tabs } from '../../components/react/Tabs';
 
 # Github项目部署
 
+# bolt+Netlift项目部署
+[Netlift](https://app.netlify.com/teams/seanfeng91/billing/general)免费额度如下：
+![Netlift免费额度](https://telegraph-image-5cq.pages.dev/file/73594d41f230b9deeb1b3-b3c7d55f3abd12d4dd.png)
+登陆bolt.new[bolt.new],通过对话，可以完成项目前后端的编程设计、部署到Netlift，预览整个项目的效果。
+
+bolt每天有免费的token额度，稍微一点对话就会被使用完。它虽然可以直接生成一个项目的前后端，并且快捷的部署，但是bolt更像是一个傻瓜的
+写程序，对于bug调试、局部修改等功能不具备，并不像cursor一样兼顾了编程常用的能力、插件等。对于需要来回调试、修改的项目，bolt并不适合。
+
+## Vercel和Netlift对比
+- [比较 Vercel 和 Netlify](https://plantree.me/blog/2023/vercel-and-netlify/)
+Netlify 和 Vercel 都是现代 Web 开发中常用的部署和托管平台，主要用于静态网站和无服务器（Serverless）应用的构建和发布。以下是两者的主要区别：
+
+**1. 成立时间与背景：**
+- **Netlify**：成立于 2014 年，专注于为开发者提供静态网站托管和无服务器功能。
+- **Vercel**：前身为 Zeit，成立于 2015 年，2020 年更名为 Vercel。其创始人 Guillermo Rauch 是 Next.js 的作者，因此 Vercel 与 Next.js 有深度集成。
+
+**2. 框架支持：**
+- **Netlify**：支持多种静态站点生成器和框架，如 Gatsby、Hugo 等。
+- **Vercel**：对 Next.js 有深度优化和支持，适合使用 Next.js 开发的项目。
+
+**3. 部署与构建：**
+- **Netlify**：提供直观的基于 Git 的工作流，支持自动化部署和持续集成。
+- **Vercel**：强调零配置部署，提供快速的构建和部署体验，特别适合前端开发者。
+
+**4. 无服务器功能：**
+- **Netlify**：提供无服务器函数，支持 JavaScript 和 Go 语言，适用于简单的后端逻辑。
+- **Vercel**：支持多种语言的无服务器函数，如 Node.js、Python、Go 和 Ruby，功能更为丰富。
+
+**5. 性能与全球分发：**
+- **Netlify**：拥有全球 CDN，确保内容快速分发。
+- **Vercel**：利用边缘网络（Edge Network），在靠近用户的区域存储数据并提供服务，可有效减少延迟，类似 CDN。 
+
+**6. 定价与免费额度：**
+- **Netlify**：免费计划提供 100GB 带宽、300 分钟的构建时间和 125,000 次无服务器函数调用。
+- **Vercel**：免费计划提供 100GB 带宽、6,000 分钟的构建时间和 100GB 小时的无服务器函数执行时间。 
+
+**7. 其他功能：**
+- **Netlify**：提供表单处理、身份验证、A/B 测试等高级功能，适合需要这些功能的项目。
+- **Vercel**：专注于提供简单、快速的部署体验，功能相对精简。
+
+**总结：**
+如果你的项目使用 Next.js，且需要快速、简洁的部署体验，Vercel 是不错的选择。如果你需要更多的内置功能，如表单处理、身份验证等，Netlify 可能更适合。两者在性能和全球分发上都有出色表现，选择时可根据具体需求进行评估。 
+
 # Cloudflare 托管dns+Vercel Pages项目部署
 - 在购置了Spaceship的域名：hapaiqi.top
 
