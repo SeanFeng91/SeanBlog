@@ -23,6 +23,9 @@ import: '../../styles/markdown.css'
 
 npm源更换 npm config set registry https://registry.npmmirror.com
 
+有一个项目是之前跟你的想法一致，通过Midjourney生成完整的[漫画](https://the-decoder.com/the-last-stargazer-is-a-comic-created-with-ai-art/)，作者在amazon上出售电子书。
+
+[我是如何构建 阮一峰的技术周刊-小站](https://plantree.me/blog/2024/ruanyifeng-weekly/)是一个很有意思的项目。从仓库获取了阮一峰的文章，通过vitepress构建静态网站，通过Algolia进行全文检索。这个搜索引擎可以看能不能加到自己的博客，检索的效果似乎比我现在的更好。
 
 # 20241114
 使用sealos的devbox部署了一个todolist项目。包括了前端、后端。
