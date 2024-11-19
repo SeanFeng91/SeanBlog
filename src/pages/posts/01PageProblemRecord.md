@@ -12,6 +12,15 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241119
+## Telegraph图床
+![Telegraph](https://telegraph-image-5cq.pages.dev/file/b949dba466cc00b167a3a-429185f9700adfc3e1.png)
+将[Telegraph-Image](https://github.com/cf-pages/Telegraph-Image.git)fork到自己的github，然后部署到cf-pages。
+这个项目可以配置admin账号，在后台可以看到使用过的项目list。操作非常简单，只需要复制或者上传图片，就可以得到一个链接。复制后就可以在
+博客引用中访问，就不需要自己在项目文档里面建立文件夹、上传图片。使用了cloudflare的KV存储空间。
+图床的访问地址：[https://telegraph-image-5cq.pages.dev/](https://telegraph-image-5cq.pages.dev/)
+后续还可以开启图片审核。但是这个图床是公开的，需要想办法加密？
+
 # 20241114
 使用sealos的devbox部署了一个todolist项目。包括了前端、后端。
 项目发布的地址：https://umuzpofmaxqs.sealoshzh.site/

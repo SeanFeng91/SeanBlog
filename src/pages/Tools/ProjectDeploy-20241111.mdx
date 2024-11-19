@@ -20,6 +20,31 @@ import { Tabs } from '../../components/react/Tabs';
 
 # Github项目部署
 
+# Cloudflare 托管dns+Vercel Pages项目部署
+- 在购置了Spaceship的域名：hapaiqi.top
+
+- Spaceship 只是你的域名注册商，它的主要作用是管理域名的注册信息。
+- Cloudflare 是你的 DNS 托管商（你选择将域名托管到 Cloudflare），并提供 CDN 和 HTTPS 服务。
+-Vercel 是你的项目部署平台，负责托管网站内容并管理自定义域名的绑定和 HTTPS 配置。
+正确的流向应该是：
+
+Spaceship 上将域名的 Nameserver 指向 Cloudflare。
+Cloudflare 接管 DNS 配置，并正确指向 Vercel。
+Vercel 提供的 HTTPS 和页面内容通过 Cloudflare 的 DNS 生效。
+![Vercel domains配置](https://telegraph-image-5cq.pages.dev/file/15ef75330642295abe5cf-f95e88e338f060f3fe.png)
+Vercel部署的项目会给一个免费的地址，但是需要梯子🪜才可以打开。会给出一个www.hapaiqi.top转跳hapaiqi.top的设置。然后会给到A和CNAME的
+配置信息。A对应的是一个IPV4的地址，CNAME对应的是cname.vercel的地址。这两个地址需要在Cloudflare的DNS中添加，这样在Vercel就会显示解析成功。
+
+![Cloudflare DNS配置](https://telegraph-image-5cq.pages.dev/file/238497eef26a883b711c2-8049debaddab69fc80.png)
+![Vercel DNS配置](https://telegraph-image-5cq.pages.dev/file/ea555739838cd3e67d4d1-4e94a28f66387bd27f.png)
+但是会出现一个核心问题。访问www.hapaiqi.top时候会提示重复定向。
+> **解决方案**：修改加密模式.在页面上找到 SSL/TLS Encryption Mode。选择 Full (Strict) 模式。
+Full (Strict) 的作用：
+Cloudflare 和你的源站（Vercel）之间的通信将强制使用 HTTPS。
+Cloudflare 会验证源站（Vercel）是否有有效的 SSL 证书。
+
+
+
 # Sealos+Devbox项目部署
 通过一期[bilibili](https://www.bilibili.com/video/BV1SamwY1EFz/?spm_id_from=888.80997.embed_other.whitelist&bvid=BV1SamwY1EFz)
 视频进行实践，整个项目的代码撰写通过Cursor完成。我通过Bibigpt分析了视频的内如总结在这个链接[版本最强远程开发环境Devbox + AI编码Cursor 0基础快速开发上线小游戏](https://bibigpt.co/video/BV1SamwY1EFz)
