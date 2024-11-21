@@ -21,6 +21,10 @@ import: '../../styles/markdown.css'
 图床的访问地址：[https://telegraph-image-5cq.pages.dev/](https://telegraph-image-5cq.pages.dev/)
 后续还可以开启图片审核。但是这个图床是公开的，需要想办法加密？
 
+图床之前的文件上传之后读取好像还有问题。过了一晚上就加载失败了。
+重新更换图床，之前的应该是telegraph关闭了上传窗口。新的图床地址[https://cloudflare-imgbed-1d8.pages.dev/](https://cloudflare-imgbed-1d8.pages.dev/),有登录的密码，这样可以避免他人上传。后台也有管理密码，而且作者做了二次优化，加入了一些比如之间生成不同格式link的，背景图片设置等，还具备api功能，可以调取图片。
+新的图床项目是这个[Cloudflare Imgbed](https://github.com/MarSeventh/CloudFlare-ImgBed?tab=readme-ov-file#3.1.11%E6%B3%A8%E6%84%8F%EF%BC%81%EF%BC%81%EF%BC%81)，有非常详尽的操作方法，只是没有单独成功部署Cloudflare的，还是引入了Telegram的bot。
+
 npm源更换 npm config set registry https://registry.npmmirror.com
 
 有一个项目是之前跟你的想法一致，通过Midjourney生成完整的[漫画](https://the-decoder.com/the-last-stargazer-is-a-comic-created-with-ai-art/)，作者在amazon上出售电子书。
