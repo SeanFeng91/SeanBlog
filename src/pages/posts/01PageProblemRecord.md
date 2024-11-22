@@ -12,6 +12,13 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241122
+字体动效[https://spacetypegenerator.com/](https://spacetypegenerator.com/)
+
+- Space Type Generator是一个用代码自动生成动效的网站，作者是设计师Danger Mutschelknaus，意在通过这个有趣的工具，可以让动效界的新手只需要打开网页，就能拥有一个随时可用的动效工作站！
+
+![STG_boost (1).mp4](https://cloudflare-imgbed-1d8.pages.dev/file/1732266981894_STG_boost (1).mp4)
+
 # 20241119
 ## Telegraph图床
 ![Telegraph](https://telegraph-image-5cq.pages.dev/file/b949dba466cc00b167a3a-429185f9700adfc3e1.png)
