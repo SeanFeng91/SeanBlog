@@ -12,6 +12,11 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241125
+使用Vitepress部署了worldtravel的页面，接入了openstreetmap的数据，可以实现简单的路线规划。
+如果需要更好的体验，要尝试接入高德的[api](https://lbs.amap.com/api/javascript-api/summary)
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1732499370372_image.png)
+
 # 20241122
 字体动效[https://spacetypegenerator.com/](https://spacetypegenerator.com/)
 

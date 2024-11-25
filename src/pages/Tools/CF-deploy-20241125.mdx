@@ -1,0 +1,157 @@
+---
+layout: '../../layouts/MarkdownPostLayout.astro'
+title: '基于Cloudflare的pages和workers的部署'
+description: '此篇Blog介绍我基于worldtravel博客在Cloudflare部署过程中遇到的问题和解决方法。'
+
+author: Sean Feng
+pubDate: 2024-11-25
+tags: ["Cloudflare","MDX","API","环境变量"]
+
+---
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+
+# 实现情况
+- 基于Vitepress的框架，我搭建了一个worldtravel的博客。通过github部署在Cloudflare的pages上。
+- 借助Cloudflare的workers AI, 使用@cf/stabilityai/stable-diffusion-xl-base-1.0模型，生成图片。
+- 结合环境变量、fetch，实现了worldtravel和AI生成图片的结合。
+
+# worldtravel和AI页面之间的通讯
+## 问题
+现在的环境变量是在网页端添加的，但是本地toml文件内似乎没有写，这样每次deploy都会覆盖Cloudflare的设置。
+
+
+
+## 环境变量
+之前只是知道在各种api接口处生成key，然后在某个env处设置，就可以调取访问。这次完整的理解了工作的链路：
+>前端发送请求时会带上 VITE_API_KEY 的值。
+Worker 收到请求后会用 API_KEY 的值进行验证，
+只有当两边的值匹配时，请求才会被处理。
+这就像一个钥匙和锁的配对：
+Pages 中的 VITE_API_KEY 是钥匙，
+Worker 中的 API_KEY 是锁，必须配对才能打开。
+
+### 1. 环境变量设置
+
+**Cloudflare Pages**（前端）：
+```bash
+VITE_API_KEY = "your-secret-key"      # API访问密钥
+VITE_WORKER_URL = "your-worker-url"    # Worker的URL
+```
+
+**Cloudflare Worker**（后端）：
+```bash
+API_KEY = "your-secret-key"    # 与前端的VITE_API_KEY值保持一致
+```
+
+### 2. 前端调用流程
+
+```vue:components/YourComponent.vue
+<script setup>
+// 1. 获取环境变量
+const API_KEY = import.meta.env.VITE_API_KEY
+const WORKER_URL = import.meta.env.VITE_WORKER_URL
+
+// 2. 发起请求的函数
+const fetchFromWorker = async (params) => {
+  try {
+    // 构建请求URL（可以带查询参数）
+    const url = `${WORKER_URL}?param=${encodeURIComponent(params)}`
+    
+    // 发送请求，带上API密钥
+    const response = await fetch(url, {
+      headers: {
+        'X-API-Key': API_KEY,  // 身份验证
+      }
+    })
+
+    // 处理响应
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error)
+    }
+
+    // 根据响应类型处理数据
+    const data = await response.json() // 或 .blob() 或 .text() 等
+    return data
+  } catch (err) {
+    console.error('请求错误:', err)
+    throw err
+  }
+}
+</script>
+```
+
+### 3. 后端处理流程
+
+```javascript:worker/src/index.js
+export default {
+  async fetch(request, env) {
+    // 1. CORS 头部设置
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, X-API-Key',
+    }
+
+    // 2. 验证API密钥
+    const apiKey = request.headers.get('X-API-Key')
+    if (apiKey !== env.API_KEY) {
+      return new Response(JSON.stringify({ error: '无效的API密钥' }), {
+        status: 401,
+        headers: { ...corsHeaders }
+      })
+    }
+
+    // 3. 处理业务逻辑
+    try {
+      // 获取请求参数
+      const url = new URL(request.url)
+      const param = url.searchParams.get('param')
+      
+      // 处理业务逻辑
+      const result = await doSomething(param)
+      
+      // 返回结果
+      return new Response(JSON.stringify(result), {
+        headers: {
+          ...corsHeaders,
+          'Content-Type': 'application/json'
+        }
+      })
+    } catch (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500,
+        headers: { ...corsHeaders }
+      })
+    }
+  }
+}
+```
+
+### 复用要点
+
+1. **环境变量命名**：
+   - 前端使用 `VITE_` 前缀
+   - 确保两端的密钥值完全一致
+
+2. **请求头部**：
+   - 始终携带 `X-API-Key` 进行身份验证
+   - 根据需要添加其他请求头
+
+3. **错误处理**：
+   - 前端统一的错误处理逻辑
+   - 后端标准化的错误响应格式
+
+4. **CORS 设置**：
+   - 后端需要正确配置 CORS 头部
+   - 处理 OPTIONS 预检请求
+
+这个模式可以用于任何需要前后端通信的功能，只需要：
+1. 修改请求参数和URL
+2. 调整响应数据的处理方式
+3. 根据需要添加特定的请求头或响应头
+
