@@ -21,6 +21,9 @@ import: '../../styles/markdown.css'
 3. 研究mapbox的showcase并构思想法和实现路径。（如插入显示图片等）
 - 利用地图+blog模式展示![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1732674651632_image.png)
 - 结合规划的景点在地图上打标签，设置按钮切换场景等![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1732678295493_image.png)
+- 徒步路线可视化 https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/
+- 给地图上增加视频 https://docs.mapbox.com/mapbox-gl-js/example/video-on-a-map/
+- 增加飞行路径 https://docs.mapbox.com/mapbox-gl-js/example/animate-point-along-route/
 
 # 20241126
 worldtravel的页面实现了两个新的功能，一个是成功通过workers接入了llama-70b上下文对话，并且加入了一个悬浮智能助手插件。本地需要设置.env.local文件并加入.gitignore才可运行，不然只在服务器端可以加载显示。但是现在页面左侧导航栏宽度似乎还有问题。
