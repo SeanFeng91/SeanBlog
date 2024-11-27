@@ -12,6 +12,18 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241126
+worldtravel的页面实现了两个新的功能，一个是成功通过workers接入了llama-70b上下文对话，并且加入了一个悬浮智能助手插件。本地需要设置.env.local文件并加入.gitignore才可运行，不然只在服务器端可以加载显示。但是现在页面左侧导航栏宽度似乎还有问题。
+
+第二个是使用了[mapbox](https://docs.mapbox.com/mapbox-gl-js/example/)的api，实现了真正意义的路径规划。目前只是简单加载了地图并且加入了search box的功能。它的api特别长需要慢慢研究。有趣的是mapbox的账号还是我在2016年为了做一个播客的长图时候在美国注册的，没想到今天还能用上。今天国内用gmail都无法正确注册。
+
+今天还看到一个通过[streamlit](https://streamlit.io/)+langchain+mapbox等实现路径规划的项目。我觉得要真正做到一个有趣的旅游博客页面至少要可以实现基本的自然语言路径规划和行程规划。
+
+mapbox的showcase：
+- https://www.mapbox.com/industries/travel
+- https://roadtrippers.com/
+- https://github.com/maptimeLA 一个开源的博主
+
 # 20241125
 使用Vitepress部署了worldtravel的页面，接入了openstreetmap的数据，可以实现简单的路线规划。
 如果需要更好的体验，要尝试接入高德的[api](https://lbs.amap.com/api/javascript-api/summary)
