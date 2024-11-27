@@ -12,6 +12,16 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+
+
+# 20241127
+## Today's Plan
+1. 增加mapbox的环境变量；
+2. 成功在首页实现地图背景的调试；
+3. 研究mapbox的showcase并构思想法和实现路径。（如插入显示图片等）
+- 利用地图+blog模式展示![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1732674651632_image.png)
+- 结合规划的景点在地图上打标签，设置按钮切换场景等![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1732678295493_image.png)
+
 # 20241126
 worldtravel的页面实现了两个新的功能，一个是成功通过workers接入了llama-70b上下文对话，并且加入了一个悬浮智能助手插件。本地需要设置.env.local文件并加入.gitignore才可运行，不然只在服务器端可以加载显示。但是现在页面左侧导航栏宽度似乎还有问题。
 
@@ -23,6 +33,7 @@ mapbox的showcase：
 - https://www.mapbox.com/industries/travel
 - https://roadtrippers.com/
 - https://github.com/maptimeLA 一个开源的博主
+- https://blog.csdn.net/m0_51244077/article/details/143493960 mapbox一些基本操作
 
 # 20241125
 使用Vitepress部署了worldtravel的页面，接入了openstreetmap的数据，可以实现简单的路线规划。
