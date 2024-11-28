@@ -12,7 +12,49 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+## 20241128
+### 今日进展
+1. 使用Vite_环境变量替换了mapbox的token，这样在地图上显示的时候就不会暴露。
+2. 撰写了第一篇旅行计划，以便在使用过程中晚上页面功能。
+3. 创建了图片轮播组件，可以在页面中很好的插入图片并显示，不会导致篇幅过长。
+4. 修复了mapboxglobal显示会覆盖文字的bug。主要是加载的顺序问题。
 
+### 进入想法
+1. 针对每天的行程，如何做好可视化展示。
+
+### 日常记录
+今天想继续使用通义千问总结播客的时候，发现之前提供的播客连接直接提取已经变成RSS链接解析。所以小宇宙的连接或者类似很多播放平台的不能直接提取了。好在小宇宙还保持了网页页面F12可以取到音频的链接，这个就可以直接使用。
+
+携程的公共开放平台api并没有可以直接接入酒店或者机票的。
+
+`VITE_` 前缀的特殊性。在 Vite 项目中：
+
+1. 以 `VITE_` 开头的环境变量会被自动暴露给前端代码，可以通过 `import.meta.env` 直接访问。
+
+所以如果您想在前端直接访问环境变量，有两种方式：
+
+```plaintext:.env
+# 方式1：使用 VITE_ 前缀（可以在前端直接访问）
+VITE_MAPBOX_ACCESS_TOKEN=your_token_here
+```
+
+```vue
+// 在组件中可以直接这样使用
+const token = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+```
+
+或者
+
+```plaintext:.dev.vars
+# 方式2：使用 Cloudflare Workers 环境变量（需要通过 API 访问）
+MAPBOX_ACCESS_TOKEN=your_token_here
+```
+
+区别是：
+- `VITE_` 前缀的变量会直接暴露在前端代码中（不够安全，但使用方便）
+- 普通环境变量只能在服务器端（Workers）访问（更安全，但需要通过 API）
+
+所以如果您的 token 不是特别敏感，可以直接使用 `VITE_` 前缀的方式，就像 `ImageGenerator.vue` 中那样。
 
 # 20241127
 ## Today's Plan
@@ -24,6 +66,8 @@ import: '../../styles/markdown.css'
 - 徒步路线可视化 https://docs.mapbox.com/mapbox-gl-js/example/live-update-feature/
 - 给地图上增加视频 https://docs.mapbox.com/mapbox-gl-js/example/video-on-a-map/
 - 增加飞行路径 https://docs.mapbox.com/mapbox-gl-js/example/animate-point-along-route/
+- 可以加入一个小工具列表
+
 
 # 20241126
 worldtravel的页面实现了两个新的功能，一个是成功通过workers接入了llama-70b上下文对话，并且加入了一个悬浮智能助手插件。本地需要设置.env.local文件并加入.gitignore才可运行，不然只在服务器端可以加载显示。但是现在页面左侧导航栏宽度似乎还有问题。
