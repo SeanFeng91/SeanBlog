@@ -12,7 +12,61 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
-## 20241128
+# 20241203
+近期主要在研究结合大模型和地图的api丰富博客的使用功能。初步实现了以下功能：
+1. 通过Cloudflare的AI workers实现了llama-70b的上下文对话。可以获取关于某个地点的旅行计划。
+2. 通过简单的正则化匹配可以提取日期、时间、地点。
+3. 通过OSM或者高德地图可以获得对应地点的经纬度。
+4. 通过mapbox的api可以实现对应地点在地图上的marker显示，并且简单的按路线连线。
+5. 成功调用了高德的api，代理访问需要key和安全密钥一起使用。
+
+```
+// 加载安全配置脚本
+const loadSecurityScript = () => {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = '//g.alicdn.com/AWSC/AWSC/awsc.js';
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+};
+
+// 加载高德地图脚本
+const loadAMapScript = () => {
+  return new Promise((resolve, reject) => {
+    // 删除可能存在的旧实例
+    delete window.AMap;
+    
+    // 设置安全配置
+    window._AMapSecurityConfig = {
+      securityJsCode: import.meta.env.VITE_AMAP_SECRET, // 使用环境变量中的安全密钥
+      serviceHost: '/_AMapService', // 代理服务路由
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://webapi.amap.com/maps?v=1.4.15&key=${import.meta.env.VITE_AMAP_KEY}`;
+    script.type = 'text/javascript';
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+};
+```
+
+### 存在问题
+1. 还没有验证或者实现多轮对话以及对行程的优化。
+2. 在地点检索这个问题上出现的bug最大，有可能检索的第一个不是真正的地点。【一般都会有很多选项】
+3. 行程是简单的正则化匹配，更好的办法是用大模型进行提炼。
+
+
+
+# 20241129
+1. 如何实现大模型对话+地图规划。
+
+# 20241128
 ### 今日进展
 1. 使用Vite_环境变量替换了mapbox的token，这样在地图上显示的时候就不会暴露。
 2. 撰写了第一篇旅行计划，以便在使用过程中晚上页面功能。
@@ -21,6 +75,7 @@ import: '../../styles/markdown.css'
 
 ### 进入想法
 1. 针对每天的行程，如何做好可视化展示。
+2. 如何使用音频、视频与地图结合并互动。
 
 ### 日常记录
 今天想继续使用通义千问总结播客的时候，发现之前提供的播客连接直接提取已经变成RSS链接解析。所以小宇宙的连接或者类似很多播放平台的不能直接提取了。好在小宇宙还保持了网页页面F12可以取到音频的链接，这个就可以直接使用。
