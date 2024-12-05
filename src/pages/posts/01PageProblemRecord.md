@@ -35,6 +35,10 @@ import: '../../styles/markdown.css'
 1. 需要看看如何加入webscraper实现页面内容的爬取，不然就很难获得检索内容用于大模型。
 2. 不知Dify或者Coze发布的产品能不能为blog所用。
 
+## IDEA
+做一个优质信息源页面类似aibase
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1733410306800_image.png)
+
 # 20241204
 在langchain的学习之路上起步遇到了一些挫折。脱离开py的环境，JavaScript没能结合workers ai成功运行。
 
