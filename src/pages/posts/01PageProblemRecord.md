@@ -12,6 +12,32 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241205
+## 今日进展
+1. 搭建谷歌搜索API。[可编程搜索引擎](https://developers.google.com/custom-search?hl=zh-cn)、[搜索引擎](https://programmablesearchengine.google.com/controlpanel/all?hl=zh-cn)、[谷歌API库](https://console.cloud.google.com/apis/library?inv=1&invt=AbjRpA&project=macro-crane-443803-j3)
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1733378146157_image.png)
+谷歌搜索每天免费100次，有$300的免费额度。国外地图部分可以使用google map。
+
+通过谷歌搜索api得到的携程机票页面似乎是一个专门的网页，可以看看是否能够用于获取机票信息。
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1733378321318_image.png)
+
+这个网页：https://serpapi.com/也可以实现google search，未深入探索。
+
+2. 安装了智谱的[清言插件](https://www.zhipuai.cn/news/149)，可以实现页面总结、翻译、查询、对话，还有探索性的页面自动控制功能。可以取代kimi的网页插件。
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1733378115295_image.png)
+
+3. 在worldtravel的页面中，尝试使用google map的api，可以实现页面检索。还没有想好怎么跟大模型结合。如果只是作为一个跟地图一样的插件就有点太简单了。想办法形成agent闭环。
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1733378501742_image.png)
+
+4. 百度agent似乎可以发布一些结合百度旅游、百度搜索的agent。
+
+## 存在问题
+1. 需要看看如何加入webscraper实现页面内容的爬取，不然就很难获得检索内容用于大模型。
+2. 不知Dify或者Coze发布的产品能不能为blog所用。
+
+# 20241204
+在langchain的学习之路上起步遇到了一些挫折。脱离开py的环境，JavaScript没能结合workers ai成功运行。
+
 # 20241203
 近期主要在研究结合大模型和地图的api丰富博客的使用功能。初步实现了以下功能：
 1. 通过Cloudflare的AI workers实现了llama-70b的上下文对话。可以获取关于某个地点的旅行计划。
@@ -19,6 +45,7 @@ import: '../../styles/markdown.css'
 3. 通过OSM或者高德地图可以获得对应地点的经纬度。
 4. 通过mapbox的api可以实现对应地点在地图上的marker显示，并且简单的按路线连线。
 5. 成功调用了高德的api，代理访问需要key和安全密钥一起使用。
+6. 
 
 ```
 // 加载安全配置脚本
