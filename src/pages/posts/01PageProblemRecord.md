@@ -12,6 +12,72 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241212
+关于正在开展的旅行博客工程，目前已经初步的打通了各种资源渠道。如地图、新闻、机票、酒店、AI、多媒体等。接下来就是更加深入的构建：
+1. 要对产品调研一下，总结一下现在的产品能力；
+- 现有的传统旅行类软件
+- 结合AI的产品，不是简单的工作流
+- 工作流的能力范围
+- 主流AI厂商对旅行类产品的规划
+
+2. 用coze发布一个产品，看看效果；
+3. 规划Blog的版块和功能
+4. 打造具体版块内容
+
+# 20241211
+## 今日进展
+1. 在旅行地图上成功实现了不同国家颜色标注，表示已经去过的、想去的、危险的等情况。
+2. 启用map id 实现地图特殊标记功能。google还可以定制自己的地图风格。包括颜色、道路标记等等，可以通过mapID加载。后续为了保持自己地图风格的需求时可以使用。
+3. https://newsdata.io/dashboard 这个网站可以非常方便的检索新闻，并且有200个免费的额度。我在危险国家的地图上实现了新闻的检索。展示前几条相关新闻。
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1733900312940_image.png)
+
+Amadeus API 新了解到的一个非常有用的工具，可以查询机票、酒店。还可以结合langchain实现agent功能。
+[借助Amadeus Toolkit打造智能旅行助手：LangChain与Amadeus API集成指南](https://blog.csdn.net/ppoojjj/article/details/143702345)
+
+https://developers.amadeus.com/ 这个网站登录，使用api。目前简单的实现了接口的调用，读取了机票。后续可以看看它更多的应用场景。
+
+# 20241210
+## 今日进展
+使用了google map api。他里面有很多丰富的功能，之前我在启动项目的时候设置了只有hapaiqi.top可以访问，导致我local调试的时候无法使用。测试阶段我先解除了限制，等之后上线再开启吧。
+
+
+
+通过使用https://serpapi.com/dashboard 调用google的api。里面有100次免费调用。这边的api就比较的清晰，有谷歌搜索、视频、图片、新闻、酒店等等。而谷歌自身的开发计划里面却没有这样的对应。很奇怪。
+但是因为使用了api，在Cloudflare的workers加入了ai/hotels/search的路由。
+
+```
+// 添加酒店搜索路由
+		else if (path === '/ai/hotels/search') {
+		  try {
+			// 验证 API Key
+			const apiKey = request.headers.get('X-API-Key');
+			if (apiKey !== env.API_KEY) {
+			  return new Response(JSON.stringify({ error: '无效的 API 密钥' }), {
+				status: 401,
+				headers: {
+				  ...corsHeaders,
+				  'Content-Type': 'application/json',
+				},
+			  });
+			}
+
+			const params = new URL(request.url).searchParams;
+			
+			// 修改语言参数为 zh-cn
+			const searchParams = {
+			  api_key: env.SERP_API_KEY,
+			  engine: 'google_hotels',
+			  q: params.get('q') || 'hangzhou',
+			  hl: 'zh-CN',
+			  gl: 'cn',
+			  check_in_date: params.get('check_in_date'),
+			  check_out_date: params.get('check_out_date'),
+			  currency: 'CNY'
+			};
+```
+
+增加了一个酒店搜索悬浮按钮，可以实现酒店搜索。但是现在有些结果返回的展示还没有实现。后续可以的话能结合localtion在地图显示，并且接入kv库存储。
+
 # 20241205
 ## 今日进展
 1. 搭建谷歌搜索API。[可编程搜索引擎](https://developers.google.com/custom-search?hl=zh-cn)、[搜索引擎](https://programmablesearchengine.google.com/controlpanel/all?hl=zh-cn)、[谷歌API库](https://console.cloud.google.com/apis/library?inv=1&invt=AbjRpA&project=macro-crane-443803-j3)
