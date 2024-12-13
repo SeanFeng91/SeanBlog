@@ -24,6 +24,9 @@ import: '../../styles/markdown.css'
 3. 规划Blog的版块和功能
 4. 打造具体版块内容
 
+## 新鲜事物
+Coze可以接入[Ten Agent](https://mp.weixin.qq.com/s/g6LlsHw3_K7SDjqXBLOzww),实现语音助手。
+
 # 20241211
 ## 今日进展
 1. 在旅行地图上成功实现了不同国家颜色标注，表示已经去过的、想去的、危险的等情况。
@@ -39,7 +42,6 @@ https://developers.amadeus.com/ 这个网站登录，使用api。目前简单的
 # 20241210
 ## 今日进展
 使用了google map api。他里面有很多丰富的功能，之前我在启动项目的时候设置了只有hapaiqi.top可以访问，导致我local调试的时候无法使用。测试阶段我先解除了限制，等之后上线再开启吧。
-
 
 
 通过使用https://serpapi.com/dashboard 调用google的api。里面有100次免费调用。这边的api就比较的清晰，有谷歌搜索、视频、图片、新闻、酒店等等。而谷歌自身的开发计划里面却没有这样的对应。很奇怪。
