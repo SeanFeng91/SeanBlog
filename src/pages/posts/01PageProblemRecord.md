@@ -12,6 +12,38 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241218
+## 今日进展
+### Mermaid
+成功的在Vitepress里面集成了mermaid流程图。这样可以极大的丰富旅行博客展示的效果。比如用流程图或者甘特图展示行程，思维导图展示景点或者人文。
+用饼图或者柱状图等展示数据。
+
+- Vitepress插入mermaid：https://emersonbottero.github.io/vitepress-plugin-mermaid/guide/getting-started.html
+- Mermaid官方Vitepress blog：https://mermaid.nodejs.cn/intro/
+
+### 和风天气
+很不错的一个开源项目，有丰富的气象效果，有待进一步开拓。
+
+使用方法：https://dev.qweather.com/docs/api/weather/
+项目管理网站：https://console.qweather.com/#/apps
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1734513238598_image.png)
+
+# 20241217
+## 今日进展
+1. 解决了右侧outline的目录层级问题
+```
+themeConfig: {
+    logo: '/logo.png',
+    outline: {
+      level: [1, 4], // 显示 h2 到 h4 的标题
+      label: '本页目录'
+    },
+}
+```
+2. 接入了disqus评论系统
+- [给 vitepress 添加评论系统](https://bddxg.top/article/note/vitepress%E4%BC%98%E5%8C%96/%E7%BB%99vitepress%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F.html)
+- [VitePress 集成 Disqus](https://central-x.com/blogs/web/vitepress-disqus)
+
 # 20241212
 关于正在开展的旅行博客工程，目前已经初步的打通了各种资源渠道。如地图、新闻、机票、酒店、AI、多媒体等。接下来就是更加深入的构建：
 1. 要对产品调研一下，总结一下现在的产品能力；
