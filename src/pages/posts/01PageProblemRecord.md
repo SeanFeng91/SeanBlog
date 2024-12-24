@@ -12,6 +12,41 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241224
+## 今日进展
+这几天在google gemini的推进上比较受阻。一部分的功能目前的阻碍可能是网络，似乎无法建立正常的链接。在Colab上一些功能可以顺利运行。
+因为才刚发布不久，我想后续可能会有更好的适配。
+
+目前有一些功能我觉得还是非常的有用，除了常规的对话，生成图片。这次的gemini-2.0-flash-exp可以实现结合谷歌个搜索生成音频，实时的视频和音频流，结合google map进行检索、生成路线。结合起来看就可以基本实现一个小的agent。但是本地连接不通实在是头疼。还不是代码bug。
+
+https://github.com/google-gemini/cookbook/tree/main/gemini-2 提供目前一些基于gemini-2.0的使用案例场景。
+
+- Getting Started - A comprehensive overview using the GenAI SDK
+- Live API starter - Overview of the Multimodal Live API using the GenAI SDK
+- Live API tool use - Overview of tool use in the Live API with the GenAI SDK
+- Plotting and mapping - Demo showing search, code and function calling with the Live API
+- Search tool - Quick start using the Search tool with the unary and Live APIs in the GenAI SDK
+- Spatial understanding - Comprehensive overview of 2D spatial understanding capabilities with the GenAI SDK
+- Spatial understanding (3D) - Comprehensive overview of 3D spatial understanding capabilities with the GenAI SDK
+- Video understanding - Comprehensive overview Gemini 2.0 video understanding capabilities with the GenAI SDK
+- Gemini 2.0 Flash Thinking - Introduction to the experimental Gemini 2.0 Flash Thinking model with the GenAI SDK
+
+# 20241222
+## 今日进展
+尝试使用Gemini-2.0
+https://deepmind.google/technologies/gemini/flash/ 
+
+[这里](https://aistudio.google.com/prompts/new_chat?model=gemini-2.0-flash-exp&utm_source=deepmind.google&utm_medium=referral&utm_campaign=gdm&utm_content=)可以直接使用不同的模型
+
+https://gemini.google.com/app 这是一个跟gpt一样的对话界面，可以输入prompt，然后选择模型。
+
+但是基于api或者sdk的python代码，始终没有跑通。
+
+# 20241220
+## 今日进展
+修改了patterndesign的注册材料里面关于作品集的地址和上传的图片，成功发出成为seller的申请。不知道能不能审核通过。还亏了之前自己vercel开通了一个相册，可以传照片，作为小红书的替代品。
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1734684854027_image.png)
+
 # 20241218
 ## 今日进展
 今天开始完善第一版旅行blog模板。引入了Mermaid、和风天气、汇率助手、Bilibili和YouTube播放。其中Mermaid是安装Markdown插件后可以直接写代码渲染，非常好用。和风天气免费Api每天1000次查询，可以有接近wind的效果，有待进一步开发。汇率助手用了一个免费的api，可以实现基本的汇率查询。
