@@ -12,6 +12,17 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241225
+## 今日进展
+- 成功的解决了websocket的handshake问题。本地端可以通过设置proxy代理。
+- 实现了通过websocket作为媒介，访问google map进行实时绘制工作。
+- 有一个google Genai的skd，是python的，有非常多调用Gemini的能力，不知道能不能都在网页上实现。
+https://googleapis.github.io/python-genai/genai.html#genai.types.GoogleSearch
+
+## 存在问题
+- markers的绘制还是有些不够智能，现在基础款可以，但是变化颜色、增加线条等还不可以。mapfns函数有待优化。
+- 经常会出现websocket连接失败的问题，需要检查。
+
 # 20241224
 ## 今日进展
 这几天在google gemini的推进上比较受阻。一部分的功能目前的阻碍可能是网络，似乎无法建立正常的链接。在Colab上一些功能可以顺利运行。
@@ -30,6 +41,9 @@ https://github.com/google-gemini/cookbook/tree/main/gemini-2 提供目前一些�
 - Spatial understanding (3D) - Comprehensive overview of 3D spatial understanding capabilities with the GenAI SDK
 - Video understanding - Comprehensive overview Gemini 2.0 video understanding capabilities with the GenAI SDK
 - Gemini 2.0 Flash Thinking - Introduction to the experimental Gemini 2.0 Flash Thinking model with the GenAI SDK
+
+https://github.com/google-gemini/cookbook/blob/main/gemini-2/video_understanding.ipynb 根据这个案例运行了关于gemini对视频的理解
+可以实现视频的理解，包括总结视频的内容，对视频分镜头进行概括，对内容进行分类和创意等。
 
 # 20241222
 ## 今日进展
