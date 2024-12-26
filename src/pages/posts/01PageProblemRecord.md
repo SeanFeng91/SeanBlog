@@ -139,6 +139,14 @@ wrangler secret put GEMINI_API_KEY
 
 ```
 不想之前使用Workers，要构建一大堆文件，这样的模式就实现了无服务器前后端的应用部署。我可以参考这个模式顺利的使用很多python的sdk。
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1735196969161_image.png)
+
+## 存在问题
+1. 长上下文对话好像还是存在问题。
+2. 不同的参数设置，比如topK、topP、temperature等，没有太体验出对结果的影响。
+3. 搜索曾经有出现过链接，但是现在又没有了。
+4. 目前角色、prompt的设置似乎都还没有考虑，为了保障搜索结果的呈现，后续可以增加一些初始的提示词。
+
 
 ## 后续尝试
 1. 官方案例还加入了图表绘制功能，可以尝试实现。
