@@ -12,12 +12,148 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241226
+## 今日进展
+今天worldtravel有了重大突破。实现了Gemini-2.0+google search的结合
+主要是通过了以下几个步骤：
+1. 将前后端分离，使用了Cloudflare的Workers来调用[Genai SDK](https://github.com/googleapis/python-genai)。
+2. 参考了[Search tool](https://github.com/google-gemini/cookbook/blob/main/gemini-2/search_tool.ipynb)的官方案例，用了client version to v1alpha and use the Gemini 2.0 model。
+``` python
+from google import genai
+client = genai.Client(http_options={'api_version': 'v1alpha'})
+MODEL = 'gemini-2.0-flash-exp'
+```
+## 关键突破
+1. 在调用Gemini的过程需要开启[Generative Language API](https://console.cloud.google.com/apis/api/generativelanguage.googleapis.com/metrics?project=mao45xian&inv=1&invt=AblHkQ)
+2. cursor 3次免费到期之后如何破解试用次数过多：http://www.xmsumi.com/detail/275
+3. 如何在Vitepress里面使用Cloudflare的Workers。
+- 首先创建 Worker 代码
+``` javascript
+const GEMINI_API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1alpha'
+
+export default {
+  async fetch(request, env) {
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type",
+        }
+      });
+    }
+
+    try {
+      const { prompt, model, searchEnabled, messages } = await request.json();
+
+      // 创建请求结构
+      const requestBody = {
+        contents: messages || [{
+          parts: [{
+            text: prompt
+          }]
+        }],
+        generationConfig: {
+          temperature: 0.7,
+          topK: 40,
+          topP: 0.95,
+          maxOutputTokens: 2048,
+        }
+      };
+
+      // 如果启用搜索，使用官方的搜索工具配置
+      if (searchEnabled) {
+        requestBody.tools = [{
+          'google_search': {}
+        }];
+      }
+
+      console.log('Request body:', JSON.stringify(requestBody, null, 2));
+
+      const response = await fetch(`${GEMINI_API_ENDPOINT}/models/${model}:generateContent`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": env.GOOGLE_API_KEY
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      const data = await response.json();
+      console.log('API Response:', JSON.stringify(data, null, 2));
+
+      // 检查是否有错误
+      if (data.error) {
+        throw new Error(`API Error: ${data.error.message}`);
+      }
+
+      // 检查响应格式
+      if (!data.candidates?.[0]?.content?.parts) {
+        throw new Error('Invalid response format');
+      }
+
+      return new Response(JSON.stringify({
+        success: true,
+        data: data
+      }), {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
+      });
+
+    } catch (error) {
+      console.error('Error:', error);
+      return new Response(JSON.stringify({
+        success: false,
+        error: error.message
+      }), {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*"
+        }
+      });
+    }
+  }
+}
+```
+- 修改前端代码以使用 Worker
+- 创建 wrangler.toml 配置文件
+```
+name = "gemini-worker"
+main = "workers/gemini-worker.js"
+compatibility_date = "2024-01-01"
+
+# 如果需要绑定自定义域名
+# [routes]
+# pattern = "api.yourdomain.com/*"
+# zone_id = "your-zone-id" 
+```
+- 登录、部署Workers
+```
+npm install -g wrangler 
+wrangler login
+wrangler publish
+# 添加 secret
+wrangler secret put GEMINI_API_KEY
+
+```
+不想之前使用Workers，要构建一大堆文件，这样的模式就实现了无服务器前后端的应用部署。我可以参考这个模式顺利的使用很多python的sdk。
+
+## 后续尝试
+1. 官方案例还加入了图表绘制功能，可以尝试实现。
+2. 可以与实时流结合，实现实时对话。
+3. 可以结合其他的tools。
+
 # 20241225
 ## 今日进展
 - 成功的解决了websocket的handshake问题。本地端可以通过设置proxy代理。
 - 实现了通过websocket作为媒介，访问google map进行实时绘制工作。
 - 有一个google Genai的skd，是python的，有非常多调用Gemini的能力，不知道能不能都在网页上实现。
 https://googleapis.github.io/python-genai/genai.html#genai.types.GoogleSearch
+
+这里有完整的colab版本的Gemini-2.0-flash-exp的代码，可以参考。
+https://colab.research.google.com/github/GoogleCloudPlatform/generative-ai/blob/main/gemini/getting-started/intro_gemini_2_0_flash.ipynb
 
 ## 存在问题
 - markers的绘制还是有些不够智能，现在基础款可以，但是变化颜色、增加线条等还不可以。mapfns函数有待优化。
