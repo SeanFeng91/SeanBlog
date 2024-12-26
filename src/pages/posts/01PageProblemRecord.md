@@ -141,6 +141,39 @@ wrangler secret put GEMINI_API_KEY
 不想之前使用Workers，要构建一大堆文件，这样的模式就实现了无服务器前后端的应用部署。我可以参考这个模式顺利的使用很多python的sdk。
 ![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1735196969161_image.png)
 
+这个功能成功的核心是Google把搜索作为一个工具开放了：
+``` python
+if (searchEnabled) {
+        requestBody.tools = [{
+          'google_search': {}
+        }];
+      }
+```
+### 多功能工具使用
+借助 Gemini 2.0，可以同时启用多种工具，模型将决定何时调用这些工具。下面的示例展示了如何在使用 Multimodal Live API 的请求中启用两种工具：“使用 Google 搜索进行初始化”和“代码执行”。
+::: alert-info
+注意： 为简洁起见，省略了用于处理异步 WebSocket 设置的 run() 函数声明。
+:::
+``` python
+prompt = """
+  Hey, I need you to do three things for me.
+
+  1. Turn on the lights.
+  2. Then compute the largest prime palindrome under 100000.
+  3. Then use Google Search to look up information about the largest earthquake in California the week of Dec 5 2024.
+
+  Thanks!
+  """
+
+tools = [
+    {'google_search': {}},
+    {'code_execution': {}},
+    {'function_declarations': [turn_on_the_lights_schema, turn_off_the_lights_schema]}
+]
+
+await run(prompt, tools=tools, modality="AUDIO")
+```
+
 ## 存在问题
 1. 长上下文对话好像还是存在问题。
 2. 不同的参数设置，比如topK、topP、temperature等，没有太体验出对结果的影响。
