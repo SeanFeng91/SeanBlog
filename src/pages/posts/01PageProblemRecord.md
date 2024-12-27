@@ -15,6 +15,7 @@ import: '../../styles/markdown.css'
 # 20241227
 ## 今日进展
 这个页面有介绍[Vertex AI](https://cloud.google.com/generative-ai-app-builder/docs/preview-search-results?hl=zh-cn)，需要好好的研究一下这个，感觉又是另外一个系列的google agent。
+这个[ai.google.dev](https://ai.google.dev/gemini-api/docs/get-started/tutorial?lang=python&hl=zh-cn#multi-turn_conversations)也是一个介绍不同谷歌ai用法的网页。
 今天希望可以尝试增加图片上传理解的能力。
 
 测试了一圈好像关于图片理解的，gemini-2.0官方都不能正常上传图片。还是现在搜索和地图方面进一步完善，变成可移动的地图等等。
