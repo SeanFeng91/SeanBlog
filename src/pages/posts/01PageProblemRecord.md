@@ -14,7 +14,7 @@ import: '../../styles/markdown.css'
 
 # 20241227
 ## 今日进展
-这个页面有介绍[Vertex AI](https://cloud.google.com/generative-ai-app-builder/docs/preview-search-results?hl=zh-cn)
+这个页面有介绍[Vertex AI](https://cloud.google.com/generative-ai-app-builder/docs/preview-search-results?hl=zh-cn)，需要好好的研究一下这个，感觉又是另外一个系列的google agent。
 今天希望可以尝试增加图片上传理解的能力。
 
 测试了一圈好像关于图片理解的，gemini-2.0官方都不能正常上传图片。还是现在搜索和地图方面进一步完善，变成可移动的地图等等。
@@ -26,6 +26,7 @@ import: '../../styles/markdown.css'
 3. 谷歌地图还有街景模式，不知道能不能好好的利用。这样可以做景点预览。比如可以在每个景点插入这个[街景地图](https://developers.google.com/streetview/web?hl=zh-cn)
 4. 接入Youtube的查询[api](https://console.cloud.google.com/apis/library/youtube.googleapis.com?inv=1&invt=AblODA&project=seangpt),实现相关旅游视频的检索。(The YouTube Data API v3 is an API that provides access to YouTube data, such as videos, playlists, and channels.)
 5. 如果现在这个google_search一直有用量现在，看是不是能够用Custom Search API替代。
+6. 其他第三方的工具的接入。
 
 # 20241226
 ## 今日进展
