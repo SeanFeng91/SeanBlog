@@ -12,6 +12,21 @@ import: '../../styles/markdown.css'
 ---
 >我从2024年7月4日开始，在丘可乐的建议下开始用Astro搭建我的Blog。但由于Html、CSS、JS知识浅薄，所以在编辑过程中遇到了不少问题。
 
+# 20241227
+## 今日进展
+这个页面有介绍[Vertex AI](https://cloud.google.com/generative-ai-app-builder/docs/preview-search-results?hl=zh-cn)
+今天希望可以尝试增加图片上传理解的能力。
+
+测试了一圈好像关于图片理解的，gemini-2.0官方都不能正常上传图片。还是现在搜索和地图方面进一步完善，变成可移动的地图等等。
+使用了map javascript api，可以实现地图的移动。将地图单独做了一个组件，独立于聊天内容。
+
+## 存在问题
+1. 图片上传理解的能力，gemini-2.0官方都不能正常上传图片。等恢复了就可以做一个植物或者动物的识别。
+2. 地图markers效果现在比较薄弱，关于旅行线路、交通、周边信息、航班信息一起检索的Agent要进一步完善。
+3. 谷歌地图还有街景模式，不知道能不能好好的利用。这样可以做景点预览。比如可以在每个景点插入这个[街景地图](https://developers.google.com/streetview/web?hl=zh-cn)
+4. 接入Youtube的查询[api](https://console.cloud.google.com/apis/library/youtube.googleapis.com?inv=1&invt=AblODA&project=seangpt),实现相关旅游视频的检索。(The YouTube Data API v3 is an API that provides access to YouTube data, such as videos, playlists, and channels.)
+5. 如果现在这个google_search一直有用量现在，看是不是能够用Custom Search API替代。
+
 # 20241226
 ## 今日进展
 今天worldtravel有了重大突破。实现了Gemini-2.0+google search的结合
@@ -23,6 +38,9 @@ from google import genai
 client = genai.Client(http_options={'api_version': 'v1alpha'})
 MODEL = 'gemini-2.0-flash-exp'
 ```
+
+今天还尝试实现multi-tools，在搜索的基础上增加maps。可以实现自然语言+maps，但是比较笨。是不是没有开启异步的原因？
+
 ## 关键突破
 1. 在调用Gemini的过程需要开启[Generative Language API](https://console.cloud.google.com/apis/api/generativelanguage.googleapis.com/metrics?project=mao45xian&inv=1&invt=AblHkQ)
 2. cursor 3次免费到期之后如何破解试用次数过多：http://www.xmsumi.com/detail/275
