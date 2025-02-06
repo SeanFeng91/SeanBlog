@@ -1,0 +1,56 @@
+---
+layout: ../../layouts/MarkdownPostLayout.astro
+title: "本地搭建Ragflow+Deepseek，实现本地知识库的构建和检索"
+author: Sean Feng
+description: "一直想尝试做一个RAG的demo，虽然之前也有一些初步探索，但是rag的效果一直不佳。在Deepseek火热之后，无意中看到了RAGflow产品，之前在试用天翔的buindingGPT还在琢磨，是用的什么RAG，对比之后发现应该就是使用了RAGflow。部署起来需要一定的本地资源，慢慢摸索看看。"
+pubDate: 2025-02-06
+tags: ["AI", "RAG", "RAGflow","Deepseek"]
+wordCount:   # 请替换为实际的字数
+
+---
+
+{/* 导入必要的样式和组件 */}
+import '../../styles/markdown.css'
+import React, { useState } from 'react';
+import { Counter } from '../../components/react/Spinner';
+import { Collapsible, Alert, CodeBlock, Highlight, FadeIn } from '../../components/react/Collapsible';
+import { Tabs } from '../../components/react/Tabs';
+import { Image } from 'astro:assets';
+import ImageSwitcher from '../../components/react/ImageSwitcher';
+import Video from '../../components/react/Video';
+
+# 核心功能介绍
+RAGFlow 是一款基于深度文档理解的开源检索增强生成（RAG）引擎，其核心功能与优势在多个维度上展现出独特价值，尤其适用于企业级复杂场景。以下是其核心功能与优势的详细说明：
+
+## **核心功能**
+1. **深度文档理解**  
+   RAGFlow 通过 **DeepDoc 技术**，结合 OCR、布局分析、表格结构识别（TSR）等能力，精准解析复杂格式的非结构化数据，包括学术论文、商务报告、PDF、DOCX、Excel、PPT、图片及扫描件等，甚至支持音频文件解析（需最新版本）。例如，图像文档通过 OCR 转换为文本，表格则保留结构化语义，确保知识提取的完整性。
+
+2. **可控可解释的文本分块**  
+   提供**模板化分块技术**，用户可选择智能模板或自定义规则，实现文本切片的可视化与人工干预。例如，针对法律合同与科研论文可应用不同分块策略，提升后续检索的精准性。分块过程支持实时调整，增强流程透明度。
+
+3. **多源异构数据兼容**  
+   支持 Word、PPT、Excel、文本、图片、扫描件、结构化数据、网页等**超过 10 种数据源**，并通过统一接口实现自动化处理。例如，企业可将内部报告、客户表格与网页数据整合为知识库。
+
+4. **自动化 RAG 工作流**  
+   内置多路召回（如关键词匹配、向量相似度检索）与融合重排序机制，结合可配置的 LLM（如 GPT-4、BGE 嵌入模型），实现从文档解析、索引构建到答案生成的端到端流程。最新版本支持**基于图（Graph）的定制工作流**，允许构建复杂处理逻辑，例如数据分类与访问控制。
+
+5. **引用追踪与幻觉抑制**  
+   答案生成时标注来源片段，支持点击溯源，并可视化关键引用快照。通过“先检索事实再生成”的机制，大幅降低大模型的虚构倾向。
+![image.png](https://cloudflare-imgbed-1d8.pages.dev/file/1738826915115_image.png)
+---
+
+# 资料文件
+
+## 官方链接
+- [RagFlow 官网](https://ragflow.io/)
+- [RagFlow Github](https://github.com/infiniflow/ragflow?tab=readme-ov-file)
+- [RagFlow Docs](https://ragflow.io/docs/dev/)
+
+
+## 学习资料
+- [RagFlow起步 實際使用紀錄](https://lazyinwork.com/2024/07/01/ragflow%E8%B5%B7%E6%AD%A5-%E5%AF%A6%E9%9A%9B%E4%BD%BF%E7%94%A8%E7%B4%80%E9%8C%84/):
+有详细的图文介绍，如何使用在线免费体验版。
+
+- [黄益贺博主Youtube关于本地化docker部署的攻略](https://medium.com/@huangyihe/ragflow-%E9%87%8D%E5%9E%8B%E7%9F%A5%E8%AF%86%E5%BA%93%E5%BC%95%E6%93%8E-bccf01ce4666)
+
